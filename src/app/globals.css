@@ -1,0 +1,289 @@
+@import "tailwindcss";
+
+/* ─── Geist Typography System ─── */
+@theme {
+  --font-sans: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+}
+
+/* ─── Official SPARKLINE Design Tokens ─── */
+:root {
+  /* ── Font Family ── */
+  --font-family--primary-font: var(--font-geist-sans), Geist, sans-serif;
+  --font-sans: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+
+  /* ── Font Weights ── */
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-black: 900;
+
+  /* ── Brand Primary Colors (Extracted from Official Logo) ── */
+  --spark-primary: #EB4604;
+  --spark-primary-hover: #D43D00;
+  --spark-primary-light: #FF6A1A;
+  --spark-amber: #FFB901;
+  --spark-gradient: linear-gradient(135deg, #FFB901 0%, #EB4604 100%);
+  --spark-soft: rgba(235, 70, 4, 0.12);
+
+  /* ── Backgrounds & Neutrals ── */
+  --color-bg-primary: #ffffff;
+  --color-bg-secondary: #f6f6f8;
+  --color-bg-card: #f0f0f3;
+  --color-bg-dark: #070709;
+  --color-surface-elevated: #111114;
+
+  /* ── Typography Colors ── */
+  --color-text-primary: #111111;
+  --color-text-secondary: #555555;
+  --color-text-muted: #8a8a8a;
+  --color-border: #e2e2e7;
+  --color-border-dark: rgba(255, 255, 255, 0.12);
+
+  /* ── Typography Scale ── */
+  --font-display-size: clamp(2.5rem, 6.2vw, 5.2rem);
+  --font-h1-size: clamp(3rem, 5.5vw, 96px);
+  --font-h2-size: clamp(2rem, 4vw, 64px);
+  --font-h3-size: clamp(1.5rem, 2.5vw, 36px);
+  --font-h4-size: clamp(1.25rem, 2vw, 32px);
+  --font-h5-size: clamp(1.125rem, 1.5vw, 24px);
+  --font-h6-size: clamp(1rem, 1.25vw, 20px);
+  --font-body-lg: clamp(1rem, 1.125vw, 18px);
+  --font-body-md: 16px;
+  --font-body-sm: 14px;
+  --font-body-xs: 12px;
+  --font-body-xxs: 11px;
+
+  /* ── Line Heights ── */
+  --lh-display: 1.02;
+  --lh-heading: 1.1;
+  --lh-subheading: 1.25;
+  --lh-body: 1.6;
+  --lh-tight: 1.3;
+
+  /* ── Letter Spacing ── */
+  --ls-display: -0.03em;
+  --ls-heading: -0.02em;
+  --ls-body: 0em;
+  --ls-wide: 0.08em;
+  --ls-wider: 0.12em;
+  --ls-widest: 0.18em;
+
+  /* ── Reference CSS Variables (legacy compat) ── */
+  --font-size--heading--h1-heading: 96px;
+  --line-hight--heading--h1-heading: 1.05em;
+  --letter-spacing--heading--h1: -.042em;
+  --font-size--heading--h2-heading: 64px;
+  --line-hight--heading--h2-heading: 1em;
+  --letter-spacing--heading--h2: -1.5px;
+  --font-size--body--text-m: 16px;
+  --line-hight--body--text-m: 1.6em;
+}
+
+@media screen and (max-width: 991px) {
+  :root {
+    --font-size--body--text-m: 16px;
+    --line-hight--body--text-m: 1.6em;
+    --letter-spacing--body--reguler: 400;
+    --font-size--heading--h1-heading: 60px;
+    --line-hight--heading--h1-heading: 1.1em;
+    --letter-spacing--body--medium: 500;
+    --letter-spacing--heading--h1: -.042em;
+    --font-size--heading--h2-heading: 56px;
+    --line-hight--heading--h2-heading: 1em;
+    --font-size--heading--h3-heading: 36px;
+    --line-hight--heading--h3-heading: 1.4em;
+    --font-size--heading--h4-heading: 32px;
+    --line-hight--heading--h4-heading: 1.25em;
+    --font-size--heading--h5-heading: 24px;
+    --line-hight--heading--h5-heading: 1.3em;
+    --font-size--heading--h6-heading: 20px;
+    --line-hight--heading--h6-heading: 1.3em;
+    --padding--padding-16: 16px;
+    --radius--radius-24: 24px;
+    --letter-spacing--body--text-m: -.033em;
+    --radius--radius-44: 44px;
+    --radius--radius-16: 16px;
+    --font-size--body--text-s: 14px;
+    --line-hight--body--text-s: 1.5em;
+    --gap--gap-16: 16px;
+    --gap--gap-32: 28px;
+    --gap--gap-24: 24px;
+    --font-size--body--text-l: 18px;
+    --line-hight--body--text-l: 1.6em;
+    --letter-spacing--body--text-l: -.033em;
+    --font-size--body--text-xxl: 20px;
+    --line-hight--body--text-xxl: 1.2em;
+    --padding--padding-4x: 36px;
+    --padding--padding-xl: 60px;
+    --font-size--body--text-sm: 12px;
+    --line-hight--body--text-sm: 1.5em;
+    --gap--gap-20: 20px;
+    --padding--padding-1x: 24px;
+    --letter-spacing--heading--h3: -.015em;
+    --gap--gap-36: 32px;
+    --gap--gap-8: 8px;
+    --gap--gap-40: 38px;
+    --padding--padding-x: 52px;
+    --padding--padding-36: 36px;
+    --padding--padding-2x: 28px;
+    --padding--padding-big: 120px;
+    --letter-spacing--heading--h2: -1.5px;
+    --font-size--body--text-80: 60px;
+    --letter-spacing--body--semi-bold: 600;
+    --gap--gap-12: 12px;
+    --padding--padding-xxl: 80px;
+    --gap--gap-4: 4px;
+    --padding--padding-3x: 12px;
+    --font-size--body--text-xl: 20px;
+    --line-hight--body--text-xl: 1.6em;
+    --padding--padding-48: 38px;
+    --radius--radius-32: 24px;
+    --radius--radius-100: 100%;
+    --radius--radius-4: 4px;
+    --letter-spacing--heading--h4: -.031em;
+    --padding--padding-5x: 20px;
+    --radius--radius-12: 12px;
+    --letter-spacing--heading--h5: -.05em;
+    --radius--radius-8: 8px;
+    --letter-spacing--body--text-xl: -.02em;
+    --font-size--heading--heading-big: 80px;
+    --gap--gap-44: 44px;
+    --letter-spacing--heading--h6: -.05em;
+    --letter-spacing--body--text-xxl: 0em;
+    --letter-spacing--body--text-s: 0em;
+    --letter-spacing--body--bold: 700;
+  }
+}
+
+/* ─── Base Styles ─── */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-family: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
+}
+
+body {
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  font-family: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
+  line-height: var(--lh-body);
+  overflow-x: hidden;
+}
+
+/* ─── Selection ─── */
+::selection {
+  background-color: var(--spark-primary);
+  color: #ffffff;
+}
+
+/* ─── Scrollbar ─── */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-bg-primary);
+}
+::-webkit-scrollbar-thumb {
+  background: #cccccc;
+  border-radius: 3px;
+}
+
+/* ─── Typography Utility Classes (Geist) ─── */
+.heading-display {
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  font-size: var(--font-display-size);
+  font-weight: 700;
+  line-height: var(--lh-display);
+  letter-spacing: var(--ls-display);
+}
+
+.heading-01 {
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  font-size: var(--font-h1-size);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: var(--ls-display);
+}
+
+.heading-02 {
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  font-size: var(--font-h2-size);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: var(--ls-heading);
+}
+
+.heading-03 {
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  font-size: var(--font-h3-size);
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.heading-04 {
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  font-size: var(--font-h4-size);
+  font-weight: 500;
+  line-height: var(--lh-subheading);
+}
+
+/* ─── Glow & Spark Effects ─── */
+.spark-gradient-text {
+  background: var(--spark-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.spark-glow {
+  box-shadow: 0 0 35px rgba(235, 70, 4, 0.35);
+}
+
+/* ─── Marquee ─── */
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  animation: marquee 25s linear infinite;
+}
+
+/* ─── Preloader Spark Animation ─── */
+@keyframes sparkPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.9;
+    filter: drop-shadow(0 0 15px rgba(255, 185, 1, 0.6));
+  }
+  50% {
+    transform: scale(1.08);
+    opacity: 1;
+    filter: drop-shadow(0 0 30px rgba(235, 70, 4, 0.9));
+  }
+}
+
+.animate-spark-pulse {
+  animation: sparkPulse 2s ease-in-out infinite;
+}
+
+/* ─── Reduced Motion ─── */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .animate-marquee {
+    animation: none;
+  }
+}
