@@ -4,6 +4,7 @@ import React from 'react'
 import { Tag } from '@/components/ui/Tag'
 import { Navbar } from '@/components/layout/Navbar'
 import { RevealOnScroll } from '@/components/motion/RevealOnScroll'
+import { SparkTitle } from './SparkTitle'
 
 export function Hero() {
   return (
@@ -25,22 +26,14 @@ export function Hero() {
         {/* Top Navbar with Official Logo */}
         <Navbar />
 
-        {/* Main Hero Headline Area */}
+        {/* Main Hero Headline Area with Real Spark Writing Effect */}
         <div className="relative z-10 my-auto max-w-5xl py-6 space-y-6">
           <RevealOnScroll delay={0.1}>
             <Tag variant="base">Agence de transformation digitale</Tag>
           </RevealOnScroll>
 
-          <RevealOnScroll delay={0.2}>
-            <h1
-              className="heaidng-style-01 text-[clamp(2.25rem,4.8vw,80px)] lg:text-[80px] xl:text-[84px] font-normal text-[#FFFFFF] tracking-[-0.042em] leading-[1.0] max-w-[900px]"
-              style={{ fontFamily: 'var(--font-family--primary-font)' }}
-            >
-              <span className="block whitespace-nowrap">Concevoir la</span>
-              <span className="block whitespace-nowrap">nouvelle génération</span>
-              <span className="block whitespace-nowrap">de marques</span>
-            </h1>
-          </RevealOnScroll>
+          {/* Spark Writing Title on Strictly 3 Lines */}
+          <SparkTitle lines={['Concevoir la', 'nouvelle génération', 'de marques']} />
 
           <RevealOnScroll delay={0.3}>
             <p className="text-sm sm:text-base text-neutral-300 max-w-xl font-normal leading-relaxed">

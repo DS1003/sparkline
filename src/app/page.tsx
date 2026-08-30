@@ -5,6 +5,7 @@ import { Footer } from '@/components/layout/Footer'
 import { Preloader } from '@/components/layout/Preloader'
 import { Hero } from '@/features/hero/components/Hero'
 import { MarqueeStrip } from '@/components/motion/MarqueeStrip'
+import { ExpertiseMarqueeStrip } from '@/components/motion/ExpertiseMarqueeStrip'
 import { About } from '@/features/about/components/About'
 import { Services } from '@/features/services/components/Services'
 import { SelectedWork } from '@/features/projects/components/SelectedWork'
@@ -36,19 +37,11 @@ export default async function HomePage() {
       {/* 2. Client Partner Infinite Marquee */}
       <MarqueeStrip />
 
-      {/* 3. About / Manifesto Section with Link to /about */}
+      {/* 3. About / Manifesto Section with "En chiffres" stats */}
       <About />
-      <div className="bg-[#f7f7f9] pb-16 text-center">
-        <Container>
-          <Link
-            href="/about"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-neutral-300 bg-white text-sm font-semibold text-neutral-900 hover:border-[#EB4604] hover:text-[#EB4604] transition-all shadow-sm group"
-          >
-            <span>Découvrir notre histoire & manifeste</span>
-            <span className="transition-transform group-hover:translate-x-1">→</span>
-          </Link>
-        </Container>
-      </div>
+
+      {/* 3.5 Red Expertise Marquee Strip (Solutions Hybrides, Réseaux, Observabilité, etc.) */}
+      <ExpertiseMarqueeStrip />
 
       {/* 4. Services Overview Preview */}
       <Services />
@@ -69,24 +62,6 @@ export default async function HomePage() {
 
       {/* 6. SPARKlearn Initiative */}
       <SparkLearnSection />
-      <div className="bg-[#f0f0f4] pb-16 text-center">
-        <Container>
-          <div className="flex flex-wrap justify-center gap-4">
-            <Link
-              href="/sparklearn/masterclasses"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-neutral-300 bg-white text-xs font-semibold text-neutral-900 hover:border-[#EB4604] hover:text-[#EB4604] transition-all shadow-sm"
-            >
-              <span>Découvrir les Masterclasses gratuites →</span>
-            </Link>
-            <Link
-              href="/sparklearn/formations"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-neutral-300 bg-white text-xs font-semibold text-neutral-900 hover:border-[#EB4604] hover:text-[#EB4604] transition-all shadow-sm"
-            >
-              <span>Consulter le catalogue des formations →</span>
-            </Link>
-          </div>
-        </Container>
-      </div>
 
       {/* 7. Approach Methodology */}
       <Approach />
@@ -120,17 +95,6 @@ export default async function HomePage() {
 
       {/* 9. Team Roster */}
       <TeamSection />
-      <div className="bg-white pb-16 text-center">
-        <Container>
-          <Link
-            href="/team"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-neutral-300 bg-white text-sm font-semibold text-neutral-900 hover:border-[#EB4604] hover:text-[#EB4604] transition-all shadow-sm group"
-          >
-            <span>Découvrir les profils et spécialités de l'équipe</span>
-            <span className="transition-transform group-hover:translate-x-1">→</span>
-          </Link>
-        </Container>
-      </div>
 
       {/* 10. Frequently Asked Questions (FAQ) */}
       <FAQSection />

@@ -7,6 +7,8 @@ import { Container } from '@/components/layout/Container'
 import { Section } from '@/components/layout/Section'
 import { Tag } from '@/components/ui/Tag'
 import { RevealOnScroll } from '@/components/motion/RevealOnScroll'
+import { SpotlightCard } from '@/components/motion/SpotlightCard'
+import { ScrollFloat } from '@/components/motion/ScrollFloat'
 import { projectsData } from '@/lib/repositories/projects'
 
 interface FeaturedProject {
@@ -107,71 +109,70 @@ export function SelectedWork() {
         {/* ── Project Cards Grid ── */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 mt-12 sm:mt-16">
           {featuredProjects.map((project, idx) => (
-            <RevealOnScroll key={project.slug} delay={0.1 + idx * 0.08}>
-              <Link
-                href={`/projects/${project.slug}`}
-                className="group block relative rounded-[28px] sm:rounded-[32px] bg-white border border-[#e2e2e8] overflow-hidden hover:border-[#EB4604]/50 transition-all duration-500 hover:shadow-xl p-5 sm:p-7"
-              >
-                {/* ── Project Visual Image (16:10) ── */}
-                <div className="relative w-full aspect-[16/10] rounded-2xl overflow-hidden bg-[#111114] mb-6">
-                  <Image
-                    src={project.image}
-                    alt={project.title}
-                    fill
-                    quality={100}
-                    unoptimized
-                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
-                    sizes="(max-width: 1024px) 100vw, 600px"
-                  />
+            <RevealOnScroll key={project.slug} delay={0.1 + idx * 0.08} direction="up">
+              <Link href={`/projects/${project.slug}`} className="block group">
+                <SpotlightCard className="rounded-[28px] sm:rounded-[32px] bg-white border border-[#e2e2e8] hover:border-[#EB4604]/50 transition-all duration-500 hover:shadow-xl p-5 sm:p-7">
+                  {/* ── Project Visual Image (16:10) ── */}
+                  <div className="relative w-full aspect-[16/10] rounded-2xl overflow-hidden bg-[#111114] mb-6">
+                    <Image
+                      src={project.image}
+                      alt={project.title}
+                      fill
+                      quality={100}
+                      unoptimized
+                      className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+                      sizes="(max-width: 1024px) 100vw, 600px"
+                    />
 
-                  {/* Floating Badges on Image */}
-                  <div className="absolute top-4 left-4 right-4 flex items-center justify-between pointer-events-none z-10">
-                    <span className="px-3.5 py-1.5 rounded-full bg-white/90 backdrop-blur-md text-[11px] font-mono font-semibold text-neutral-900 border border-neutral-200/60 shadow-sm">
-                      {project.category}
-                    </span>
-                    <span className="px-3 py-1.5 rounded-full bg-[#0A0A0A]/80 backdrop-blur-md text-[11px] font-mono font-semibold text-white border border-white/10 shadow-sm">
-                      [{project.year}]
-                    </span>
-                  </div>
-
-                  {/* Impact Metric Pill at Bottom Right */}
-                  <div className="absolute bottom-4 right-4 pointer-events-none z-10">
-                    <span className="px-3.5 py-1.5 rounded-full bg-[#EB4604] text-white text-[11px] font-mono font-semibold shadow-lg shadow-[#EB4604]/30">
-                      ✦ {project.impact}
-                    </span>
-                  </div>
-                </div>
-
-                {/* ── Project Content Info ── */}
-                <div className="space-y-3.5">
-                  <div className="flex items-center justify-between gap-4">
-                    <h3
-                      className="text-2xl sm:text-3xl font-semibold text-[#0A0A0A] group-hover:text-[#EB4604] transition-colors duration-300 tracking-tight flex items-center gap-2"
-                      style={{ fontFamily: 'var(--font-family--primary-font)' }}
-                    >
-                      <span>{project.title}</span>
-                      <span className="text-xl sm:text-2xl text-neutral-400 group-hover:text-[#EB4604] group-hover:translate-x-1.5 transition-all duration-300">
-                        →
+                    {/* Floating Badges on Image */}
+                    <div className="absolute top-4 left-4 right-4 flex items-center justify-between pointer-events-none z-10">
+                      <span className="px-3.5 py-1.5 rounded-full bg-white/90 backdrop-blur-md text-[11px] font-mono font-semibold text-neutral-900 border border-neutral-200/60 shadow-sm">
+                        {project.category}
                       </span>
-                    </h3>
+                      <span className="px-3.5 py-1.5 rounded-full bg-[#0A0A0A]/80 backdrop-blur-md text-[11px] font-mono font-semibold text-white border border-white/10 shadow-sm">
+                        [{project.year}]
+                      </span>
+                    </div>
+
+                    {/* Impact Metric Pill at Bottom Right */}
+                    <div className="absolute bottom-4 right-4 pointer-events-none z-10">
+                      <span className="px-3.5 py-1.5 rounded-full bg-[#EB4604] text-white text-[11px] font-mono font-semibold shadow-lg shadow-[#EB4604]/30">
+                        ✦ {project.impact}
+                      </span>
+                    </div>
                   </div>
 
-                  <p className="text-sm sm:text-base text-neutral-600 font-normal leading-relaxed line-clamp-2">
-                    {project.summary}
-                  </p>
-
-                  {/* Technology Tags */}
-                  <div className="flex flex-wrap gap-2 pt-2 border-t border-neutral-100">
-                    {project.tags.map((t, i) => (
-                      <span
-                        key={i}
-                        className="px-2.5 py-1 rounded-md bg-[#f4f5f8] text-[11px] font-mono text-neutral-600 font-medium"
+                  {/* ── Project Content Info ── */}
+                  <div className="space-y-3.5">
+                    <div className="flex items-center justify-between gap-4">
+                      <h3
+                        className="text-2xl sm:text-3xl font-semibold text-[#0A0A0A] group-hover:text-[#EB4604] transition-colors duration-300 tracking-tight flex items-center gap-2"
+                        style={{ fontFamily: 'var(--font-family--primary-font)' }}
                       >
-                        {t}
-                      </span>
-                    ))}
+                        <span>{project.title}</span>
+                        <span className="text-xl sm:text-2xl text-neutral-400 group-hover:text-[#EB4604] group-hover:translate-x-1.5 transition-all duration-300">
+                          →
+                        </span>
+                      </h3>
+                    </div>
+
+                    <p className="text-sm sm:text-base text-neutral-600 font-normal leading-relaxed line-clamp-2">
+                      {project.summary}
+                    </p>
+
+                    {/* Technology Stack Tags with ScrollFloat */}
+                    <ScrollFloat stagger={0.06} animationDuration={0.8} className="flex flex-wrap gap-2 pt-2 border-t border-neutral-100">
+                      {project.tags.map((t, i) => (
+                        <span
+                          key={i}
+                          className="scroll-float-item px-2.5 py-1 rounded-md bg-[#f4f5f8] text-[11px] font-mono text-neutral-600 font-medium hover:text-[#EB4604] hover:bg-[#EB4604]/10 transition-colors"
+                        >
+                          {t}
+                        </span>
+                      ))}
+                    </ScrollFloat>
                   </div>
-                </div>
+                </SpotlightCard>
               </Link>
             </RevealOnScroll>
           ))}

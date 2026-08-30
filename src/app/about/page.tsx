@@ -9,6 +9,9 @@ import { Container } from '@/components/layout/Container'
 import { Section } from '@/components/layout/Section'
 import { RevealOnScroll } from '@/components/motion/RevealOnScroll'
 import { Counter } from '@/components/ui/Counter'
+import { Tag } from '@/components/ui/Tag'
+import { WhatDrivesUs } from '@/features/about/components/WhatDrivesUs'
+import { ScrollFloat } from '@/components/motion/ScrollFloat'
 import { stats } from '@/config/content/sparklearn'
 import { teamRepository } from '@/lib/repositories/team'
 
@@ -81,19 +84,14 @@ export default async function AboutPage() {
         </div>
       </section>
 
-      {/* 2. OUR STORY Editorial Section */}
+      {/* 2. OUR STORY Editorial Section (1st Section) */}
       <section className="py-20 lg:py-28 bg-white border-b border-[#e2e2e7]">
         <Container>
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
             {/* Left Tag: + NOTRE HISTOIRE */}
             <div className="lg:col-span-3">
               <RevealOnScroll>
-                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#f4f4f7] border border-[#e2e2e7] text-neutral-900 text-xs font-mono font-bold uppercase tracking-wider">
-                  <span className="w-3.5 h-3.5 rounded-full bg-[#EB4604] text-white flex items-center justify-center text-[10px] font-bold">
-                    +
-                  </span>
-                  <span>NOTRE HISTOIRE</span>
-                </div>
+                <Tag variant="v2">Notre Histoire</Tag>
               </RevealOnScroll>
             </div>
 
@@ -123,6 +121,9 @@ export default async function AboutPage() {
         </Container>
       </section>
 
+      {/* 3. WHAT DRIVES US Section (Ce qui nous anime) */}
+      <WhatDrivesUs />
+
       {/* 3. The Core Concept: Spark & Line */}
       <Section darker id="concept">
         <Container>
@@ -149,8 +150,12 @@ export default async function AboutPage() {
                     L'étincelle est le déclencheur. Elle symbolise l’impulsion créative, l’audace, l’énergie initiale et l’ambition qui bousculent le statu quo. Sans étincelle, aucune transformation digitale ne voit le jour.
                   </p>
                 </div>
-                <div className="pt-6 border-t border-[#e2e2e7] text-xs font-mono text-neutral-400 uppercase tracking-widest">
-                  CRÉATIVITÉ • INSPIRATION • ÉNERGIE
+                <div className="pt-6 border-t border-[#e2e2e7]">
+                  <ScrollFloat stagger={0.06} className="flex flex-wrap gap-2 text-xs font-mono uppercase tracking-widest">
+                    <span className="scroll-float-item px-3 py-1 rounded-full bg-[#f4f4f7] text-[#EB4604] font-semibold">CRÉATIVITÉ</span>
+                    <span className="scroll-float-item px-3 py-1 rounded-full bg-[#f4f4f7] text-neutral-600">INSPIRATION</span>
+                    <span className="scroll-float-item px-3 py-1 rounded-full bg-[#f4f4f7] text-neutral-600">ÉNERGIE</span>
+                  </ScrollFloat>
                 </div>
               </div>
             </RevealOnScroll>
@@ -167,11 +172,57 @@ export default async function AboutPage() {
                     La ligne est la trajectoire. Elle incarne la stratégie, l’ingénierie rigoureuse, la direction claire et la discipline qui relient directement une idée à un impact économique mesurable et durable.
                   </p>
                 </div>
-                <div className="pt-6 border-t border-[#e2e2e7] text-xs font-mono text-neutral-400 uppercase tracking-widest">
-                  STRATÉGIE • STRUCTURE • EXÉCUTION
+                <div className="pt-6 border-t border-[#e2e2e7]">
+                  <ScrollFloat stagger={0.06} className="flex flex-wrap gap-2 text-xs font-mono uppercase tracking-widest">
+                    <span className="scroll-float-item px-3 py-1 rounded-full bg-[#f4f4f7] text-[#EB4604] font-semibold">STRATÉGIE</span>
+                    <span className="scroll-float-item px-3 py-1 rounded-full bg-[#f4f4f7] text-neutral-600">STRUCTURE</span>
+                    <span className="scroll-float-item px-3 py-1 rounded-full bg-[#f4f4f7] text-neutral-600">EXÉCUTION</span>
+                  </ScrollFloat>
                 </div>
               </div>
             </RevealOnScroll>
+          </div>
+
+          {/* ── Technology Stack Showcase with ScrollFloat ── */}
+          <div className="p-8 sm:p-12 rounded-[28px] sm:rounded-[36px] bg-white border border-[#e2e2e8] mb-16 shadow-sm">
+            <div className="mb-6">
+              <span className="text-xs font-mono uppercase tracking-widest text-[#EB4604] font-semibold block mb-1">
+                Technologies & Architecture
+              </span>
+              <h3 className="text-xl sm:text-2xl font-bold text-[#0A0A0A]">
+                Notre Stack Technologique de Pointe
+              </h3>
+            </div>
+
+            <ScrollFloat
+              stagger={0.05}
+              animationDuration={0.9}
+              className="flex flex-wrap gap-2.5 sm:gap-3"
+            >
+              {[
+                'Next.js 15 (App Router)',
+                'React 19',
+                'TypeScript',
+                'Tailwind CSS 4',
+                'GSAP & Motion',
+                'Node.js',
+                'GraphQL',
+                'Three.js / WebGL',
+                'PostgreSQL',
+                'Docker',
+                'Figma Design Systems',
+                'Mobile Money SDKs',
+                'Python & AI Integrations',
+              ].map((tech, idx) => (
+                <span
+                  key={idx}
+                  className="scroll-float-item inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#f4f5f8] border border-[#e5e6ea] text-xs sm:text-sm font-mono font-medium text-neutral-800 hover:text-[#EB4604] hover:border-[#EB4604]/40 hover:bg-[#EB4604]/5 transition-colors cursor-default shadow-xs"
+                >
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#EB4604]" />
+                  <span>{tech}</span>
+                </span>
+              ))}
+            </ScrollFloat>
           </div>
 
           {/* Stats By the Numbers */}

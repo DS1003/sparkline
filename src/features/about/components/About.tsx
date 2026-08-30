@@ -105,20 +105,23 @@ export function About() {
       {/* ── Stats counter row (En chiffres) ── */}
       <Container className="pt-16 sm:pt-20 lg:pt-28 pb-10 sm:pb-14 lg:pb-20">
         {/* Tag — capsule style like other sections */}
-        <div className="mb-10 sm:mb-14 lg:mb-16">
-          <Tag variant="v2">En chiffres</Tag>
-        </div>
+        <RevealOnScroll>
+          <div className="mb-10 sm:mb-14 lg:mb-16">
+            <Tag variant="v2">En chiffres</Tag>
+          </div>
+        </RevealOnScroll>
 
-        {/* Stats grid — 4 columns */}
+        {/* Stats grid — 4 columns with staggered scroll reveal */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-10 lg:gap-x-12">
-          {stats.map((stat) => (
-            <Counter
-              key={stat.id}
-              value={stat.value}
-              suffix={stat.suffix}
-              label={stat.label}
-              description={stat.description}
-            />
+          {stats.map((stat, idx) => (
+            <RevealOnScroll key={stat.id} delay={0.08 + idx * 0.08} direction="up">
+              <Counter
+                value={stat.value}
+                suffix={stat.suffix}
+                label={stat.label}
+                description={stat.description}
+              />
+            </RevealOnScroll>
           ))}
         </div>
       </Container>
