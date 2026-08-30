@@ -9,10 +9,12 @@
 .scroll-stack-inner {
   position: relative;
   width: 100%;
+  padding-bottom: 25vh;
 }
 
 .scroll-stack-card-wrapper {
   position: relative;
+  width: 100%;
 }
 
 .scroll-stack-card {

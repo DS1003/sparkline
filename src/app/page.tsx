@@ -45,17 +45,6 @@ export default async function HomePage() {
 
       {/* 4. Services Overview Preview */}
       <Services />
-      <div className="bg-white pb-16 text-center">
-        <Container>
-          <Link
-            href="/services"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-neutral-300 bg-white text-sm font-semibold text-neutral-900 hover:border-[#EB4604] hover:text-[#EB4604] transition-all shadow-sm group"
-          >
-            <span>Explorer nos 5 expertises dédiées</span>
-            <span className="transition-transform group-hover:translate-x-1">→</span>
-          </Link>
-        </Container>
-      </div>
 
       {/* 5. Selected Work Showcase */}
       <SelectedWork />

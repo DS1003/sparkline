@@ -8,6 +8,7 @@ import { Section } from '@/components/layout/Section'
 import { Tag } from '@/components/ui/Tag'
 import { RevealOnScroll } from '@/components/motion/RevealOnScroll'
 import { SpotlightCard } from '@/components/motion/SpotlightCard'
+import ScrollStack, { ScrollStackItem } from '@/components/motion/ScrollStack'
 
 interface ServiceStackItemData {
   id: string
@@ -141,102 +142,98 @@ export function Services() {
         </div>
 
         {/* ── Ultra-Smooth GPU Hardware-Accelerated Scroll Stack ── */}
-        <div className="relative pb-12">
-          {serviceStackItems.map((service, idx) => {
-            // Precise incremental sticky top offset
-            const topOffset = `calc(5.5rem + ${idx * 28}px)`
+        <ScrollStack
+          useWindowScroll={true}
+          itemDistance={80}
+          itemScale={0.03}
+          itemStackDistance={24}
+          stackPosition="16%"
+          scaleEndPosition="6%"
+          baseScale={0.9}
+          rotationAmount={0}
+          blurAmount={0}
+        >
+          {serviceStackItems.map((service) => (
+            <ScrollStackItem key={service.id}>
+              <SpotlightCard className="rounded-[28px] sm:rounded-[36px] bg-[#070709] text-white border border-neutral-800/90 shadow-[0_20px_50px_rgba(0,0,0,0.5)] p-6 sm:p-10 lg:p-14 overflow-hidden">
+                {/* Subtle ambient orbital glow */}
+                <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-[#EB4604]/20 via-transparent to-transparent rounded-full blur-3xl pointer-events-none" />
 
-            return (
-              <div
-                key={service.id}
-                className="sticky mb-8 sm:mb-12 last:mb-0 transition-all duration-300"
-                style={{
-                  top: topOffset,
-                  zIndex: (idx + 1) * 10,
-                  transform: 'translateZ(0)',
-                  willChange: 'transform',
-                }}
-              >
-                <SpotlightCard className="rounded-[28px] sm:rounded-[36px] bg-[#070709] text-white border border-neutral-800/90 shadow-[0_20px_50px_rgba(0,0,0,0.5)] p-6 sm:p-10 lg:p-14 overflow-hidden">
-                  {/* Subtle ambient orbital glow */}
-                  <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-[#EB4604]/20 via-transparent to-transparent rounded-full blur-3xl pointer-events-none" />
+                <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center">
+                  {/* Left Column: Text Content & Deliverables */}
+                  <div className="lg:col-span-7 space-y-6">
+                    <div className="flex items-center gap-3">
+                      <span className="text-[#EB4604] font-mono text-xl sm:text-2xl font-bold tracking-tight">
+                        [{service.number}]
+                      </span>
+                      <span className="px-3.5 py-1 rounded-full bg-white/10 text-white text-[11px] font-mono font-medium uppercase tracking-wider backdrop-blur-sm border border-white/10">
+                        {service.tag}
+                      </span>
+                    </div>
 
-                  <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center">
-                    {/* Left Column: Text Content & Deliverables */}
-                    <div className="lg:col-span-7 space-y-6">
-                      <div className="flex items-center gap-3">
-                        <span className="text-[#EB4604] font-mono text-xl sm:text-2xl font-bold tracking-tight">
-                          [{service.number}]
-                        </span>
-                        <span className="px-3.5 py-1 rounded-full bg-white/10 text-white text-[11px] font-mono font-medium uppercase tracking-wider backdrop-blur-sm border border-white/10">
-                          {service.tag}
-                        </span>
-                      </div>
+                    <h3
+                      className="text-2xl sm:text-4xl lg:text-5xl font-semibold text-white tracking-tight leading-[1.1]"
+                      style={{ fontFamily: 'var(--font-family--primary-font)' }}
+                    >
+                      {service.title}
+                    </h3>
 
-                      <h3
-                        className="text-2xl sm:text-4xl lg:text-5xl font-semibold text-white tracking-tight leading-[1.1]"
-                        style={{ fontFamily: 'var(--font-family--primary-font)' }}
-                      >
-                        {service.title}
-                      </h3>
+                    <p className="text-neutral-300 text-sm sm:text-base lg:text-lg leading-relaxed font-light">
+                      {service.description}
+                    </p>
 
-                      <p className="text-neutral-300 text-sm sm:text-base lg:text-lg leading-relaxed font-light">
-                        {service.description}
-                      </p>
-
-                      {/* Deliverables Grid */}
-                      <div className="pt-4 border-t border-white/10 space-y-3">
-                        <h4 className="text-xs uppercase font-mono tracking-wider text-neutral-400 font-semibold">
-                          Livrables & Piliers Clés
-                        </h4>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                          {service.deliverables.map((item, dIdx) => (
-                            <div key={dIdx} className="flex items-center gap-2 text-xs sm:text-sm text-neutral-200 font-medium">
-                              <span className="w-1.5 h-1.5 rounded-full bg-[#EB4604] shrink-0" />
-                              <span>{item}</span>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-
-                      {/* CTA Button */}
-                      <div className="pt-2">
-                        <Link
-                          href={service.href}
-                          className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#EB4604] text-white text-xs sm:text-sm font-semibold hover:bg-[#D43D00] transition-all duration-300 shadow-lg shadow-[#EB4604]/25 group"
-                        >
-                          <span>Découvrir le service</span>
-                          <span className="transition-transform group-hover:translate-x-1">→</span>
-                        </Link>
+                    {/* Deliverables Grid */}
+                    <div className="pt-4 border-t border-white/10 space-y-3">
+                      <h4 className="text-xs uppercase font-mono tracking-wider text-neutral-400 font-semibold">
+                        Livrables & Piliers Clés
+                      </h4>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                        {service.deliverables.map((item, dIdx) => (
+                          <div key={dIdx} className="flex items-center gap-2 text-xs sm:text-sm text-neutral-200 font-medium">
+                            <span className="w-1.5 h-1.5 rounded-full bg-[#EB4604] shrink-0" />
+                            <span>{item}</span>
+                          </div>
+                        ))}
                       </div>
                     </div>
 
-                    {/* Right Column: 4:3 Visual Image */}
-                    <div className="lg:col-span-5">
-                      <div className="relative aspect-[4/3] rounded-2xl sm:rounded-3xl overflow-hidden bg-neutral-900 border border-white/10 shadow-2xl group/img">
-                        <Image
-                          src={service.image}
-                          alt={service.title}
-                          fill
-                          quality={100}
-                          unoptimized
-                          className="object-cover transition-transform duration-700 ease-out group-hover/img:scale-105"
-                          sizes="(max-width: 1024px) 100vw, 450px"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
-                        <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between pointer-events-none z-10">
-                          <span className="px-3.5 py-1.5 rounded-full bg-black/60 backdrop-blur-md text-[11px] font-mono text-white border border-white/10">
-                            SPARKLINE • {service.category}
-                          </span>
-                        </div>
+                    {/* CTA Button */}
+                    <div className="pt-2">
+                      <Link
+                        href={service.href}
+                        className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#EB4604] text-white text-xs sm:text-sm font-semibold hover:bg-[#D43D00] transition-all duration-300 shadow-lg shadow-[#EB4604]/25 group"
+                      >
+                        <span>Découvrir le service</span>
+                        <span className="transition-transform group-hover:translate-x-1">→</span>
+                      </Link>
+                    </div>
+                  </div>
+
+                  {/* Right Column: 4:3 Visual Image */}
+                  <div className="lg:col-span-5">
+                    <div className="relative aspect-[4/3] rounded-2xl sm:rounded-3xl overflow-hidden bg-neutral-900 border border-white/10 shadow-2xl group/img">
+                      <Image
+                        src={service.image}
+                        alt={service.title}
+                        fill
+                        quality={100}
+                        unoptimized
+                        className="object-cover transition-transform duration-700 ease-out group-hover/img:scale-105"
+                        sizes="(max-width: 1024px) 100vw, 450px"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
+                      <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between pointer-events-none z-10">
+                        <span className="px-3.5 py-1.5 rounded-full bg-black/60 backdrop-blur-md text-[11px] font-mono text-white border border-white/10">
+                          SPARKLINE • {service.category}
+                        </span>
                       </div>
                     </div>
                   </div>
-                </SpotlightCard>
-              </div>
-            )
-          })}
-        </div>
+                </div>
+              </SpotlightCard>
+            </ScrollStackItem>
+          ))}
+        </ScrollStack>
       </Container>
     </Section>
   )
