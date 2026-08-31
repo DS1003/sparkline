@@ -19,7 +19,7 @@ const categories = [
 
 export function SelectedWork() {
   const [activeCategory, setActiveCategory] = useState('Tous')
-  const [activeIndex, setActiveIndex] = useState(0)
+  const [activeIndex, setActiveIndex] = useState(() => Math.floor(projectsData.length / 2))
 
   // Filter projects by active category tab
   const filteredProjects = useMemo(() => {
@@ -29,7 +29,8 @@ export function SelectedWork() {
 
   const handleCategoryChange = (category: string) => {
     setActiveCategory(category)
-    setActiveIndex(0)
+    const list = category === 'Tous' ? projectsData : projectsData.filter((p) => p.category === category)
+    setActiveIndex(Math.floor(list.length / 2))
   }
 
   const handlePrev = () => {
@@ -63,7 +64,7 @@ export function SelectedWork() {
 
           <RevealOnScroll delay={0.15}>
             <p className="text-sm sm:text-base text-neutral-400 font-light max-w-xl mx-auto leading-relaxed">
-              Glissez et cliquez sur un projet pour retourner la carte et explorer ses détails.
+              Cliquez sur un projet pour retourner la carte ou utilisez les contrôles pour naviguer.
             </p>
           </RevealOnScroll>
 
@@ -99,48 +100,62 @@ export function SelectedWork() {
           />
         </div>
 
-        {/* ── Minimalist Floating Navigation Controller ── */}
-        <div className="flex items-center justify-center gap-4 pt-4">
-          <button
-            onClick={handlePrev}
-            aria-label="Projet précédent"
-            className="w-10 h-10 rounded-full border border-white/12 bg-white/[0.04] hover:bg-white/[0.12] text-neutral-300 hover:text-white flex items-center justify-center transition-all hover:scale-105 active:scale-95 text-xs"
-          >
-            ←
-          </button>
+        {/* ── Ultra-Modern Unified Controller & CTA Dock ── */}
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 pt-6">
+          {/* Glassmorphism Navigation Island */}
+          <div className="h-11 sm:h-12 inline-flex items-center gap-3 px-2.5 sm:px-3 rounded-full bg-white/[0.05] border border-white/10 backdrop-blur-xl shadow-[0_10px_30px_rgba(0,0,0,0.5)]">
+            {/* Prev Button */}
+            <button
+              onClick={handlePrev}
+              aria-label="Projet précédent"
+              className="w-8 h-8 rounded-full bg-white/5 hover:bg-[#EB4604] text-white/70 hover:text-white flex items-center justify-center transition-all duration-300 active:scale-95 text-xs font-semibold"
+            >
+              ←
+            </button>
 
-          <div className="flex items-center gap-2 px-2">
-            {filteredProjects.map((_, dotIdx) => (
-              <button
-                key={dotIdx}
-                onClick={() => setActiveIndex(dotIdx)}
-                aria-label={`Aller au projet ${dotIdx + 1}`}
-                className={`transition-all duration-300 rounded-full ${
-                  activeIndex === dotIdx
-                    ? 'w-7 h-2 bg-[#EB4604]'
-                    : 'w-2 h-2 bg-white/20 hover:bg-white/50'
-                }`}
-              />
-            ))}
+            {/* Monospace Slide Index & Visual Dots */}
+            <div className="flex items-center gap-2.5 px-1.5">
+              <span className="text-xs font-mono font-bold text-white tracking-wider">
+                0{activeIndex + 1}
+              </span>
+              <div className="flex items-center gap-1.5">
+                {filteredProjects.map((_, dotIdx) => (
+                  <button
+                    key={dotIdx}
+                    onClick={() => setActiveIndex(dotIdx)}
+                    aria-label={`Aller au projet ${dotIdx + 1}`}
+                    className={`transition-all duration-300 rounded-full ${
+                      activeIndex === dotIdx
+                        ? 'w-4 h-1.5 bg-[#EB4604]'
+                        : 'w-1.5 h-1.5 bg-white/20 hover:bg-white/50'
+                    }`}
+                  />
+                ))}
+              </div>
+              <span className="text-xs font-mono text-neutral-500 font-light">
+                0{filteredProjects.length}
+              </span>
+            </div>
+
+            {/* Next Button */}
+            <button
+              onClick={handleNext}
+              aria-label="Projet suivant"
+              className="w-8 h-8 rounded-full bg-white/5 hover:bg-[#EB4604] text-white/70 hover:text-white flex items-center justify-center transition-all duration-300 active:scale-95 text-xs font-semibold"
+            >
+              →
+            </button>
           </div>
 
-          <button
-            onClick={handleNext}
-            aria-label="Projet suivant"
-            className="w-10 h-10 rounded-full border border-white/12 bg-white/[0.04] hover:bg-white/[0.12] text-neutral-300 hover:text-white flex items-center justify-center transition-all hover:scale-105 active:scale-95 text-xs"
-          >
-            →
-          </button>
-        </div>
-
-        {/* ── Global Portfolio Action Button ── */}
-        <div className="text-center mt-10 sm:mt-12">
+          {/* Matching Explorer Action Pill (Identical Height & Styling) */}
           <Link
             href="/projects"
-            className="inline-flex items-center gap-3 px-7 py-3.5 rounded-full border border-white/15 bg-white/[0.03] hover:bg-white/[0.08] hover:border-[#EB4604] text-xs sm:text-sm font-semibold text-white transition-all duration-300 shadow-md group backdrop-blur-md"
+            className="h-11 sm:h-12 inline-flex items-center justify-center gap-2.5 px-6 rounded-full bg-white/[0.05] hover:bg-white/[0.09] border border-white/10 hover:border-[#EB4604]/50 text-white text-xs sm:text-sm font-medium transition-all duration-300 backdrop-blur-xl shadow-[0_10px_30px_rgba(0,0,0,0.5)] group"
           >
-            <span>Explorer toutes nos réalisations</span>
-            <span className="text-[#EB4604] transition-transform group-hover:translate-x-1">→</span>
+            <span>Explorer toutes les réalisations</span>
+            <span className="text-[#EB4604] font-semibold transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
+              ↗
+            </span>
           </Link>
         </div>
       </Container>
