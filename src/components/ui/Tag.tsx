@@ -1,5 +1,4 @@
 import React from 'react'
-import Image from 'next/image'
 import { cn } from '@/lib/utils'
 
 interface TagProps {
@@ -12,23 +11,20 @@ export function Tag({ children, variant = 'base', className }: TagProps) {
   return (
     <div
       className={cn(
-        'inline-flex items-center gap-2.5 px-4 py-2 rounded-full border text-[11px] sm:text-[12px] tracking-[0.1em] uppercase font-semibold select-none transition-all',
+        'inline-flex items-center gap-2.5 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full border text-xs sm:text-[13px] font-mono tracking-[0.1em] uppercase font-semibold select-none transition-all duration-300 backdrop-blur-md group',
         variant === 'base'
-          ? 'bg-[#141418] border-[#25252b] text-white'
-          : 'bg-[#f0f1f5] border-[#e2e4ea] text-[#0A0A0A]',
+          ? 'bg-white/[0.08] border-white/15 text-white hover:border-[#EB4604]/70 hover:bg-white/[0.12] shadow-[0_4px_20px_rgba(0,0,0,0.3)]'
+          : 'bg-white border-neutral-200/90 text-[#0A0A0A] hover:border-[#EB4604]/60 hover:shadow-[0_6px_20px_rgba(235,70,4,0.12)] shadow-[0_2px_10px_rgba(0,0,0,0.05)]',
         className
       )}
     >
-      {/* Official Symbol as mini badge icon */}
-      <span className="w-4 h-4 sm:w-[18px] sm:h-[18px] relative flex items-center justify-center shrink-0">
-        <Image
-          src="/images/brand/sparkline-symbol.svg"
-          alt="Spark"
-          width={18}
-          height={18}
-          className="w-full h-full object-contain"
-        />
+      {/* Precision Glowing Orange Pulse Dot */}
+      <span className="relative flex h-2.5 w-2.5 shrink-0 items-center justify-center">
+        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#EB4604] opacity-35 group-hover:opacity-75" />
+        <span className="relative inline-flex h-2 w-2 rounded-full bg-[#EB4604] shadow-[0_0_6px_#EB4604]" />
       </span>
+
+      {/* Label Text */}
       <span className="leading-none">{children}</span>
     </div>
   )
