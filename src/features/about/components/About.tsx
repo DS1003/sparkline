@@ -112,16 +112,16 @@ export function About() {
         </RevealOnScroll>
 
         {/* Stats grid — 4 columns with staggered scroll reveal */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-10 lg:gap-x-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
           {stats.map((stat, idx) => (
-            <RevealOnScroll key={stat.id} delay={0.08 + idx * 0.08} direction="up">
-              <Counter
-                value={stat.value}
-                suffix={stat.suffix}
-                label={stat.label}
-                description={stat.description}
-              />
-            </RevealOnScroll>
+            <Counter
+              key={stat.id}
+              delay={idx * 0.12}
+              value={stat.value}
+              suffix={stat.suffix}
+              label={stat.label}
+              description={stat.description}
+            />
           ))}
         </div>
       </Container>

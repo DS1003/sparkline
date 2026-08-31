@@ -10,6 +10,7 @@ import { About } from '@/features/about/components/About'
 import { Services } from '@/features/services/components/Services'
 import { SelectedWork } from '@/features/projects/components/SelectedWork'
 import { Approach } from '@/features/approach/components/Approach'
+import { PartnersSection } from '@/features/partners/components/PartnersSection'
 import { FAQSection } from '@/features/faq/components/FAQSection'
 import { SectionCTA } from '@/components/layout/SectionCTA'
 import { siteConfig } from '@/config/site'
@@ -44,6 +45,9 @@ export default function HomePage() {
 
       {/* 7. Approach Methodology */}
       <Approach />
+
+      {/* 8. Partners & Ecosystem Ribbon Marquee Section */}
+      <PartnersSection />
 
       {/* 10. Frequently Asked Questions (FAQ) */}
       <FAQSection />
