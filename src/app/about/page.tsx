@@ -40,15 +40,10 @@ export default async function AboutPage() {
           {/* Integrated Navbar Inside Hero Card (Matches Homepage) */}
           <Navbar />
 
-          {/* Top: + WHO WE ARE Pill Tag */}
+          {/* Top: Tag Badge matching official design */}
           <div className="relative z-10 pt-4 flex justify-center">
             <RevealOnScroll>
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white text-[#070709] text-xs font-mono font-bold uppercase tracking-wider shadow-md">
-                <span className="w-3.5 h-3.5 rounded-full bg-[#EB4604] text-white flex items-center justify-center text-[10px] font-bold">
-                  +
-                </span>
-                <span>QUI SOMMES-NOUS</span>
-              </div>
+              <Tag variant="base">Qui sommes-nous</Tag>
             </RevealOnScroll>
           </div>
 
