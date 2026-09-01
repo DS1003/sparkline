@@ -238,8 +238,7 @@ export function Curved3DProjectsGallery({
                       src={imageSrc}
                       alt={project.title}
                       fill
-                      quality={100}
-                      unoptimized
+                      quality={85}
                       className={`object-cover transition-transform duration-700 ease-out ${
                         isCenter ? 'group-hover:scale-105' : 'scale-100'
                       }`}
@@ -511,8 +510,7 @@ export function Curved3DProjectsGallery({
                         src={currentHeroImage}
                         alt={`${expandedProject.title} preview ${activeGalleryIndex + 1}`}
                         fill
-                        quality={100}
-                        unoptimized
+                        quality={85}
                         className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                         sizes="(max-width: 1024px) 100vw, 600px"
                       />
@@ -570,7 +568,6 @@ export function Curved3DProjectsGallery({
                                 alt={`Thumbnail ${thumbIdx + 1}`}
                                 fill
                                 quality={75}
-                                unoptimized
                                 className="object-cover"
                                 sizes="150px"
                               />

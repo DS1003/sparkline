@@ -64,6 +64,7 @@ export default async function AboutPage() {
                     src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=300&auto=format&fit=crop"
                     alt="Créateur SPARKLINE"
                     fill
+                    unoptimized
                     className="object-cover"
                     sizes="96px"
                   />
@@ -169,7 +170,7 @@ export default async function AboutPage() {
                     src="/images/approach/sparkline-synergy.png"
                     alt="SPARKLINE 3D Creative Synergy"
                     fill
-                    unoptimized
+                    quality={85}
                     sizes="(max-width: 1024px) 100vw, 400px"
                     className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                   />

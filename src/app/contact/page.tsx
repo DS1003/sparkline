@@ -276,8 +276,7 @@ export default function ContactPage() {
                 src="/images/approach/step-1.jpg"
                 alt="SPARKLINE Studio & Collaboration"
                 fill
-                quality={100}
-                unoptimized
+                quality={85}
                 className="object-cover transition-transform duration-1000 ease-out group-hover:scale-105"
                 sizes="(max-width: 1024px) 100vw, 40vw"
               />

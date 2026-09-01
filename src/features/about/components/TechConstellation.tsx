@@ -37,7 +37,8 @@ export function TechConstellation() {
             src="/images/approach/Next.js.png"
             alt="Next.js"
             fill
-            unoptimized
+            quality={85}
+            sizes="48px"
             className="object-contain"
           />
         </div>
@@ -76,7 +77,8 @@ export function TechConstellation() {
             src="/images/approach/typescript.png"
             alt="TypeScript"
             fill
-            unoptimized
+            quality={85}
+            sizes="48px"
             className="object-contain rounded-md"
           />
         </div>
@@ -96,7 +98,8 @@ export function TechConstellation() {
             src="/images/approach/Three.js.png"
             alt="Three.js"
             fill
-            unoptimized
+            quality={85}
+            sizes="48px"
             className="object-contain"
           />
         </div>
@@ -134,7 +137,8 @@ export function TechConstellation() {
             src="/images/approach/Docker.png"
             alt="Docker"
             fill
-            unoptimized
+            quality={85}
+            sizes="48px"
             className="object-contain"
           />
         </div>
@@ -189,7 +193,8 @@ export function TechConstellation() {
             src="/images/approach/PostgresSQL.png"
             alt="PostgreSQL"
             fill
-            unoptimized
+            quality={85}
+            sizes="48px"
             className="object-contain"
           />
         </div>

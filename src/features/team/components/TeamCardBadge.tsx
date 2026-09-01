@@ -57,8 +57,7 @@ export function TeamCardBadge({ member }: TeamCardBadgeProps) {
               src={avatarSrc}
               alt={`${member.name} — ${member.role}`}
               fill
-              quality={100}
-              unoptimized
+              quality={85}
               className="object-cover"
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 340px"
             />

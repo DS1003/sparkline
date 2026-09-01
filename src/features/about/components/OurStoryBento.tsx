@@ -30,6 +30,7 @@ export function OurStoryBento() {
                   src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=400&auto=format&fit=crop"
                   alt="Créativité & Ingénierie SPARKLINE"
                   fill
+                  unoptimized
                   className="object-cover"
                   sizes="80px"
                 />
@@ -205,6 +206,7 @@ export function OurStoryBento() {
                           src="/images/brand/Ndiaga.png"
                           alt="Ndiaga Lo"
                           fill
+                          sizes="32px"
                           className="object-cover"
                         />
                       </div>
@@ -213,6 +215,7 @@ export function OurStoryBento() {
                           src="/images/brand/Fanta.png"
                           alt="Fanta Ndao Tine"
                           fill
+                          sizes="32px"
                           className="object-cover"
                         />
                       </div>
@@ -221,6 +224,7 @@ export function OurStoryBento() {
                           src="/images/brand/Seydina.png"
                           alt="Seydina Mohamed Diop"
                           fill
+                          sizes="32px"
                           className="object-cover"
                         />
                       </div>
@@ -229,6 +233,7 @@ export function OurStoryBento() {
                           src="/images/brand/Serigne fallou.png"
                           alt="Serigne Fallou Seck"
                           fill
+                          sizes="32px"
                           className="object-cover"
                         />
                       </div>

@@ -140,8 +140,7 @@ export function Approach() {
                 src={step.image}
                 alt={step.title}
                 fill
-                quality={100}
-                unoptimized
+                quality={85}
                 className="object-cover transition-transform duration-1000 ease-out group-hover:scale-108 filter brightness-[0.72] contrast-[1.06]"
                 sizes="(max-width: 768px) 100vw, 50vw"
               />

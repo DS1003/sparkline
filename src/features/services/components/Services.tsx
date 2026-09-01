@@ -247,8 +247,7 @@ export function Services({ isServicesPage = false, hideHeader = false }: Service
                         src={service.image}
                         alt={service.title}
                         fill
-                        quality={100}
-                        unoptimized
+                        quality={85}
                         className="object-cover transition-transform duration-700 ease-out group-hover/img:scale-105"
                         sizes="(max-width: 1024px) 100vw, 450px"
                       />

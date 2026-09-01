@@ -71,8 +71,7 @@ export function TeamSection() {
                             src={avatarSrc}
                             alt={member.name}
                             fill
-                            quality={100}
-                            unoptimized
+                            quality={85}
                             className="object-cover object-top"
                             sizes="80px"
                           />

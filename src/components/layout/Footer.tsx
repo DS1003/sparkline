@@ -28,6 +28,7 @@ export function Footer() {
             src="/images/brand/Symbole/Blanc.png"
             alt=""
             fill
+            sizes="700px"
             className="object-contain opacity-[0.04]"
             aria-hidden="true"
           />
