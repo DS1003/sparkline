@@ -1,13 +1,10 @@
 import React from 'react'
 import { Metadata } from 'next'
-import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
 import { PageHero } from '@/components/layout/PageHero'
 import { SectionCTA } from '@/components/layout/SectionCTA'
-import { Container } from '@/components/layout/Container'
-import { RevealOnScroll } from '@/components/motion/RevealOnScroll'
+import { SelectedWork } from '@/features/projects/components/SelectedWork'
 import { projectsRepository } from '@/lib/repositories/projects'
-import { ProjectCard } from '@/components/ui/ProjectCard'
 
 export const metadata: Metadata = {
   title: 'Projets & Réalisations | SPARKLINE — Études de Cas',
@@ -16,10 +13,10 @@ export const metadata: Metadata = {
 
 export default async function ProjectsPage() {
   const projects = await projectsRepository.getAll()
-  const categories = ['Tous', ...new Set(projects.map((p) => p.category))]
 
   return (
     <main className="min-h-screen bg-white text-neutral-900">
+      {/* 1. Page Hero (Untouched) */}
       <PageHero
         tag="Nos Réalisations"
         title="Des produits digitaux conçus pour"
@@ -32,40 +29,18 @@ export default async function ProjectsPage() {
         ]}
       />
 
-      {/* Category Filter Bar */}
-      <section className="py-6 bg-white border-b border-[#e2e2e7] sticky top-0 z-20">
-        <Container>
-          <div className="flex flex-wrap gap-3">
-            {categories.map((cat) => (
-              <button
-                key={cat}
-                className="px-4 py-2 rounded-full text-xs font-semibold border border-[#e2e2e7] bg-white text-neutral-800 hover:border-[#EB4604] hover:text-[#EB4604] transition-colors"
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
-        </Container>
-      </section>
+      {/* 2. 3D Panoramic Curved Projects Showcase (Light Mode on /projects) */}
+      <SelectedWork isProjectsPage={true} theme="light" />
 
-      {/* Project Grid */}
-      <section className="py-16 bg-white">
-        <Container>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {projects.map((project, idx) => (
-              <RevealOnScroll key={project.slug} delay={idx * 0.08}>
-                <ProjectCard project={project} featured={idx === 0} />
-              </RevealOnScroll>
-            ))}
-          </div>
-        </Container>
-      </section>
-
+      {/* 3. High-Impact Closing CTA Banner */}
       <SectionCTA
         title="VOUS AVEZ UN PROJET EN TÊTE ?"
         subtitle="Transformons votre vision en un produit digital de classe internationale."
+        primaryLabel="Démarrer un projet"
+        primaryHref="/contact?inquiry=project"
       />
 
+      {/* 4. Complete Footer */}
       <Footer />
     </main>
   )

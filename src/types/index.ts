@@ -44,6 +44,9 @@ export interface TeamMember {
   slug: string
   name: string
   role: string
+  email?: string
+  phone?: string
+  department?: string
   bio: string
   specialties: string[]
   skills: string[]
@@ -79,6 +82,11 @@ export interface Masterclass {
   attendeesCount: number
   description: string
   topics: string[]
+  speaker?: string
+  speakerRole?: string
+  speakerAvatar?: string
+  coverImage?: string
+  category?: string
 }
 
 export interface Formation {

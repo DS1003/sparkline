@@ -82,10 +82,6 @@ export function PartnersSection() {
         .ribbon-container:hover .animate-ribbon-left-slow {
           animation-play-state: paused;
         }
-        .ribbon-mask {
-          mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
-          -webkit-mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
-        }
       `}</style>
 
       {/* ── Top Editorial Header ── */}
@@ -113,14 +109,10 @@ export function PartnersSection() {
         </div>
       </Container>
 
-      {/* ── Floating Pill Capsule Marquee Ribbons (with Full-Height Masking & Overlay Blurs) ── */}
-      <div className="ribbon-container relative w-full select-none py-2">
-        {/* Full-Height Edge Gradient Overlays spanning entire vertical height of cards */}
-        <div className="absolute inset-y-0 -top-6 -bottom-6 left-0 w-28 sm:w-56 bg-gradient-to-r from-white via-white/95 to-transparent z-20 pointer-events-none" />
-        <div className="absolute inset-y-0 -top-6 -bottom-6 right-0 w-28 sm:w-56 bg-gradient-to-l from-white via-white/95 to-transparent z-20 pointer-events-none" />
-
-        {/* Masked Ribbon Stream */}
-        <div className="ribbon-mask space-y-4 sm:space-y-5">
+      {/* ── Floating Pill Capsule Marquee Ribbons (Clean Edge to Edge) ── */}
+      <div className="ribbon-container relative w-full select-none py-2 overflow-hidden">
+        {/* Ribbon Stream */}
+        <div className="space-y-4 sm:space-y-5">
           {/* ── ROW 1 (Moving Left) ── */}
           <div className="flex w-full overflow-visible">
             <div className="animate-ribbon-left flex gap-3 sm:gap-4 items-center shrink-0 w-max pr-3 sm:pr-4 py-1">

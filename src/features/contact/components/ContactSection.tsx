@@ -53,8 +53,7 @@ export function ContactSection() {
               className="text-[clamp(2.25rem,4.5vw,56px)] font-normal text-white leading-[1.08] tracking-[-0.03em]"
               style={{ fontFamily: 'var(--font-family--primary-font)' }}
             >
-              <span>Déclenchons </span>
-              <span className="text-[#EB4604] font-medium">l’excellence ensemble.</span>
+              Déclenchons l’excellence ensemble.
             </h2>
           </RevealOnScroll>
         </div>

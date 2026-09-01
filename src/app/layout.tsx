@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
 import { siteConfig } from '@/config/site'
+import { ScrollToTop } from '@/components/ui/ScrollToTop'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -59,6 +60,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} bg-[#0a0a0a] text-white antialiased selection:bg-[#DE322D] selection:text-white`}
       >
         {children}
+        <ScrollToTop />
       </body>
     </html>
   )

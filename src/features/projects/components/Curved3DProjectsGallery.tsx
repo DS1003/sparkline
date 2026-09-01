@@ -10,12 +10,14 @@ interface Curved3DProjectsGalleryProps {
   projects: Project[]
   activeIndex: number
   onActiveChange: (index: number) => void
+  theme?: 'dark' | 'light'
 }
 
 export function Curved3DProjectsGallery({
   projects,
   activeIndex,
   onActiveChange,
+  theme = 'dark',
 }: Curved3DProjectsGalleryProps) {
   const [expandedProject, setExpandedProject] = useState<Project | null>(null)
   const [activeGalleryIndex, setActiveGalleryIndex] = useState(0)
@@ -347,19 +349,35 @@ export function Curved3DProjectsGallery({
                     ease: [0.16, 1, 0.3, 1],
                   },
                 }}
-                className="relative w-full max-w-5xl bg-[#0A0A0E] border border-white/15 rounded-[24px] sm:rounded-[32px] shadow-[0_40px_120px_rgba(0,0,0,0.98)] overflow-hidden flex flex-col z-10 my-auto"
+                className={`relative w-full max-w-5xl ${
+                  theme === 'light'
+                    ? 'bg-white text-neutral-900 border border-neutral-200 shadow-[0_30px_90px_rgba(0,0,0,0.18)]'
+                    : 'bg-[#0A0A0E] text-white border border-white/15 shadow-[0_40px_120px_rgba(0,0,0,0.98)]'
+                } rounded-[24px] sm:rounded-[32px] overflow-hidden flex flex-col z-10 my-auto`}
                 style={{
                   perspective: '1200px',
                   transformStyle: 'preserve-3d',
                 }}
               >
                 {/* ── 1. Top Compact Header Bar ── */}
-                <div className="px-5 py-3 sm:px-7 sm:py-4 border-b border-white/10 flex items-center justify-between bg-black/40 backdrop-blur-md shrink-0">
+                <div
+                  className={`px-5 py-3 sm:px-7 sm:py-4 border-b ${
+                    theme === 'light'
+                      ? 'border-neutral-200 bg-neutral-50/90 text-neutral-900'
+                      : 'border-white/10 bg-black/40 text-white'
+                  } backdrop-blur-md flex items-center justify-between shrink-0`}
+                >
                   <div className="flex items-center gap-2 sm:gap-3">
                     <span className="px-3 py-1 rounded-full bg-[#EB4604]/15 border border-[#EB4604]/30 text-[#EB4604] text-[10px] sm:text-[11px] font-mono font-semibold uppercase tracking-wider">
                       {expandedProject.category}
                     </span>
-                    <span className="px-2.5 py-1 rounded-full bg-white/[0.05] border border-white/10 text-[10px] sm:text-[11px] font-mono text-neutral-400">
+                    <span
+                      className={`px-2.5 py-1 rounded-full text-[10px] sm:text-[11px] font-mono ${
+                        theme === 'light'
+                          ? 'bg-neutral-200/70 border border-neutral-300 text-neutral-600'
+                          : 'bg-white/[0.05] border border-white/10 text-neutral-400'
+                      }`}
+                    >
                       [{expandedProject.year}]
                     </span>
                   </div>
@@ -368,7 +386,11 @@ export function Curved3DProjectsGallery({
                     type="button"
                     onClick={() => setExpandedProject(null)}
                     aria-label="Fermer le modal"
-                    className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white/[0.06] hover:bg-[#EB4604] text-white flex items-center justify-center text-xs font-semibold transition-all duration-300 border border-white/15 hover:scale-105 active:scale-95"
+                    className={`w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center text-xs font-semibold transition-all duration-300 border hover:scale-105 active:scale-95 ${
+                      theme === 'light'
+                        ? 'bg-neutral-200/80 hover:bg-[#EB4604] hover:text-white text-neutral-800 border-neutral-300'
+                        : 'bg-white/[0.06] hover:bg-[#EB4604] text-white border-white/15'
+                    }`}
                   >
                     ✕
                   </button>
@@ -384,7 +406,9 @@ export function Curved3DProjectsGallery({
                         Client : {expandedProject.client}
                       </span>
                       <h3
-                        className="text-xl sm:text-3xl font-bold text-white tracking-tight leading-tight"
+                        className={`text-xl sm:text-3xl font-bold tracking-tight leading-tight ${
+                          theme === 'light' ? 'text-neutral-900' : 'text-white'
+                        }`}
                         style={{ fontFamily: 'var(--font-family--primary-font)' }}
                       >
                         {expandedProject.title}
@@ -393,10 +417,18 @@ export function Curved3DProjectsGallery({
 
                     {/* Project Description */}
                     <div className="space-y-1.5">
-                      <span className="text-[9px] font-mono uppercase tracking-widest text-neutral-400 font-semibold block">
+                      <span
+                        className={`text-[9px] font-mono uppercase tracking-widest font-semibold block ${
+                          theme === 'light' ? 'text-neutral-500' : 'text-neutral-400'
+                        }`}
+                      >
                         Description du projet
                       </span>
-                      <p className="text-xs sm:text-sm text-neutral-300 font-light leading-relaxed">
+                      <p
+                        className={`text-xs sm:text-sm font-light leading-relaxed ${
+                          theme === 'light' ? 'text-neutral-600' : 'text-neutral-300'
+                        }`}
+                      >
                         {expandedProject.description || expandedProject.summary}
                       </p>
                     </div>
@@ -404,14 +436,22 @@ export function Curved3DProjectsGallery({
                     {/* Technologies Used */}
                     {expandedProject.technologies && (
                       <div className="space-y-2">
-                        <span className="text-[9px] font-mono uppercase tracking-widest text-neutral-400 font-semibold block">
+                        <span
+                          className={`text-[9px] font-mono uppercase tracking-widest font-semibold block ${
+                            theme === 'light' ? 'text-neutral-500' : 'text-neutral-400'
+                          }`}
+                        >
                           Technologies utilisées
                         </span>
                         <div className="flex flex-wrap gap-1.5">
                           {expandedProject.technologies.map((tech, tIdx) => (
                             <span
                               key={tIdx}
-                              className="px-2.5 py-1 rounded-md bg-white/[0.05] border border-white/10 text-[11px] font-mono text-neutral-200"
+                              className={`px-2.5 py-1 rounded-md text-[11px] font-mono ${
+                                theme === 'light'
+                                  ? 'bg-neutral-100 border border-neutral-200 text-neutral-800'
+                                  : 'bg-white/[0.05] border border-white/10 text-neutral-200'
+                              }`}
                             >
                               {tech}
                             </span>
@@ -433,7 +473,11 @@ export function Curved3DProjectsGallery({
                       <button
                         type="button"
                         onClick={() => setExpandedProject(null)}
-                        className="inline-flex items-center justify-center px-4 py-3 rounded-full bg-white/[0.06] hover:bg-white/[0.12] text-neutral-300 hover:text-white border border-white/10 text-xs sm:text-sm font-medium transition-all"
+                        className={`inline-flex items-center justify-center px-4 py-3 rounded-full text-xs sm:text-sm font-medium transition-all ${
+                          theme === 'light'
+                            ? 'bg-neutral-100 hover:bg-neutral-200 text-neutral-700 border border-neutral-200'
+                            : 'bg-white/[0.06] hover:bg-white/[0.12] text-neutral-300 hover:text-white border border-white/10'
+                        }`}
                       >
                         <span>Fermer ✕</span>
                       </button>
@@ -443,7 +487,11 @@ export function Curved3DProjectsGallery({
                   {/* Right Column: Full Landscape Interactive Gallery */}
                   <div className="md:col-span-7 flex flex-col space-y-3">
                     <div className="flex items-center justify-between">
-                      <span className="text-[9px] font-mono uppercase tracking-widest text-neutral-400 font-semibold block">
+                      <span
+                        className={`text-[9px] font-mono uppercase tracking-widest font-semibold block ${
+                          theme === 'light' ? 'text-neutral-500' : 'text-neutral-400'
+                        }`}
+                      >
                         Galerie du projet
                       </span>
                       <span className="text-[10px] font-mono text-neutral-500">
@@ -452,7 +500,13 @@ export function Curved3DProjectsGallery({
                     </div>
 
                     {/* Main Landscape Visual Viewport */}
-                    <div className="relative w-full h-52 sm:h-64 md:h-72 lg:h-80 rounded-2xl overflow-hidden bg-neutral-950 border border-white/10 shadow-2xl group">
+                    <div
+                      className={`relative w-full h-52 sm:h-64 md:h-72 lg:h-80 rounded-2xl overflow-hidden shadow-2xl group ${
+                        theme === 'light'
+                          ? 'bg-neutral-100 border border-neutral-200'
+                          : 'bg-neutral-950 border border-white/10'
+                      }`}
+                    >
                       <Image
                         src={currentHeroImage}
                         alt={`${expandedProject.title} preview ${activeGalleryIndex + 1}`}
@@ -506,6 +560,8 @@ export function Curved3DProjectsGallery({
                               className={`relative h-14 sm:h-16 rounded-xl overflow-hidden border transition-all duration-300 ${
                                 isActive
                                   ? 'border-[#EB4604] ring-2 ring-[#EB4604]/40 scale-[1.02]'
+                                  : theme === 'light'
+                                  ? 'border-neutral-200 opacity-70 hover:opacity-100 hover:border-neutral-400'
                                   : 'border-white/10 opacity-60 hover:opacity-100 hover:border-white/30'
                               }`}
                             >

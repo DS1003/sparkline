@@ -11,15 +11,11 @@ interface MobileMenuProps {
 
 const navLinks = [
   { label: 'Accueil', href: '/' },
-  { label: 'Projets (05)', href: '/projects' },
-  { label: 'Services', href: '/services' },
   { label: 'À propos', href: '/about' },
-  { label: 'SPARKlearn', href: '/sparklearn' },
-  { label: 'Masterclasses', href: '/sparklearn/masterclasses' },
-  { label: 'Formations', href: '/sparklearn/formations' },
-  { label: 'Insights & Blog', href: '/insights' },
+  { label: 'Services', href: '/services' },
+  { label: 'Projets', href: '/projects' },
   { label: 'Équipe', href: '/team' },
-  { label: 'Carrières', href: '/careers' },
+  { label: 'SPARKlearn', href: '/sparklearn' },
   { label: 'Contact', href: '/contact' },
 ]
 
