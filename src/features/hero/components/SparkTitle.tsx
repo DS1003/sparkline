@@ -214,7 +214,7 @@ export function SparkTitle({
   return (
     <h1
       ref={containerRef}
-      className={`relative heading-style-01 text-[clamp(2.25rem,4.8vw,80px)] lg:text-[80px] xl:text-[84px] font-normal text-[#FFFFFF] tracking-[-0.042em] leading-[1.0] max-w-[900px] select-none ${className}`}
+      className={`relative heading-style-01 text-[clamp(1.75rem,7.5vw,80px)] sm:text-[clamp(2.5rem,5.5vw,80px)] lg:text-[80px] xl:text-[84px] font-normal text-[#FFFFFF] tracking-[-0.042em] leading-[1.0] max-w-[900px] select-none ${className}`}
       style={{ fontFamily: 'var(--font-family--primary-font)' }}
     >
       {/* Canvas for Realistic Flying Embers / Spark Particles */}

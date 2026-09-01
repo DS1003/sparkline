@@ -68,7 +68,7 @@ export function About() {
             {teamPortraits.map((portrait, idx) => (
               <div
                 key={`a-${idx}`}
-                className="relative shrink-0 w-[240px] sm:w-[280px] md:w-[320px] lg:w-[360px] xl:w-[400px] aspect-[3/4.2] rounded-xl overflow-hidden group"
+                className="relative shrink-0 w-[180px] sm:w-[240px] md:w-[300px] lg:w-[360px] xl:w-[400px] aspect-[3/4.2] rounded-xl overflow-hidden group"
               >
                 <Image
                   src={portrait.src}
@@ -76,7 +76,7 @@ export function About() {
                   fill
                   quality={85}
                   className="object-cover object-top transition-transform duration-700 group-hover:scale-105"
-                  sizes="(max-width: 640px) 240px, (max-width: 768px) 280px, (max-width: 1024px) 320px, (max-width: 1280px) 360px, 400px"
+                  sizes="(max-width: 640px) 180px, (max-width: 768px) 240px, (max-width: 1024px) 300px, (max-width: 1280px) 360px, 400px"
                 />
               </div>
             ))}
@@ -84,7 +84,7 @@ export function About() {
             {teamPortraits.map((portrait, idx) => (
               <div
                 key={`b-${idx}`}
-                className="relative shrink-0 w-[240px] sm:w-[280px] md:w-[320px] lg:w-[360px] xl:w-[400px] aspect-[3/4.2] rounded-xl overflow-hidden group"
+                className="relative shrink-0 w-[180px] sm:w-[240px] md:w-[300px] lg:w-[360px] xl:w-[400px] aspect-[3/4.2] rounded-xl overflow-hidden group"
               >
                 <Image
                   src={portrait.src}
@@ -92,7 +92,7 @@ export function About() {
                   fill
                   quality={85}
                   className="object-cover object-top transition-transform duration-700 group-hover:scale-105"
-                  sizes="(max-width: 640px) 240px, (max-width: 768px) 280px, (max-width: 1024px) 320px, (max-width: 1280px) 360px, 400px"
+                  sizes="(max-width: 640px) 180px, (max-width: 768px) 240px, (max-width: 1024px) 300px, (max-width: 1280px) 360px, 400px"
                 />
               </div>
             ))}
@@ -101,20 +101,20 @@ export function About() {
       </RevealOnScroll>
 
       {/* ── Stats counter row (En chiffres) ── */}
-      <Container className="pt-16 sm:pt-20 lg:pt-28 pb-10 sm:pb-14 lg:pb-20">
+      <Container className="pt-12 sm:pt-16 lg:pt-28 pb-8 sm:pb-12 lg:pb-20">
         {/* Tag — capsule style like other sections */}
         <RevealOnScroll>
-          <div className="mb-10 sm:mb-14 lg:mb-16">
+          <div className="mb-8 sm:mb-12 lg:mb-16">
             <Tag variant="v2">En chiffres</Tag>
           </div>
         </RevealOnScroll>
 
-        {/* Stats grid — 4 columns with staggered scroll reveal */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+        {/* Stats grid — Compact 2x2 grid on mobile, 4 columns on desktop */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
           {stats.map((stat, idx) => (
             <Counter
               key={stat.id}
-              delay={idx * 0.12}
+              delay={idx * 0.1}
               value={stat.value}
               suffix={stat.suffix}
               label={stat.label}

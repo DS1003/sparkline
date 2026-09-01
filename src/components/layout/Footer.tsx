@@ -20,7 +20,7 @@ export function Footer() {
   return (
     <footer className="w-full bg-white p-2.5 sm:p-4 lg:p-5 pt-0">
       {/* Floating 100% Pure Black Inset Card */}
-      <div className="relative rounded-2xl md:rounded-[20px] bg-black text-white p-6 sm:p-10 lg:p-14 overflow-hidden shadow-2xl">
+      <div className="relative rounded-2xl md:rounded-[20px] bg-black text-white p-5 sm:p-10 lg:p-14 overflow-hidden shadow-2xl">
 
         {/* Background Watermark: White SPARKLINE Symbol */}
         <div className="absolute top-1/2 right-[-5%] sm:right-[-2%] -translate-y-1/2 w-[400px] h-[400px] sm:w-[550px] sm:h-[550px] lg:w-[700px] lg:h-[700px] pointer-events-none select-none">
@@ -35,9 +35,9 @@ export function Footer() {
         </div>
 
         {/* 1. Full-Width Official SPARKLINE Logo Section */}
-        <div className="relative z-10 w-full pb-8 sm:pb-12 border-b border-white/10">
+        <div className="relative z-10 w-full pb-6 sm:pb-12 border-b border-white/10">
           <Link href="/" className="group block w-full select-none" aria-label="SPARKLINE Home">
-            <div className="w-full flex items-center justify-start my-2 transition-transform duration-500 group-hover:scale-[1.005]">
+            <div className="w-full flex items-center justify-start my-1 sm:my-2 transition-transform duration-500 group-hover:scale-[1.005]">
               <Image
                 src="/images/brand/sparkline-logo-white.svg"
                 alt="SPARKLINE Official Logo"
@@ -51,10 +51,10 @@ export function Footer() {
         </div>
 
         {/* 2. Middle Grid: Newsletter & Multi-Column Navigation */}
-        <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start py-10 sm:py-12">
+        <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start py-8 sm:py-12">
           {/* Left Column: Stay updated with SPARKLINE news */}
-          <div className="lg:col-span-6 space-y-6">
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-normal text-white tracking-tight leading-[1.2]">
+          <div className="lg:col-span-6 space-y-5 sm:space-y-6">
+            <h2 className="text-xl sm:text-3xl lg:text-4xl font-normal text-white tracking-tight leading-[1.2]">
               Restez informé des
               <br />
               actualités de SPARKLINE
@@ -62,25 +62,25 @@ export function Footer() {
 
             {/* Newsletter Subscription Pill Input */}
             {subscribed ? (
-              <div className="max-w-xl p-4 rounded-full bg-[#EB4604]/10 border border-[#EB4604]/40 text-sm text-[#FFB901] flex items-center gap-2">
+              <div className="max-w-xl p-3.5 sm:p-4 rounded-full bg-[#EB4604]/10 border border-[#EB4604]/40 text-xs sm:text-sm text-[#FFB901] flex items-center gap-2">
                 <span className="text-[#EB4604] font-bold">✓</span>
                 <span>Merci ! Vous êtes désormais abonné à nos actualités.</span>
               </div>
             ) : (
               <form onSubmit={handleSubscribe} className="max-w-xl">
-                <div className="rounded-full border border-white bg-transparent p-2 sm:p-2.5 pl-6 sm:pl-7 flex items-center justify-between transition-colors shadow-sm">
+                <div className="rounded-full border border-white/80 bg-transparent p-1.5 sm:p-2.5 pl-4 sm:pl-7 flex items-center justify-between transition-colors shadow-sm">
                   <input
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="Entrez votre adresse e-mail"
                     required
-                    className="bg-transparent text-white placeholder-neutral-400 focus:outline-none w-full text-base sm:text-lg font-light tracking-wide py-1"
+                    className="bg-transparent text-white placeholder-neutral-400 focus:outline-none w-full text-xs sm:text-base font-light tracking-wide py-1"
                   />
                   <button
                     type="submit"
                     aria-label="S'abonner"
-                    className="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-white text-[#070709] flex items-center justify-center font-bold text-base sm:text-lg shrink-0 ml-2 hover:bg-[#EB4604] hover:text-white transition-all shadow-md"
+                    className="w-9 h-9 sm:w-12 sm:h-12 rounded-full bg-white text-[#070709] flex items-center justify-center font-bold text-sm sm:text-lg shrink-0 ml-2 hover:bg-[#EB4604] hover:text-white transition-all shadow-md"
                   >
                     ↗
                   </button>
@@ -152,59 +152,34 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Right Columns: Multi-Column Sitemap Navigation */}
-          <div className="lg:col-span-6 grid grid-cols-2 sm:grid-cols-3 gap-8 text-sm">
-            {/* Column 1: Core Pages */}
+          {/* Right Columns: Clean Official Sitemap Navigation */}
+          <div className="lg:col-span-6 grid grid-cols-2 gap-8 text-sm">
+            {/* Column 1: Navigation Principale */}
             <div className="space-y-3.5">
               <Link href="/" className="block text-neutral-300 hover:text-white hover:translate-x-0.5 transition-all">
                 Accueil
               </Link>
               <Link href="/about" className="block text-neutral-300 hover:text-white hover:translate-x-0.5 transition-all">
-                Studio (À propos)
-              </Link>
-              <Link href="/projects" className="block text-neutral-300 hover:text-white hover:translate-x-0.5 transition-all">
-                Projets & Réalisations
-              </Link>
-              <Link href="/careers" className="block text-neutral-300 hover:text-white hover:translate-x-0.5 transition-all">
-                Carrières & Recrutement
-              </Link>
-              <Link href="/insights" className="block text-neutral-300 hover:text-white hover:translate-x-0.5 transition-all">
-                Blog & Insights
-              </Link>
-            </div>
-
-            {/* Column 2: Dedicated Pages */}
-            <div className="space-y-3.5">
-              <Link href="/careers" className="block text-neutral-300 hover:text-white hover:translate-x-0.5 transition-all">
-                Offres d'emploi
-              </Link>
-              <Link href="/projects/ndakaru-commerce" className="block text-neutral-300 hover:text-white hover:translate-x-0.5 transition-all">
-                Études de cas
-              </Link>
-              <Link href="/insights/designing-for-african-digital-economy" className="block text-neutral-300 hover:text-white hover:translate-x-0.5 transition-all">
-                Articles de blog
+                À propos
               </Link>
               <Link href="/services" className="block text-neutral-300 hover:text-white hover:translate-x-0.5 transition-all">
                 Services
               </Link>
-              <Link href="/contact" className="block text-neutral-300 hover:text-white hover:translate-x-0.5 transition-all">
-                Contact
+              <Link href="/projects" className="block text-neutral-300 hover:text-white hover:translate-x-0.5 transition-all">
+                Projets
               </Link>
             </div>
 
-            {/* Column 3: Initiatives & System */}
+            {/* Column 2: Collectif & Contact */}
             <div className="space-y-3.5">
+              <Link href="/team" className="block text-neutral-300 hover:text-white hover:translate-x-0.5 transition-all">
+                Équipe
+              </Link>
               <Link href="/sparklearn" className="block text-neutral-300 hover:text-white hover:translate-x-0.5 transition-all">
                 Sparklearn
               </Link>
-              <Link href="/sparklearn/masterclasses" className="block text-neutral-300 hover:text-white hover:translate-x-0.5 transition-all">
-                Masterclasses
-              </Link>
-              <Link href="/sparklearn/formations" className="block text-neutral-300 hover:text-white hover:translate-x-0.5 transition-all">
-                Formations
-              </Link>
-              <Link href="/team" className="block text-neutral-300 hover:text-white hover:translate-x-0.5 transition-all">
-                Équipe
+              <Link href="/contact" className="block text-neutral-300 hover:text-white hover:translate-x-0.5 transition-all">
+                Contact
               </Link>
             </div>
           </div>

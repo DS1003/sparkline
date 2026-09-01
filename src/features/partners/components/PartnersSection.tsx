@@ -211,8 +211,8 @@ export function PartnersSection() {
             </div>
           </div>
 
-          {/* ── ROW 3 (Moving Left Slow) ── */}
-          <div className="flex w-full overflow-visible">
+          {/* ── ROW 3 (Moving Left Slow - Visible on tablet & desktop) ── */}
+          <div className="hidden sm:flex w-full overflow-visible">
             <div className="animate-ribbon-left-slow flex gap-3 sm:gap-4 items-center shrink-0 w-max pr-3 sm:pr-4 py-1">
               {[...row3, ...row3, ...row3].map((item, idx) => (
                 <React.Fragment key={`r3-${idx}`}>

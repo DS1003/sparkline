@@ -95,28 +95,53 @@ export function SelectedWork({
           </div>
         )}
 
-        {/* ── Minimalist Category Filter Pills ── */}
-        <div className="text-center mb-8 sm:mb-10">
+        {/* ── Minimalist Category Filter Pills (Centered & Zero Horizontal Scroll) ── */}
+        <div className="mb-8 sm:mb-10">
           <RevealOnScroll delay={0.1}>
-            <div
-              className={`inline-flex flex-wrap items-center justify-center gap-1.5 p-1.5 rounded-full ${
-                theme === 'light'
-                  ? 'bg-white border border-neutral-200/90 shadow-sm'
-                  : 'bg-white/[0.04] border border-white/10 backdrop-blur-md'
-              }`}
-            >
+            {/* Desktop / Tablet: Unified Centered Capsule */}
+            <div className="hidden sm:flex justify-center">
+              <div
+                className={`inline-flex flex-wrap items-center justify-center gap-1.5 p-1.5 rounded-full ${
+                  theme === 'light'
+                    ? 'bg-white border border-neutral-200/90 shadow-sm'
+                    : 'bg-white/[0.04] border border-white/10 backdrop-blur-md'
+                }`}
+              >
+                {categories.map((cat) => {
+                  const isSelected = activeCategory === cat
+                  return (
+                    <button
+                      key={cat}
+                      onClick={() => handleCategoryChange(cat)}
+                      className={`px-3.5 py-1.5 rounded-full text-xs font-mono transition-all duration-300 cursor-pointer ${
+                        isSelected
+                          ? 'bg-[#EB4604] text-white font-semibold shadow-md shadow-[#EB4604]/25'
+                          : theme === 'light'
+                          ? 'text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100'
+                          : 'text-neutral-400 hover:text-white hover:bg-white/5'
+                      }`}
+                    >
+                      {cat}
+                    </button>
+                  )
+                })}
+              </div>
+            </div>
+
+            {/* Mobile: Centered Flex-Wrap Chips (Zero Horizontal Scroll) */}
+            <div className="sm:hidden flex flex-wrap items-center justify-center gap-1.5 px-2">
               {categories.map((cat) => {
                 const isSelected = activeCategory === cat
                 return (
                   <button
                     key={cat}
                     onClick={() => handleCategoryChange(cat)}
-                    className={`px-3.5 py-1.5 rounded-full text-xs font-mono transition-all duration-300 ${
+                    className={`px-3 py-1.5 rounded-full text-[11px] font-mono transition-all duration-300 cursor-pointer ${
                       isSelected
-                        ? 'bg-[#EB4604] text-white font-semibold shadow-md shadow-[#EB4604]/25'
+                        ? 'bg-[#EB4604] text-white font-semibold shadow-sm shadow-[#EB4604]/25'
                         : theme === 'light'
-                        ? 'text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100'
-                        : 'text-neutral-400 hover:text-white hover:bg-white/5'
+                        ? 'bg-white text-neutral-600 border border-neutral-200 shadow-2xs active:bg-neutral-100'
+                        : 'bg-white/[0.06] text-neutral-300 border border-white/10 active:bg-white/10'
                     }`}
                   >
                     {cat}

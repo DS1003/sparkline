@@ -28,7 +28,7 @@ export function Navbar() {
 
   return (
     <>
-      <nav className="w-full flex items-center justify-between py-2 mb-8 relative z-30">
+      <nav className="w-full flex items-center justify-between py-1 sm:py-2 mb-3 sm:mb-6 lg:mb-8 relative z-30">
         {/* Official SPARKLINE Logo */}
         <Link href="/" className="flex items-center group transition-transform group-hover:opacity-95">
           <Logo variant="white" size="md" />
@@ -77,10 +77,10 @@ export function Navbar() {
             </svg>
           </Link>
 
-          {/* Hamburger button */}
+          {/* Hamburger button (44x44px accessible touch target) */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="xl:hidden w-10 h-10 rounded-full border border-[#333333] bg-[#141418] text-white flex flex-col items-center justify-center gap-1.5 p-2 focus:outline-none"
+            className="xl:hidden w-11 h-11 rounded-full border border-white/15 bg-white/[0.06] hover:bg-white/10 text-white flex flex-col items-center justify-center gap-1.5 p-2.5 focus:outline-none active:scale-95 transition-transform"
             aria-label="Toggle menu"
           >
             <span
@@ -99,7 +99,7 @@ export function Navbar() {
         </div>
       </nav>
 
-      {/* Full screen mobile menu */}
+      {/* Floating Bento Island Navigation Sheet (Mobile & Tablet) */}
       <MobileMenu isOpen={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)} />
     </>
   )

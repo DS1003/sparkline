@@ -4,6 +4,7 @@ import React, { useEffect, useState, useRef, useCallback } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Logo } from '../ui/Logo'
+import { MobileMenu } from './MobileMenu'
 
 const bubbleNavLinks = [
   { label: 'Accueil', href: '/' },
@@ -21,7 +22,7 @@ export function BubbleNav() {
   const [mounted, setMounted] = useState(false)
   const [collapsed, setCollapsed] = useState(false)
   const [hovered, setHovered] = useState(false)
-  const [mobileOpen, setMobileOpen] = useState(false)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const lastScrollY = useRef(0)
   const ticking = useRef(false)
   const collapseTimerRef = useRef<NodeJS.Timeout | null>(null)
@@ -39,7 +40,7 @@ export function BubbleNav() {
 
     requestAnimationFrame(() => {
       const scrollY = window.scrollY
-      const shouldShow = scrollY > 500
+      const shouldShow = scrollY > 150
 
       if (shouldShow !== visible) {
         setVisible(shouldShow)
@@ -48,14 +49,10 @@ export function BubbleNav() {
         }
       }
 
-      if (mobileOpen && Math.abs(scrollY - lastScrollY.current) > 50) {
-        setMobileOpen(false)
-      }
-
       lastScrollY.current = scrollY
       ticking.current = false
     })
-  }, [visible, mounted, mobileOpen])
+  }, [visible, mounted])
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll, { passive: true })
@@ -63,7 +60,7 @@ export function BubbleNav() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [handleScroll])
 
-  // Auto-collapse after 3s when visible and not hovered
+  // Auto-collapse desktop after 3s when visible and not hovered
   useEffect(() => {
     if (collapseTimerRef.current) {
       clearTimeout(collapseTimerRef.current)
@@ -92,7 +89,7 @@ export function BubbleNav() {
 
   // Close mobile nav on route change
   useEffect(() => {
-    setMobileOpen(false)
+    setMobileMenuOpen(false)
   }, [pathname])
 
   const handleMouseEnter = () => {
@@ -102,7 +99,6 @@ export function BubbleNav() {
 
   const handleMouseLeave = () => {
     setHovered(false)
-    // Restart collapse timer
     if (collapseTimerRef.current) {
       clearTimeout(collapseTimerRef.current)
     }
@@ -111,255 +107,141 @@ export function BubbleNav() {
     }, 3000)
   }
 
-  // Whether to show expanded content
+  // Whether desktop shows expanded content
   const isExpanded = !collapsed || hovered
-
-  if (!mounted) return null
 
   return (
     <>
-      {/* Desktop Bubble Nav */}
-      <div
-        className={`fixed top-5 inset-x-0 z-[100] hidden xl:flex justify-center pointer-events-none ${
-          visible ? 'bubble-nav-enter' : 'bubble-nav-exit'
-        }`}
-        onAnimationEnd={() => {
-          if (!visible) setMounted(visible || lastScrollY.current > 500)
-        }}
-      >
+      {/* ═══════════════════════════════════════════════════════════
+          DESKTOP BUBBLE NAVBAR (≥ 1280px / xl) — 100% UNTOUCHED
+          ═══════════════════════════════════════════════════════════ */}
+      {mounted && (
         <div
-          ref={navRef}
-          className="pointer-events-auto"
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
+          className={`fixed top-5 inset-x-0 z-[100] hidden xl:flex justify-center pointer-events-none ${
+            visible ? 'bubble-nav-enter' : 'bubble-nav-exit'
+          }`}
+          onAnimationEnd={() => {
+            if (!visible) setMounted(visible || lastScrollY.current > 500)
+          }}
         >
-          <nav
-            className="flex items-center rounded-full overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)]"
-            style={{
-              background: 'rgba(10, 10, 12, 0.72)',
-              backdropFilter: 'blur(24px) saturate(180%)',
-              WebkitBackdropFilter: 'blur(24px) saturate(180%)',
-              border: '1px solid rgba(255, 255, 255, 0.08)',
-              boxShadow: collapsed && !hovered
-                ? '0 4px 20px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(235, 70, 4, 0.15), 0 0 20px rgba(235, 70, 4, 0.08)'
-                : '0 8px 32px rgba(0, 0, 0, 0.4), 0 2px 8px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.05)',
-              padding: isExpanded ? '8px' : '6px',
-            }}
+          <div
+            ref={navRef}
+            className="pointer-events-auto"
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
           >
-            {/* Logo pill - always visible */}
-            <Link
-              href="/"
-              className={`flex items-center justify-center rounded-full transition-all duration-500 shrink-0 ${
-                isExpanded
-                  ? 'w-9 h-9 bg-white/[0.06] hover:bg-white/[0.12]'
-                  : 'w-10 h-10 bg-gradient-to-br from-[#EB4604]/20 to-[#FFB901]/10 hover:from-[#EB4604]/30 hover:to-[#FFB901]/20'
-              }`}
-              aria-label="Accueil"
-            >
-              <Logo variant="symbol" className={`transition-all duration-500 ${isExpanded ? 'w-5 h-5' : 'w-6 h-6'}`} />
-            </Link>
-
-            {/* Expandable content */}
-            <div
-              className="flex items-center transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] overflow-hidden"
+            <nav
+              className="flex items-center rounded-full overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)]"
               style={{
-                maxWidth: isExpanded ? '800px' : '0px',
-                opacity: isExpanded ? 1 : 0,
-                marginLeft: isExpanded ? '4px' : '0px',
+                background: 'rgba(10, 10, 12, 0.72)',
+                backdropFilter: 'blur(24px) saturate(180%)',
+                WebkitBackdropFilter: 'blur(24px) saturate(180%)',
+                border: '1px solid rgba(255, 255, 255, 0.08)',
+                boxShadow: collapsed && !hovered
+                  ? '0 4px 20px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(235, 70, 4, 0.15), 0 0 20px rgba(235, 70, 4, 0.08)'
+                  : '0 8px 32px rgba(0, 0, 0, 0.4), 0 2px 8px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.05)',
+                padding: isExpanded ? '8px' : '6px',
               }}
             >
-              {/* Nav links */}
-              {bubbleNavLinks.map((link) => {
-                const active = isActive(link.href)
-                return (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    className={`relative px-3.5 py-2 rounded-full text-[13px] font-medium transition-all duration-300 whitespace-nowrap ${
-                      active
-                        ? 'text-white bg-[#EB4604] shadow-[0_2px_12px_rgba(235,70,4,0.35)]'
-                        : 'text-neutral-400 hover:text-white hover:bg-white/[0.08]'
-                    }`}
-                  >
-                    {link.label}
-                  </Link>
-                )
-              })}
-
-              {/* CTA Button */}
+              {/* Logo pill - always visible */}
               <Link
-                href="/contact"
-                className="ml-1 flex items-center gap-2 px-4 py-2 rounded-full bg-white text-[#070709] text-[13px] font-semibold hover:bg-neutral-200 transition-all duration-200 shrink-0 group whitespace-nowrap"
+                href="/"
+                className={`flex items-center justify-center rounded-full transition-all duration-500 shrink-0 ${
+                  isExpanded
+                    ? 'w-9 h-9 bg-white/[0.06] hover:bg-white/[0.12]'
+                    : 'w-10 h-10 bg-gradient-to-br from-[#EB4604]/20 to-[#FFB901]/10 hover:from-[#EB4604]/30 hover:to-[#FFB901]/20'
+                }`}
+                aria-label="Accueil"
               >
-                <span>Démarrer</span>
-                <svg
-                  className="w-3 h-3 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                >
-                  <path
-                    d="M7 17L17 7M17 7H7M17 7V17"
-                    stroke="currentColor"
-                    strokeWidth="2.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
+                <Logo variant="symbol" className={`transition-all duration-500 ${isExpanded ? 'w-5 h-5' : 'w-6 h-6'}`} />
               </Link>
-            </div>
-          </nav>
-        </div>
-      </div>
 
-      {/* Mobile Bubble Nav */}
-      <div
-        className={`fixed top-5 inset-x-0 z-[100] xl:hidden flex justify-center pointer-events-none ${
-          visible ? 'bubble-nav-enter' : 'bubble-nav-exit'
-        }`}
-        onAnimationEnd={() => {
-          if (!visible) setMounted(visible || lastScrollY.current > 500)
-        }}
-      >
-        <div className="pointer-events-auto flex flex-col items-center">
-          <div
-            className="flex items-center gap-3 px-4 py-2.5 rounded-full"
-            style={{
-              background: 'rgba(10, 10, 12, 0.78)',
-              backdropFilter: 'blur(24px) saturate(180%)',
-              WebkitBackdropFilter: 'blur(24px) saturate(180%)',
-              border: '1px solid rgba(255, 255, 255, 0.08)',
-              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4), 0 2px 8px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.05)',
-            }}
-          >
-            <Link href="/" className="flex items-center shrink-0">
-              <Logo variant="white" size="sm" className="!h-6" />
-            </Link>
-
-            <div className="w-px h-5 bg-white/10" />
-
-            {/* Top 3 quick links on mobile */}
-            <div className="flex items-center gap-1">
-              {bubbleNavLinks.slice(0, 3).map((link) => {
-                const active = isActive(link.href)
-                return (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    className={`px-2.5 py-1.5 rounded-full text-[11px] font-medium transition-all duration-200 ${
-                      active
-                        ? 'text-white bg-[#EB4604]'
-                        : 'text-neutral-400 hover:text-white'
-                    }`}
-                  >
-                    {link.label}
-                  </Link>
-                )
-              })}
-            </div>
-
-            {/* Hamburger to expand full menu */}
-            <button
-              onClick={() => setMobileOpen(!mobileOpen)}
-              className="w-8 h-8 rounded-full bg-white/[0.08] hover:bg-white/[0.15] flex items-center justify-center transition-colors ml-1 shrink-0"
-              aria-label="Menu"
-            >
-              <div className="flex flex-col items-center justify-center gap-[3px]">
-                <span
-                  className={`w-3.5 h-[1.5px] bg-white rounded-full transition-transform duration-300 ${
-                    mobileOpen ? 'rotate-45 translate-y-[2.5px]' : ''
-                  }`}
-                />
-                <span
-                  className={`w-3.5 h-[1.5px] bg-white rounded-full transition-all duration-300 ${
-                    mobileOpen ? 'opacity-0 scale-0' : 'opacity-100'
-                  }`}
-                />
-                <span
-                  className={`w-3.5 h-[1.5px] bg-white rounded-full transition-transform duration-300 ${
-                    mobileOpen ? '-rotate-45 -translate-y-[2.5px]' : ''
-                  }`}
-                />
-              </div>
-            </button>
-          </div>
-
-          {/* Mobile Dropdown */}
-          <div
-            className={`mt-2 rounded-2xl overflow-hidden transition-all duration-400 ${
-              mobileOpen
-                ? 'bubble-dropdown-enter'
-                : 'bubble-dropdown-exit pointer-events-none'
-            }`}
-            style={{
-              background: 'rgba(10, 10, 12, 0.92)',
-              backdropFilter: 'blur(32px) saturate(200%)',
-              WebkitBackdropFilter: 'blur(32px) saturate(200%)',
-              border: '1px solid rgba(255, 255, 255, 0.06)',
-              boxShadow: '0 16px 48px rgba(0, 0, 0, 0.5)',
-            }}
-          >
-            <div className="px-4 py-3 flex flex-col gap-0.5">
-              {bubbleNavLinks.map((link, idx) => {
-                const active = isActive(link.href)
-                return (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    onClick={() => setMobileOpen(false)}
-                    className={`flex items-center justify-between px-3 py-3 rounded-xl text-sm font-medium transition-all duration-200 ${
-                      active
-                        ? 'text-white bg-[#EB4604]/15'
-                        : 'text-neutral-300 hover:text-white hover:bg-white/[0.05]'
-                    }`}
-                    style={{
-                      animationDelay: mobileOpen ? `${idx * 40}ms` : '0ms',
-                    }}
-                  >
-                    <div className="flex items-center gap-3">
-                      {active && (
-                        <span className="w-1.5 h-1.5 rounded-full bg-[#EB4604] shrink-0" />
-                      )}
-                      <span>{link.label}</span>
-                    </div>
-                    <svg
-                      className="w-3.5 h-3.5 text-neutral-600"
-                      viewBox="0 0 24 24"
-                      fill="none"
+              {/* Expandable content */}
+              <div
+                className="flex items-center transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] overflow-hidden"
+                style={{
+                  maxWidth: isExpanded ? '800px' : '0px',
+                  opacity: isExpanded ? 1 : 0,
+                  marginLeft: isExpanded ? '4px' : '0px',
+                }}
+              >
+                {/* Nav links */}
+                {bubbleNavLinks.map((link) => {
+                  const active = isActive(link.href)
+                  return (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      className={`relative px-3.5 py-2 rounded-full text-[13px] font-medium transition-all duration-300 whitespace-nowrap ${
+                        active
+                          ? 'text-white bg-[#EB4604] shadow-[0_2px_12px_rgba(235,70,4,0.35)]'
+                          : 'text-neutral-400 hover:text-white hover:bg-white/[0.08]'
+                      }`}
                     >
-                      <path
-                        d="M9 18L15 12L9 6"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  </Link>
-                )
-              })}
-            </div>
+                      {link.label}
+                    </Link>
+                  )
+                })}
 
-            <div className="px-4 pb-4 pt-1">
-              <Link
-                href="/contact"
-                onClick={() => setMobileOpen(false)}
-                className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-[#EB4604] text-white text-sm font-semibold hover:bg-[#D43D00] transition-colors"
-              >
-                Démarrer un projet
-                <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none">
-                  <path
-                    d="M7 17L17 7M17 7H7M17 7V17"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </Link>
-            </div>
+                {/* CTA Button */}
+                <Link
+                  href="/contact"
+                  className="ml-1 flex items-center gap-2 px-4 py-2 rounded-full bg-white text-[#070709] text-[13px] font-semibold hover:bg-neutral-200 transition-all duration-200 shrink-0 group whitespace-nowrap"
+                >
+                  <span>Démarrer</span>
+                  <svg
+                    className="w-3 h-3 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                  >
+                    <path
+                      d="M7 17L17 7M17 7H7M17 7V17"
+                      stroke="currentColor"
+                      strokeWidth="2.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </Link>
+              </div>
+            </nav>
           </div>
         </div>
+      )}
+
+      {/* ═══════════════════════════════════════════════════════════
+          MOBILE & TABLET BUBBLE NAVBAR (< 1280px / xl)
+          Fixed Top-Right Scrolled Burger Menu Button with Pulsing Dot
+          Appears ONLY when scrolled (scrollY > 200), never overlaps top header
+          ═══════════════════════════════════════════════════════════ */}
+      <div
+        className={`fixed top-4 right-4 sm:top-5 sm:right-6 z-[100] xl:hidden transition-all duration-300 ${
+          visible
+            ? 'opacity-100 scale-100 pointer-events-auto'
+            : 'opacity-0 scale-90 pointer-events-none'
+        }`}
+      >
+        <button
+          onClick={() => setMobileMenuOpen(true)}
+          aria-label="Ouvrir le menu de navigation"
+          className="relative w-11 h-11 sm:w-12 sm:h-12 rounded-full flex flex-col items-center justify-center gap-1.5 transition-all duration-300 active:scale-95 shadow-2xl cursor-pointer group"
+          style={{
+            background: 'rgba(10, 10, 12, 0.88)',
+            backdropFilter: 'blur(24px) saturate(190%)',
+            WebkitBackdropFilter: 'blur(24px) saturate(190%)',
+            border: '1px solid rgba(255, 255, 255, 0.14)',
+            boxShadow: '0 8px 30px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(235, 70, 4, 0.25), 0 0 20px rgba(235, 70, 4, 0.15)',
+          }}
+        >
+          {/* 3 Burger Bars */}
+          <span className="w-5 h-[2px] bg-white rounded-full transition-all duration-300 group-hover:bg-[#EB4604]" />
+          <span className="w-5 h-[2px] bg-white rounded-full transition-all duration-300 group-hover:bg-[#EB4604]" />
+          <span className="w-3.5 h-[2px] bg-white/70 self-start ml-3 rounded-full transition-all duration-300 group-hover:bg-[#EB4604]" />
+        </button>
       </div>
+
+      {/* Floating Bento Island Navigation Sheet Overlay */}
+      <MobileMenu isOpen={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)} />
     </>
   )
 }

@@ -154,16 +154,36 @@ export function MasterclassesShowcase({ masterclasses }: MasterclassesShowcasePr
 
             {/* Compact Filter Pills */}
             <RevealOnScroll delay={0.15}>
-              <div className="flex flex-wrap items-center gap-1.5">
+              {/* Desktop: flex-wrap */}
+              <div className="hidden sm:flex flex-wrap items-center gap-1.5">
                 {categories.map((cat) => {
                   const isActive = selectedCategory === cat.id
                   return (
                     <button
                       key={cat.id}
                       onClick={() => setSelectedCategory(cat.id)}
-                      className={`px-3.5 py-1.5 rounded-full text-xs font-medium transition-all duration-300 cursor-pointer border ${isActive
+                      className={`px-3.5 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all duration-300 cursor-pointer border ${isActive
                           ? 'bg-[#0A0A0A] text-white border-[#0A0A0A] shadow-xs'
                           : 'bg-white text-neutral-600 border-[#E5E7EB] hover:border-neutral-400 hover:text-[#0A0A0A]'
+                        }`}
+                    >
+                      {cat.label}
+                    </button>
+                  )
+                })}
+              </div>
+
+              {/* Mobile: Flex-Wrap Chips (Zero Horizontal Scroll) */}
+              <div className="sm:hidden flex flex-wrap items-center gap-1.5 pt-1">
+                {categories.map((cat) => {
+                  const isActive = selectedCategory === cat.id
+                  return (
+                    <button
+                      key={cat.id}
+                      onClick={() => setSelectedCategory(cat.id)}
+                      className={`px-3 py-1.5 rounded-full text-[11px] font-medium transition-all duration-300 cursor-pointer border ${isActive
+                          ? 'bg-[#0A0A0A] text-white border-[#0A0A0A] shadow-xs'
+                          : 'bg-white text-neutral-600 border-[#E5E7EB] shadow-2xs active:bg-neutral-100'
                         }`}
                     >
                       {cat.label}

@@ -112,15 +112,41 @@ export function Curved3DProjectsGallery({
       : '/images/services/ui-ux.jpg'
   }
 
+  // Touch swipe support for mobile devices
+  const [touchStartX, setTouchStartX] = useState<number | null>(null)
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStartX(e.touches[0].clientX)
+  }
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX === null) return
+    const touchEndX = e.changedTouches[0].clientX
+    const diff = touchStartX - touchEndX
+
+    if (Math.abs(diff) > 40) {
+      if (diff > 0) {
+        // Swiped left -> Next project
+        onActiveChange(Math.min(projects.length - 1, activeIndex + 1))
+      } else {
+        // Swiped right -> Previous project
+        onActiveChange(Math.max(0, activeIndex - 1))
+      }
+    }
+    setTouchStartX(null)
+  }
+
   // Dimensions for 3D stage
-  const cardWidth = isMobile ? 270 : 340
-  const cardHeight = isMobile ? 380 : 470
+  const cardWidth = isMobile ? 260 : 340
+  const cardHeight = isMobile ? 360 : 470
 
   return (
     <>
-      {/* ── Symmetrical 3D Stage Container ── */}
+      {/* ── Symmetrical 3D Stage Container with Touch Support ── */}
       <div
-        className="relative w-full overflow-hidden select-none py-6 sm:py-10"
+        className="relative w-full overflow-hidden select-none py-4 sm:py-10 touch-pan-y"
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
         style={{
           perspective: '1500px',
           perspectiveOrigin: '50% 50%',
@@ -348,7 +374,7 @@ export function Curved3DProjectsGallery({
                     ease: [0.16, 1, 0.3, 1],
                   },
                 }}
-                className={`relative w-full max-w-5xl ${
+                className={`relative w-full max-w-5xl max-h-[90vh] overflow-y-auto ${
                   theme === 'light'
                     ? 'bg-white text-neutral-900 border border-neutral-200 shadow-[0_30px_90px_rgba(0,0,0,0.18)]'
                     : 'bg-[#0A0A0E] text-white border border-white/15 shadow-[0_40px_120px_rgba(0,0,0,0.98)]'
