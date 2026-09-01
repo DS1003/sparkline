@@ -43,13 +43,16 @@ export function TeamCardBadge({ member }: TeamCardBadgeProps) {
         }}
       >
         {/* ═══════════════════════════════════════════════════════════
-            FRONT FACE: Official Poster Badge Image
+            FRONT FACE: Official Poster Badge Image (Isolated for iOS)
             ═══════════════════════════════════════════════════════════ */}
         <div
-          className="absolute inset-0 w-full h-full rounded-[28px] sm:rounded-[32px] bg-white border border-[#E5E7EB] overflow-hidden flex flex-col justify-between"
+          className={`absolute inset-0 w-full h-full rounded-[28px] sm:rounded-[32px] bg-white border border-[#E5E7EB] overflow-hidden flex flex-col justify-between transition-opacity duration-300 ${
+            isFlipped ? 'opacity-0 pointer-events-none' : 'opacity-100'
+          }`}
           style={{
             backfaceVisibility: 'hidden',
             WebkitBackfaceVisibility: 'hidden',
+            transform: 'rotateY(0deg) translateZ(1px)',
           }}
         >
           <div className="relative w-full h-full">
@@ -62,25 +65,29 @@ export function TeamCardBadge({ member }: TeamCardBadgeProps) {
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 360px"
             />
 
-            {/* Flip Hint Indicator Badge */}
-            <div className="absolute top-4 right-4 z-10 opacity-90 sm:opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/90 backdrop-blur-md text-neutral-800 text-[10px] font-mono border border-neutral-200/80 shadow-md">
-                <span className="text-[#EB4604]">↺</span>
-                <span>Détails</span>
-              </span>
-            </div>
+            {/* Flip Hint Indicator Badge (Hidden when card is flipped) */}
+            {!isFlipped && (
+              <div className="absolute top-4 right-4 z-10 opacity-90 sm:opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/90 backdrop-blur-md text-neutral-800 text-[10px] font-mono border border-neutral-200/80 shadow-md">
+                  <span className="text-[#EB4604]">↺</span>
+                  <span>Détails</span>
+                </span>
+              </div>
+            )}
           </div>
         </div>
 
         {/* ═══════════════════════════════════════════════════════════
-            BACK FACE: High-End Digital Pass Profile in LIGHT MODE
+            BACK FACE: High-End Digital Pass Profile (Isolated for iOS)
             ═══════════════════════════════════════════════════════════ */}
         <div
-          className="absolute inset-0 w-full h-full rounded-[28px] sm:rounded-[32px] bg-white border border-neutral-200 text-neutral-900 p-6 sm:p-7 flex flex-col justify-between overflow-hidden shadow-xl"
+          className={`absolute inset-0 w-full h-full rounded-[28px] sm:rounded-[32px] bg-white border border-neutral-200 text-neutral-900 p-6 sm:p-7 flex flex-col justify-between overflow-hidden shadow-xl transition-opacity duration-300 ${
+            !isFlipped ? 'opacity-0 pointer-events-none' : 'opacity-100'
+          }`}
           style={{
             backfaceVisibility: 'hidden',
             WebkitBackfaceVisibility: 'hidden',
-            transform: 'rotateY(180deg)',
+            transform: 'rotateY(180deg) translateZ(1px)',
           }}
         >
           {/* Ambient Background Watermark */}
@@ -180,7 +187,7 @@ export function TeamCardBadge({ member }: TeamCardBadgeProps) {
               )}
             </div>
 
-            {/* Bottom Action Dock: LinkedIn + Flip Back */}
+            {/* Bottom Action Dock: LinkedIn + GitHub + Flip Back */}
             <div className="pt-1 flex items-center gap-2">
               {member.socials?.linkedin && (
                 <a
