@@ -33,12 +33,12 @@ export function createScrollReveal(
     {
       y,
       opacity: 0,
-      filter: `blur(${blur}px)`,
+      scale: 0.98,
     },
     {
       y: 0,
       opacity: 1,
-      filter: 'blur(0px)',
+      scale: 1,
       duration,
       stagger,
       ease: EASING.smoothCSS,

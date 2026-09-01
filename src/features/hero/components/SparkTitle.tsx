@@ -220,7 +220,7 @@ export function SparkTitle({
                   className="inline-block transition-all duration-300"
                   style={{
                     opacity: isCharRevealed ? 1 : 0,
-                    transform: isCharRevealed ? 'translateY(0) scale(1)' : 'translateY(8px) scale(0.95)',
+                    transform: isCharRevealed ? 'translate3d(0, 0, 0) scale(1)' : 'translate3d(0, 8px, 0) scale(0.92)',
                     color: isCurrentTip
                       ? '#FFE57F'
                       : isCharRevealed
@@ -229,7 +229,6 @@ export function SparkTitle({
                     textShadow: isCurrentTip
                       ? '0 0 10px #FFFFFF, 0 0 20px #FF9100, 0 0 35px #EB4604'
                       : 'none',
-                    filter: isCharRevealed ? 'none' : 'blur(4px)',
                   }}
                 >
                   {char === ' ' ? '\u00A0' : char}
