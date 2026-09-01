@@ -17,9 +17,7 @@ export function RevealOnScroll({
   className = '',
   delay = 0,
   direction = 'up',
-  blur = true,
-  duration = 0.7,
-  threshold = 0.01,
+  duration = 0.45,
 }: RevealOnScrollProps) {
   const [isVisible, setIsVisible] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
@@ -35,28 +33,28 @@ export function RevealOnScroll({
     const el = ref.current
     if (!el || hasTriggered.current) return
 
-    // Use a scroll listener as the primary mechanism — it's the most reliable
-    // across all browsers and container configurations (sticky, overflow, etc.)
+    // Generous pre-trigger margin (+500px) so fast scrolling never hits blank elements
     const checkVisibility = () => {
       if (hasTriggered.current) return
       const rect = el.getBoundingClientRect()
-      // Element is considered visible when its top edge is within the viewport
-      // plus a generous bottom margin, OR its bottom edge is above the viewport top
-      if (rect.top < window.innerHeight + 80 && rect.bottom > -80) {
+      if (rect.top < window.innerHeight + 500 && rect.bottom > -300) {
         reveal()
       }
     }
 
-    // Check immediately on mount (for elements already in viewport)
-    // Use requestAnimationFrame to ensure layout has settled
+    // Immediate check on mount for all elements in the first 2 viewports
+    const rect = el.getBoundingClientRect()
+    if (rect.top < window.innerHeight * 1.8 && rect.bottom > -200) {
+      reveal()
+      return
+    }
+
     requestAnimationFrame(() => {
       checkVisibility()
     })
 
-    // Also check after a short delay for SSR hydration edge cases
-    const hydrationTimer = setTimeout(checkVisibility, 100)
+    const hydrationTimer = setTimeout(checkVisibility, 50)
 
-    // Passive scroll listener — extremely lightweight, ~0.01ms per frame
     window.addEventListener('scroll', checkVisibility, { passive: true })
     window.addEventListener('resize', checkVisibility, { passive: true })
 
@@ -70,20 +68,23 @@ export function RevealOnScroll({
   const getInitialTransform = () => {
     switch (direction) {
       case 'up':
-        return 'translateY(32px)'
+        return 'translate3d(0, 18px, 0) scale(0.99)'
       case 'down':
-        return 'translateY(-32px)'
+        return 'translate3d(0, -18px, 0) scale(0.99)'
       case 'left':
-        return 'translateX(32px)'
+        return 'translate3d(18px, 0, 0) scale(0.99)'
       case 'right':
-        return 'translateX(-32px)'
+        return 'translate3d(-18px, 0, 0) scale(0.99)'
       case 'zoom':
-        return 'scale(0.95) translateY(18px)'
+        return 'scale(0.96) translate3d(0, 10px, 0)'
       case 'none':
       default:
         return 'none'
     }
   }
+
+  // Cap transition delay to max 0.15s to guarantee instant snappy rendering
+  const safeDelay = Math.min(delay, 0.15)
 
   return (
     <div
@@ -92,9 +93,9 @@ export function RevealOnScroll({
       style={{
         opacity: isVisible ? 1 : 0,
         transform: isVisible ? 'translate3d(0, 0, 0) scale(1)' : getInitialTransform(),
-        filter: blur ? (isVisible ? 'blur(0px)' : 'blur(6px)') : 'none',
-        transition: `opacity ${duration}s cubic-bezier(0.16, 1, 0.3, 1) ${delay}s, transform ${duration}s cubic-bezier(0.16, 1, 0.3, 1) ${delay}s, filter ${duration}s cubic-bezier(0.16, 1, 0.3, 1) ${delay}s`,
-        willChange: isVisible ? 'auto' : 'opacity, transform, filter',
+        transition: `opacity ${duration}s cubic-bezier(0.16, 1, 0.3, 1) ${safeDelay}s, transform ${duration}s cubic-bezier(0.16, 1, 0.3, 1) ${safeDelay}s`,
+        willChange: isVisible ? 'auto' : 'opacity, transform',
+        backfaceVisibility: 'hidden',
       }}
     >
       {children}

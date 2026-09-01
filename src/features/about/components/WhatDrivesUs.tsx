@@ -58,7 +58,7 @@ export function WhatDrivesUs() {
                   src="/images/services/header-avatar.jpg"
                   alt="Portrait"
                   fill
-                  quality={100}
+                  quality={85}
                   sizes="80px"
                   className="object-cover"
                 />
@@ -81,8 +81,7 @@ export function WhatDrivesUs() {
                   src={card.src}
                   alt={card.alt}
                   fill
-                  quality={100}
-                  unoptimized
+                  quality={85}
                   className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                   sizes="(max-width: 640px) 50vw, 300px"
                 />

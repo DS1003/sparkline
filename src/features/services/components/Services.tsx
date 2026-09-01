@@ -26,16 +26,16 @@ const serviceStackItems: ServiceStackItemData[] = [
   {
     id: 'digital-solutions',
     number: '01',
-    title: 'Solutions Digitales & Web',
+    title: 'Solutions Digitales Web & Mobile',
     category: 'INGÉNIERIE & TECH',
     tag: 'DÉVELOPPEMENT & ARCHITECTURE',
     description:
-      'Développement de plateformes web sur mesure, applications SaaS complexes, architectures cloud évolutives et API ultra-performantes.',
+      'Développement de plateformes web sur mesure, applications mobiles iOS & Android, architectures logicielles évolutives et API ultra-performantes.',
     deliverables: [
       'Plateformes Web & Portails',
+      'Applications Mobiles (iOS & Android)',
       'Applications SaaS & Métier',
-      'Architectures Cloud & API',
-      'E-commerce & Mobile Money',
+      'Architectures API & Microservices',
     ],
     image: '/images/services/development.jpg',
     href: '/services/digital-solutions',
@@ -58,20 +58,20 @@ const serviceStackItems: ServiceStackItemData[] = [
     href: '/services/ui-ux-design',
   },
   {
-    id: 'mobile-design',
+    id: 'cloud-devops',
     number: '03',
-    title: 'Design & Apps Mobiles',
-    category: 'APPLICATIONS MOBILES',
-    tag: 'IOS & ANDROID',
+    title: 'Cloud & DevOps',
+    category: 'INFRASTRUCTURE & CLOUD',
+    tag: 'DÉPLOIEMENT & SÉCURITÉ',
     description:
-      'Création d’applications mobiles immersives, ergonomiques et véloces, pensées pour offrir un parcours fluide et engageant au quotidien.',
+      'Conception d’infrastructures cloud résilientes, automatisation de pipelines CI/CD, conteneurisation et monitoring proactif pour garantir une haute disponibilité.',
     deliverables: [
-      'Applications iOS & Android',
-      'Expériences Mobiles First',
-      'PWA & Micro-interactions',
-      'Intégration d’API & Temps Réel',
+      'Architectures Cloud (AWS, Vercel, GCP)',
+      'Pipelines CI/CD & Automatisation',
+      'Conteneurisation Docker & Orchestration',
+      'Sécurité, Monitoring & 99.9% Uptime',
     ],
-    image: '/images/services/mobile.jpg',
+    image: '/images/services/development.jpg',
     href: '/services/digital-solutions',
   },
   {
@@ -91,55 +91,86 @@ const serviceStackItems: ServiceStackItemData[] = [
     image: '/images/services/branding.jpg',
     href: '/services/branding-communication',
   },
+  {
+    id: 'audiovisual',
+    number: '05',
+    title: 'Audiovisuel & Voix Off',
+    category: 'PRODUCTION & MOTION',
+    tag: 'CONTENUS & MOTION DESIGN',
+    description:
+      'Production de contenus vidéo percutants, animations 2D/3D immersives, identités sonores et voix off professionnelles pour sublimer vos messages.',
+    deliverables: [
+      'Vidéos & Spots Produit',
+      'Motion Design 2D & 3D',
+      'Voix Off & Sound Design',
+      'Contenus Vidéo Réseaux Sociaux',
+    ],
+    image: '/images/services/branding.jpg',
+    href: '/services/audiovisual',
+  },
 ]
 
-export function Services() {
+interface ServicesProps {
+  isServicesPage?: boolean
+  hideHeader?: boolean
+}
+
+export function Services({ isServicesPage = false, hideHeader = false }: ServicesProps) {
   return (
-    <Section id="services" className="pt-10 sm:pt-16 lg:pt-20 pb-20 sm:pb-28 lg:pb-36 bg-white">
+    <Section
+      id="services"
+      className={`${
+        isServicesPage ? 'pt-8 sm:pt-12 pb-20 sm:pb-28 lg:pb-36' : 'pt-10 sm:pt-16 lg:pt-20 pb-20 sm:pb-28 lg:pb-36'
+      } bg-white`}
+    >
       <Container>
-        {/* ── Top Editorial Header ── */}
-        <div className="space-y-6 mb-12 sm:mb-16 lg:mb-20">
-          <RevealOnScroll>
-            <Tag variant="v2">Nos Expertises</Tag>
-          </RevealOnScroll>
-
-          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 lg:gap-16">
-            <RevealOnScroll delay={0.1}>
-              <h2
-                className="text-[clamp(2.25rem,4.8vw,60px)] font-normal text-[#0A0A0A] leading-[1.08] tracking-[-0.03em] max-w-2xl flex flex-wrap items-center gap-x-3 gap-y-2"
-                style={{ fontFamily: 'var(--font-family--primary-font)' }}
-              >
-                <span>Tout ce dont</span>
-                <span className="inline-flex items-center justify-center w-12 h-7 sm:w-16 sm:h-9 rounded-full overflow-hidden border border-neutral-300 relative align-middle shadow-md shrink-0 -translate-y-0.5">
-                  <Image
-                    src="/images/services/header-avatar.jpg"
-                    alt="Portrait"
-                    fill
-                    quality={100}
-                    sizes="64px"
-                    className="object-cover"
-                  />
-                </span>
-                <span>vous avez besoin pour dominer votre marché.</span>
-              </h2>
+        {/* ── Top Editorial Header (Omitted if hideHeader is true, e.g. on /services where PageHero exists) ── */}
+        {!hideHeader && (
+          <div className="space-y-6 mb-12 sm:mb-16 lg:mb-20">
+            <RevealOnScroll>
+              <Tag variant="v2">Nos Expertises</Tag>
             </RevealOnScroll>
 
-            <RevealOnScroll delay={0.2}>
-              <div className="space-y-3 max-w-sm">
-                <p className="text-sm sm:text-base text-neutral-500 font-normal leading-relaxed">
-                  Nous combinons stratégie, design de haut niveau et ingénierie de précision pour propulser votre entreprise.
-                </p>
-                <Link
-                  href="/services"
-                  className="group inline-flex items-center gap-2 text-[#0A0A0A] font-medium text-sm whitespace-nowrap pb-1 border-b border-dashed border-neutral-400 hover:border-[#EB4604] hover:text-[#EB4604] transition-colors"
+            <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 lg:gap-16">
+              <RevealOnScroll delay={0.1}>
+                <h2
+                  className="text-[clamp(2.25rem,4.8vw,60px)] font-normal text-[#0A0A0A] leading-[1.08] tracking-[-0.03em] max-w-2xl flex flex-wrap items-center gap-x-3 gap-y-2"
+                  style={{ fontFamily: 'var(--font-family--primary-font)' }}
                 >
-                  <span>Explorer toutes nos expertises</span>
-                  <span className="transition-transform group-hover:translate-x-1">→</span>
-                </Link>
-              </div>
-            </RevealOnScroll>
+                  <span>Tout ce dont</span>
+                  <span className="inline-flex items-center justify-center w-12 h-7 sm:w-16 sm:h-9 rounded-full overflow-hidden border border-neutral-300 relative align-middle shadow-md shrink-0 -translate-y-0.5">
+                    <Image
+                      src="/images/services/header-avatar.jpg"
+                      alt="Portrait"
+                      fill
+                      quality={100}
+                      sizes="64px"
+                      className="object-cover"
+                    />
+                  </span>
+                  <span>vous avez besoin pour dominer votre marché.</span>
+                </h2>
+              </RevealOnScroll>
+
+              <RevealOnScroll delay={0.2}>
+                <div className="space-y-3 max-w-sm">
+                  <p className="text-sm sm:text-base text-neutral-500 font-normal leading-relaxed">
+                    Nous combinons stratégie, design de haut niveau et ingénierie de précision pour propulser votre entreprise.
+                  </p>
+                  {!isServicesPage && (
+                    <Link
+                      href="/services"
+                      className="group inline-flex items-center gap-2 text-[#0A0A0A] font-medium text-sm whitespace-nowrap pb-1 border-b border-dashed border-neutral-400 hover:border-[#EB4604] hover:text-[#EB4604] transition-colors"
+                    >
+                      <span>Explorer toutes nos expertises</span>
+                      <span className="transition-transform group-hover:translate-x-1">→</span>
+                    </Link>
+                  )}
+                </div>
+              </RevealOnScroll>
+            </div>
           </div>
-        </div>
+        )}
 
         {/* ── Ultra-Smooth GPU Hardware-Accelerated Scroll Stack ── */}
         <ScrollStack
@@ -200,10 +231,10 @@ export function Services() {
                     {/* CTA Button */}
                     <div className="pt-2">
                       <Link
-                        href={service.href}
+                        href="/contact?inquiry=services"
                         className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#EB4604] text-white text-xs sm:text-sm font-semibold hover:bg-[#D43D00] transition-all duration-300 shadow-lg shadow-[#EB4604]/25 group"
                       >
-                        <span>Découvrir le service</span>
+                        <span>Contactez-nous</span>
                         <span className="transition-transform group-hover:translate-x-1">→</span>
                       </Link>
                     </div>
@@ -216,8 +247,7 @@ export function Services() {
                         src={service.image}
                         alt={service.title}
                         fill
-                        quality={100}
-                        unoptimized
+                        quality={85}
                         className="object-cover transition-transform duration-700 ease-out group-hover/img:scale-105"
                         sizes="(max-width: 1024px) 100vw, 450px"
                       />

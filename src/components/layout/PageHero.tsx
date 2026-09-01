@@ -69,7 +69,7 @@ export function PageHero({
             <h1 className="heading-display text-white tracking-tight leading-[1.0] font-bold">
               {title}{' '}
               {highlight && (
-                <span className="spark-gradient-text">{highlight}</span>
+                <span className="text-[#EB4604]">{highlight}</span>
               )}
             </h1>
           </RevealOnScroll>

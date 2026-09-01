@@ -1,5 +1,4 @@
 import React from 'react'
-import Image from 'next/image'
 import { cn } from '@/lib/utils'
 
 interface TagProps {
@@ -9,27 +8,39 @@ interface TagProps {
 }
 
 export function Tag({ children, variant = 'base', className }: TagProps) {
+  const isDarkBg = variant === 'base'
+
   return (
     <div
       className={cn(
-        'inline-flex items-center gap-2.5 px-4 py-2 rounded-full border text-[11px] sm:text-[12px] tracking-[0.1em] uppercase font-semibold select-none transition-all',
-        variant === 'base'
-          ? 'bg-[#141418] border-[#25252b] text-white'
-          : 'bg-[#f0f1f5] border-[#e2e4ea] text-[#0A0A0A]',
+        'inline-flex items-center gap-2.5 px-4.5 sm:px-5 py-2 sm:py-2.5 rounded-full select-none transition-all duration-300 group cursor-default',
+        isDarkBg
+          ? // ── Sur Fond Noir (variant="base") : Fond Blanc, Contenu Orange, 3D Épuré ──
+            'bg-gradient-to-b from-white via-white to-[#F0F2F5] text-[#EB4604] border border-t-white border-x-white/90 border-b-neutral-300 shadow-[inset_0_1px_1px_rgba(255,255,255,1),inset_0_-1.5px_2px_rgba(0,0,0,0.08),0_2px_6px_rgba(0,0,0,0.25)] hover:scale-[1.02]'
+          : // ── Sur Fond Blanc (variant="v2") : Fond Orange, Contenu Blanc, 3D Épuré ──
+            'bg-gradient-to-b from-[#FF5A1C] via-[#EB4604] to-[#D93D00] text-white border border-t-white/35 border-x-white/20 border-b-black/20 shadow-[inset_0_1px_1px_rgba(255,255,255,0.45),inset_0_-1.5px_2px_rgba(0,0,0,0.2),0_2px_6px_rgba(0,0,0,0.08)] hover:scale-[1.02]',
         className
       )}
     >
-      {/* Official Symbol as mini badge icon */}
-      <span className="w-4 h-4 sm:w-[18px] sm:h-[18px] relative flex items-center justify-center shrink-0">
-        <Image
-          src="/images/brand/sparkline-symbol.svg"
-          alt="Spark"
-          width={18}
-          height={18}
-          className="w-full h-full object-contain"
-        />
+      {/* Official SPARKLINE Vector Pictogram */}
+      <span className="relative flex h-4 w-4 shrink-0 items-center justify-center transition-transform duration-300 group-hover:rotate-12">
+        <svg
+          viewBox="0 0 884 884"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          className="w-full h-full"
+        >
+          <path
+            d="M288.107 635.001L442 557.527L584.781 485.647C593.448 481.284 603.993 485.246 607.643 494.237C611.044 502.617 607.117 512.179 598.807 515.748L442 583.101L321.167 635.001L192.353 690.33C187.879 692.252 186.304 697.19 189.132 701.154C191.282 704.167 194.341 706.837 198.02 707.238L357.027 724.572C361.66 725.077 365.588 728.202 367.123 732.602C370.194 741.403 362.56 750.218 353.41 748.437L208.984 720.331C199.098 718.407 191.9 721.666 191.9 731.738C191.9 734.4 192.991 736.968 195.037 738.673C261.966 794.449 348.065 828.003 442 828.003C584.876 828.003 709.621 750.378 776.362 635.001C809.206 578.226 828.003 512.308 828.003 442C828.003 372.27 809.513 306.858 777.169 250.4C769.477 236.973 772.783 219.604 785.626 210.97C798.451 202.347 815.921 205.703 823.728 219.041C862.041 284.494 884 360.683 884 442C884 511.2 868.098 576.685 839.748 635.001C768.091 782.402 616.91 884 442 884C340.078 884 246.213 849.502 171.445 791.546C148.451 773.722 127.262 753.679 108.201 731.738C107.699 731.16 107.198 730.581 106.699 730C106.605 729.891 106.51 729.781 106.416 729.671L106.401 729.653L106.39 729.64L106.223 729.446L106.187 729.403L106.136 729.344L106.125 729.331L105.968 729.148C105.611 728.73 105.255 728.312 104.9 727.894L104.715 727.677L104.507 727.431C104.083 726.931 103.661 726.429 103.24 725.927C103.092 725.751 102.945 725.575 102.797 725.399C102.224 724.713 101.652 724.026 101.083 723.337L100.912 723.13L100.759 722.944C100.109 722.155 99.4606 721.363 98.8152 720.569C98.6457 720.361 98.4763 720.152 98.3072 719.943L98.1178 719.709L97.9371 719.485C97.2719 718.661 96.6096 717.835 95.9502 717.007C78.5422 695.131 63.1649 671.567 50.1035 646.6C48.0981 642.766 46.1472 638.9 44.252 635.001C15.9024 576.685 0 511.2 0 442C0 197.89 197.89 0 442 0C521.293 0 595.71 20.8798 660.051 57.4412C673.488 65.0765 677.068 82.5022 668.61 95.4372C660.141 108.389 642.816 111.918 629.291 104.399C573.824 73.5616 509.963 55.9972 442 55.9972C228.816 55.9972 55.9972 228.816 55.9972 442C55.9972 512.308 74.7944 578.226 107.637 635.001C107.855 635.378 108.237 635.63 108.668 635.688C108.791 635.704 108.914 635.721 109.036 635.738C110.322 635.915 111.494 634.951 111.534 633.655L119.326 379.32C119.687 367.536 130.589 358.927 142.136 361.31C151.975 363.34 158.529 372.686 157.085 382.629L121.331 628.868C120.583 634.02 124.051 638.778 129.09 640.087C134.699 641.544 140.925 639.677 143.56 634.516L289.722 348.233C294.752 338.381 306.366 333.86 316.734 337.72C329.621 342.517 334.898 357.906 327.666 369.603L156.557 646.339C154.356 649.898 155.648 654.385 159.148 656.68C162.729 659.029 167.35 659.4 170.381 656.374L793.002 34.9344C811.592 16.3796 842.235 18.3047 858.356 39.0402C872.701 57.4896 869.986 83.9603 852.196 99.1146L178.517 672.985C176.498 674.705 176.078 678.01 178.428 679.24C180.799 680.482 183.136 682.109 185.578 681.014L288.107 635.001Z"
+            fill="currentColor"
+          />
+        </svg>
       </span>
-      <span className="leading-none">{children}</span>
+
+      {/* Label Text */}
+      <span className="text-xs sm:text-[13px] font-mono font-semibold uppercase tracking-[0.12em] leading-none">
+        {children}
+      </span>
     </div>
   )
 }

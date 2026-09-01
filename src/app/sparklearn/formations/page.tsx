@@ -25,7 +25,7 @@ export default async function FormationsPage() {
         highlight="Transformer."
         subtitle="Des programmes pratiques et immersifs conçus pour doter les talents et les entreprises des compétences numériques les plus recherchées."
         breadcrumbs={[
-          { label: 'SPARKlearn', href: '/sparklearn' },
+          { label: 'Sparklearn', href: '/sparklearn' },
           { label: 'Formations', href: '/sparklearn/formations' },
         ]}
       />

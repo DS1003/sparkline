@@ -107,7 +107,7 @@ export const servicesData: ServiceItem[] = [
     title: 'Training & Capacity',
     tagline: 'Empowering teams with tomorrow’s digital skills.',
     summary: 'Custom digital training programs and workshops designed to upskill teams, developers, and creators.',
-    description: 'Through SPARKlearn and our corporate training services, we deliver practical, project-based learning in modern web technologies, UI/UX design, and digital workflows.',
+    description: 'Through Sparklearn and our corporate training services, we deliver practical, project-based learning in modern web technologies, UI/UX design, and digital workflows.',
     capabilities: [
       'Corporate Team Workshops',
       'Full-Stack Web Development Bootcamps',

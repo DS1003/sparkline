@@ -1,0 +1,109 @@
+'use client'
+
+import React, { useState } from 'react'
+import Link from 'next/link'
+import { Container } from '@/components/layout/Container'
+import { Section } from '@/components/layout/Section'
+import { Tag } from '@/components/ui/Tag'
+import { RevealOnScroll } from '@/components/motion/RevealOnScroll'
+import { TeamMember } from '@/types'
+import { TeamCardBadge } from './TeamCardBadge'
+
+interface TeamShowcaseProps {
+  members: TeamMember[]
+}
+
+const departments = ['Tous les talents', 'Engineering', 'Design & UX', 'Product & Tech', 'DevOps & SRE']
+
+export function TeamShowcase({ members }: TeamShowcaseProps) {
+  const [activeDept, setActiveDept] = useState('Tous les talents')
+
+  const filteredMembers = members.filter((member) => {
+    if (activeDept === 'Tous les talents') return true
+    if (activeDept === 'Engineering') {
+      return member.department === 'Engineering' || member.role.toLowerCase().includes('full stack') || member.role.toLowerCase().includes('logiciel')
+    }
+    if (activeDept === 'Design & UX') {
+      return member.department === 'Design & Engineering' || member.role.toLowerCase().includes('ui/ux') || member.role.toLowerCase().includes('designer')
+    }
+    if (activeDept === 'Product & Tech') {
+      return member.department === 'Product & Tech' || member.role.toLowerCase().includes('product')
+    }
+    if (activeDept === 'DevOps & SRE') {
+      return member.department === 'DevOps & SRE' || member.role.toLowerCase().includes('devops') || member.role.toLowerCase().includes('sre')
+    }
+    return true
+  })
+
+  return (
+    <Section id="team-showcase" className="py-16 sm:py-20 lg:py-28 bg-[#FAFBFD] border-b border-[#E5E7EB]">
+      <Container>
+        {/* ── 1. Top Section Header ── */}
+        <div className="space-y-6 mb-12 sm:mb-16">
+          <RevealOnScroll>
+            <Tag variant="v2">Le Collectif SPARKLINE</Tag>
+          </RevealOnScroll>
+
+          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 lg:gap-16">
+            <RevealOnScroll delay={0.1}>
+              <h2
+                className="text-[clamp(2.25rem,4.5vw,56px)] font-normal text-[#0A0A0A] leading-[1.06] tracking-[-0.03em] max-w-2xl"
+                style={{ fontFamily: 'var(--font-family--primary-font)' }}
+              >
+                Nous bâtissons des systèmes digitaux pour propulser les leaders.
+              </h2>
+            </RevealOnScroll>
+
+            <RevealOnScroll delay={0.15}>
+              <div className="space-y-3 max-w-sm">
+                <p className="text-sm sm:text-base text-neutral-500 font-normal leading-relaxed">
+                  Une équipe soudée d’ingénieurs, de designers et de stratèges d’élite opérant à l’intersection de la technologie et de l’innovation.
+                </p>
+                <Link
+                  href="/contact"
+                  className="group inline-flex items-center gap-2 text-[#0A0A0A] font-medium text-sm whitespace-nowrap pb-1 border-b border-dashed border-neutral-400 hover:border-[#EB4604] hover:text-[#EB4604] transition-colors"
+                >
+                  <span>Rejoindre notre équipe</span>
+                  <span className="transition-transform group-hover:translate-x-1">→</span>
+                </Link>
+              </div>
+            </RevealOnScroll>
+          </div>
+        </div>
+
+        {/* ── 2. Filter Pills ── */}
+        <div className="mb-10 sm:mb-12">
+          <RevealOnScroll delay={0.2}>
+            <div className="inline-flex flex-wrap items-center gap-2 p-1.5 rounded-full bg-white border border-[#E5E7EB] shadow-xs">
+              {departments.map((dept) => {
+                const isSelected = activeDept === dept
+                return (
+                  <button
+                    key={dept}
+                    onClick={() => setActiveDept(dept)}
+                    className={`px-4 py-2 rounded-full text-xs font-mono transition-all duration-300 ${
+                      isSelected
+                        ? 'bg-[#EB4604] text-white font-semibold shadow-md shadow-[#EB4604]/20'
+                        : 'text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100'
+                    }`}
+                  >
+                    {dept}
+                  </button>
+                )
+              })}
+            </div>
+          </RevealOnScroll>
+        </div>
+
+        {/* ── 3. High-Precision Badge Grid (Exact Screenshot Styling) ── */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+          {filteredMembers.map((member, idx) => (
+            <RevealOnScroll key={member.slug} delay={0.05 + idx * 0.08} direction="up">
+              <TeamCardBadge member={member} index={idx} />
+            </RevealOnScroll>
+          ))}
+        </div>
+      </Container>
+    </Section>
+  )
+}

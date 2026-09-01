@@ -1,114 +1,95 @@
 'use client'
 
 import React, { useEffect, useRef, useState } from 'react'
+import { motion, useInView } from 'framer-motion'
 
 interface CounterProps {
   value: number
   suffix?: string
   label: string
   description: string
+  delay?: number
 }
 
 function easeOutExpo(t: number): number {
   return t === 1 ? 1 : 1 - Math.pow(2, -10 * t)
 }
 
-export function Counter({ value, suffix = '+', label, description }: CounterProps) {
+export function Counter({ value, suffix = '+', label, description, delay = 0 }: CounterProps) {
   const [displayValue, setDisplayValue] = useState(0)
-  const [started, setStarted] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
+  const isInView = useInView(ref, { once: false, amount: 0.3 })
 
-  // Simple scroll-based visibility check with fallback
+  // Animate the count whenever the card enters the viewport on scroll
   useEffect(() => {
-    const el = ref.current
-    if (!el) return
-
-    // Try IntersectionObserver first
-    if (typeof IntersectionObserver !== 'undefined') {
-      const observer = new IntersectionObserver(
-        (entries) => {
-          for (const entry of entries) {
-            if (entry.isIntersecting) {
-              setStarted(true)
-              observer.disconnect()
-              break
-            }
-          }
-        },
-        { threshold: 0.1, rootMargin: '50px' }
-      )
-      observer.observe(el)
-
-      // Fallback: if not triggered after 3s, force start
-      const fallback = setTimeout(() => {
-        setStarted(true)
-        observer.disconnect()
-      }, 3000)
-
-      return () => {
-        observer.disconnect()
-        clearTimeout(fallback)
-      }
-    } else {
-      // No IntersectionObserver — just start immediately
-      setStarted(true)
+    if (!isInView) {
+      setDisplayValue(0)
+      return
     }
-  }, [])
-
-  // Animate the count
-  useEffect(() => {
-    if (!started) return
 
     const duration = 2000
     let startTime: number | null = null
     let frameId: number
 
-    function step(timestamp: number) {
-      if (startTime === null) startTime = timestamp
-      const elapsed = timestamp - startTime
-      const progress = Math.min(elapsed / duration, 1)
-      const eased = easeOutExpo(progress)
+    // Optional slight stagger delay before counting
+    const timeoutId = setTimeout(() => {
+      function step(timestamp: number) {
+        if (startTime === null) startTime = timestamp
+        const elapsed = timestamp - startTime
+        const progress = Math.min(elapsed / duration, 1)
+        const eased = easeOutExpo(progress)
 
-      setDisplayValue(Math.round(eased * value))
+        setDisplayValue(Math.round(eased * value))
 
-      if (progress < 1) {
-        frameId = requestAnimationFrame(step)
+        if (progress < 1) {
+          frameId = requestAnimationFrame(step)
+        }
       }
-    }
 
-    frameId = requestAnimationFrame(step)
-    return () => cancelAnimationFrame(frameId)
-  }, [started, value])
+      frameId = requestAnimationFrame(step)
+    }, delay * 1000)
+
+    return () => {
+      clearTimeout(timeoutId)
+      cancelAnimationFrame(frameId)
+    }
+  }, [isInView, value, delay])
 
   return (
-    <div ref={ref} className="flex flex-col">
-      {/* ── Large Number (h2.digit.counter.v2 - 96px Geist, sans-serif, #0A0A0A) ── */}
-      <h2
-        className="digit counter v2 flex items-baseline mb-4 sm:mb-5 text-[clamp(3.5rem,6vw,96px)] lg:text-[96px] font-bold text-[#0A0A0A] leading-[1.1] tracking-[-0.03em]"
-        style={{ fontFamily: 'var(--font-family--primary-font)', fontFeatureSettings: '"tnum" 1' }}
-      >
-        <span>{displayValue}</span>
-        <span>{suffix}</span>
-      </h2>
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 50, scale: 0.95 }}
+      animate={isInView ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 50, scale: 0.95 }}
+      transition={{
+        duration: 0.8,
+        delay: delay,
+        ease: [0.16, 1, 0.3, 1],
+      }}
+      className="relative flex flex-col justify-between p-6 sm:p-7 lg:p-8 rounded-[24px] sm:rounded-[28px] bg-white border border-neutral-200/90 shadow-[0_8px_30px_rgba(0,0,0,0.03)] h-full will-change-transform"
+    >
+      {/* ── Large Counter Number ── */}
+      <div className="mb-4">
+        <h3
+          className="text-[clamp(2.75rem,5vw,68px)] font-light text-[#0A0A0A] leading-[1.0] tracking-[-0.04em] flex items-baseline gap-0.5"
+          style={{ fontFamily: 'var(--font-family--primary-font)', fontFeatureSettings: '"tnum" 1' }}
+        >
+          <span>{displayValue}</span>
+          <span className="text-[#EB4604] font-normal">{suffix}</span>
+        </h3>
+      </div>
 
-      {/* ── Dotted Separator ── */}
-      <div className="w-full mb-3.5 sm:mb-4 border-t border-dotted border-[#c8c8cc]" />
-
-      {/* ── Label ── */}
-      <h3
-        className="text-[16px] sm:text-[17px] font-semibold text-[#0A0A0A] tracking-[-0.01em] mb-1.5 leading-snug"
-        style={{ fontFamily: 'var(--font-family--primary-font)' }}
-      >
-        {label}
-      </h3>
-
-      {/* ── Description ── */}
-      <p
-        className="text-[13px] sm:text-[14px] text-[#555555] font-normal leading-[1.5] max-w-[280px]"
-        style={{ fontFamily: 'var(--font-family--primary-font)' }}
-      >
-        {description}
-      </p>
-    </div>
+      {/* ── Solid Hairline Separator & Text ── */}
+      <div className="space-y-1.5 pt-4 border-t border-neutral-100">
+        <h4
+          className="text-[15px] sm:text-[16px] font-semibold text-[#0A0A0A] tracking-[-0.01em] leading-snug"
+          style={{ fontFamily: 'var(--font-family--primary-font)' }}
+        >
+          {label}
+        </h4>
+        <p className="text-[13px] text-neutral-500 font-light leading-[1.5]">
+          {description}
+        </p>
+      </div>
+    </motion.div>
   )
 }
