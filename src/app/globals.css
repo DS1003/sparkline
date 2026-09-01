@@ -257,6 +257,26 @@ body {
   animation: marquee 25s linear infinite;
 }
 
+/* ─── Tech Constellation Vertical Scroll ─── */
+@keyframes verticalMarqueeTrack {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(calc(-100% - 12px));
+  }
+}
+
+.animate-vertical-track {
+  animation: verticalMarqueeTrack 24s linear infinite;
+  will-change: transform;
+}
+
+.animate-vertical-track:hover,
+div:hover > .animate-vertical-track {
+  animation-play-state: paused;
+}
+
 /* ─── Preloader Spark Animation ─── */
 @keyframes sparkPulse {
   0%, 100% {
