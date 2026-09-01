@@ -148,7 +148,7 @@ export function SparkLearnShowcase({ overview, masterclasses }: SparkLearnShowca
                 <div className="relative z-10 space-y-3.5">
                   <div className="flex items-center justify-between">
                     <span className="text-[10px] font-mono uppercase tracking-widest text-neutral-400 font-bold">
-                      SPARKlearn Academy
+                      Sparklearn Academy
                     </span>
                     <span className="px-2.5 py-0.5 rounded-full bg-white/10 text-[10px] font-mono text-neutral-300">
                       Excellence &amp; Craft
@@ -202,11 +202,10 @@ export function SparkLearnShowcase({ overview, masterclasses }: SparkLearnShowca
                       <button
                         key={cat.id}
                         onClick={() => setSelectedCategory(cat.id)}
-                        className={`px-3.5 py-1.5 rounded-full text-xs font-medium transition-all duration-300 cursor-pointer border ${
-                          isActive
+                        className={`px-3.5 py-1.5 rounded-full text-xs font-medium transition-all duration-300 cursor-pointer border ${isActive
                             ? 'bg-[#0A0A0A] text-white border-[#0A0A0A] shadow-xs'
                             : 'bg-white text-neutral-600 border-[#E5E7EB] hover:border-neutral-400 hover:text-[#0A0A0A]'
-                        }`}
+                          }`}
                       >
                         {cat.label}
                       </button>
@@ -237,11 +236,10 @@ export function SparkLearnShowcase({ overview, masterclasses }: SparkLearnShowca
                         {/* Floating Status Badge */}
                         <div className="absolute top-2.5 left-2.5 z-10 flex items-center gap-1">
                           <span
-                            className={`px-2 py-0.5 rounded-full text-[9px] font-mono font-bold uppercase tracking-wider ${
-                              mc.status === 'upcoming'
+                            className={`px-2 py-0.5 rounded-full text-[9px] font-mono font-bold uppercase tracking-wider ${mc.status === 'upcoming'
                                 ? 'bg-[#EB4604] text-white shadow-xs'
                                 : 'bg-[#0A0A0A]/85 backdrop-blur-md text-white'
-                            }`}
+                              }`}
                           >
                             {mc.status === 'upcoming' ? 'À venir' : 'Terminée'}
                           </span>

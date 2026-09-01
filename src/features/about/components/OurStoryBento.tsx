@@ -108,7 +108,7 @@ export function OurStoryBento() {
                   {/* Row 3 */}
                   <div className="flex flex-wrap items-center justify-center gap-2">
                     <span className="px-4 py-2 rounded-full bg-white border border-neutral-300 text-[#0A0A0A] text-xs font-medium shadow-xs transition-transform duration-300 rotate-2 hover:rotate-0 hover:scale-105 select-none">
-                      SPARKlearn
+                      Sparklearn
                     </span>
                     <span className="px-4 py-2 rounded-full bg-[#0A0A0A] text-white text-xs font-medium shadow-xs transition-transform duration-300 -rotate-2 hover:rotate-0 hover:scale-105 select-none">
                       Design Systems

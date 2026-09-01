@@ -12,7 +12,7 @@ const navLinks = [
   { label: 'Services', href: '/services' },
   { label: 'Projets', href: '/projects' },
   { label: 'Équipe', href: '/team' },
-  { label: 'SPARKlearn', href: '/sparklearn' },
+  { label: 'Sparklearn', href: '/sparklearn' },
   { label: 'Contact', href: '/contact' },
 ]
 
@@ -42,9 +42,8 @@ export function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
-                className={`transition-colors py-1 ${
-                  active ? 'text-[#EB4604] font-semibold' : 'hover:text-white'
-                }`}
+                className={`transition-colors py-1 ${active ? 'text-[#EB4604] font-semibold' : 'hover:text-white'
+                  }`}
               >
                 {link.label}
               </Link>
@@ -85,19 +84,16 @@ export function Navbar() {
             aria-label="Toggle menu"
           >
             <span
-              className={`w-5 h-0.5 bg-white transition-transform duration-300 ${
-                mobileMenuOpen ? 'rotate-45 translate-y-1' : ''
-              }`}
+              className={`w-5 h-0.5 bg-white transition-transform duration-300 ${mobileMenuOpen ? 'rotate-45 translate-y-1' : ''
+                }`}
             />
             <span
-              className={`w-5 h-0.5 bg-white transition-opacity duration-300 ${
-                mobileMenuOpen ? 'opacity-0' : 'opacity-100'
-              }`}
+              className={`w-5 h-0.5 bg-white transition-opacity duration-300 ${mobileMenuOpen ? 'opacity-0' : 'opacity-100'
+                }`}
             />
             <span
-              className={`w-5 h-0.5 bg-white transition-transform duration-300 ${
-                mobileMenuOpen ? '-rotate-45 -translate-y-1' : ''
-              }`}
+              className={`w-5 h-0.5 bg-white transition-transform duration-300 ${mobileMenuOpen ? '-rotate-45 -translate-y-1' : ''
+                }`}
             />
           </button>
         </div>

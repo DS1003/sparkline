@@ -1,8 +1,8 @@
 export const sparklearn = {
-  name: 'SPARKlearn',
+  name: 'Sparklearn',
   tagline: 'La connaissance est aussi une étincelle.',
   description:
-    'Chez SPARKLINE, nous croyons que la transmission des connaissances est également une source de transformation. SPARKlearn est notre initiative éducative dédiée au renforcement des compétences numériques et à l’autonomisation de la prochaine génération de créateurs et bâtisseurs.',
+    'Chez Sparkline, nous croyons que la transmission des connaissances est également une source de transformation. Sparklearn est notre initiative éducative dédiée au renforcement des compétences numériques et à l’autonomisation de la prochaine génération de créateurs et bâtisseurs.',
   activities: [
     {
       id: 'masterclasses',

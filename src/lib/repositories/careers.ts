@@ -52,7 +52,7 @@ export const careersData: CareerPosition[] = [
       'Liberté créative sur des projets d’envergure pour des leaders africains et internationaux',
       'Environnement de studio pluridisciplinaire stimulant et bienveillant',
       'Couverture santé & mutuelle d’entreprise',
-      'Accès privilégié aux masterclasses et au réseau de mentorat SPARKlearn',
+      'Accès privilégié aux masterclasses et au réseau de mentorat Sparklearn',
     ],
   },
   {

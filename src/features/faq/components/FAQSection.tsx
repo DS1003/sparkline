@@ -20,7 +20,7 @@ const faqs: FAQItem[] = [
     number: '01',
     question: 'Quels services votre agence propose-t-elle ?',
     answer:
-      'Nous offrons une gamme complète d’expertises intégrées : Design UI/UX & Systèmes de Design, développement d’applications Web & Mobiles sur-mesure, identités de marque stratégiques, architectures Cloud et programmes d’apprentissage SPARKlearn.',
+      'Nous offrons une gamme complète d’expertises intégrées : Design UI/UX & Systèmes de Design, développement d’applications Web & Mobiles sur-mesure, identités de marque stratégiques, architectures Cloud et programmes d’apprentissage Sparklearn.',
   },
   {
     id: 'approach',
@@ -63,7 +63,7 @@ export function FAQSection() {
     <Section id="faq" className="py-20 sm:py-28 lg:py-36 bg-white text-neutral-900 overflow-hidden">
       <Container>
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-start">
-          
+
           {/* ── Left Column: Editorial Sticky Header ── */}
           <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-32">
             <RevealOnScroll>
@@ -110,11 +110,10 @@ export function FAQSection() {
                 <RevealOnScroll key={faq.id} delay={0.06 * idx}>
                   <div
                     onClick={() => toggle(faq.id)}
-                    className={`group cursor-pointer transition-all duration-300 rounded-[24px] sm:rounded-[28px] overflow-hidden border ${
-                      isOpen
+                    className={`group cursor-pointer transition-all duration-300 rounded-[24px] sm:rounded-[28px] overflow-hidden border ${isOpen
                         ? 'bg-[#F9FAFB] border-[#0A0A0A]/20 shadow-[0_12px_32px_rgba(0,0,0,0.04),0_1px_3px_rgba(0,0,0,0.02)]'
                         : 'bg-[#F8F9FA] hover:bg-[#F0F2F5] border-transparent hover:border-neutral-200/60 shadow-[0_2px_8px_rgba(0,0,0,0.015)]'
-                    }`}
+                      }`}
                   >
                     {/* Question Header Bar */}
                     <div className="flex items-center justify-between gap-4 p-5 sm:p-6 lg:px-7">
@@ -134,11 +133,10 @@ export function FAQSection() {
 
                       {/* Smooth Circular Micro-Interaction Button */}
                       <div
-                        className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full border flex items-center justify-center text-sm font-light shrink-0 transition-all duration-300 ${
-                          isOpen
+                        className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full border flex items-center justify-center text-sm font-light shrink-0 transition-all duration-300 ${isOpen
                             ? 'bg-[#0A0A0A] text-white border-[#0A0A0A] rotate-45 shadow-sm'
                             : 'bg-white border-neutral-200/80 text-neutral-600 group-hover:border-neutral-300 group-hover:bg-white group-hover:text-[#0A0A0A]'
-                        }`}
+                          }`}
                       >
                         <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                           <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
@@ -148,11 +146,10 @@ export function FAQSection() {
 
                     {/* Expandable Answer Content */}
                     <div
-                      className={`grid transition-all duration-300 ease-in-out px-5 sm:px-6 lg:px-7 ${
-                        isOpen
+                      className={`grid transition-all duration-300 ease-in-out px-5 sm:px-6 lg:px-7 ${isOpen
                           ? 'grid-rows-[1fr] opacity-100 pb-6 pt-0'
                           : 'grid-rows-[0fr] opacity-0 pb-0 pt-0'
-                      }`}
+                        }`}
                     >
                       <div className="overflow-hidden">
                         <div className="border-t border-neutral-200/70 pt-4 pl-7 sm:pl-8">

@@ -26,7 +26,7 @@ export default async function MasterclassesPage() {
         highlight="bâtir l’avenir."
         subtitle="Nous animons des masterclasses de haut niveau dans les universités, hubs technologiques et centres communautaires — 100% gratuitement."
         breadcrumbs={[
-          { label: 'SPARKlearn', href: '/sparklearn' },
+          { label: 'Sparklearn', href: '/sparklearn' },
           { label: 'Masterclasses', href: '/sparklearn/masterclasses' },
         ]}
       />

@@ -7,7 +7,7 @@ import { sparklearnRepository } from '@/lib/repositories/sparklearn'
 import { SparkLearnShowcase } from '@/features/sparklearn/components/SparkLearnShowcase'
 
 export const metadata: Metadata = {
-  title: 'SPARKlearn | Initiatives Éducatives & Formations — SPARKLINE',
+  title: 'Sparklearn | Initiatives Éducatives & Formations — SPARKLINE',
   description: 'Masterclasses gratuites, bootcamps immersifs et programmes de formation sur mesure pour faire émerger la prochaine génération de créateurs du numérique.',
 }
 
@@ -22,8 +22,8 @@ export default async function SparklearnPage() {
         tag="Mission Éducative"
         title="La connaissance est aussi"
         highlight="une étincelle."
-        subtitle="SPARKlearn est l'engagement citoyen et éducatif de SPARKLINE pour le mentorat, le partage et l'émancipation des talents numériques en Afrique."
-        breadcrumbs={[{ label: 'SPARKlearn', href: '/sparklearn' }]}
+        subtitle="Sparklearn est l'engagement citoyen et éducatif de SPARKLINE pour le mentorat, le partage et l'émancipation des talents numériques en Afrique."
+        breadcrumbs={[{ label: 'Sparklearn', href: '/sparklearn' }]}
       />
 
       {/* ── Modern Bento & Formations Showcase (Inspired by Reference Design) ── */}

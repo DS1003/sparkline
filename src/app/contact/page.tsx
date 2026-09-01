@@ -16,7 +16,7 @@ const serviceOptions = [
   'Identité de Marque & Design System',
   'Ingénierie Logicielle & Mobile',
   'Transformation Digitale & Conseil',
-  'SPARKlearn & Formation sur mesure',
+  'Sparklearn & Formation sur mesure',
 ]
 
 const budgetOptions = [

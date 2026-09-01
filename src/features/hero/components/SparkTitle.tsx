@@ -13,13 +13,15 @@ export function SparkTitle({
 }: SparkTitleProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const containerRef = useRef<HTMLHeadingElement>(null)
+  const hasStartedRef = useRef(false)
+  const [isStarted, setIsStarted] = useState(false)
   const [currentLineIndex, setCurrentLineIndex] = useState(0)
-  const [currentCharIndex, setCurrentCharIndex] = useState(0)
+  const [currentCharIndex, setCurrentCharIndex] = useState(-1)
   const [isCompleted, setIsCompleted] = useState(false)
   const [sparkPos, setSparkPos] = useState<{ x: number; y: number; active: boolean }>({
     x: 0,
     y: 0,
-    active: true,
+    active: false,
   })
 
   // Particles array for canvas sparks
@@ -37,41 +39,85 @@ export function SparkTitle({
     }>
   >([])
 
-  // 1. Text Writing Sequencer
+  // 0. Wait for the preloader to complete before starting from the beginning (Guaranteed Single Execution)
   useEffect(() => {
+    let startTimer: NodeJS.Timeout | null = null
+
+    const startWriting = () => {
+      if (hasStartedRef.current) return
+      hasStartedRef.current = true
+
+      startTimer = setTimeout(() => {
+        setIsStarted(true)
+        setCurrentLineIndex(0)
+        setCurrentCharIndex(0)
+      }, 100)
+    }
+
+    if (typeof window !== 'undefined' && (window as unknown as { __SPARKLINE_LOADED__?: boolean }).__SPARKLINE_LOADED__) {
+      startWriting()
+      return
+    }
+
+    const handleLoaderComplete = () => {
+      startWriting()
+    }
+
+    window.addEventListener('sparkline:loader-complete', handleLoaderComplete, { once: true })
+
+    // Fallback safety timeout if preloader is not present or event missed
+    const fallbackTimer = setTimeout(() => {
+      startWriting()
+    }, 1600)
+
+    return () => {
+      window.removeEventListener('sparkline:loader-complete', handleLoaderComplete)
+      clearTimeout(fallbackTimer)
+      if (startTimer) clearTimeout(startTimer)
+    }
+  }, [])
+
+  // 1. Text Writing Sequencer (runs only after isStarted is true)
+  useEffect(() => {
+    if (!isStarted || isCompleted || currentCharIndex < 0) return
+
     let timeout: NodeJS.Timeout
     const totalLines = lines.length
 
     if (currentLineIndex < totalLines) {
       const currentLineText = lines[currentLineIndex]
 
-      if (currentCharIndex < currentLineText.length) {
-        // Typing speed per character (fast, natural spark writing)
-        const delay = currentLineText[currentCharIndex] === ' ' ? 35 : 45 + Math.random() * 25
+      if (currentCharIndex < currentLineText.length - 1) {
+        // Next character on the same line
+        const char = currentLineText[currentCharIndex]
+        const delay = char === ' ' ? 28 : 42 + Math.random() * 20
         timeout = setTimeout(() => {
           setCurrentCharIndex((prev) => prev + 1)
         }, delay)
       } else {
-        // Line finished -> pause briefly before moving to next line
-        timeout = setTimeout(() => {
-          setCurrentLineIndex((prev) => prev + 1)
-          setCurrentCharIndex(0)
-        }, 180)
+        // Current line finished
+        if (currentLineIndex < totalLines - 1) {
+          // Pause before moving to the next line
+          timeout = setTimeout(() => {
+            setCurrentLineIndex((prev) => prev + 1)
+            setCurrentCharIndex(0)
+          }, 180)
+        } else {
+          // Entire title completed!
+          timeout = setTimeout(() => {
+            setIsCompleted(true)
+            setSparkPos((prev) => ({ ...prev, active: false }))
+          }, 400)
+        }
       }
-    } else {
-      setIsCompleted(true)
-      // Fade out writing spark after a short delay
-      timeout = setTimeout(() => {
-        setSparkPos((prev) => ({ ...prev, active: false }))
-      }, 500)
     }
 
     return () => clearTimeout(timeout)
-  }, [currentLineIndex, currentCharIndex, lines])
+  }, [isStarted, currentLineIndex, currentCharIndex, isCompleted, lines])
 
   // 2. Track the physical DOM coordinate of the active spark tip
   useEffect(() => {
-    if (isCompleted && !sparkPos.active) return
+    if (!isStarted || (isCompleted && !sparkPos.active)) return
 
     const container = containerRef.current
     if (!container) return
@@ -88,7 +134,7 @@ export function SparkTitle({
 
       // Spawn burst of 4-8 realistic glowing embers/sparks at the tip
       for (let i = 0; i < 6; i++) {
-        const angle = (Math.random() * Math.PI * 2)
+        const angle = Math.random() * Math.PI * 2
         const speed = 1.5 + Math.random() * 4.5
         const colors = ['#FFFFFF', '#FFE57F', '#FF9100', '#EB4604', '#FF3D00']
         particlesRef.current.push({
@@ -104,7 +150,7 @@ export function SparkTitle({
         })
       }
     }
-  }, [currentLineIndex, currentCharIndex, isCompleted, sparkPos.active])
+  }, [isStarted, currentLineIndex, currentCharIndex, isCompleted, sparkPos.active])
 
   // 3. Canvas Ember & Spark Particles Animation Loop
   useEffect(() => {
@@ -168,7 +214,7 @@ export function SparkTitle({
   return (
     <h1
       ref={containerRef}
-      className={`relative heaidng-style-01 text-[clamp(2.25rem,4.8vw,80px)] lg:text-[80px] xl:text-[84px] font-normal text-[#FFFFFF] tracking-[-0.042em] leading-[1.0] max-w-[900px] select-none ${className}`}
+      className={`relative heading-style-01 text-[clamp(2.25rem,4.8vw,80px)] lg:text-[80px] xl:text-[84px] font-normal text-[#FFFFFF] tracking-[-0.042em] leading-[1.0] max-w-[900px] select-none ${className}`}
       style={{ fontFamily: 'var(--font-family--primary-font)' }}
     >
       {/* Canvas for Realistic Flying Embers / Spark Particles */}
@@ -179,7 +225,7 @@ export function SparkTitle({
       />
 
       {/* Floating Spark Glowing Tip Head */}
-      {sparkPos.active && !isCompleted && (
+      {isStarted && sparkPos.active && !isCompleted && (
         <div
           className="pointer-events-none absolute z-20 transition-all duration-75 ease-out"
           style={{
@@ -204,14 +250,16 @@ export function SparkTitle({
 
       {/* 3 Strict Lines of Text Rendered with Dynamic Reveal & Heat Glow */}
       {lines.map((lineText, lineIdx) => {
-        const isLineActive = lineIdx === currentLineIndex
-        const isLinePast = lineIdx < currentLineIndex
+        const isLineActive = isStarted && lineIdx === currentLineIndex
+        const isLinePast = isStarted && lineIdx < currentLineIndex
 
         return (
           <span key={lineIdx} className="block whitespace-nowrap relative">
             {lineText.split('').map((char, charIdx) => {
-              const isCharRevealed = isLinePast || (isLineActive && charIdx <= currentCharIndex)
-              const isCurrentTip = isLineActive && charIdx === currentCharIndex
+              const isCharRevealed =
+                isStarted &&
+                (isLinePast || (isLineActive && charIdx <= currentCharIndex))
+              const isCurrentTip = !isCompleted && isLineActive && charIdx === currentCharIndex
 
               return (
                 <span
@@ -220,7 +268,9 @@ export function SparkTitle({
                   className="inline-block transition-all duration-300"
                   style={{
                     opacity: isCharRevealed ? 1 : 0,
-                    transform: isCharRevealed ? 'translate3d(0, 0, 0) scale(1)' : 'translate3d(0, 8px, 0) scale(0.92)',
+                    transform: isCharRevealed
+                      ? 'translate3d(0, 0, 0) scale(1)'
+                      : 'translate3d(0, 8px, 0) scale(0.92)',
                     color: isCurrentTip
                       ? '#FFE57F'
                       : isCharRevealed
