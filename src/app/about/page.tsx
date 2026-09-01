@@ -41,7 +41,7 @@ export default async function AboutPage() {
           <Navbar />
 
           {/* Top: + WHO WE ARE Pill Tag */}
-          <div className="relative z-10 pt-4">
+          <div className="relative z-10 pt-4 flex justify-center">
             <RevealOnScroll>
               <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white text-[#070709] text-xs font-mono font-bold uppercase tracking-wider shadow-md">
                 <span className="w-3.5 h-3.5 rounded-full bg-[#EB4604] text-white flex items-center justify-center text-[10px] font-bold">

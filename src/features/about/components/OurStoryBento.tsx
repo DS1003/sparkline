@@ -21,7 +21,7 @@ export function OurStoryBento() {
 
           <RevealOnScroll delay={0.1}>
             <h2
-              className="text-3xl sm:text-5xl lg:text-[54px] font-normal text-[#0A0A0A] leading-[1.12] tracking-[-0.035em]"
+              className="text-2xl sm:text-4xl lg:text-[54px] font-normal text-[#0A0A0A] leading-[1.12] tracking-[-0.035em]"
               style={{ fontFamily: 'var(--font-family--primary-font)' }}
             >
               <span>Depuis 2024, nous transformons des idées audacieuses </span>
@@ -40,16 +40,16 @@ export function OurStoryBento() {
           </RevealOnScroll>
 
           <RevealOnScroll delay={0.15}>
-            <p className="text-neutral-600 text-sm sm:text-base lg:text-lg font-light leading-relaxed max-w-2xl mx-auto">
+            <p className="text-neutral-600 text-xs sm:text-base lg:text-lg font-light leading-relaxed max-w-2xl mx-auto">
               Grâce à l’alliance indissociable de la stratégie technique et du design centré sur l’humain, nous comblons le fossé entre la créativité et la rigueur d’ingénierie logicielle.
             </p>
           </RevealOnScroll>
 
           <RevealOnScroll delay={0.2}>
-            <div className="pt-2">
+            <div className="pt-2 flex justify-center">
               <Link
                 href="/contact"
-                className="group inline-flex items-center gap-3 px-8 py-3.5 rounded-full bg-[#EB4604] hover:bg-[#D43D00] text-white font-semibold text-sm shadow-md transition-all duration-300 hover:scale-[1.02]"
+                className="group inline-flex items-center gap-3 px-6 sm:px-8 py-3 sm:py-3.5 rounded-full bg-[#EB4604] hover:bg-[#D43D00] text-white font-semibold text-xs sm:text-sm shadow-md transition-all duration-300 hover:scale-[1.02]"
               >
                 <span>Démarrer un projet avec nous</span>
                 <span className="w-5 h-5 rounded-full bg-white/20 flex items-center justify-center text-xs transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
@@ -67,7 +67,7 @@ export function OurStoryBento() {
               ═══════════════════════════════════════════════════════════ */}
           <div className="lg:col-span-4 flex">
             <RevealOnScroll delay={0.25} className="w-full">
-              <div className="w-full h-full min-h-[380px] sm:min-h-[420px] rounded-[28px] sm:rounded-[32px] bg-white border border-[#E5E7EB] p-7 sm:p-9 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-[0_12px_35px_rgba(0,0,0,0.06)] hover:border-neutral-300 transition-all duration-500 flex flex-col justify-between group">
+              <div className="w-full h-full min-h-[340px] sm:min-h-[420px] rounded-[24px] sm:rounded-[32px] bg-white border border-[#E5E7EB] p-6 sm:p-9 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-[0_12px_35px_rgba(0,0,0,0.06)] hover:border-neutral-300 transition-all duration-500 flex flex-col justify-between group">
                 {/* Header */}
                 <div className="space-y-2">
                   <div className="flex items-center gap-2 text-[10px] font-mono uppercase tracking-widest text-[#EB4604] font-bold">

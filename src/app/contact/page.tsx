@@ -88,7 +88,7 @@ export default function ContactPage() {
           {/* Main Bento Grid: Form Card + Visual Image Card */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-7 lg:gap-8 items-stretch mb-16 sm:mb-20">
             {/* ── Left Form Card (Pixel-Perfect Clean Layout) ── */}
-            <div className="lg:col-span-7 bg-white rounded-[28px] sm:rounded-[36px] p-7 sm:p-10 lg:p-11 border border-[#E5E7EB] shadow-[0_4px_24px_rgba(0,0,0,0.03)] flex flex-col justify-between">
+            <div className="lg:col-span-7 bg-white rounded-[24px] sm:rounded-[36px] p-5 sm:p-10 lg:p-11 border border-[#E5E7EB] shadow-[0_4px_24px_rgba(0,0,0,0.03)] flex flex-col justify-between">
               {submitted ? (
                 <div className="text-center py-16 sm:py-20 space-y-4 my-auto">
                   <div className="w-16 h-16 rounded-full bg-[#EB4604]/10 text-[#EB4604] flex items-center justify-center text-2xl font-bold mx-auto mb-4 border border-[#EB4604]/20 shadow-sm">
@@ -271,7 +271,7 @@ export default function ContactPage() {
             </div>
 
             {/* ── Right Imagery Card (Matching Reference Inspiration) ── */}
-            <div className="lg:col-span-5 relative rounded-[28px] sm:rounded-[36px] overflow-hidden min-h-[440px] lg:min-h-full shadow-[0_4px_24px_rgba(0,0,0,0.03)] border border-[#E5E7EB] group flex flex-col justify-between p-6 sm:p-8">
+            <div className="lg:col-span-5 relative rounded-[24px] sm:rounded-[36px] overflow-hidden min-h-[320px] sm:min-h-[440px] lg:min-h-full shadow-[0_4px_24px_rgba(0,0,0,0.03)] border border-[#E5E7EB] group flex flex-col justify-between p-5 sm:p-8">
               <Image
                 src="/images/approach/step-1.jpg"
                 alt="SPARKLINE Studio & Collaboration"

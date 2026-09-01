@@ -133,7 +133,7 @@ export function Approach() {
               variants={cardVariants}
               onMouseEnter={() => setHoveredIdx(idx)}
               onMouseLeave={() => setHoveredIdx(null)}
-              className="relative h-[240px] sm:h-[260px] lg:h-[280px] rounded-[28px] sm:rounded-[32px] overflow-hidden group shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:shadow-[0_24px_60px_rgba(0,0,0,0.2)] border border-neutral-200/80 hover:border-[#EB4604]/50 transition-all duration-700 cursor-pointer bg-[#0A0A0E] will-change-transform"
+              className="relative min-h-[190px] sm:h-[260px] lg:h-[280px] rounded-[24px] sm:rounded-[32px] overflow-hidden group shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:shadow-[0_24px_60px_rgba(0,0,0,0.2)] border border-neutral-200/80 hover:border-[#EB4604]/50 transition-all duration-700 cursor-pointer bg-[#0A0A0E] will-change-transform"
             >
               {/* Background High-Definition Photography with Parallax Zoom */}
               <Image
@@ -152,7 +152,7 @@ export function Approach() {
               <div className="absolute top-0 right-0 w-72 h-72 bg-[#EB4604]/25 rounded-full blur-[100px] opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
 
               {/* Card Content Layout */}
-              <div className="relative z-10 w-full h-full p-6 sm:p-8 lg:p-10 flex items-center justify-between gap-4 sm:gap-8">
+              <div className="relative z-10 w-full h-full p-5 sm:p-8 lg:p-10 flex items-center justify-between gap-3 sm:gap-8">
                 {/* Left: Giant Outline Glass Number with Smooth Entrance */}
                 <motion.div
                   initial={{ scale: 0.85, opacity: 0 }}
@@ -161,7 +161,7 @@ export function Approach() {
                   className="shrink-0"
                 >
                   <span
-                    className="text-[85px] sm:text-[110px] lg:text-[130px] font-extralight tracking-tighter text-white/30 group-hover:text-white/65 transition-all duration-500 select-none leading-none block group-hover:scale-105"
+                    className="text-[55px] sm:text-[110px] lg:text-[130px] font-extralight tracking-tighter text-white/30 group-hover:text-white/65 transition-all duration-500 select-none leading-none block group-hover:scale-105"
                     style={{
                       fontFamily: 'var(--font-family--primary-font)',
                       fontVariantNumeric: 'tabular-nums',
@@ -176,23 +176,23 @@ export function Approach() {
                   initial={{ x: 15, opacity: 0 }}
                   animate={isInView ? { x: 0, opacity: 1 } : { x: 15, opacity: 0 }}
                   transition={{ delay: 0.2 + idx * 0.15, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                  className="space-y-1.5 sm:space-y-2 max-w-[250px] sm:max-w-[310px] text-left"
+                  className="space-y-1 sm:space-y-2 flex-1 min-w-0 max-w-[250px] sm:max-w-[310px] text-left"
                 >
-                  <div className="inline-flex items-center gap-2">
+                  <div className="inline-flex items-center gap-1.5 sm:gap-2">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#EB4604]" />
-                    <span className="text-[10px] sm:text-[11px] font-mono font-semibold uppercase tracking-widest text-[#EB4604] block">
+                    <span className="text-[10px] sm:text-[11px] font-mono font-semibold uppercase tracking-widest text-[#EB4604] block truncate">
                       {step.subtitle}
                     </span>
                   </div>
 
                   <h3
-                    className="text-lg sm:text-xl lg:text-2xl font-bold text-white tracking-tight leading-snug group-hover:text-white transition-colors"
+                    className="text-base sm:text-xl lg:text-2xl font-bold text-white tracking-tight leading-snug group-hover:text-white transition-colors"
                     style={{ fontFamily: 'var(--font-family--primary-font)' }}
                   >
                     {step.title}
                   </h3>
 
-                  <p className="text-xs sm:text-sm text-neutral-300 font-light leading-relaxed">
+                  <p className="text-[11px] sm:text-sm text-neutral-300 font-light leading-relaxed line-clamp-3 sm:line-clamp-none">
                     {step.description}
                   </p>
                 </motion.div>

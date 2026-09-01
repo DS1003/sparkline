@@ -9,8 +9,8 @@ import { SparkTitle } from './SparkTitle'
 export function Hero() {
   return (
     <section className="w-full bg-white p-2.5 sm:p-4 lg:p-5">
-      {/* Hero Inset Card (Floating Dark Section matching reference) */}
-      <div className="relative rounded-2xl md:rounded-[20px] bg-[#070709] text-white overflow-hidden p-6 sm:p-8 lg:p-12 min-h-[calc(100vh-40px)] flex flex-col justify-between shadow-2xl">
+      {/* Hero Inset Card (Perfect Proportion on Mobile) */}
+      <div className="relative rounded-2xl md:rounded-[20px] bg-[#070709] text-white overflow-hidden p-5 sm:p-8 lg:p-12 min-h-[75svh] sm:min-h-[calc(100vh-40px)] flex flex-col justify-between shadow-2xl">
         {/* Background Blurred Studio Texture Image */}
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-25 mix-blend-luminosity scale-105 transform pointer-events-none"
@@ -27,7 +27,7 @@ export function Hero() {
         <Navbar />
 
         {/* Main Hero Headline Area with Real Spark Writing Effect */}
-        <div className="relative z-10 my-auto max-w-5xl py-6 space-y-6">
+        <div className="relative z-10 my-auto max-w-5xl py-3 sm:py-6 space-y-3.5 sm:space-y-6">
           <RevealOnScroll delay={0.1}>
             <Tag variant="base">Agence de transformation digitale</Tag>
           </RevealOnScroll>
@@ -36,18 +36,18 @@ export function Hero() {
           <SparkTitle lines={['Concevoir la', 'nouvelle génération', 'de marques']} />
 
           <RevealOnScroll delay={0.3}>
-            <p className="text-sm sm:text-base text-neutral-300 max-w-xl font-normal leading-relaxed">
+            <p className="text-xs sm:text-base text-neutral-300 max-w-xl font-normal leading-relaxed">
               Accompagner les marques dans leur lancement, leur croissance et leur leadership grâce à un design d'exception.
             </p>
           </RevealOnScroll>
         </div>
 
         {/* Bottom Split Row: Left Metadata & Right Subheading + Dual Pill Buttons */}
-        <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-6 items-end pt-8 border-t border-white/10">
+        <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 items-end pt-5 sm:pt-8 border-t border-white/10">
           {/* Left Metadata Bar */}
           <div className="lg:col-span-6">
             <RevealOnScroll delay={0.4}>
-              <div className="flex flex-wrap gap-6 sm:gap-8 text-[11px] sm:text-xs font-mono text-neutral-400 uppercase tracking-widest">
+              <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3 sm:gap-8 text-[9.5px] sm:text-xs font-mono text-neutral-400 uppercase tracking-widest">
                 <div>
                   <span className="text-[#EB4604] font-bold">+</span> DÉFINIR
                 </div>
@@ -62,19 +62,19 @@ export function Hero() {
           </div>
 
           {/* Right Subheading + Dual Pill Buttons */}
-          <div className="lg:col-span-6 flex flex-col items-start lg:items-end space-y-5">
+          <div className="lg:col-span-6 flex flex-col items-center text-center lg:items-end lg:text-right space-y-3.5 sm:space-y-5">
             <RevealOnScroll delay={0.4}>
-              <h2 className="text-lg sm:text-xl font-medium text-white max-w-md lg:text-right leading-snug">
+              <h2 className="text-sm sm:text-xl font-medium text-white max-w-md leading-snug">
                 Branding, design d'applications mobiles & web pour startups et leaders
               </h2>
             </RevealOnScroll>
 
             <RevealOnScroll delay={0.5}>
-              <div className="flex items-center gap-3">
+              <div className="flex flex-wrap sm:flex-nowrap items-center justify-center lg:justify-end gap-2.5 sm:gap-3 w-full sm:w-auto">
                 {/* Red/Orange Pill Button with Official Brand Color */}
                 <a
                   href="/projects"
-                  className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-[#EB4604] text-white text-xs font-semibold hover:bg-[#D43D00] transition-all duration-300 shadow-md shadow-[#EB4604]/25 group"
+                  className="inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-full bg-[#EB4604] text-white text-xs font-semibold hover:bg-[#D43D00] transition-all duration-300 shadow-md shadow-[#EB4604]/25 group shrink-0"
                 >
                   <span>Voir les projets</span>
                   <svg
@@ -96,7 +96,7 @@ export function Hero() {
                 {/* White Pill Button */}
                 <a
                   href="/contact"
-                  className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-white text-black text-xs font-semibold hover:bg-neutral-200 transition-all duration-300 group"
+                  className="inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-full bg-white text-black text-xs font-semibold hover:bg-neutral-200 transition-all duration-300 group shrink-0"
                 >
                   <span>Nous contacter</span>
                   <svg

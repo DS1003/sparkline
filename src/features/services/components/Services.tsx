@@ -186,39 +186,39 @@ export function Services({ isServicesPage = false, hideHeader = false }: Service
         >
           {serviceStackItems.map((service) => (
             <ScrollStackItem key={service.id}>
-              <SpotlightCard className="rounded-[28px] sm:rounded-[36px] bg-[#070709] text-white border border-neutral-800/90 shadow-[0_20px_50px_rgba(0,0,0,0.5)] p-6 sm:p-10 lg:p-14 overflow-hidden">
+              <SpotlightCard className="rounded-[24px] sm:rounded-[36px] bg-[#070709] text-white border border-neutral-800/90 shadow-[0_20px_50px_rgba(0,0,0,0.5)] p-5 sm:p-9 lg:p-14 overflow-hidden">
                 {/* Subtle ambient orbital glow */}
                 <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-[#EB4604]/20 via-transparent to-transparent rounded-full blur-3xl pointer-events-none" />
 
-                <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center">
+                <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-14 items-center">
                   {/* Left Column: Text Content & Deliverables */}
-                  <div className="lg:col-span-7 space-y-6">
-                    <div className="flex items-center gap-3">
-                      <span className="text-[#EB4604] font-mono text-xl sm:text-2xl font-bold tracking-tight">
+                  <div className="lg:col-span-7 space-y-4 sm:space-y-6">
+                    <div className="flex items-center gap-2.5 sm:gap-3">
+                      <span className="text-[#EB4604] font-mono text-lg sm:text-2xl font-bold tracking-tight">
                         [{service.number}]
                       </span>
-                      <span className="px-3.5 py-1 rounded-full bg-white/10 text-white text-[11px] font-mono font-medium uppercase tracking-wider backdrop-blur-sm border border-white/10">
+                      <span className="px-3 py-1 rounded-full bg-white/10 text-white text-[10px] sm:text-[11px] font-mono font-medium uppercase tracking-wider backdrop-blur-sm border border-white/10 truncate">
                         {service.tag}
                       </span>
                     </div>
 
                     <h3
-                      className="text-2xl sm:text-4xl lg:text-5xl font-semibold text-white tracking-tight leading-[1.1]"
+                      className="text-xl sm:text-3xl lg:text-5xl font-semibold text-white tracking-tight leading-[1.12]"
                       style={{ fontFamily: 'var(--font-family--primary-font)' }}
                     >
                       {service.title}
                     </h3>
 
-                    <p className="text-neutral-300 text-sm sm:text-base lg:text-lg leading-relaxed font-light">
+                    <p className="text-neutral-300 text-xs sm:text-base lg:text-lg leading-relaxed font-light">
                       {service.description}
                     </p>
 
                     {/* Deliverables Grid */}
-                    <div className="pt-4 border-t border-white/10 space-y-3">
-                      <h4 className="text-xs uppercase font-mono tracking-wider text-neutral-400 font-semibold">
+                    <div className="pt-3 sm:pt-4 border-t border-white/10 space-y-2.5 sm:space-y-3">
+                      <h4 className="text-[10px] sm:text-xs uppercase font-mono tracking-wider text-neutral-400 font-semibold">
                         Livrables & Piliers Clés
                       </h4>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-2.5">
                         {service.deliverables.map((item, dIdx) => (
                           <div key={dIdx} className="flex items-center gap-2 text-xs sm:text-sm text-neutral-200 font-medium">
                             <span className="w-1.5 h-1.5 rounded-full bg-[#EB4604] shrink-0" />
@@ -229,10 +229,10 @@ export function Services({ isServicesPage = false, hideHeader = false }: Service
                     </div>
 
                     {/* CTA Button */}
-                    <div className="pt-2">
+                    <div className="pt-1 sm:pt-2">
                       <Link
                         href="/contact?inquiry=services"
-                        className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#EB4604] text-white text-xs sm:text-sm font-semibold hover:bg-[#D43D00] transition-all duration-300 shadow-lg shadow-[#EB4604]/25 group"
+                        className="inline-flex items-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-full bg-[#EB4604] text-white text-xs sm:text-sm font-semibold hover:bg-[#D43D00] transition-all duration-300 shadow-lg shadow-[#EB4604]/25 group"
                       >
                         <span>Contactez-nous</span>
                         <span className="transition-transform group-hover:translate-x-1">→</span>
@@ -240,9 +240,9 @@ export function Services({ isServicesPage = false, hideHeader = false }: Service
                     </div>
                   </div>
 
-                  {/* Right Column: 4:3 Visual Image */}
+                  {/* Right Column: Visual Image */}
                   <div className="lg:col-span-5">
-                    <div className="relative aspect-[4/3] rounded-2xl sm:rounded-3xl overflow-hidden bg-neutral-900 border border-white/10 shadow-2xl group/img">
+                    <div className="relative aspect-[16/10] sm:aspect-[4/3] rounded-xl sm:rounded-3xl overflow-hidden bg-neutral-900 border border-white/10 shadow-2xl group/img">
                       <Image
                         src={service.image}
                         alt={service.title}
@@ -252,8 +252,8 @@ export function Services({ isServicesPage = false, hideHeader = false }: Service
                         sizes="(max-width: 1024px) 100vw, 450px"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
-                      <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between pointer-events-none z-10">
-                        <span className="px-3.5 py-1.5 rounded-full bg-black/60 backdrop-blur-md text-[11px] font-mono text-white border border-white/10">
+                      <div className="absolute bottom-3 left-3 right-3 sm:bottom-4 sm:left-4 sm:right-4 flex items-center justify-between pointer-events-none z-10">
+                        <span className="px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full bg-black/60 backdrop-blur-md text-[10px] sm:text-[11px] font-mono text-white border border-white/10">
                           SPARKLINE • {service.category}
                         </span>
                       </div>

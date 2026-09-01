@@ -65,9 +65,11 @@ export function FAQSection() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-start">
 
           {/* ── Left Column: Editorial Sticky Header ── */}
-          <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-32">
+          <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-32 text-center lg:text-left">
             <RevealOnScroll>
-              <Tag variant="v2">FAQ</Tag>
+              <div className="flex justify-center lg:justify-start">
+                <Tag variant="v2">FAQ</Tag>
+              </div>
             </RevealOnScroll>
 
             <RevealOnScroll delay={0.1}>
@@ -81,14 +83,14 @@ export function FAQSection() {
             </RevealOnScroll>
 
             <RevealOnScroll delay={0.15}>
-              <p className="text-sm sm:text-base text-neutral-500 font-light leading-relaxed max-w-md">
+              <p className="text-sm sm:text-base text-neutral-500 font-light leading-relaxed max-w-md mx-auto lg:mx-0">
                 Tout ce que vous devez savoir sur notre processus, nos tarifs et notre façon de collaborer au quotidien.
               </p>
             </RevealOnScroll>
 
             {/* Refined Minimalist Action Pill */}
             <RevealOnScroll delay={0.2}>
-              <div className="pt-2">
+              <div className="pt-2 flex justify-center lg:justify-start">
                 <a
                   href={`mailto:${siteConfig.contact.email}`}
                   className="inline-flex items-center gap-3 px-4 sm:px-5 py-3 rounded-full bg-[#F4F5F8] hover:bg-[#0A0A0A] text-neutral-700 hover:text-white border border-neutral-200/60 hover:border-[#0A0A0A] transition-all duration-300 text-xs font-mono group shadow-sm hover:shadow-md"
@@ -116,15 +118,15 @@ export function FAQSection() {
                       }`}
                   >
                     {/* Question Header Bar */}
-                    <div className="flex items-center justify-between gap-4 p-5 sm:p-6 lg:px-7">
-                      <div className="flex items-center gap-3.5 sm:gap-4.5">
+                    <div className="flex items-center justify-between gap-3 sm:gap-4 p-4 sm:p-6 lg:px-7">
+                      <div className="flex items-center gap-3 sm:gap-4.5 min-w-0">
                         {/* Number Index */}
-                        <span className="text-[11px] sm:text-xs font-mono font-medium tracking-wider text-neutral-400 group-hover:text-neutral-700 transition-colors shrink-0">
+                        <span className="text-[10px] sm:text-xs font-mono font-medium tracking-wider text-neutral-400 group-hover:text-neutral-700 transition-colors shrink-0">
                           {faq.number}
                         </span>
 
                         <h3
-                          className="text-base sm:text-lg font-medium text-[#0A0A0A] leading-snug select-none"
+                          className="text-sm sm:text-lg font-medium text-[#0A0A0A] leading-snug select-none"
                           style={{ fontFamily: 'var(--font-family--primary-font)' }}
                         >
                           {faq.question}
@@ -133,12 +135,12 @@ export function FAQSection() {
 
                       {/* Smooth Circular Micro-Interaction Button */}
                       <div
-                        className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full border flex items-center justify-center text-sm font-light shrink-0 transition-all duration-300 ${isOpen
+                        className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full border flex items-center justify-center text-sm font-light shrink-0 transition-all duration-300 ${isOpen
                             ? 'bg-[#0A0A0A] text-white border-[#0A0A0A] rotate-45 shadow-sm'
                             : 'bg-white border-neutral-200/80 text-neutral-600 group-hover:border-neutral-300 group-hover:bg-white group-hover:text-[#0A0A0A]'
                           }`}
                       >
-                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                           <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
                         </svg>
                       </div>
@@ -146,14 +148,14 @@ export function FAQSection() {
 
                     {/* Expandable Answer Content */}
                     <div
-                      className={`grid transition-all duration-300 ease-in-out px-5 sm:px-6 lg:px-7 ${isOpen
-                          ? 'grid-rows-[1fr] opacity-100 pb-6 pt-0'
+                      className={`grid transition-all duration-300 ease-in-out px-4 sm:px-6 lg:px-7 ${isOpen
+                          ? 'grid-rows-[1fr] opacity-100 pb-5 sm:pb-6 pt-0'
                           : 'grid-rows-[0fr] opacity-0 pb-0 pt-0'
                         }`}
                     >
                       <div className="overflow-hidden">
-                        <div className="border-t border-neutral-200/70 pt-4 pl-7 sm:pl-8">
-                          <p className="text-sm sm:text-base text-neutral-600 font-light leading-relaxed">
+                        <div className="border-t border-neutral-200/70 pt-3 sm:pt-4 pl-5 sm:pl-8">
+                          <p className="text-xs sm:text-base text-neutral-600 font-light leading-relaxed">
                             {faq.answer}
                           </p>
                         </div>

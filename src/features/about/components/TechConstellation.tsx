@@ -488,11 +488,15 @@ export function TechConstellation() {
             }}
           >
             {columns.map((col, colIdx) => (
-              <ScrollColumn
+              <div
                 key={colIdx}
-                techs={col}
-                speed={columnSpeeds[colIdx]}
-              />
+                className={`${colIdx >= 2 ? 'hidden sm:block' : ''} ${colIdx >= 3 ? 'hidden lg:block' : ''}`}
+              >
+                <ScrollColumn
+                  techs={col}
+                  speed={columnSpeeds[colIdx]}
+                />
+              </div>
             ))}
           </div>
         </RevealOnScroll>

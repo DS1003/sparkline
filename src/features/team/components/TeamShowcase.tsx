@@ -59,29 +59,23 @@ export function TeamShowcase({ members }: TeamShowcaseProps) {
                 <p className="text-sm sm:text-base text-neutral-500 font-normal leading-relaxed">
                   Une équipe soudée d’ingénieurs, de designers et de stratèges d’élite opérant à l’intersection de la technologie et de l’innovation.
                 </p>
-                <Link
-                  href="/contact"
-                  className="group inline-flex items-center gap-2 text-[#0A0A0A] font-medium text-sm whitespace-nowrap pb-1 border-b border-dashed border-neutral-400 hover:border-[#EB4604] hover:text-[#EB4604] transition-colors"
-                >
-                  <span>Rejoindre notre équipe</span>
-                  <span className="transition-transform group-hover:translate-x-1">→</span>
-                </Link>
               </div>
             </RevealOnScroll>
           </div>
         </div>
 
         {/* ── 2. Filter Pills ── */}
-        <div className="mb-10 sm:mb-12">
+        <div className="mb-8 sm:mb-12">
           <RevealOnScroll delay={0.2}>
-            <div className="inline-flex flex-wrap items-center gap-2 p-1.5 rounded-full bg-white border border-[#E5E7EB] shadow-xs">
+            {/* Desktop / Tablet: Unified Centered Capsule */}
+            <div className="hidden sm:inline-flex items-center gap-2 p-1.5 rounded-full bg-white border border-[#E5E7EB] shadow-xs">
               {departments.map((dept) => {
                 const isSelected = activeDept === dept
                 return (
                   <button
                     key={dept}
                     onClick={() => setActiveDept(dept)}
-                    className={`px-4 py-2 rounded-full text-xs font-mono transition-all duration-300 ${
+                    className={`px-4 py-2 rounded-full text-xs font-mono transition-all duration-300 cursor-pointer ${
                       isSelected
                         ? 'bg-[#EB4604] text-white font-semibold shadow-md shadow-[#EB4604]/20'
                         : 'text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100'
@@ -92,11 +86,31 @@ export function TeamShowcase({ members }: TeamShowcaseProps) {
                 )
               })}
             </div>
+
+            {/* Mobile: Centered Flex-Wrap Chips (Zero Horizontal Scroll) */}
+            <div className="sm:hidden flex flex-wrap items-center gap-1.5 pt-1">
+              {departments.map((dept) => {
+                const isSelected = activeDept === dept
+                return (
+                  <button
+                    key={dept}
+                    onClick={() => setActiveDept(dept)}
+                    className={`px-3 py-1.5 rounded-full text-[11px] font-mono transition-all duration-300 cursor-pointer ${
+                      isSelected
+                        ? 'bg-[#EB4604] text-white font-semibold shadow-sm shadow-[#EB4604]/20'
+                        : 'bg-white text-neutral-600 border border-[#E5E7EB] shadow-2xs active:bg-neutral-100'
+                    }`}
+                  >
+                    {dept}
+                  </button>
+                )
+              })}
+            </div>
           </RevealOnScroll>
         </div>
 
-        {/* ── 3. High-Precision Badge Grid (Exact Screenshot Styling) ── */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+        {/* ── 3. High-Precision Badge Grid (1-Col Mobile / 2-Cols Tablet / 4-Cols Desktop) ── */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-6 lg:gap-8 max-w-[360px] sm:max-w-none mx-auto">
           {filteredMembers.map((member, idx) => (
             <RevealOnScroll key={member.slug} delay={0.05 + idx * 0.08} direction="up">
               <TeamCardBadge member={member} index={idx} />
