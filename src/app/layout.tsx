@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
 import { siteConfig } from '@/config/site'
 import { ScrollToTop } from '@/components/ui/ScrollToTop'
+import { BubbleNav } from '@/components/layout/BubbleNav'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -59,9 +60,11 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} bg-[#0a0a0a] text-white antialiased selection:bg-[#DE322D] selection:text-white`}
       >
+        <BubbleNav />
         {children}
         <ScrollToTop />
       </body>
     </html>
   )
 }
+
