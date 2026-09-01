@@ -13,7 +13,7 @@ export function Tag({ children, variant = 'base', className }: TagProps) {
   return (
     <div
       className={cn(
-        'inline-flex items-center gap-2.5 px-4.5 sm:px-5 py-2 sm:py-2.5 rounded-full select-none transition-all duration-300 group cursor-default',
+        'inline-flex items-center gap-2 sm:gap-2.5 px-3.5 sm:px-5 py-1.5 sm:py-2.5 rounded-full select-none transition-all duration-300 group cursor-default whitespace-nowrap max-w-full',
         isDarkBg
           ? // ── Sur Fond Noir (variant="base") : Fond Blanc, Contenu Orange, 3D Épuré ──
             'bg-gradient-to-b from-white via-white to-[#F0F2F5] text-[#EB4604] border border-t-white border-x-white/90 border-b-neutral-300 shadow-[inset_0_1px_1px_rgba(255,255,255,1),inset_0_-1.5px_2px_rgba(0,0,0,0.08),0_2px_6px_rgba(0,0,0,0.25)] hover:scale-[1.02]'
@@ -23,7 +23,7 @@ export function Tag({ children, variant = 'base', className }: TagProps) {
       )}
     >
       {/* Official SPARKLINE Vector Pictogram */}
-      <span className="relative flex h-4 w-4 shrink-0 items-center justify-center transition-transform duration-300 group-hover:rotate-12">
+      <span className="relative flex h-3.5 w-3.5 sm:h-4 sm:w-4 shrink-0 items-center justify-center transition-transform duration-300 group-hover:rotate-12">
         <svg
           viewBox="0 0 884 884"
           fill="none"
@@ -37,8 +37,8 @@ export function Tag({ children, variant = 'base', className }: TagProps) {
         </svg>
       </span>
 
-      {/* Label Text */}
-      <span className="text-xs sm:text-[13px] font-mono font-semibold uppercase tracking-[0.12em] leading-none">
+      {/* Label Text with Guaranteed Single-Line Presentation on all Screens */}
+      <span className="text-[10px] xs:text-[11px] sm:text-[12.5px] font-mono font-semibold uppercase tracking-[0.05em] sm:tracking-[0.12em] leading-none whitespace-nowrap">
         {children}
       </span>
     </div>
