@@ -4,6 +4,8 @@ import './globals.css'
 import { siteConfig } from '@/config/site'
 import { ScrollToTop } from '@/components/ui/ScrollToTop'
 import { BubbleNav } from '@/components/layout/BubbleNav'
+import { ClickSpark } from '@/components/effects/ClickSpark'
+
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -60,9 +62,18 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} bg-[#0a0a0a] text-white antialiased selection:bg-[#DE322D] selection:text-white`}
       >
-        <BubbleNav />
-        {children}
-        <ScrollToTop />
+        <ClickSpark
+          sparkColor="var(--spark-primary)"
+          sparkSize={8}
+          sparkRadius={18}
+          sparkCount={6}
+          duration={350}
+          easing="ease-out"
+        >
+          <BubbleNav />
+          {children}
+          <ScrollToTop />
+        </ClickSpark>
       </body>
     </html>
   )

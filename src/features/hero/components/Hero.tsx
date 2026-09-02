@@ -4,6 +4,7 @@ import React from 'react'
 import { Tag } from '@/components/ui/Tag'
 import { Navbar } from '@/components/layout/Navbar'
 import { RevealOnScroll } from '@/components/motion/RevealOnScroll'
+import { Button } from '@/components/ui/Button'
 import { SparkTitle } from './SparkTitle'
 
 export function Hero() {
@@ -72,48 +73,22 @@ export function Hero() {
             <RevealOnScroll delay={0.5}>
               <div className="flex flex-wrap sm:flex-nowrap items-center justify-center lg:justify-end gap-2.5 sm:gap-3 w-full sm:w-auto">
                 {/* Red/Orange Pill Button with Official Brand Color */}
-                <a
+                <Button
                   href="/projects"
-                  className="inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-full bg-[#EB4604] text-white text-xs font-semibold hover:bg-[#D43D00] transition-all duration-300 shadow-md shadow-[#EB4604]/25 group shrink-0"
+                  variant="primary"
+                  className="px-5 sm:px-6 py-2.5 sm:py-3 text-xs shrink-0"
                 >
-                  <span>Voir les projets</span>
-                  <svg
-                    className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M7 17L17 7M17 7H7M17 7V17"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </a>
+                  Voir les projets
+                </Button>
 
                 {/* White Pill Button */}
-                <a
+                <Button
                   href="/contact"
-                  className="inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-full bg-white text-black text-xs font-semibold hover:bg-neutral-200 transition-all duration-300 group shrink-0"
+                  variant="secondary"
+                  className="px-5 sm:px-6 py-2.5 sm:py-3 text-xs shrink-0"
                 >
-                  <span>Nous contacter</span>
-                  <svg
-                    className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M7 17L17 7M17 7H7M17 7V17"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </a>
+                  Nous contacter
+                </Button>
               </div>
             </RevealOnScroll>
           </div>

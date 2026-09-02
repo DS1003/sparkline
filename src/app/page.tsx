@@ -15,6 +15,7 @@ import { FAQSection } from '@/features/faq/components/FAQSection'
 import { SectionCTA } from '@/components/layout/SectionCTA'
 import { siteConfig } from '@/config/site'
 
+
 export const metadata: Metadata = {
   title: 'SPARKLINE | Transformation digitale, Design & Innovation',
   description: siteConfig.description,
