@@ -9,9 +9,9 @@ import { SparkTitle } from './SparkTitle'
 
 export function Hero() {
   return (
-    <section className="w-full bg-white p-2.5 sm:p-4 lg:p-5">
-      {/* Hero Inset Card (Perfect Proportion on Mobile) */}
-      <div className="relative rounded-2xl md:rounded-[20px] bg-[#070709] text-white overflow-hidden p-5 sm:p-8 lg:p-12 min-h-[75svh] sm:min-h-[calc(100vh-40px)] flex flex-col justify-between shadow-2xl">
+    <section className="w-full bg-white p-2 sm:p-3 md:p-3.5 lg:p-4 xl:p-5">
+      {/* Hero Inset Card (Sleek, Framed Proportions on Laptops and Desktops) */}
+      <div className="relative rounded-2xl md:rounded-[20px] bg-[#070709] text-white overflow-hidden p-4 sm:p-5 lg:p-6 xl:p-10 min-h-[75svh] sm:min-h-[78svh] lg:min-h-[480px] xl:min-h-[calc(100vh-40px)] xl:max-h-[860px] flex flex-col justify-between shadow-2xl">
         {/* Background Blurred Studio Texture Image */}
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-25 mix-blend-luminosity scale-105 transform pointer-events-none"
@@ -28,7 +28,7 @@ export function Hero() {
         <Navbar />
 
         {/* Main Hero Headline Area with Real Spark Writing Effect */}
-        <div className="relative z-10 my-auto max-w-5xl py-3 sm:py-6 space-y-3.5 sm:space-y-6">
+        <div className="relative z-10 my-auto max-w-3xl xl:max-w-4xl py-1.5 sm:py-2.5 lg:py-2 xl:py-4 space-y-2 sm:space-y-3 lg:space-y-2.5 xl:space-y-4">
           <RevealOnScroll delay={0.1}>
             <Tag variant="base">Agence de transformation digitale</Tag>
           </RevealOnScroll>
@@ -37,18 +37,18 @@ export function Hero() {
           <SparkTitle lines={['Concevoir la', 'nouvelle génération', 'de marques']} />
 
           <RevealOnScroll delay={0.3}>
-            <p className="text-xs sm:text-base text-neutral-300 max-w-xl font-normal leading-relaxed">
+            <p className="text-xs sm:text-sm lg:text-[13px] xl:text-base text-neutral-300 max-w-md xl:max-w-lg font-normal leading-relaxed">
               Accompagner les marques dans leur lancement, leur croissance et leur leadership grâce à un design d'exception.
             </p>
           </RevealOnScroll>
         </div>
 
         {/* Bottom Split Row: Left Metadata & Right Subheading + Dual Pill Buttons */}
-        <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 items-end pt-5 sm:pt-8 border-t border-white/10">
+        <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-2.5 sm:gap-3.5 lg:gap-4 xl:gap-6 items-end pt-2.5 sm:pt-3.5 lg:pt-3 xl:pt-5 border-t border-white/10">
           {/* Left Metadata Bar */}
           <div className="lg:col-span-6">
             <RevealOnScroll delay={0.4}>
-              <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3 sm:gap-8 text-[9.5px] sm:text-xs font-mono text-neutral-400 uppercase tracking-widest">
+              <div className="flex flex-wrap items-center justify-center lg:justify-start gap-2 sm:gap-4 xl:gap-7 text-[8.5px] sm:text-[10px] xl:text-xs font-mono text-neutral-400 uppercase tracking-wider xl:tracking-widest">
                 <div>
                   <span className="text-[#EB4604] font-bold">+</span> DÉFINIR
                 </div>
@@ -63,20 +63,20 @@ export function Hero() {
           </div>
 
           {/* Right Subheading + Dual Pill Buttons */}
-          <div className="lg:col-span-6 flex flex-col items-center text-center lg:items-end lg:text-right space-y-3.5 sm:space-y-5">
+          <div className="lg:col-span-6 flex flex-col items-center text-center lg:items-end lg:text-right space-y-1.5 sm:space-y-2.5 xl:space-y-3.5">
             <RevealOnScroll delay={0.4}>
-              <h2 className="text-sm sm:text-xl font-medium text-white max-w-md leading-snug">
+              <h2 className="text-[11px] sm:text-xs lg:text-[12.5px] xl:text-lg font-medium text-white max-w-xs xl:max-w-md leading-snug">
                 Branding, design d'applications mobiles & web pour startups et leaders
               </h2>
             </RevealOnScroll>
 
             <RevealOnScroll delay={0.5}>
-              <div className="flex flex-wrap sm:flex-nowrap items-center justify-center lg:justify-end gap-2.5 sm:gap-3 w-full sm:w-auto">
+              <div className="flex flex-wrap sm:flex-nowrap items-center justify-center lg:justify-end gap-1.5 sm:gap-2.5 w-full sm:w-auto">
                 {/* Red/Orange Pill Button with Official Brand Color */}
                 <Button
                   href="/projects"
                   variant="primary"
-                  className="px-5 sm:px-6 py-2.5 sm:py-3 text-xs shrink-0"
+                  className="px-3 sm:px-4 xl:px-5 py-1.5 sm:py-2 xl:py-2.5 text-[10.5px] sm:text-xs shrink-0"
                 >
                   Voir les projets
                 </Button>
@@ -85,7 +85,7 @@ export function Hero() {
                 <Button
                   href="/contact"
                   variant="secondary"
-                  className="px-5 sm:px-6 py-2.5 sm:py-3 text-xs shrink-0"
+                  className="px-3 sm:px-4 xl:px-5 py-1.5 sm:py-2 xl:py-2.5 text-[10.5px] sm:text-xs shrink-0"
                 >
                   Nous contacter
                 </Button>

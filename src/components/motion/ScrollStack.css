@@ -9,7 +9,7 @@
 .scroll-stack-inner {
   position: relative;
   width: 100%;
-  padding-bottom: 25vh;
+  padding-bottom: min(28vh, 220px);
 }
 
 .scroll-stack-card-wrapper {

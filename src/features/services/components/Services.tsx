@@ -120,25 +120,25 @@ export function Services({ isServicesPage = false, hideHeader = false }: Service
     <Section
       id="services"
       className={`${
-        isServicesPage ? 'pt-8 sm:pt-12 pb-20 sm:pb-28 lg:pb-36' : 'pt-10 sm:pt-16 lg:pt-20 pb-20 sm:pb-28 lg:pb-36'
+        isServicesPage ? 'pt-8 sm:pt-12 pb-16 sm:pb-24 lg:pb-32' : 'pt-8 sm:pt-14 lg:pt-16 pb-16 sm:pb-24 lg:pb-32'
       } bg-white`}
     >
       <Container>
         {/* ── Top Editorial Header (Omitted if hideHeader is true, e.g. on /services where PageHero exists) ── */}
         {!hideHeader && (
-          <div className="space-y-6 mb-12 sm:mb-16 lg:mb-20">
+          <div className="space-y-4 sm:space-y-6 mb-8 sm:mb-12 lg:mb-16">
             <RevealOnScroll>
               <Tag variant="v2">Nos Expertises</Tag>
             </RevealOnScroll>
 
-            <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 lg:gap-16">
+            <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4 sm:gap-6 lg:gap-16">
               <RevealOnScroll delay={0.1}>
                 <h2
-                  className="text-[clamp(2.25rem,4.8vw,60px)] font-normal text-[#0A0A0A] leading-[1.08] tracking-[-0.03em] max-w-2xl flex flex-wrap items-center gap-x-3 gap-y-2"
+                  className="text-[clamp(2rem,4vw,54px)] font-normal text-[#0A0A0A] leading-[1.08] tracking-[-0.03em] max-w-2xl flex flex-wrap items-center gap-x-2.5 gap-y-1.5"
                   style={{ fontFamily: 'var(--font-family--primary-font)' }}
                 >
                   <span>Tout ce dont</span>
-                  <span className="inline-flex items-center justify-center w-12 h-7 sm:w-16 sm:h-9 rounded-full overflow-hidden border border-neutral-300 relative align-middle shadow-md shrink-0 -translate-y-0.5">
+                  <span className="inline-flex items-center justify-center w-10 h-6 sm:w-14 sm:h-8 rounded-full overflow-hidden border border-neutral-300 relative align-middle shadow-sm shrink-0 -translate-y-0.5">
                     <Image
                       src="/images/services/header-avatar.jpg"
                       alt="Portrait"
@@ -153,14 +153,14 @@ export function Services({ isServicesPage = false, hideHeader = false }: Service
               </RevealOnScroll>
 
               <RevealOnScroll delay={0.2}>
-                <div className="space-y-3 max-w-sm">
-                  <p className="text-sm sm:text-base text-neutral-500 font-normal leading-relaxed">
+                <div className="space-y-2.5 max-w-sm">
+                  <p className="text-xs sm:text-sm lg:text-base text-neutral-500 font-normal leading-relaxed">
                     Nous combinons stratégie, design de haut niveau et ingénierie de précision pour propulser votre entreprise.
                   </p>
                   {!isServicesPage && (
                     <Link
                       href="/services"
-                      className="group inline-flex items-center gap-2 text-[#0A0A0A] font-medium text-sm whitespace-nowrap pb-1 border-b border-dashed border-neutral-400 hover:border-[#EB4604] hover:text-[#EB4604] transition-colors"
+                      className="group inline-flex items-center gap-1.5 text-[#0A0A0A] font-medium text-xs sm:text-sm whitespace-nowrap pb-0.5 border-b border-dashed border-neutral-400 hover:border-[#EB4604] hover:text-[#EB4604] transition-colors"
                     >
                       <span>Explorer toutes nos expertises</span>
                       <span className="transition-transform group-hover:translate-x-1">→</span>
@@ -172,95 +172,95 @@ export function Services({ isServicesPage = false, hideHeader = false }: Service
           </div>
         )}
 
-        {/* ── Ultra-Smooth GPU Hardware-Accelerated Scroll Stack ── */}
+        {/* ── Ultra-Smooth GPU Hardware-Accelerated Scroll Stack (Responsive on Compact Laptops & Ultrawides) ── */}
         <ScrollStack
           useWindowScroll={true}
-          itemDistance={80}
-          itemScale={0.03}
-          itemStackDistance={24}
-          stackPosition="16%"
-          scaleEndPosition="6%"
-          baseScale={0.9}
+          itemDistance={65}
+          itemScale={0.025}
+          itemStackDistance={16}
+          stackPosition="10%"
+          scaleEndPosition="4%"
+          baseScale={0.92}
           rotationAmount={0}
           blurAmount={0}
         >
           {serviceStackItems.map((service) => (
             <ScrollStackItem key={service.id}>
-              <SpotlightCard className="rounded-[24px] sm:rounded-[36px] bg-[#070709] text-white border border-neutral-800/90 shadow-[0_20px_50px_rgba(0,0,0,0.5)] p-5 sm:p-9 lg:p-14 overflow-hidden">
+              <SpotlightCard className="rounded-[22px] sm:rounded-[32px] lg:rounded-[36px] bg-[#070709] text-white border border-neutral-800/90 shadow-[0_20px_50px_rgba(0,0,0,0.5)] p-5 sm:p-7 lg:p-8 xl:p-11 overflow-hidden">
                 {/* Subtle ambient orbital glow */}
-                  <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-[#EB4604]/20 via-transparent to-transparent rounded-full blur-3xl pointer-events-none" />
+                <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-[#EB4604]/20 via-transparent to-transparent rounded-full blur-3xl pointer-events-none" />
 
-                  <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-14 items-center">
-                    {/* Left Column: Text Content & Deliverables */}
-                    <div className="lg:col-span-7 space-y-4 sm:space-y-6">
-                      <div className="flex items-center gap-2.5 sm:gap-3">
-                        <span className="text-[#EB4604] font-mono text-lg sm:text-2xl font-bold tracking-tight">
-                          [{service.number}]
-                        </span>
-                        <span className="px-3 py-1 rounded-full bg-white/10 text-white text-[10px] sm:text-[11px] font-mono font-medium uppercase tracking-wider backdrop-blur-sm border border-white/10 truncate">
-                          {service.tag}
-                        </span>
-                      </div>
+                <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 lg:gap-8 xl:gap-12 items-center">
+                  {/* Left Column: Text Content & Deliverables */}
+                  <div className="lg:col-span-7 space-y-3 sm:space-y-4 xl:space-y-5">
+                    <div className="flex items-center gap-2 sm:gap-2.5">
+                      <span className="text-[#EB4604] font-mono text-base sm:text-xl xl:text-2xl font-bold tracking-tight">
+                        [{service.number}]
+                      </span>
+                      <span className="px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-full bg-white/10 text-white text-[9.5px] sm:text-[10.5px] font-mono font-medium uppercase tracking-wider backdrop-blur-sm border border-white/10 truncate">
+                        {service.tag}
+                      </span>
+                    </div>
 
-                      <h3
-                        className="text-xl sm:text-3xl lg:text-5xl font-semibold text-white tracking-tight leading-[1.12]"
-                        style={{ fontFamily: 'var(--font-family--primary-font)' }}
-                      >
-                        {service.title}
-                      </h3>
+                    <h3
+                      className="text-lg sm:text-2xl lg:text-3xl xl:text-4xl font-semibold text-white tracking-tight leading-[1.12]"
+                      style={{ fontFamily: 'var(--font-family--primary-font)' }}
+                    >
+                      {service.title}
+                    </h3>
 
-                      <p className="text-neutral-300 text-xs sm:text-base lg:text-lg leading-relaxed font-light">
-                        {service.description}
-                      </p>
+                    <p className="text-neutral-300 text-xs sm:text-sm xl:text-base leading-relaxed font-light line-clamp-3 lg:line-clamp-none">
+                      {service.description}
+                    </p>
 
-                      {/* Deliverables Grid */}
-                      <div className="pt-3 sm:pt-4 border-t border-white/10 space-y-2.5 sm:space-y-3">
-                        <h4 className="text-[10px] sm:text-xs uppercase font-mono tracking-wider text-neutral-400 font-semibold">
-                          Livrables & Piliers Clés
-                        </h4>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-2.5">
-                          {service.deliverables.map((item, dIdx) => (
-                            <div key={dIdx} className="flex items-center gap-2 text-xs sm:text-sm text-neutral-200 font-medium">
-                              <span className="w-1.5 h-1.5 rounded-full bg-[#EB4604] shrink-0" />
-                              <span>{item}</span>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-
-                      {/* CTA Button */}
-                      <div className="pt-1 sm:pt-2">
-                        <Link
-                          href="/contact?inquiry=services"
-                          className="inline-flex items-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-full bg-[#EB4604] text-white text-xs sm:text-sm font-semibold hover:bg-[#D43D00] transition-all duration-300 shadow-lg shadow-[#EB4604]/25 group"
-                        >
-                          <span>Contactez-nous</span>
-                          <span className="transition-transform group-hover:translate-x-1">→</span>
-                        </Link>
+                    {/* Deliverables Grid */}
+                    <div className="pt-2 sm:pt-3 border-t border-white/10 space-y-1.5 sm:space-y-2">
+                      <h4 className="text-[9.5px] sm:text-[11px] uppercase font-mono tracking-wider text-neutral-400 font-semibold">
+                        Livrables & Piliers Clés
+                      </h4>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 sm:gap-2">
+                        {service.deliverables.map((item, dIdx) => (
+                          <div key={dIdx} className="flex items-center gap-2 text-[11px] sm:text-xs xl:text-sm text-neutral-200 font-medium">
+                            <span className="w-1.5 h-1.5 rounded-full bg-[#EB4604] shrink-0" />
+                            <span className="truncate">{item}</span>
+                          </div>
+                        ))}
                       </div>
                     </div>
 
-                    {/* Right Column: Visual Image */}
-                    <div className="lg:col-span-5">
-                      <div className="relative aspect-[16/10] sm:aspect-[4/3] rounded-xl sm:rounded-3xl overflow-hidden bg-neutral-900 border border-white/10 shadow-2xl group/img">
-                        <Image
-                          src={service.image}
-                          alt={service.title}
-                          fill
-                          quality={85}
-                          className="object-cover transition-transform duration-700 ease-out group-hover/img:scale-105"
-                          sizes="(max-width: 1024px) 100vw, 450px"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
-                        <div className="absolute bottom-3 left-3 right-3 sm:bottom-4 sm:left-4 sm:right-4 flex items-center justify-between pointer-events-none z-10">
-                          <span className="px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full bg-black/60 backdrop-blur-md text-[10px] sm:text-[11px] font-mono text-white border border-white/10">
-                            SPARKLINE • {service.category}
-                          </span>
-                        </div>
+                    {/* CTA Button */}
+                    <div className="pt-1">
+                      <Link
+                        href="/contact?inquiry=services"
+                        className="inline-flex items-center gap-2 px-4 sm:px-5 xl:px-6 py-2 sm:py-2.5 rounded-full bg-[#EB4604] text-white text-xs sm:text-sm font-semibold hover:bg-[#D43D00] transition-all duration-300 shadow-lg shadow-[#EB4604]/25 group"
+                      >
+                        <span>Contactez-nous</span>
+                        <span className="transition-transform group-hover:translate-x-1">→</span>
+                      </Link>
+                    </div>
+                  </div>
+
+                  {/* Right Column: Visual Image */}
+                  <div className="lg:col-span-5">
+                    <div className="relative aspect-[16/10] sm:aspect-[4/3] rounded-xl sm:rounded-2xl lg:rounded-3xl overflow-hidden bg-neutral-900 border border-white/10 shadow-2xl group/img">
+                      <Image
+                        src={service.image}
+                        alt={service.title}
+                        fill
+                        quality={85}
+                        className="object-cover transition-transform duration-700 ease-out group-hover/img:scale-105"
+                        sizes="(max-width: 1024px) 100vw, 420px"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
+                      <div className="absolute bottom-2.5 left-2.5 right-2.5 sm:bottom-3 sm:left-3 sm:right-3 flex items-center justify-between pointer-events-none z-10">
+                        <span className="px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md text-[9.5px] sm:text-[10.5px] font-mono text-white border border-white/10">
+                          SPARKLINE • {service.category}
+                        </span>
                       </div>
                     </div>
                   </div>
-                </SpotlightCard>
+                </div>
+              </SpotlightCard>
             </ScrollStackItem>
           ))}
         </ScrollStack>

@@ -24,8 +24,8 @@ export default async function AboutPage() {
   return (
     <main className="min-h-screen bg-white text-neutral-900">
       {/* 1. Stodio-Inspired About Hero Section */}
-      <section className="w-full bg-white p-2.5 sm:p-4 lg:p-5">
-        <div className="relative rounded-2xl md:rounded-[20px] bg-[#070709] text-white overflow-hidden p-6 sm:p-8 lg:p-12 min-h-[520px] lg:min-h-[600px] flex flex-col justify-between items-center text-center shadow-2xl">
+      <section className="w-full bg-white p-2.5 sm:p-3.5 md:p-4 lg:p-5">
+        <div className="relative rounded-2xl md:rounded-[20px] bg-[#070709] text-white overflow-hidden p-5 sm:p-7 lg:p-8 xl:p-11 min-h-[440px] sm:min-h-[480px] lg:min-h-[500px] xl:min-h-[560px] flex flex-col justify-between items-center text-center shadow-2xl">
           {/* Subtle Ambient Studio Background */}
           <div
             className="absolute inset-0 bg-cover bg-center opacity-15 mix-blend-luminosity scale-105 pointer-events-none"
@@ -41,20 +41,20 @@ export default async function AboutPage() {
           <Navbar />
 
           {/* Top: Tag Badge matching official design */}
-          <div className="relative z-10 pt-4 flex justify-center">
+          <div className="relative z-10 pt-2 sm:pt-4 flex justify-center">
             <RevealOnScroll>
               <Tag variant="base">Qui sommes-nous</Tag>
             </RevealOnScroll>
           </div>
 
           {/* Center: Hero Headline with Inline Portrait Pill */}
-          <div className="relative z-10 my-auto max-w-5xl py-8 space-y-4">
+          <div className="relative z-10 my-auto max-w-5xl py-4 sm:py-6 space-y-3 sm:space-y-4">
             <RevealOnScroll delay={0.1}>
-              <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight text-white leading-[1.08]">
+              <h1 className="text-3xl sm:text-5xl md:text-5xl lg:text-[56px] xl:text-7xl 2xl:text-8xl font-bold tracking-tight text-white leading-[1.08]">
                 Bâtir des réussites
                 <br className="hidden sm:inline" />
                 {' '}digitales{' '}
-                <span className="inline-flex items-center align-middle mx-1.5 sm:mx-3 my-1 overflow-hidden rounded-full w-14 h-9 sm:w-20 sm:h-12 md:w-24 md:h-14 border-2 border-white/30 shadow-lg relative shrink-0">
+                <span className="inline-flex items-center align-middle mx-1 sm:mx-2.5 my-0.5 overflow-hidden rounded-full w-12 h-7 sm:w-16 sm:h-10 md:w-18 md:h-11 xl:w-24 xl:h-14 border-2 border-white/30 shadow-lg relative shrink-0">
                   <Image
                     src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=300&auto=format&fit=crop"
                     alt="Créateur SPARKLINE"
@@ -70,7 +70,7 @@ export default async function AboutPage() {
           </div>
 
           {/* Bottom Bar: Agency Category & Year */}
-          <div className="relative z-10 w-full pt-6 border-t border-white/10 flex items-center justify-between text-xs font-mono text-neutral-400 uppercase tracking-widest px-2">
+          <div className="relative z-10 w-full pt-4 sm:pt-5 border-t border-white/10 flex items-center justify-between text-[10px] sm:text-xs font-mono text-neutral-400 uppercase tracking-wider xl:tracking-widest px-1 sm:px-2">
             <span>STUDIO DIGITAL & CRÉATIF</span>
             <span>DEPUIS 2024</span>
           </div>

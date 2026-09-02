@@ -22,15 +22,17 @@ export function Curved3DProjectsGallery({
   const [expandedProject, setExpandedProject] = useState<Project | null>(null)
   const [activeGalleryIndex, setActiveGalleryIndex] = useState(0)
   const [isMobile, setIsMobile] = useState(false)
+  const [isCompactDesktop, setIsCompactDesktop] = useState(false)
 
-  // Detect mobile viewport
+  // Detect mobile & compact desktop viewport
   useEffect(() => {
-    const checkMobile = () => {
+    const checkDimensions = () => {
       setIsMobile(window.innerWidth < 768)
+      setIsCompactDesktop(window.innerWidth >= 768 && window.innerWidth < 1440)
     }
-    checkMobile()
-    window.addEventListener('resize', checkMobile)
-    return () => window.removeEventListener('resize', checkMobile)
+    checkDimensions()
+    window.addEventListener('resize', checkDimensions)
+    return () => window.removeEventListener('resize', checkDimensions)
   }, [])
 
   // Auto-close modal when activeIndex changes externally
@@ -137,14 +139,16 @@ export function Curved3DProjectsGallery({
   }
 
   // Dimensions for 3D stage
-  const cardWidth = isMobile ? 260 : 340
-  const cardHeight = isMobile ? 360 : 470
+  const cardWidth = isMobile ? 260 : isCompactDesktop ? 295 : 340
+  const cardHeight = isMobile ? 360 : isCompactDesktop ? 410 : 470
+  const step1X = isMobile ? 210 : isCompactDesktop ? 245 : 280
+  const step2X = isMobile ? 380 : isCompactDesktop ? 440 : 510
 
   return (
     <>
       {/* ── Symmetrical 3D Stage Container with Touch Support ── */}
       <div
-        className="relative w-full overflow-hidden select-none py-4 sm:py-10 touch-pan-y"
+        className="relative w-full overflow-hidden select-none py-4 sm:py-8 lg:py-10 touch-pan-y"
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
         style={{
@@ -156,7 +160,7 @@ export function Curved3DProjectsGallery({
         <div
           className="relative mx-auto flex items-center justify-center"
           style={{
-            height: `${cardHeight + 40}px`,
+            height: `${cardHeight + 35}px`,
             transformStyle: 'preserve-3d',
           }}
         >
@@ -187,35 +191,35 @@ export function Curved3DProjectsGallery({
               opacity = 1
               zIndex = 50
             } else if (diff === 1) {
-              translateX = isMobile ? 210 : 280
-              translateZ = isMobile ? -90 : -120
+              translateX = step1X
+              translateZ = isMobile ? -90 : -110
               rotateY = -18
-              scale = isMobile ? 0.88 : 0.88
+              scale = 0.88
               opacity = 0.85
               zIndex = 40
             } else if (diff === -1) {
-              translateX = isMobile ? -210 : -280
-              translateZ = isMobile ? -90 : -120
+              translateX = -step1X
+              translateZ = isMobile ? -90 : -110
               rotateY = 18
-              scale = isMobile ? 0.88 : 0.88
+              scale = 0.88
               opacity = 0.85
               zIndex = 40
             } else if (diff === 2) {
-              translateX = isMobile ? 380 : 510
-              translateZ = isMobile ? -180 : -240
+              translateX = step2X
+              translateZ = isMobile ? -180 : -220
               rotateY = -32
-              scale = isMobile ? 0.76 : 0.76
+              scale = 0.76
               opacity = 0.55
               zIndex = 30
             } else if (diff === -2) {
-              translateX = isMobile ? -380 : -510
-              translateZ = isMobile ? -180 : -240
+              translateX = -step2X
+              translateZ = isMobile ? -180 : -220
               rotateY = 32
-              scale = isMobile ? 0.76 : 0.76
+              scale = 0.76
               opacity = 0.55
               zIndex = 30
             } else {
-              translateX = diff > 0 ? (isMobile ? 500 : 700) : (isMobile ? -500 : -700)
+              translateX = diff > 0 ? (isMobile ? 500 : isCompactDesktop ? 580 : 680) : (isMobile ? -500 : isCompactDesktop ? -580 : -680)
               translateZ = -350
               rotateY = diff > 0 ? -45 : 45
               scale = 0.65

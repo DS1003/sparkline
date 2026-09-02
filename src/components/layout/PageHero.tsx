@@ -24,8 +24,8 @@ export function PageHero({
   metaItems,
 }: PageHeroProps) {
   return (
-    <section className="w-full bg-white p-2.5 sm:p-4 lg:p-5">
-      <div className="relative rounded-2xl md:rounded-[20px] bg-[#070709] text-white overflow-hidden p-5 sm:p-8 lg:p-12 min-h-[400px] sm:min-h-[480px] lg:min-h-[540px] flex flex-col justify-between shadow-2xl">
+    <section className="w-full bg-white p-2.5 sm:p-3.5 md:p-4 lg:p-5">
+      <div className="relative rounded-2xl md:rounded-[20px] bg-[#070709] text-white overflow-hidden p-5 sm:p-7 lg:p-8 xl:p-11 min-h-[360px] sm:min-h-[420px] lg:min-h-[440px] xl:min-h-[500px] flex flex-col justify-between shadow-2xl">
         {/* Ambient Blurred Studio Backdrop */}
         <div
           className="absolute inset-0 bg-cover bg-center opacity-20 mix-blend-luminosity scale-105 pointer-events-none"
@@ -41,13 +41,13 @@ export function PageHero({
         <Navbar />
 
         {/* 2. Top Breadcrumbs / Tag row */}
-        <div className="relative z-10 flex flex-wrap items-center justify-between gap-3 pt-4 sm:pt-6">
+        <div className="relative z-10 flex flex-wrap items-center justify-between gap-2.5 pt-2 sm:pt-4">
           <RevealOnScroll>
             <Tag variant="base">{tag}</Tag>
           </RevealOnScroll>
 
           {breadcrumbs && breadcrumbs.length > 0 && (
-            <div className="flex items-center gap-2 text-[11px] sm:text-xs font-mono text-neutral-400">
+            <div className="flex items-center gap-1.5 text-[10.5px] sm:text-xs font-mono text-neutral-400">
               <Link href="/" className="hover:text-white transition-colors">
                 Accueil
               </Link>
@@ -64,10 +64,10 @@ export function PageHero({
         </div>
 
         {/* 3. Central Display Headline Area */}
-        <div className="relative z-10 my-auto max-w-4xl py-5 sm:py-6 space-y-4 sm:space-y-5">
+        <div className="relative z-10 my-auto max-w-4xl py-3 sm:py-5 space-y-2.5 sm:space-y-4">
           <RevealOnScroll delay={0.1}>
             <h1
-              className="text-[clamp(2.1rem,6vw,68px)] lg:text-7xl xl:text-8xl text-white tracking-tight leading-[1.04] font-bold"
+              className="text-[clamp(1.85rem,4.5vw,36px)] sm:text-[clamp(2.25rem,3.8vw,48px)] lg:text-[clamp(36px,3.2vw,54px)] xl:text-[64px] 2xl:text-[72px] text-white tracking-tight leading-[1.05] font-bold"
               style={{ fontFamily: 'var(--font-family--primary-font)' }}
             >
               {title}{' '}
@@ -78,7 +78,7 @@ export function PageHero({
           </RevealOnScroll>
 
           <RevealOnScroll delay={0.2}>
-            <p className="text-sm sm:text-lg lg:text-xl text-neutral-300 max-w-2xl font-light leading-relaxed">
+            <p className="text-xs sm:text-sm lg:text-[15px] xl:text-lg text-neutral-300 max-w-2xl font-light leading-relaxed">
               {subtitle}
             </p>
           </RevealOnScroll>
@@ -86,7 +86,7 @@ export function PageHero({
 
         {/* 4. Optional Bottom Meta Bar */}
         {metaItems && metaItems.length > 0 && (
-          <div className="relative z-10 pt-5 sm:pt-6 border-t border-white/10 flex flex-wrap gap-4 sm:gap-8 text-[11px] sm:text-xs font-mono text-neutral-400 uppercase tracking-widest">
+          <div className="relative z-10 pt-3.5 sm:pt-5 border-t border-white/10 flex flex-wrap gap-3 sm:gap-6 xl:gap-8 text-[10px] sm:text-xs font-mono text-neutral-400 uppercase tracking-wider xl:tracking-widest">
             {metaItems.map((item, idx) => (
               <div key={idx}>
                 <span className="text-[#EB4604] font-bold">+</span> {item.label}: <span className="text-white">{item.value}</span>

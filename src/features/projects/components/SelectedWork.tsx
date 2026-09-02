@@ -55,7 +55,7 @@ export function SelectedWork({
     <Section
       id="work"
       className={`relative ${
-        isProjectsPage ? 'py-12 sm:py-16 lg:py-20' : 'py-20 sm:py-28 lg:py-32'
+        isProjectsPage ? 'py-10 sm:py-14 lg:py-16' : 'py-12 sm:py-16 lg:py-20 xl:py-24'
       } ${
         theme === 'light'
           ? 'bg-[#FAFBFD] text-neutral-900 border-b border-[#e2e2e7]'
