@@ -2,6 +2,7 @@
 
 import React from 'react'
 import { cn } from '@/lib/utils'
+import { ClickSpark } from '@/components/effects/ClickSpark'
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary' | 'outline' | 'ghost'
@@ -10,6 +11,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   href?: string
   icon?: React.ReactNode
   className?: string
+  clickSpark?: boolean
 }
 
 export function Button({
@@ -19,6 +21,7 @@ export function Button({
   href,
   icon,
   className,
+  clickSpark = false,
   ...props
 }: ButtonProps) {
   const baseClasses =
@@ -63,17 +66,30 @@ export function Button({
     </>
   )
 
-  if (href) {
-    return (
-      <a href={href} className={cn(baseClasses, variants[variant], sizes[size], className)}>
-        {content}
-      </a>
-    )
-  }
-
-  return (
+  const buttonElement = href ? (
+    <a href={href} className={cn(baseClasses, variants[variant], sizes[size], className)}>
+      {content}
+    </a>
+  ) : (
     <button className={cn(baseClasses, variants[variant], sizes[size], className)} {...props}>
       {content}
     </button>
   )
+
+  if (clickSpark) {
+    return (
+      <ClickSpark
+        sparkColor="var(--spark-primary)"
+        sparkSize={8}
+        sparkRadius={18}
+        sparkCount={6}
+        duration={350}
+        easing="ease-out"
+      >
+        {buttonElement}
+      </ClickSpark>
+    )
+  }
+
+  return buttonElement
 }

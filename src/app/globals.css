@@ -289,8 +289,24 @@ html, body {
   will-change: transform;
 }
 
+.animate-vertical-track-reverse {
+  animation: verticalMarqueeTrackReverse 24s linear infinite;
+  will-change: transform;
+}
+
+@keyframes verticalMarqueeTrackReverse {
+  0% {
+    transform: translateY(calc(-100% - 12px));
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
 .animate-vertical-track:hover,
-div:hover > .animate-vertical-track {
+div:hover > .animate-vertical-track,
+.animate-vertical-track-reverse:hover,
+div:hover > .animate-vertical-track-reverse {
   animation-play-state: paused;
 }
 
