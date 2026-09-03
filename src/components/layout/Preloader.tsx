@@ -90,9 +90,14 @@ export function Preloader() {
       tl.to(heroContainer, {
         y: 0,
         duration: 0.8,
-        ease: 'power3.inOut',
-        clearProps: 'all' 
+        ease: 'power3.inOut'
       }, 2.8)
+      
+      // Sécurité : On cache le loader instantanément AVANT de nettoyer le z-index du Hero
+      // pour éviter le flash d'une frame (React state lag)
+      tl.set(containerRef.current, { autoAlpha: 0 })
+      tl.set(heroContainer, { clearProps: 'all' })
+      
     } else {
       tl.to(containerRef.current, {
         opacity: 0,

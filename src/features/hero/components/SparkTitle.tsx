@@ -68,7 +68,7 @@ export function SparkTitle({
     // Fallback safety timeout if preloader is not present or event missed
     const fallbackTimer = setTimeout(() => {
       startWriting()
-    }, 1600)
+    }, 8000)
 
     return () => {
       window.removeEventListener('sparkline:loader-complete', handleLoaderComplete)

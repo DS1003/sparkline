@@ -12,22 +12,24 @@ export function Hero() {
   return (
     <section id="main-hero" className="w-full bg-white p-2 sm:p-3 md:p-3.5 lg:p-4 xl:p-5">
       {/* Hero Inset Card (Sleek, Framed Proportions on Laptops and Desktops) */}
-      <div className="relative rounded-2xl md:rounded-[20px] bg-[#070709] text-white overflow-hidden p-4 sm:p-5 lg:p-6 xl:p-10 min-h-[75svh] sm:min-h-[78svh] lg:min-h-[480px] xl:min-h-[calc(100vh-40px)] xl:max-h-[860px] flex flex-col justify-between shadow-2xl">
+      <div className="relative rounded-2xl md:rounded-[20px] bg-[#070709] text-white overflow-hidden p-5 sm:p-6 lg:p-8 xl:p-10 min-h-[85svh] sm:min-h-[80svh] lg:min-h-[480px] xl:min-h-[calc(100vh-40px)] xl:max-h-[860px] flex flex-col justify-between shadow-2xl">
         {/* Background Team Image — Responsive Placement (Perfect 4-Person Framing on Mobile & Desktop) */}
         <picture className="absolute inset-0 pointer-events-none select-none">
-          <source media="(max-width: 767px)" srcSet="/images/heroes/hero-mobile-gemini.png" />
           <Image
-            src="/images/heroes/Gemini_Generated_Image_qvm2qkqvm2qkqvm2.jpeg"
+            src="/images/heroes/ChatGPT Image Sep 3, 2026, 11_19_14 PM.png"
             alt="SPARKLINE Team"
             fill
             priority
             quality={100}
-            className="object-cover object-top md:object-center pointer-events-none select-none"
+            className="object-cover object-center pointer-events-none select-none"
           />
         </picture>
 
+        {/* Global Dark Overlay for a slight overall darkening */}
+        <div className="absolute inset-0 bg-[#070709]/40 pointer-events-none" />
+
         {/* Tight Left-Side Contrast Shadow (Terminates strictly after the title text ~42%) */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#070709]/85 from-0% via-[#070709]/50 via-30% to-transparent to-42% pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#070709]/90 from-0% via-[#070709]/60 via-30% to-transparent to-50% pointer-events-none" />
 
         {/* Top Navbar with Official Logo */}
         <Navbar />
