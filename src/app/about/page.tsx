@@ -84,28 +84,28 @@ export default async function AboutPage() {
       <section className="py-20 lg:py-28 bg-white border-b border-[#e2e2e7]" id="concept">
         <Container>
           {/* ── Top Editorial Header (Exact Match to Tech Constellation) ── */}
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 lg:gap-16 mb-12 sm:mb-16">
-          <div className="space-y-4 max-w-xl">
-            <RevealOnScroll>
-              <Tag variant="v2">La Dualité Fondatrice</Tag>
-            </RevealOnScroll>
-            <RevealOnScroll delay={0.1}>
-              <h2
-                className="text-3xl sm:text-5xl lg:text-[52px] font-normal text-[#0A0A0A] leading-[1.08] tracking-[-0.035em]"
-                style={{ fontFamily: 'var(--font-family--primary-font)' }}
-              >
-                L’Anatomie de SPARKLINE :<br className="hidden sm:inline" />
-                Énergie &amp; Direction.
-              </h2>
+          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 lg:gap-16 mb-12 sm:mb-16">
+            <div className="space-y-4 max-w-xl">
+              <RevealOnScroll>
+                <Tag variant="v2">La Dualité Fondatrice</Tag>
+              </RevealOnScroll>
+              <RevealOnScroll delay={0.1}>
+                <h2
+                  className="text-3xl sm:text-5xl lg:text-[52px] font-normal text-[#0A0A0A] leading-[1.08] tracking-[-0.035em]"
+                  style={{ fontFamily: 'var(--font-family--primary-font)' }}
+                >
+                  L’Anatomie de SPARKLINE <br className="hidden sm:inline" />
+                  Énergie &amp; Direction.
+                </h2>
+              </RevealOnScroll>
+            </div>
+
+            <RevealOnScroll delay={0.15}>
+              <p className="text-sm sm:text-base text-neutral-500 font-light leading-relaxed max-w-md lg:text-right">
+                Notre identité s’articule autour de deux principes complémentaires qui guident chaque produit que nous concevons : l’audace de l’étincelle créative et la rigueur de la trajectoire stratégique.
+              </p>
             </RevealOnScroll>
           </div>
-
-          <RevealOnScroll delay={0.15}>
-            <p className="text-sm sm:text-base text-neutral-500 font-light leading-relaxed max-w-md lg:text-right">
-              Notre identité s’articule autour de deux principes complémentaires qui guident chaque produit que nous concevons : l’audace de l’étincelle créative et la rigueur de la trajectoire stratégique.
-            </p>
-          </RevealOnScroll>
-        </div>
 
           {/* Master Bento Container (Inverted Pyramid Layout on Mobile: SPARK & LINE side-by-side, Image centered below) */}
           <RevealOnScroll delay={0.2}>

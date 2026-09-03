@@ -85,7 +85,7 @@ const cardVariants: Variants = {
 
 export function Approach() {
   const containerRef = useRef<HTMLDivElement>(null)
-  const isInView = useInView(containerRef, { once: false, amount: 0.2 })
+  const isInView = useInView(containerRef, { once: true, amount: 0.15 })
   const [, setHoveredIdx] = useState<number | null>(null)
 
   return (
@@ -133,33 +133,45 @@ export function Approach() {
               variants={cardVariants}
               onMouseEnter={() => setHoveredIdx(idx)}
               onMouseLeave={() => setHoveredIdx(null)}
-              className="relative min-h-[190px] sm:h-[260px] lg:h-[280px] rounded-[24px] sm:rounded-[32px] overflow-hidden group shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:shadow-[0_24px_60px_rgba(0,0,0,0.2)] border border-neutral-200/80 hover:border-[#EB4604]/50 transition-all duration-700 cursor-pointer bg-[#0A0A0E] will-change-transform"
+              className="relative min-h-[190px] sm:h-[260px] lg:h-[280px] rounded-[24px] sm:rounded-[32px] overflow-hidden group shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:shadow-[0_24px_60px_rgba(0,0,0,0.2)] border border-neutral-200/80 hover:border-[#EB4604]/50 transition-all duration-700 cursor-pointer bg-[#0A0A0E]"
+              style={{
+                // Safari iOS GPU compositing flash fix:
+                // Forces layer promotion from first paint so there's no
+                // create/destroy event mid-animation that exposes a white background.
+                WebkitBackfaceVisibility: 'hidden',
+                backfaceVisibility: 'hidden',
+                WebkitTransform: 'translateZ(0)',
+                willChange: 'transform',
+                // Stable compositing context — prevents sublayer repaints from
+                // bleeding a white background through overflow-hidden + border-radius.
+                isolation: 'isolate',
+              }}
             >
-              {/* Background High-Definition Photography with Subtle Tint */}
+              {/* Background High-Definition Photography */}
+              {/* brightness filter removed — CSS filter creates a separate WebKit
+                  compositing sublayer that repaints on animation end → white flash.
+                  Visual parity maintained via the slightly-darker gradient overlay below. */}
               <Image
                 src={step.image}
                 alt={step.title}
                 fill
                 quality={90}
-                className="object-cover transition-transform duration-700 ease-out group-hover:scale-103 brightness-[0.88]"
+                className="object-cover transition-transform duration-700 ease-out group-hover:scale-103"
                 sizes="(max-width: 768px) 100vw, 50vw"
               />
 
-              {/* Subtle Dark Gradient Overlay to Guarantee Crisp Text Legibility */}
-              <div className="absolute inset-0 bg-gradient-to-r from-black/65 via-black/40 to-black/55 transition-opacity duration-500 group-hover:opacity-85 pointer-events-none" />
+              {/* Dark Gradient Overlay — slightly deeper to compensate for removed brightness filter */}
+              <div className="absolute inset-0 bg-gradient-to-r from-black/72 via-black/48 to-black/62 transition-opacity duration-500 group-hover:opacity-85 pointer-events-none" />
 
               {/* Signature Orange Atmospheric Light Accent on Hover */}
               <div className="absolute top-0 right-0 w-72 h-72 bg-[#EB4604]/20 rounded-full blur-[100px] opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
 
               {/* Card Content Layout */}
               <div className="relative z-10 w-full h-full p-5 sm:p-8 lg:p-10 flex items-center justify-between gap-3 sm:gap-8">
-                {/* Left: Giant Outline Glass Number with Smooth Entrance */}
-                <motion.div
-                  initial={{ scale: 0.85, opacity: 0 }}
-                  animate={isInView ? { scale: 1, opacity: 1 } : { scale: 0.85, opacity: 0 }}
-                  transition={{ delay: 0.15 + idx * 0.15, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-                  className="shrink-0"
-                >
+                {/* Left: Giant Outline Glass Number
+                    — converted from independent motion.div (own compositing layer)
+                      to CSS transition to avoid WebKit sublayer painting conflict */}
+                <div className="shrink-0">
                   <span
                     className="text-[55px] sm:text-[110px] lg:text-[130px] font-extralight tracking-tighter text-white/35 group-hover:text-white/70 transition-all duration-500 select-none leading-none block group-hover:scale-105"
                     style={{
@@ -169,15 +181,11 @@ export function Approach() {
                   >
                     {step.number}
                   </span>
-                </motion.div>
+                </div>
 
-                {/* Right: Step Subtitle, Title & Description with Staggered Entrance */}
-                <motion.div
-                  initial={{ x: 15, opacity: 0 }}
-                  animate={isInView ? { x: 0, opacity: 1 } : { x: 15, opacity: 0 }}
-                  transition={{ delay: 0.2 + idx * 0.15, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                  className="space-y-1 sm:space-y-2 flex-1 min-w-0 max-w-[250px] sm:max-w-[310px] text-left"
-                >
+                {/* Right: Step Subtitle, Title & Description
+                    — same conversion: CSS transition instead of independent animation */}
+                <div className="space-y-1 sm:space-y-2 flex-1 min-w-0 max-w-[250px] sm:max-w-[310px] text-left">
                   <div className="inline-flex items-center gap-1.5 sm:gap-2">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#EB4604]" />
                     <span className="text-[10px] sm:text-[11px] font-mono font-semibold uppercase tracking-widest text-[#EB4604] block truncate">
@@ -195,7 +203,7 @@ export function Approach() {
                   <p className="text-[11px] sm:text-sm text-neutral-300 font-light leading-relaxed line-clamp-3 sm:line-clamp-none">
                     {step.description}
                   </p>
-                </motion.div>
+                </div>
               </div>
 
               {/* Bottom Subtle Glowing Border Highlight */}
