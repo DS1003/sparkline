@@ -15,9 +15,9 @@ export function Hero() {
       <div className="relative rounded-2xl md:rounded-[20px] bg-[#070709] text-white overflow-hidden p-4 sm:p-5 lg:p-6 xl:p-10 min-h-[75svh] sm:min-h-[78svh] lg:min-h-[480px] xl:min-h-[calc(100vh-40px)] xl:max-h-[860px] flex flex-col justify-between shadow-2xl">
         {/* Background Team Image — Responsive Placement (Perfect 4-Person Framing on Mobile & Desktop) */}
         <picture className="absolute inset-0 pointer-events-none select-none">
-          <source media="(max-width: 767px)" srcSet="/images/heroes/4-of-us-mobile.png" />
+          <source media="(max-width: 767px)" srcSet="/images/heroes/hero-bg-mobile.png" />
           <Image
-            src="/images/heroes/4-of-us.png"
+            src="/images/heroes/hero-bg.png"
             alt="SPARKLINE Team"
             fill
             priority
@@ -26,11 +26,14 @@ export function Hero() {
           />
         </picture>
 
+        {/* Tight Left-Side Contrast Shadow (Terminates strictly after the title text ~42%) */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#070709]/85 from-0% via-[#070709]/50 via-30% to-transparent to-42% pointer-events-none" />
+
         {/* Top Navbar with Official Logo */}
         <Navbar />
 
         {/* Main Hero Headline Area with Real Spark Writing Effect */}
-        <div className="relative z-10 my-auto max-w-3xl xl:max-w-4xl py-1.5 sm:py-2.5 lg:py-2 xl:py-4 space-y-2 sm:space-y-3 lg:space-y-2.5 xl:space-y-4">
+        <div className="relative z-10 mt-auto mb-2 md:my-auto pt-16 sm:pt-20 md:pt-0 max-w-3xl xl:max-w-4xl py-1.5 sm:py-2.5 lg:py-2 xl:py-4 space-y-2 sm:space-y-3 lg:space-y-2.5 xl:space-y-4">
           <RevealOnScroll delay={0.1}>
             <Tag variant="base">Agence de transformation digitale</Tag>
           </RevealOnScroll>

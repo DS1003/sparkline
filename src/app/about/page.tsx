@@ -107,72 +107,69 @@ export default async function AboutPage() {
           </RevealOnScroll>
         </div>
 
-          {/* Master Bento Container (Matches Reference Layout) */}
+          {/* Master Bento Container (Inverted Pyramid Layout on Mobile: SPARK & LINE side-by-side, Image centered below) */}
           <RevealOnScroll delay={0.2}>
-            <div className="rounded-[32px] sm:rounded-[44px] bg-[#070709] p-3 sm:p-4 md:p-5 border border-white/10 shadow-2xl overflow-hidden">
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 sm:gap-4 items-stretch">
+            <div className="rounded-[28px] sm:rounded-[44px] bg-[#070709] p-2.5 sm:p-4 md:p-5 border border-white/10 shadow-2xl overflow-hidden">
+              <div className="grid grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-4 items-stretch">
                 {/* ── Block 01: SPARK (Highlighted Accent Card - Solid Orange #EB4604) ── */}
-                <div className="rounded-[24px] sm:rounded-[32px] bg-[#EB4604] text-white p-7 sm:p-9 flex flex-col justify-between space-y-6 shadow-md min-h-[300px] group transition-all duration-300 hover:scale-[1.01]">
+                <div className="col-span-1 rounded-[20px] sm:rounded-[32px] bg-[#EB4604] text-white p-4 sm:p-7 md:p-9 flex flex-col justify-between space-y-3 sm:space-y-6 shadow-md min-h-[240px] sm:min-h-[300px] group transition-all duration-300 hover:scale-[1.01]">
                   <div>
-                    <span className="text-xl sm:text-2xl font-bold font-mono block mb-4">
+                    <span className="text-base sm:text-2xl font-bold font-mono block mb-2 sm:mb-4">
                       01
                     </span>
                     <h3
-                      className="text-2xl sm:text-3xl font-bold text-white tracking-tight leading-tight mb-3"
+                      className="text-sm sm:text-2xl lg:text-3xl font-bold text-white tracking-tight leading-snug sm:leading-tight mb-2 sm:mb-3"
                       style={{ fontFamily: 'var(--font-family--primary-font)' }}
                     >
                       SPARK (L&apos;Étincelle)
                     </h3>
-                    <p className="text-white/90 text-sm sm:text-base leading-relaxed font-light">
+                    <p className="text-white/90 text-[11px] sm:text-sm lg:text-base leading-snug sm:leading-relaxed font-light">
                       L&apos;impulsion créative, la vision de rupture, l&apos;intuition esthétique et l&apos;ambition qui bousculent le statu quo. Sans étincelle, aucune transformation ne prend vie.
                     </p>
                   </div>
 
-                  <div className="pt-4 border-t border-white/20">
-                    <span className="text-xs font-mono font-semibold uppercase tracking-wider text-white/80">
-                      [ CRÉATIVITÉ • AUDACE • ÉNERGIE ]
+                  <div className="pt-2 sm:pt-4 border-t border-white/20">
+                    <span className="text-[9px] sm:text-xs font-mono font-semibold uppercase tracking-wider text-white/80 block">
+                      [ CRÉATIVITÉ • AUDACE ]
                     </span>
                   </div>
                 </div>
 
                 {/* ── Block 02: LINE (White Background Card) ── */}
-                <div className="rounded-[24px] sm:rounded-[32px] bg-white text-neutral-900 p-7 sm:p-9 flex flex-col justify-between space-y-6 min-h-[300px] shadow-md group transition-all duration-300 hover:scale-[1.01]">
+                <div className="col-span-1 rounded-[20px] sm:rounded-[32px] bg-white text-neutral-900 p-4 sm:p-7 md:p-9 flex flex-col justify-between space-y-3 sm:space-y-6 min-h-[240px] sm:min-h-[300px] shadow-md group transition-all duration-300 hover:scale-[1.01]">
                   <div>
-                    <span className="text-xl sm:text-2xl font-bold font-mono text-neutral-900 block mb-4">
+                    <span className="text-base sm:text-2xl font-bold font-mono text-neutral-900 block mb-2 sm:mb-4">
                       02
                     </span>
                     <h3
-                      className="text-2xl sm:text-3xl font-bold text-neutral-900 tracking-tight leading-tight mb-3"
+                      className="text-sm sm:text-2xl lg:text-3xl font-bold text-neutral-900 tracking-tight leading-snug sm:leading-tight mb-2 sm:mb-3"
                       style={{ fontFamily: 'var(--font-family--primary-font)' }}
                     >
                       LINE (La Ligne)
                     </h3>
-                    <p className="text-neutral-600 text-sm sm:text-base leading-relaxed font-light">
+                    <p className="text-neutral-600 text-[11px] sm:text-sm lg:text-base leading-snug sm:leading-relaxed font-light">
                       La trajectoire d&apos;impact. L&apos;ingénierie logicielle rigoureuse, la direction claire et la discipline qui relient une idée brute à un impact économique mesurable et pérenne.
                     </p>
                   </div>
 
-                  <div className="pt-4 border-t border-neutral-200/80">
-                    <span className="text-xs font-mono font-semibold uppercase tracking-wider text-neutral-500">
-                      [ STRATÉGIE • STRUCTURE • IMPACT ]
+                  <div className="pt-2 sm:pt-4 border-t border-neutral-200/80">
+                    <span className="text-[9px] sm:text-xs font-mono font-semibold uppercase tracking-wider text-neutral-500 block">
+                      [ STRATÉGIE • IMPACT ]
                     </span>
                   </div>
                 </div>
 
-                {/* ── Block 03: 3D Abstract Ribbon Sculpture Window ── */}
-                <div className="rounded-[24px] sm:rounded-[32px] overflow-hidden relative min-h-[260px] lg:min-h-[300px] bg-neutral-900 border border-white/10 group">
+                {/* ── Block 03: 3D Abstract Ribbon Sculpture Window (Centered below across both columns on mobile) ── */}
+                <div className="col-span-2 lg:col-span-1 rounded-[20px] sm:rounded-[32px] overflow-hidden relative min-h-[190px] sm:min-h-[260px] lg:min-h-[300px] bg-neutral-900 border border-white/10 group">
                   <Image
                     src="/images/approach/sparkline-synergy.png"
                     alt="SPARKLINE 3D Creative Synergy"
                     fill
-                    quality={85}
+                    quality={90}
                     sizes="(max-width: 1024px) 100vw, 400px"
                     className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
-
-                  {/* Bottom Synergy Pill Badge on Artwork */}
-
                 </div>
               </div>
             </div>
