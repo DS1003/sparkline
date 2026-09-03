@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import Image from 'next/image'
 import { TeamMember } from '@/types'
 
@@ -11,15 +11,41 @@ interface TeamCardBadgeProps {
 
 export function TeamCardBadge({ member }: TeamCardBadgeProps) {
   const [isFlipped, setIsFlipped] = useState(false)
+  const isTouchDevice = useRef(false)
   const avatarSrc = member.avatar || '/images/brand/Seydina.png'
+
+  useEffect(() => {
+    if (typeof window !== 'undefined' && !window.matchMedia('(hover: hover)').matches) {
+      isTouchDevice.current = true
+    }
+  }, [])
+
+  const handleMouseEnter = () => {
+    if (isTouchDevice.current) return
+    setIsFlipped(true)
+  }
+
+  const handleMouseLeave = () => {
+    if (isTouchDevice.current) return
+    setIsFlipped(false)
+  }
+
+  const handleTouchStart = () => {
+    isTouchDevice.current = true
+  }
+
+  const handleClick = () => {
+    setIsFlipped((prev) => !prev)
+  }
 
   return (
     <div
       className="relative w-full aspect-[7/10.4] select-none cursor-pointer group"
       style={{ perspective: '1200px' }}
-      onMouseEnter={() => setIsFlipped(true)}
-      onMouseLeave={() => setIsFlipped(false)}
-      onClick={() => setIsFlipped((prev) => !prev)}
+      onTouchStart={handleTouchStart}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      onClick={handleClick}
       role="button"
       tabIndex={0}
       aria-label={`Carte de ${member.name} — Cliquer ou survoler pour détails`}
