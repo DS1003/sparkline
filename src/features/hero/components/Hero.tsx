@@ -29,17 +29,17 @@ export function Hero() {
         {/* Top Navbar with Official Logo */}
         <Navbar />
 
-        {/* Main Hero Headline Area with Real Spark Writing Effect (Centered & Balanced on mobile) */}
-        <div className="relative z-10 mt-auto mb-6 sm:mb-0 sm:my-auto max-w-3xl xl:max-w-4xl pt-6 sm:pt-0 pb-2 sm:pb-2.5 lg:py-2 xl:py-4 space-y-2.5 sm:space-y-3 lg:space-y-2.5 xl:space-y-4 flex flex-col items-center text-center sm:items-start sm:text-left mx-auto sm:mx-0">
+        {/* Main Hero Headline Area with Real Spark Writing Effect */}
+        <div className="relative z-10 my-auto max-w-3xl xl:max-w-4xl py-1.5 sm:py-2.5 lg:py-2 xl:py-4 space-y-2 sm:space-y-3 lg:space-y-2.5 xl:space-y-4">
           <RevealOnScroll delay={0.1}>
             <Tag variant="base">Agence de transformation digitale</Tag>
           </RevealOnScroll>
 
           {/* Spark Writing Title on Strictly 3 Lines */}
-          <SparkTitle lines={['Concevoir la', 'nouvelle génération', 'de marques']} className="text-center sm:text-left" />
+          <SparkTitle lines={['Concevoir la', 'nouvelle génération', 'de marques']} />
 
           <RevealOnScroll delay={0.3}>
-            <p className="text-xs sm:text-sm lg:text-[13px] xl:text-base text-neutral-300 max-w-md xl:max-w-lg font-normal leading-relaxed text-center sm:text-left">
+            <p className="text-xs sm:text-sm lg:text-[13px] xl:text-base text-neutral-300 max-w-md xl:max-w-lg font-normal leading-relaxed">
               Accompagner les marques dans leur lancement, leur croissance et leur leadership grâce à un design d'exception.
             </p>
           </RevealOnScroll>
