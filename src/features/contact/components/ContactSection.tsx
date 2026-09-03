@@ -262,7 +262,7 @@ export function ContactSection() {
                           placeholder="Ex : Awa Diop"
                           value={formData.name}
                           onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                          className="w-full px-4 py-3 rounded-xl bg-white/[0.04] border border-white/10 text-white text-xs sm:text-sm placeholder-neutral-600 focus:outline-none focus:border-white/40 transition-colors"
+                          className="w-full px-4 py-3 rounded-xl bg-white/[0.04] border border-white/10 text-white text-base sm:text-sm placeholder-neutral-600 focus:outline-none focus:border-white/40 transition-colors"
                         />
                       </div>
 
@@ -275,7 +275,7 @@ export function ContactSection() {
                           placeholder="Ex : Baobab Labs"
                           value={formData.company}
                           onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-                          className="w-full px-4 py-3 rounded-xl bg-white/[0.04] border border-white/10 text-white text-xs sm:text-sm placeholder-neutral-600 focus:outline-none focus:border-white/40 transition-colors"
+                          className="w-full px-4 py-3 rounded-xl bg-white/[0.04] border border-white/10 text-white text-base sm:text-sm placeholder-neutral-600 focus:outline-none focus:border-white/40 transition-colors"
                         />
                       </div>
                     </div>
@@ -292,7 +292,7 @@ export function ContactSection() {
                           placeholder="awa@entreprise.sn"
                           value={formData.email}
                           onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                          className="w-full px-4 py-3 rounded-xl bg-white/[0.04] border border-white/10 text-white text-xs sm:text-sm placeholder-neutral-600 focus:outline-none focus:border-white/40 transition-colors"
+                          className="w-full px-4 py-3 rounded-xl bg-white/[0.04] border border-white/10 text-white text-base sm:text-sm placeholder-neutral-600 focus:outline-none focus:border-white/40 transition-colors"
                         />
                       </div>
 
@@ -305,7 +305,7 @@ export function ContactSection() {
                           placeholder="+221 78 528 63 30"
                           value={formData.phone}
                           onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                          className="w-full px-4 py-3 rounded-xl bg-white/[0.04] border border-white/10 text-white text-xs sm:text-sm placeholder-neutral-600 focus:outline-none focus:border-white/40 transition-colors"
+                          className="w-full px-4 py-3 rounded-xl bg-white/[0.04] border border-white/10 text-white text-base sm:text-sm placeholder-neutral-600 focus:outline-none focus:border-white/40 transition-colors"
                         />
                       </div>
                     </div>
@@ -318,7 +318,7 @@ export function ContactSection() {
                       <select
                         value={formData.inquiryType}
                         onChange={(e) => setFormData({ ...formData, inquiryType: e.target.value })}
-                        className="w-full px-4 py-3 rounded-xl bg-[#101014] border border-white/10 text-white text-xs sm:text-sm focus:outline-none focus:border-white/40 transition-colors"
+                        className="w-full px-4 py-3 rounded-xl bg-[#101014] border border-white/10 text-white text-base sm:text-sm focus:outline-none focus:border-white/40 transition-colors"
                       >
                         {inquiryTypes.map((type) => (
                           <option key={type.value} value={type.value} className="bg-[#121216] text-white">
@@ -339,7 +339,7 @@ export function ContactSection() {
                         placeholder="Parlez-nous de vos objectifs, de votre planning et de vos besoins..."
                         value={formData.message}
                         onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                        className="w-full px-4 py-3 rounded-xl bg-white/[0.04] border border-white/10 text-white text-xs sm:text-sm placeholder-neutral-600 focus:outline-none focus:border-white/40 transition-colors resize-none"
+                        className="w-full px-4 py-3 rounded-xl bg-white/[0.04] border border-white/10 text-white text-base sm:text-sm placeholder-neutral-600 focus:outline-none focus:border-white/40 transition-colors resize-none"
                       />
                     </div>
 

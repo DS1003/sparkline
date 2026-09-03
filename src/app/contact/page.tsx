@@ -167,7 +167,7 @@ export default function ContactPage() {
                         placeholder="Fanta Ndao"
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        className="w-full px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl sm:rounded-2xl bg-[#F8F9FB] focus:bg-white text-xs sm:text-sm text-neutral-900 placeholder:text-neutral-400 border border-neutral-200/90 shadow-[inset_0_1.5px_3px_rgba(0,0,0,0.04)] focus:border-[#EB4604] focus:shadow-[0_0_0_3px_rgba(235,70,4,0.12)] focus:outline-none transition-all font-medium"
+                        className="w-full px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl sm:rounded-2xl bg-[#F8F9FB] focus:bg-white text-base sm:text-sm text-neutral-900 placeholder:text-neutral-400 border border-neutral-200/90 shadow-[inset_0_1.5px_3px_rgba(0,0,0,0.04)] focus:border-[#EB4604] focus:shadow-[0_0_0_3px_rgba(235,70,4,0.12)] focus:outline-none transition-all font-medium"
                       />
                     </div>
 
@@ -181,7 +181,7 @@ export default function ContactPage() {
                         placeholder="fanta@entreprise.com"
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        className="w-full px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl sm:rounded-2xl bg-[#F8F9FB] focus:bg-white text-xs sm:text-sm text-neutral-900 placeholder:text-neutral-400 border border-neutral-200/90 shadow-[inset_0_1.5px_3px_rgba(0,0,0,0.04)] focus:border-[#EB4604] focus:shadow-[0_0_0_3px_rgba(235,70,4,0.12)] focus:outline-none transition-all font-medium"
+                        className="w-full px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl sm:rounded-2xl bg-[#F8F9FB] focus:bg-white text-base sm:text-sm text-neutral-900 placeholder:text-neutral-400 border border-neutral-200/90 shadow-[inset_0_1.5px_3px_rgba(0,0,0,0.04)] focus:border-[#EB4604] focus:shadow-[0_0_0_3px_rgba(235,70,4,0.12)] focus:outline-none transition-all font-medium"
                       />
                     </div>
                   </div>
@@ -197,7 +197,7 @@ export default function ContactPage() {
                         placeholder="+221 78 528 63 30"
                         value={formData.phone}
                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                        className="w-full px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl sm:rounded-2xl bg-[#F8F9FB] focus:bg-white text-xs sm:text-sm text-neutral-900 placeholder:text-neutral-400 border border-neutral-200/90 shadow-[inset_0_1.5px_3px_rgba(0,0,0,0.04)] focus:border-[#EB4604] focus:shadow-[0_0_0_3px_rgba(235,70,4,0.12)] focus:outline-none transition-all font-medium"
+                        className="w-full px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl sm:rounded-2xl bg-[#F8F9FB] focus:bg-white text-base sm:text-sm text-neutral-900 placeholder:text-neutral-400 border border-neutral-200/90 shadow-[inset_0_1.5px_3px_rgba(0,0,0,0.04)] focus:border-[#EB4604] focus:shadow-[0_0_0_3px_rgba(235,70,4,0.12)] focus:outline-none transition-all font-medium"
                       />
                     </div>
 
@@ -210,7 +210,7 @@ export default function ContactPage() {
                         placeholder="Dès que possible"
                         value={formData.preferredDate}
                         onChange={(e) => setFormData({ ...formData, preferredDate: e.target.value })}
-                        className="w-full px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl sm:rounded-2xl bg-[#F8F9FB] focus:bg-white text-xs sm:text-sm text-neutral-900 placeholder:text-neutral-400 border border-neutral-200/90 shadow-[inset_0_1.5px_3px_rgba(0,0,0,0.04)] focus:border-[#EB4604] focus:shadow-[0_0_0_3px_rgba(235,70,4,0.12)] focus:outline-none transition-all font-medium"
+                        className="w-full px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl sm:rounded-2xl bg-[#F8F9FB] focus:bg-white text-base sm:text-sm text-neutral-900 placeholder:text-neutral-400 border border-neutral-200/90 shadow-[inset_0_1.5px_3px_rgba(0,0,0,0.04)] focus:border-[#EB4604] focus:shadow-[0_0_0_3px_rgba(235,70,4,0.12)] focus:outline-none transition-all font-medium"
                       />
                     </div>
                   </div>
@@ -251,7 +251,7 @@ export default function ContactPage() {
                       placeholder="Décrivez vos ambitions, vos attentes et les points clés de votre projet..."
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                      className="w-full px-3.5 sm:px-4 py-2 sm:py-3 rounded-xl sm:rounded-2xl bg-[#F8F9FB] focus:bg-white text-xs sm:text-sm text-neutral-900 placeholder:text-neutral-400 border border-neutral-200/90 shadow-[inset_0_1.5px_3px_rgba(0,0,0,0.04)] focus:border-[#EB4604] focus:shadow-[0_0_0_3px_rgba(235,70,4,0.12)] focus:outline-none transition-all resize-none font-medium"
+                      className="w-full px-3.5 sm:px-4 py-2 sm:py-3 rounded-xl sm:rounded-2xl bg-[#F8F9FB] focus:bg-white text-base sm:text-sm text-neutral-900 placeholder:text-neutral-400 border border-neutral-200/90 shadow-[inset_0_1.5px_3px_rgba(0,0,0,0.04)] focus:border-[#EB4604] focus:shadow-[0_0_0_3px_rgba(235,70,4,0.12)] focus:outline-none transition-all resize-none font-medium"
                     />
                   </div>
 

@@ -17,35 +17,35 @@ interface FAQItem {
 const faqs: FAQItem[] = [
   {
     id: 'services',
-    number: '01',
+    number: '',
     question: 'Quels services votre agence propose-t-elle ?',
     answer:
       'Nous offrons une gamme complète d’expertises intégrées : Design UI/UX & Systèmes de Design, développement d’applications Web & Mobiles sur-mesure, identités de marque stratégiques, architectures Cloud et programmes d’apprentissage Sparklearn.',
   },
   {
     id: 'approach',
-    number: '02',
+    number: '',
     question: 'Comment abordez-vous un nouveau projet ?',
     answer:
       'Notre méthode repose sur 4 étapes rigoureuses : Cadrage stratégique & Découverte, Architecture & Prototypage haute fidélité, Développement agile en sprints courts, et Déploiement avec suivi des performances.',
   },
   {
     id: 'timeline',
-    number: '03',
+    number: '',
     question: 'Quels sont les délais moyens pour un projet ?',
     answer:
       'Les délais sont calibrés selon la complexité : comptez 2 à 4 semaines pour une identité de marque ou une landing page haute conversion, et 6 à 12 semaines pour une plateforme web SaaS ou une application mobile complète.',
   },
   {
     id: 'revisions',
-    number: '04',
+    number: '',
     question: 'Comment gérez-vous les révisions et retours ?',
     answer:
       'Nous travaillons en cycles itératifs transparents avec des démonstrations hebdomadaires. Des jalons de validation dédiés sont intégrés à chaque étape clé pour garantir une totale conformité avec vos attentes.',
   },
   {
     id: 'pricing',
-    number: '05',
+    number: '',
     question: 'Combien coûtent vos services ?',
     answer:
       'Chaque solution étant personnalisée, nous élaborons un devis clair et transparent après un premier atelier de cadrage gratuit, adapté à vos objectifs stratégiques et à vos exigences techniques.',
@@ -113,8 +113,8 @@ export function FAQSection() {
                   <div
                     onClick={() => toggle(faq.id)}
                     className={`group cursor-pointer transition-all duration-300 rounded-[24px] sm:rounded-[28px] overflow-hidden border ${isOpen
-                        ? 'bg-[#F9FAFB] border-[#0A0A0A]/20 shadow-[0_12px_32px_rgba(0,0,0,0.04),0_1px_3px_rgba(0,0,0,0.02)]'
-                        : 'bg-[#F8F9FA] hover:bg-[#F0F2F5] border-transparent hover:border-neutral-200/60 shadow-[0_2px_8px_rgba(0,0,0,0.015)]'
+                      ? 'bg-[#F9FAFB] border-[#0A0A0A]/20 shadow-[0_12px_32px_rgba(0,0,0,0.04),0_1px_3px_rgba(0,0,0,0.02)]'
+                      : 'bg-[#F8F9FA] hover:bg-[#F0F2F5] border-transparent hover:border-neutral-200/60 shadow-[0_2px_8px_rgba(0,0,0,0.015)]'
                       }`}
                   >
                     {/* Question Header Bar */}
@@ -136,8 +136,8 @@ export function FAQSection() {
                       {/* Smooth Circular Micro-Interaction Button */}
                       <div
                         className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full border flex items-center justify-center text-sm font-light shrink-0 transition-all duration-300 ${isOpen
-                            ? 'bg-[#0A0A0A] text-white border-[#0A0A0A] rotate-45 shadow-sm'
-                            : 'bg-white border-neutral-200/80 text-neutral-600 group-hover:border-neutral-300 group-hover:bg-white group-hover:text-[#0A0A0A]'
+                          ? 'bg-[#0A0A0A] text-white border-[#0A0A0A] rotate-45 shadow-sm'
+                          : 'bg-white border-neutral-200/80 text-neutral-600 group-hover:border-neutral-300 group-hover:bg-white group-hover:text-[#0A0A0A]'
                           }`}
                       >
                         <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -149,8 +149,8 @@ export function FAQSection() {
                     {/* Expandable Answer Content */}
                     <div
                       className={`grid transition-all duration-300 ease-in-out px-4 sm:px-6 lg:px-7 ${isOpen
-                          ? 'grid-rows-[1fr] opacity-100 pb-5 sm:pb-6 pt-0'
-                          : 'grid-rows-[0fr] opacity-0 pb-0 pt-0'
+                        ? 'grid-rows-[1fr] opacity-100 pb-5 sm:pb-6 pt-0'
+                        : 'grid-rows-[0fr] opacity-0 pb-0 pt-0'
                         }`}
                     >
                       <div className="overflow-hidden">
