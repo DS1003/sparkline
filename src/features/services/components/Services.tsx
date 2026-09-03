@@ -250,7 +250,7 @@ export function Services({ isServicesPage = false, hideHeader = false }: Service
                         alt={service.title}
                         fill
                         quality={90}
-                        className="object-contain p-0.5 sm:p-1"
+                        className="object-cover"
                         sizes="(max-width: 1024px) 100vw, 480px"
                       />
                     </div>
