@@ -25,7 +25,7 @@ export default async function TeamPage() {
         subtitle="Un collectif soudé d'ingénieurs, designers, architectes et stratèges bâtissant des solutions digitales impactantes."
         breadcrumbs={[{ label: 'Équipe', href: '/team' }]}
         metaItems={[
-          { label: 'Pôles d’expertise', value: 'Tech, UX/UI, DevOps, Produit' },
+          { label: 'Plusieurs pôles d’expertise', value: '' },
           { label: 'Culture Studio', value: 'Excellence & Impact' },
         ]}
       />

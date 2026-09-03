@@ -17,10 +17,12 @@ export function ScrollToTop() {
 
   useEffect(() => {
     const unsubScroll = scrollY.on('change', (latest) => {
-      setIsVisible(latest > 200)
+      const nextVisible = latest > 200
+      setIsVisible((prev) => (prev !== nextVisible ? nextVisible : prev))
     })
     const unsubProgress = smoothProgress.on('change', (latest) => {
-      setPercent(Math.round(latest * 100))
+      const nextPercent = Math.round(latest * 100)
+      setPercent((prev) => (prev !== nextPercent ? nextPercent : prev))
     })
     return () => {
       unsubScroll()
