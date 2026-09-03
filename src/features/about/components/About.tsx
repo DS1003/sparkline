@@ -38,9 +38,12 @@ export function About() {
           <RevealOnScroll delay={0.2}>
             <Link
               href="/about"
-              className="group flex items-center gap-2 text-[#0A0A0A] font-medium text-sm lg:text-base whitespace-nowrap shrink-0 pb-1 border-b border-dashed border-neutral-400 hover:border-[#EB4604] hover:text-[#EB4604] transition-colors mb-1"
+              className="group inline-flex items-center gap-2.5 px-4.5 py-2.5 rounded-full bg-neutral-100/90 hover:bg-[#0A0A0A] text-neutral-900 hover:text-white border border-neutral-200/90 hover:border-[#0A0A0A] text-xs sm:text-sm font-medium transition-all duration-300 shadow-2xs hover:shadow-md shrink-0 mb-1"
             >
-              Découvrir le Studio
+              <span>Découvrir le Studio</span>
+              <span className="w-5 h-5 rounded-full bg-white group-hover:bg-[#EB4604] group-hover:text-white text-neutral-900 flex items-center justify-center text-xs transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 shadow-2xs">
+                ↗
+              </span>
             </Link>
           </RevealOnScroll>
         </div>
@@ -63,20 +66,20 @@ export function About() {
             }
           `}</style>
 
-          <div className="portrait-marquee flex gap-2 sm:gap-3 lg:gap-4 w-max">
+          <div className="portrait-marquee flex gap-3 sm:gap-4 lg:gap-5 w-max">
             {/* First set */}
             {teamPortraits.map((portrait, idx) => (
               <div
                 key={`a-${idx}`}
-                className="relative shrink-0 w-[180px] sm:w-[240px] md:w-[300px] lg:w-[360px] xl:w-[400px] aspect-[3/4.2] rounded-xl overflow-hidden group"
+                className="relative shrink-0 w-[280px] sm:w-[320px] md:w-[350px] lg:w-[380px] xl:w-[410px] aspect-[3/4.2] rounded-2xl sm:rounded-3xl overflow-hidden group shadow-md"
               >
                 <Image
                   src={portrait.src}
                   alt={portrait.alt}
                   fill
-                  quality={85}
+                  quality={90}
                   className="object-cover object-top transition-transform duration-700 group-hover:scale-105"
-                  sizes="(max-width: 640px) 180px, (max-width: 768px) 240px, (max-width: 1024px) 300px, (max-width: 1280px) 360px, 400px"
+                  sizes="(max-width: 640px) 280px, (max-width: 768px) 320px, (max-width: 1024px) 350px, (max-width: 1280px) 380px, 410px"
                 />
               </div>
             ))}
@@ -84,15 +87,15 @@ export function About() {
             {teamPortraits.map((portrait, idx) => (
               <div
                 key={`b-${idx}`}
-                className="relative shrink-0 w-[180px] sm:w-[240px] md:w-[300px] lg:w-[360px] xl:w-[400px] aspect-[3/4.2] rounded-xl overflow-hidden group"
+                className="relative shrink-0 w-[280px] sm:w-[320px] md:w-[350px] lg:w-[380px] xl:w-[410px] aspect-[3/4.2] rounded-2xl sm:rounded-3xl overflow-hidden group shadow-md"
               >
                 <Image
                   src={portrait.src}
                   alt={portrait.alt}
                   fill
-                  quality={85}
+                  quality={90}
                   className="object-cover object-top transition-transform duration-700 group-hover:scale-105"
-                  sizes="(max-width: 640px) 180px, (max-width: 768px) 240px, (max-width: 1024px) 300px, (max-width: 1280px) 360px, 400px"
+                  sizes="(max-width: 640px) 280px, (max-width: 768px) 320px, (max-width: 1024px) 350px, (max-width: 1280px) 380px, 410px"
                 />
               </div>
             ))}

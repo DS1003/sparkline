@@ -160,10 +160,12 @@ export function Services({ isServicesPage = false, hideHeader = false }: Service
                   {!isServicesPage && (
                     <Link
                       href="/services"
-                      className="group inline-flex items-center gap-1.5 text-[#0A0A0A] font-medium text-xs sm:text-sm whitespace-nowrap pb-0.5 border-b border-dashed border-neutral-400 hover:border-[#EB4604] hover:text-[#EB4604] transition-colors"
+                      className="group inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-neutral-100/90 hover:bg-[#0A0A0A] text-neutral-900 hover:text-white border border-neutral-200/90 hover:border-[#0A0A0A] text-xs font-medium transition-all duration-300 shadow-2xs hover:shadow-md"
                     >
                       <span>Explorer toutes nos expertises</span>
-                      <span className="transition-transform group-hover:translate-x-1">→</span>
+                      <span className="w-4.5 h-4.5 rounded-full bg-white group-hover:bg-[#EB4604] group-hover:text-white text-neutral-900 flex items-center justify-center text-[10px] transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 shadow-2xs">
+                        ↗
+                      </span>
                     </Link>
                   )}
                 </div>

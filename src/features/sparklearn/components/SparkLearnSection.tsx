@@ -34,20 +34,24 @@ export function SparkLearnSection() {
                 <p className="text-sm sm:text-base text-neutral-500 font-normal leading-relaxed">
                   {sparklearn.description}
                 </p>
-                <div className="flex items-center gap-4">
+                <div className="flex flex-wrap items-center gap-2.5 pt-1">
                   <Link
                     href="/sparklearn/masterclasses"
-                    className="group inline-flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider text-[#0A0A0A] hover:text-[#EB4604] transition-colors border-b border-dashed border-neutral-400 pb-1"
+                    className="group inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-neutral-100/90 hover:bg-[#0A0A0A] text-neutral-900 hover:text-white border border-neutral-200/90 hover:border-[#0A0A0A] text-xs font-medium transition-all duration-300 shadow-2xs"
                   >
                     <span>Masterclasses</span>
-                    <span className="transition-transform group-hover:translate-x-1">→</span>
+                    <span className="w-4 h-4 rounded-full bg-white group-hover:bg-[#EB4604] group-hover:text-white text-neutral-900 flex items-center justify-center text-[9px] transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 shadow-2xs">
+                      ↗
+                    </span>
                   </Link>
                   <Link
                     href="/sparklearn/formations"
-                    className="group inline-flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider text-[#0A0A0A] hover:text-[#EB4604] transition-colors border-b border-dashed border-neutral-400 pb-1"
+                    className="group inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-neutral-100/90 hover:bg-[#0A0A0A] text-neutral-900 hover:text-white border border-neutral-200/90 hover:border-[#0A0A0A] text-xs font-medium transition-all duration-300 shadow-2xs"
                   >
                     <span>Formations</span>
-                    <span className="transition-transform group-hover:translate-x-1">→</span>
+                    <span className="w-4 h-4 rounded-full bg-white group-hover:bg-[#EB4604] group-hover:text-white text-neutral-900 flex items-center justify-center text-[9px] transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 shadow-2xs">
+                      ↗
+                    </span>
                   </Link>
                 </div>
               </div>
