@@ -10,7 +10,7 @@ import { SparkTitle } from './SparkTitle'
 
 export function Hero() {
   return (
-    <section className="w-full bg-white p-2 sm:p-3 md:p-3.5 lg:p-4 xl:p-5">
+    <section id="main-hero" className="w-full bg-white p-2 sm:p-3 md:p-3.5 lg:p-4 xl:p-5">
       {/* Hero Inset Card (Sleek, Framed Proportions on Laptops and Desktops) */}
       <div className="relative rounded-2xl md:rounded-[20px] bg-[#070709] text-white overflow-hidden p-4 sm:p-5 lg:p-6 xl:p-10 min-h-[75svh] sm:min-h-[78svh] lg:min-h-[480px] xl:min-h-[calc(100vh-40px)] xl:max-h-[860px] flex flex-col justify-between shadow-2xl">
         {/* Background Team Image — Responsive Placement (Perfect 4-Person Framing on Mobile & Desktop) */}

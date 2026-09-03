@@ -57,10 +57,12 @@ export function RevealOnScroll({
 
     window.addEventListener('scroll', checkVisibility, { passive: true })
     window.addEventListener('resize', checkVisibility, { passive: true })
+    window.addEventListener('sparkline:loader-complete', checkVisibility)
 
     return () => {
       window.removeEventListener('scroll', checkVisibility)
       window.removeEventListener('resize', checkVisibility)
+      window.removeEventListener('sparkline:loader-complete', checkVisibility)
       clearTimeout(hydrationTimer)
     }
   }, [reveal])

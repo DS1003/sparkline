@@ -1,82 +1,189 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import Image from 'next/image'
+import gsap from 'gsap'
+import { useGSAP } from '@gsap/react'
 
 export function Preloader() {
-  const [stage, setStage] = useState<'spark' | 'line' | 'logo' | 'fading' | 'complete'>('spark')
+  const containerRef = useRef<HTMLDivElement>(null)
+  const sparkleRef = useRef<HTMLDivElement>(null)
+  const glowRef = useRef<HTMLDivElement>(null)
+  const logoRef = useRef<HTMLDivElement>(null)
+  const [isComplete, setIsComplete] = useState(false)
 
-  useEffect(() => {
-    // Fast, elegant sequence: Spark (0-300ms) -> Line/Energy (300-650ms) -> Logo (650-1350ms) -> Fading -> Complete
-    const t1 = setTimeout(() => setStage('line'), 300)
-    const t2 = setTimeout(() => setStage('logo'), 650)
-    const t3 = setTimeout(() => {
-      setStage('fading')
-      if (typeof window !== 'undefined') {
-        ;(window as unknown as { __SPARKLINE_LOADED__?: boolean }).__SPARKLINE_LOADED__ = true
-        window.dispatchEvent(new CustomEvent('sparkline:loader-complete'))
-      }
-    }, 1350)
+  useGSAP(() => {
+    document.body.style.overflow = 'hidden'
 
-    const t4 = setTimeout(() => {
-      setStage('complete')
-    }, 1700)
-
-    return () => {
-      clearTimeout(t1)
-      clearTimeout(t2)
-      clearTimeout(t3)
-      clearTimeout(t4)
+    const heroContainer = document.getElementById('main-hero')
+    
+    if (heroContainer) {
+      // Préparation du Hero : caché en dessous de l'écran, prêt à remonter
+      gsap.set(heroContainer, { 
+        y: '100vh', 
+        opacity: 1, // Visible car il va pousser l'écran
+        scale: 1,
+        transformOrigin: 'center center',
+        zIndex: 101,
+        position: 'relative'
+      })
     }
-  }, [])
+    
+    gsap.set(sparkleRef.current, { scale: 0, opacity: 0, rotation: -90 })
+    gsap.set(glowRef.current, { scale: 0, opacity: 0 })
+    gsap.set(logoRef.current, { scale: 0.95, opacity: 0, filter: 'blur(10px)' })
 
-  if (stage === 'complete') return null
+    const tl = gsap.timeline({
+      onComplete: () => {
+        setIsComplete(true)
+        document.body.style.overflow = ''
+        if (typeof window !== 'undefined') {
+          ;(window as unknown as { __SPARKLINE_LOADED__?: boolean }).__SPARKLINE_LOADED__ = true
+          window.dispatchEvent(new CustomEvent('sparkline:loader-complete'))
+        }
+      }
+    })
+
+    // ---------------------------------------------------------
+    // ACTE 1 : L'ÉVEIL DU SPARKLE (0s -> 0.8s)
+    // ---------------------------------------------------------
+    tl.to(sparkleRef.current, {
+      scale: 1,
+      opacity: 1,
+      rotation: 0,
+      duration: 0.6,
+      ease: 'power3.out'
+    }, 0.1)
+
+    tl.to(glowRef.current, {
+      scale: 1,
+      opacity: 0.8,
+      duration: 0.6,
+      ease: 'power3.out'
+    }, 0.1)
+    
+    // Pulsation courte
+    tl.to(sparkleRef.current, {
+      scale: 0.8,
+      rotation: 45,
+      duration: 0.5,
+      ease: 'power2.inOut'
+    }, 0.7)
+
+    tl.to(glowRef.current, {
+      scale: 0.8,
+      duration: 0.5,
+      ease: 'power2.inOut'
+    }, 0.7)
+
+    // ---------------------------------------------------------
+    // ACTE 2 : L'EXPANSION MASSIVE (1.2s -> 2.0s)
+    // ---------------------------------------------------------
+    tl.to(glowRef.current, {
+      opacity: 0,
+      duration: 0.2,
+      ease: 'power2.out'
+    }, 1.1)
+
+    tl.to(sparkleRef.current, {
+      scale: 400, 
+      rotation: 90, 
+      duration: 0.8,
+      ease: 'power2.inOut' 
+    }, 1.2)
+
+    // ---------------------------------------------------------
+    // ACTE 3 : L'EMBLÈME (1.8s -> 2.6s)
+    // ---------------------------------------------------------
+    tl.to(logoRef.current, {
+      scale: 1,
+      opacity: 1,
+      filter: 'blur(0px)',
+      duration: 0.8,
+      ease: 'power3.out'
+    }, 1.8)
+
+    // ---------------------------------------------------------
+    // ACTE 4 : L'ASCENSION DU HERO (2.8s -> 3.6s)
+    // ---------------------------------------------------------
+    if (heroContainer) {
+      tl.to(containerRef.current, {
+        y: '-100vh',
+        duration: 0.8,
+        ease: 'power3.inOut'
+      }, 2.8)
+
+      tl.to(heroContainer, {
+        y: 0,
+        duration: 0.8,
+        ease: 'power3.inOut',
+        clearProps: 'all' 
+      }, 2.8)
+    } else {
+      tl.to(containerRef.current, {
+        y: '-100vh',
+        opacity: 0,
+        duration: 0.8,
+        ease: 'power3.inOut'
+      }, 2.8)
+    }
+
+  }, { scope: containerRef })
+
+  if (isComplete) return null
 
   return (
     <div
-      className={`fixed inset-0 z-50 bg-[#070709] flex flex-col items-center justify-center transition-opacity duration-400 select-none ${
-        stage === 'fading' ? 'opacity-0 pointer-events-none' : 'opacity-100'
-      }`}
+      ref={containerRef}
+      className="fixed inset-0 z-[100] bg-white flex items-center justify-center overflow-hidden touch-none pointer-events-none"
     >
-      <div className="relative flex flex-col items-center justify-center">
-        {/* Glow ambient background */}
-        <div className="absolute w-72 h-72 rounded-full bg-[#EB4604]/20 blur-[90px] pointer-events-none" />
+      {/* 
+        Le Glow Indépendant.
+        Maintenant de couleur sombre pour accompagner l'étoile noire.
+      */}
+      <div 
+        ref={glowRef}
+        className="absolute z-0 w-20 h-20 sm:w-28 sm:h-28 rounded-full bg-[#070709] blur-[30px]"
+        style={{ transform: 'scale(0)', opacity: 0 }}
+      />
 
-        {/* Phase 1 & 2: Spark & Energy Line Animation */}
-        {stage !== 'logo' && stage !== 'fading' && (
-          <div className="flex flex-col items-center justify-center space-y-4">
-            {/* Spark point */}
-            <div className="w-4 h-4 rounded-full bg-gradient-to-r from-[#FFB901] to-[#EB4604] shadow-[0_0_25px_#FFB901] animate-ping" />
-            
-            {/* Energy Line */}
-            <div
-              className={`h-0.5 bg-gradient-to-r from-[#FFB901] via-[#EB4604] to-transparent rounded-full transition-all duration-500 ${
-                stage === 'line' ? 'w-48 opacity-100' : 'w-0 opacity-0'
-              }`}
-            />
-          </div>
-        )}
+      {/* 
+        L'éclat d'énergie (Sparkle 4 branches).
+        Couleur fixée à #070709 (Noir). En grandissant, il va assombrir toute la page.
+      */}
+      <div 
+        ref={sparkleRef}
+        className="absolute z-10 flex items-center justify-center text-[#070709]"
+        style={{ transform: 'scale(0)' }}
+      >
+        <svg 
+          viewBox="0 0 24 24" 
+          className="w-12 h-12 sm:w-16 sm:h-16"
+          fill="currentColor"
+        >
+          <path d="M12 0C12 0 12 10.5 24 12C24 12 12 13.5 12 24C12 24 12 13.5 0 12C0 12 12 10.5 12 0Z" />
+        </svg>
+      </div>
 
-        {/* Phase 3: Official SPARKLINE Logo Reveal */}
-        {(stage === 'logo' || stage === 'fading') && (
-          <div className="flex flex-col items-center space-y-4 animate-fadeIn">
-            {/* Official Symbol / Logo with subtle spark glow */}
-            <div className="relative w-56 h-14 sm:w-64 sm:h-16 flex items-center justify-center">
-              <Image
-                src="/images/brand/sparkline-logo-white.svg"
-                alt="SPARKLINE Official Logo"
-                width={256}
-                height={52}
-                priority
-                className="w-full h-auto object-contain animate-spark-pulse"
-              />
-            </div>
-
-            <p className="text-[11px] font-mono tracking-widest text-neutral-400 uppercase">
-              Déclenchez le changement <span className="text-[#EB4604]">•</span> Illuminez le succès
-            </p>
-          </div>
-        )}
+      {/* 
+        Le Logo SPARKLINE.
+        Version Normale (principale).
+      */}
+      <div 
+        ref={logoRef}
+        className="relative z-20 flex flex-col items-center justify-center w-full px-4"
+        style={{ transform: 'scale(0.95)', filter: 'blur(10px)', opacity: 0 }}
+      >
+        <div className="relative w-[300px] sm:w-[400px] md:w-[500px] flex items-center justify-center drop-shadow-[0_15px_40px_rgba(0,0,0,0.3)]">
+          <Image
+            src="/images/brand/Logo - horizontal/inversé.png"
+            alt="SPARKLINE Official Logo"
+            width={500}
+            height={100}
+            priority
+            className="w-full h-auto object-contain"
+          />
+        </div>
       </div>
     </div>
   )
