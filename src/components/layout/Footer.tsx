@@ -53,7 +53,7 @@ export function Footer() {
         {/* 2. Middle Grid: Newsletter & Multi-Column Navigation */}
         <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start py-8 sm:py-12">
           {/* Left Column: Stay updated with SPARKLINE news */}
-          <div className="lg:col-span-6 space-y-5 sm:space-y-6">
+          <div className="lg:col-span-6 space-y-5 sm:space-y-6 flex flex-col items-center lg:items-start text-center lg:text-left">
             <h2 className="text-xl sm:text-3xl lg:text-4xl font-normal text-white tracking-tight leading-[1.2]">
               Restez informé des
               <br />
@@ -62,12 +62,12 @@ export function Footer() {
 
             {/* Newsletter Subscription Pill Input */}
             {subscribed ? (
-              <div className="max-w-xl p-3.5 sm:p-4 rounded-full bg-[#EB4604]/10 border border-[#EB4604]/40 text-xs sm:text-sm text-[#FFB901] flex items-center gap-2">
+              <div className="w-full max-w-xl p-3.5 sm:p-4 rounded-full bg-[#EB4604]/10 border border-[#EB4604]/40 text-xs sm:text-sm text-[#FFB901] flex items-center gap-2">
                 <span className="text-[#EB4604] font-bold">✓</span>
                 <span>Merci ! Vous êtes désormais abonné à nos actualités.</span>
               </div>
             ) : (
-              <form onSubmit={handleSubscribe} className="max-w-xl">
+              <form onSubmit={handleSubscribe} className="w-full max-w-xl">
                 <div className="rounded-full border border-white/80 bg-transparent p-1.5 sm:p-2.5 pl-4 sm:pl-7 flex items-center justify-between transition-colors shadow-sm">
                   <input
                     type="email"
@@ -88,8 +88,8 @@ export function Footer() {
               </form>
             )}
 
-            {/* Social Pill Badges matching exact screenshot: [icon ↗] */}
-            <div className="flex flex-wrap items-center gap-2.5 sm:gap-3 pt-3">
+            {/* Social Pill Badges */}
+            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-2.5 sm:gap-3 pt-3">
               {[
                 {
                   label: 'LinkedIn',
@@ -153,51 +153,33 @@ export function Footer() {
           </div>
 
           {/* Right Columns: Clean Official Sitemap Navigation */}
-          <div className="lg:col-span-6 grid grid-cols-2 gap-8 text-sm">
-            {/* Column 1: Navigation Principale */}
-            <div className="space-y-3.5">
-              <Link href="/" className="block text-neutral-300 hover:text-white hover:translate-x-0.5 transition-all">
-                Accueil
-              </Link>
-              <Link href="/about" className="block text-neutral-300 hover:text-white hover:translate-x-0.5 transition-all">
-                À propos
-              </Link>
-              <Link href="/services" className="block text-neutral-300 hover:text-white hover:translate-x-0.5 transition-all">
-                Services
-              </Link>
-              <Link href="/projects" className="block text-neutral-300 hover:text-white hover:translate-x-0.5 transition-all">
-                Projets
-              </Link>
+          <div className="lg:col-span-6 grid grid-cols-2 gap-8 text-sm text-center lg:text-left">
+            {/* Column 1 */}
+            <div className="space-y-3.5 flex flex-col items-center lg:items-start">
+              <Link href="/" className="text-neutral-300 hover:text-white hover:translate-x-0.5 transition-all">Accueil</Link>
+              <Link href="/about" className="text-neutral-300 hover:text-white hover:translate-x-0.5 transition-all">À propos</Link>
+              <Link href="/services" className="text-neutral-300 hover:text-white hover:translate-x-0.5 transition-all">Services</Link>
+              <Link href="/projects" className="text-neutral-300 hover:text-white hover:translate-x-0.5 transition-all">Projets</Link>
             </div>
 
-            {/* Column 2: Collectif & Contact */}
-            <div className="space-y-3.5">
-              <Link href="/team" className="block text-neutral-300 hover:text-white hover:translate-x-0.5 transition-all">
-                Équipe
-              </Link>
-              <Link href="/sparklearn" className="block text-neutral-300 hover:text-white hover:translate-x-0.5 transition-all">
-                Sparklearn
-              </Link>
-              <Link href="/contact" className="block text-neutral-300 hover:text-white hover:translate-x-0.5 transition-all">
-                Contact
-              </Link>
+            {/* Column 2 */}
+            <div className="space-y-3.5 flex flex-col items-center lg:items-start">
+              <Link href="/team" className="text-neutral-300 hover:text-white hover:translate-x-0.5 transition-all">Équipe</Link>
+              <Link href="/sparklearn" className="text-neutral-300 hover:text-white hover:translate-x-0.5 transition-all">Sparklearn</Link>
+              <Link href="/contact" className="text-neutral-300 hover:text-white hover:translate-x-0.5 transition-all">Contact</Link>
             </div>
           </div>
         </div>
 
         {/* 3. Bottom Bar: Copyright, Tagline & Legal */}
-        <div className="relative z-10 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between text-xs text-neutral-400 gap-4">
+        <div className="relative z-10 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between text-xs text-neutral-400 gap-3 text-center">
           <p>
             SPARKLINE © {new Date().getFullYear()}. Tous droits réservés. Propulsé par <span className="text-white font-medium">SPARKLINE</span>.
           </p>
           <div className="flex items-center gap-3">
-            <Link href="/privacy" className="hover:text-white transition-colors">
-              Politique de confidentialité
-            </Link>
+            <Link href="/privacy" className="hover:text-white transition-colors">Politique de confidentialité</Link>
             <span className="text-neutral-600">|</span>
-            <Link href="/terms" className="hover:text-white transition-colors">
-              Conditions d'utilisation
-            </Link>
+            <Link href="/terms" className="hover:text-white transition-colors">Conditions d'utilisation</Link>
           </div>
         </div>
       </div>

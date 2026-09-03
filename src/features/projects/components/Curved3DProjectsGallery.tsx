@@ -488,7 +488,8 @@ export function Curved3DProjectsGallery({
 
                       {/* Direction Arrows on Landscape Image */}
                       {gallery.length > 1 && (
-                        <div className="absolute inset-x-2.5 sm:inset-x-3 top-1/2 -translate-y-1/2 flex items-center justify-between pointer-events-none">
+                        <div className="absolute inset-x-3 sm:inset-x-4 top-1/2 -translate-y-1/2 flex items-center justify-between pointer-events-none">
+                          {/* Prev */}
                           <button
                             type="button"
                             onClick={(e) => {
@@ -496,10 +497,14 @@ export function Curved3DProjectsGallery({
                               setActiveGalleryIndex((prev) => (prev > 0 ? prev - 1 : gallery.length - 1))
                             }}
                             aria-label="Image précédente"
-                            className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-black/80 hover:bg-[#EB4604] border border-white/20 text-white flex items-center justify-center text-xs transition-all duration-200 pointer-events-auto backdrop-blur-md shadow-lg active:scale-95"
+                            className="group pointer-events-auto flex items-center justify-center w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/40 backdrop-blur-xl text-white transition-all duration-300 hover:scale-105 active:scale-95 shadow-lg"
                           >
-                            ←
+                            <svg className="w-3.5 h-3.5 transition-transform duration-300 group-hover:-translate-x-0.5" fill="none" viewBox="0 0 14 14" stroke="currentColor" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round">
+                              <path d="M9 11L5 7l4-4" />
+                            </svg>
                           </button>
+
+                          {/* Next */}
                           <button
                             type="button"
                             onClick={(e) => {
@@ -507,9 +512,11 @@ export function Curved3DProjectsGallery({
                               setActiveGalleryIndex((prev) => (prev < gallery.length - 1 ? prev + 1 : 0))
                             }}
                             aria-label="Image suivante"
-                            className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-black/80 hover:bg-[#EB4604] border border-white/20 text-white flex items-center justify-center text-xs transition-all duration-200 pointer-events-auto backdrop-blur-md shadow-lg active:scale-95"
+                            className="group pointer-events-auto flex items-center justify-center w-9 h-9 rounded-full bg-white/10 hover:bg-[#EB4604] border border-white/20 hover:border-[#EB4604] backdrop-blur-xl text-white transition-all duration-300 hover:scale-105 active:scale-95 shadow-lg hover:shadow-[#EB4604]/30"
                           >
-                            →
+                            <svg className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-0.5" fill="none" viewBox="0 0 14 14" stroke="currentColor" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round">
+                              <path d="M5 3l4 4-4 4" />
+                            </svg>
                           </button>
                         </div>
                       )}
@@ -611,26 +618,29 @@ export function Curved3DProjectsGallery({
                       </div>
                     )}
 
-                    {/* Action Buttons Integrated into Left Column */}
-                    <div className="pt-1 sm:pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3">
+                    {/* Action Buttons */}
+                    <div className="pt-1 sm:pt-2 flex flex-row items-center gap-2 sm:gap-3">
+                      {/* Primary CTA */}
                       <Link
                         href={`/projects/${expandedProject.slug}`}
-                        className="w-full sm:flex-1 inline-flex items-center justify-center gap-2 py-3 px-5 rounded-full bg-[#EB4604] hover:bg-[#D43D00] text-white text-xs sm:text-sm font-semibold transition-all duration-300 shadow-md shadow-[#EB4604]/25 group text-center"
+                        className="group flex-1 inline-flex items-center justify-center gap-2 py-3 px-5 rounded-full bg-[#EB4604] hover:bg-[#D43D00] text-white text-xs sm:text-sm font-semibold tracking-tight transition-all duration-300 shadow-md shadow-[#EB4604]/30 hover:shadow-[#EB4604]/50 hover:scale-[1.02] active:scale-[0.98]"
                       >
-                        <span>Consulter l&apos;étude de cas</span>
-                        <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+                        <span>Voir le projet</span>
+                        <span className="w-5 h-5 rounded-full bg-white/20 group-hover:bg-white/30 flex items-center justify-center text-[11px] transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">↗</span>
                       </Link>
 
+                      {/* Close — compact icon pill */}
                       <button
                         type="button"
                         onClick={() => setExpandedProject(null)}
-                        className={`w-full sm:w-auto inline-flex items-center justify-center px-4 py-3 rounded-full text-xs sm:text-sm font-medium transition-all ${
+                        aria-label="Fermer"
+                        className={`shrink-0 inline-flex items-center justify-center w-11 h-11 rounded-full text-sm font-medium transition-all duration-300 border hover:scale-105 active:scale-95 ${
                           theme === 'light'
-                            ? 'bg-neutral-100 hover:bg-neutral-200 text-neutral-700 border border-neutral-200'
-                            : 'bg-white/[0.06] hover:bg-white/[0.12] text-neutral-300 hover:text-white border border-white/10'
+                            ? 'bg-neutral-100 hover:bg-neutral-200 text-neutral-600 border-neutral-200'
+                            : 'bg-white/[0.07] hover:bg-white/[0.14] text-neutral-300 hover:text-white border-white/10'
                         }`}
                       >
-                        <span>Fermer ✕</span>
+                        ✕
                       </button>
                     </div>
                   </div>

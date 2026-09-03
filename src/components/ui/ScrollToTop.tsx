@@ -7,7 +7,6 @@ export function ScrollToTop() {
   const [isVisible, setIsVisible] = useState(false)
   const { scrollY, scrollYProgress } = useScroll()
 
-  // Silky smooth spring progress
   const smoothProgress = useSpring(scrollYProgress, {
     stiffness: 140,
     damping: 24,
@@ -23,7 +22,6 @@ export function ScrollToTop() {
     const unsubProgress = smoothProgress.on('change', (latest) => {
       setPercent(Math.round(latest * 100))
     })
-
     return () => {
       unsubScroll()
       unsubProgress()
@@ -31,95 +29,85 @@ export function ScrollToTop() {
   }, [scrollY, smoothProgress])
 
   const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth',
-    })
+    window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
-  // Exact geometry with generous breathing room
-  const radius = 18
+  const size = 56
+  const strokeWidth = 2.5
+  const radius = (size - strokeWidth * 2) / 2
   const circumference = 2 * Math.PI * radius
 
   return (
     <AnimatePresence>
       {isVisible && (
-        <motion.div
-          initial={{ opacity: 0, scale: 0.75, y: 20 }}
+        <motion.button
+          onClick={scrollToTop}
+          aria-label="Retourner en haut de la page"
+          initial={{ opacity: 0, scale: 0.7, y: 16 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.75, y: 15 }}
-          transition={{
-            type: 'spring',
-            stiffness: 320,
-            damping: 24,
-          }}
-          className="fixed bottom-6 right-6 sm:bottom-8 sm:right-8 z-50 pointer-events-auto"
+          exit={{ opacity: 0, scale: 0.7, y: 12 }}
+          transition={{ type: 'spring', stiffness: 340, damping: 26 }}
+          whileHover={{ scale: 1.08 }}
+          whileTap={{ scale: 0.93 }}
+          className="group fixed bottom-6 right-6 sm:bottom-8 sm:right-8 z-50 cursor-pointer"
         >
-          <button
-            onClick={scrollToTop}
-            aria-label="Retourner en haut de la page"
-            className="group relative flex items-center p-1.5 rounded-full bg-[#0E0E12]/95 hover:bg-[#0E0E12] text-white border border-white/20 shadow-[0_14px_36px_rgba(0,0,0,0.55)] backdrop-blur-xl transition-all duration-300 cursor-pointer overflow-hidden active:scale-95"
+          {/* Outer container */}
+          <div
+            className="relative flex items-center justify-center rounded-full bg-[#0C0C10]/90 border border-white/12 shadow-[0_16px_40px_rgba(0,0,0,0.6)] backdrop-blur-2xl transition-all duration-300 group-hover:border-white/22 group-hover:shadow-[0_20px_50px_rgba(0,0,0,0.7),0_0_0_1px_rgba(235,70,4,0.15)]"
+            style={{ width: size, height: size }}
           >
-            {/* SVG Circular Scroll Progress Ring */}
-            <div className="relative w-11 h-11 flex items-center justify-center shrink-0">
-              <svg className="w-full h-full -rotate-90 transform" viewBox="0 0 48 48">
-                {/* Background track circle */}
-                <circle
-                  cx="24"
-                  cy="24"
-                  r={radius}
-                  stroke="currentColor"
-                  strokeWidth="2.5"
-                  className="text-white/10"
-                  fill="transparent"
-                />
-                {/* Dynamic animated progress stroke */}
-                <motion.circle
-                  cx="24"
-                  cy="24"
-                  r={radius}
-                  stroke="#EB4604"
-                  strokeWidth="2.5"
-                  strokeDasharray={circumference}
-                  style={{
-                    pathLength: smoothProgress,
-                  }}
-                  strokeLinecap="round"
-                  fill="transparent"
-                />
-              </svg>
+            {/* Progress ring */}
+            <svg
+              className="absolute inset-0 w-full h-full -rotate-90"
+              viewBox={`0 0 ${size} ${size}`}
+            >
+              {/* Track */}
+              <circle
+                cx={size / 2}
+                cy={size / 2}
+                r={radius}
+                stroke="rgba(255,255,255,0.08)"
+                strokeWidth={strokeWidth}
+                fill="none"
+              />
+              {/* Progress */}
+              <motion.circle
+                cx={size / 2}
+                cy={size / 2}
+                r={radius}
+                stroke="#EB4604"
+                strokeWidth={strokeWidth}
+                strokeDasharray={circumference}
+                style={{ pathLength: smoothProgress }}
+                strokeLinecap="round"
+                fill="none"
+              />
+            </svg>
 
-              {/* Center Content: Percent (Default) <-> Arrow (Hover) with optimal centering */}
-              <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
-                {/* Default Percentage */}
-                <span className="text-[10px] font-mono font-bold text-white tracking-tighter flex items-center justify-center transition-all duration-200 group-hover:opacity-0 group-hover:scale-75">
-                  {percent}
-                  <span className="text-[7.5px] text-[#EB4604] font-bold leading-none ml-px">%</span>
-                </span>
-
-                {/* Hover Up Arrow */}
-                <svg
-                  className="absolute w-4 h-4 text-[#EB4604] transition-all duration-200 opacity-0 scale-75 group-hover:opacity-100 group-hover:scale-100"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M12 19V5M5 12l7-7 7 7" />
-                </svg>
-              </div>
-            </div>
-
-            {/* Smooth CSS Expandable Label on Hover (GPU accelerated) */}
-            <div className="max-w-0 opacity-0 group-hover:max-w-[130px] group-hover:opacity-100 transition-all duration-350 ease-[cubic-bezier(0.16,1,0.3,1)] overflow-hidden whitespace-nowrap">
-              <span className="text-xs font-medium tracking-normal text-white pl-1.5 pr-4 block">
-                Haut de page
+            {/* Center: number (default) / arrow (hover) */}
+            <div className="relative z-10 flex items-center justify-center w-full h-full">
+              {/* Number — no % */}
+              <span
+                className="absolute text-[11px] font-mono font-semibold text-white tabular-nums leading-none transition-all duration-200 group-hover:opacity-0 group-hover:scale-75"
+              >
+                {percent}
               </span>
+
+              {/* Up arrow on hover */}
+              <svg
+                className="absolute w-[18px] h-[18px] text-[#EB4604] opacity-0 scale-75 transition-all duration-200 group-hover:opacity-100 group-hover:scale-100"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M12 19V5M5 12l7-7 7 7" />
+              </svg>
             </div>
-          </button>
-        </motion.div>
+          </div>
+        </motion.button>
       )}
     </AnimatePresence>
   )
