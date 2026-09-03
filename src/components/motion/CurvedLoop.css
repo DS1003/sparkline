@@ -1,0 +1,20 @@
+.curved-loop-jacket {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.curved-loop-svg {
+  user-select: none;
+  width: 100%;
+  aspect-ratio: 100 / 12;
+  overflow: visible;
+  display: block;
+  fill: #EB4604;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  font-weight: 800;
+  text-transform: uppercase;
+  line-height: 1;
+}
