@@ -8,7 +8,6 @@ import { useGSAP } from '@gsap/react'
 export function Preloader() {
   const containerRef = useRef<HTMLDivElement>(null)
   const sparkleRef = useRef<HTMLDivElement>(null)
-  const glowRef = useRef<HTMLDivElement>(null)
   const logoRef = useRef<HTMLDivElement>(null)
   const [isComplete, setIsComplete] = useState(false)
 
@@ -30,7 +29,6 @@ export function Preloader() {
     }
     
     gsap.set(sparkleRef.current, { scale: 0, opacity: 0, rotation: -90 })
-    gsap.set(glowRef.current, { scale: 0, opacity: 0 })
     gsap.set(logoRef.current, { scale: 0.95, opacity: 0, filter: 'blur(10px)' })
 
     const tl = gsap.timeline({
@@ -55,13 +53,6 @@ export function Preloader() {
       ease: 'power3.out'
     }, 0.1)
 
-    tl.to(glowRef.current, {
-      scale: 1,
-      opacity: 0.8,
-      duration: 0.6,
-      ease: 'power3.out'
-    }, 0.1)
-    
     // Pulsation courte
     tl.to(sparkleRef.current, {
       scale: 0.8,
@@ -70,21 +61,9 @@ export function Preloader() {
       ease: 'power2.inOut'
     }, 0.7)
 
-    tl.to(glowRef.current, {
-      scale: 0.8,
-      duration: 0.5,
-      ease: 'power2.inOut'
-    }, 0.7)
-
     // ---------------------------------------------------------
     // ACTE 2 : L'EXPANSION MASSIVE (1.2s -> 2.0s)
     // ---------------------------------------------------------
-    tl.to(glowRef.current, {
-      opacity: 0,
-      duration: 0.2,
-      ease: 'power2.out'
-    }, 1.1)
-
     tl.to(sparkleRef.current, {
       scale: 400, 
       rotation: 90, 
@@ -107,12 +86,7 @@ export function Preloader() {
     // ACTE 4 : L'ASCENSION DU HERO (2.8s -> 3.6s)
     // ---------------------------------------------------------
     if (heroContainer) {
-      tl.to(containerRef.current, {
-        y: '-100vh',
-        duration: 0.8,
-        ease: 'power3.inOut'
-      }, 2.8)
-
+      // Le loader reste fixe et le Hero vient s'empiler au-dessus (Logique de Scroll Stack)
       tl.to(heroContainer, {
         y: 0,
         duration: 0.8,
@@ -121,7 +95,6 @@ export function Preloader() {
       }, 2.8)
     } else {
       tl.to(containerRef.current, {
-        y: '-100vh',
         opacity: 0,
         duration: 0.8,
         ease: 'power3.inOut'
@@ -137,16 +110,6 @@ export function Preloader() {
       ref={containerRef}
       className="fixed inset-0 z-[100] bg-white flex items-center justify-center overflow-hidden touch-none pointer-events-none"
     >
-      {/* 
-        Le Glow Indépendant.
-        Maintenant de couleur sombre pour accompagner l'étoile noire.
-      */}
-      <div 
-        ref={glowRef}
-        className="absolute z-0 w-20 h-20 sm:w-28 sm:h-28 rounded-full bg-[#070709] blur-[30px]"
-        style={{ transform: 'scale(0)', opacity: 0 }}
-      />
-
       {/* 
         L'éclat d'énergie (Sparkle 4 branches).
         Couleur fixée à #070709 (Noir). En grandissant, il va assombrir toute la page.
