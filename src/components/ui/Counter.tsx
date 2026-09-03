@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef, useState } from 'react'
 import { motion, useInView } from 'framer-motion'
+import { cn } from '@/lib/utils'
 
 interface CounterProps {
   value: number
@@ -9,13 +10,23 @@ interface CounterProps {
   label: string
   description: string
   delay?: number
+  index?: number
+  className?: string
 }
 
 function easeOutExpo(t: number): number {
   return t === 1 ? 1 : 1 - Math.pow(2, -10 * t)
 }
 
-export function Counter({ value, suffix = '+', label, description, delay = 0 }: CounterProps) {
+export function Counter({
+  value,
+  suffix = '+',
+  label,
+  description,
+  delay = 0,
+  index,
+  className,
+}: CounterProps) {
   const [displayValue, setDisplayValue] = useState(0)
   const ref = useRef<HTMLDivElement>(null)
   const isInView = useInView(ref, { once: false, amount: 0.3 })
@@ -58,35 +69,43 @@ export function Counter({ value, suffix = '+', label, description, delay = 0 }: 
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 50, scale: 0.95 }}
-      animate={isInView ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 50, scale: 0.95 }}
+      initial={{ opacity: 0, y: 30 }}
+      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
       transition={{
-        duration: 0.8,
+        duration: 0.7,
         delay: delay,
         ease: [0.16, 1, 0.3, 1],
       }}
-      className="relative flex flex-col justify-between p-6 sm:p-7 lg:p-8 rounded-[24px] sm:rounded-[28px] bg-white border border-neutral-200/90 shadow-[0_8px_30px_rgba(0,0,0,0.03)] h-full will-change-transform"
+      className={cn(
+        'group relative flex flex-col justify-between py-2 sm:py-3 will-change-transform',
+        className
+      )}
     >
+      {/* ── Minimalist Top Indicator & Progress Line ── */}
+      <div className="flex items-center justify-between mb-3 sm:mb-5">
+        <div className="h-[2px] w-6 sm:w-8 bg-neutral-200 group-hover:w-12 group-hover:bg-[#EB4604] transition-all duration-500 rounded-full" />
+      </div>
+
       {/* ── Large Counter Number ── */}
-      <div className="mb-4">
+      <div className="mb-2 sm:mb-3">
         <h3
-          className="text-[clamp(2.75rem,5vw,68px)] font-light text-[#0A0A0A] leading-[1.0] tracking-[-0.04em] flex items-baseline gap-0.5"
+          className="text-[clamp(2.5rem,5vw,64px)] font-light text-[#0A0A0A] leading-none tracking-[-0.04em] flex items-baseline gap-0.5"
           style={{ fontFamily: 'var(--font-family--primary-font)', fontFeatureSettings: '"tnum" 1' }}
         >
           <span>{displayValue}</span>
-          <span className="text-[#EB4604] font-normal">{suffix}</span>
+          <span className="text-[#EB4604] font-normal text-[0.8em]">{suffix}</span>
         </h3>
       </div>
 
-      {/* ── Solid Hairline Separator & Text ── */}
-      <div className="space-y-1.5 pt-4 border-t border-neutral-100">
+      {/* ── Clean Label & Subtle Description ── */}
+      <div className="space-y-1 sm:space-y-1.5 pt-2 sm:pt-3 border-t border-neutral-100">
         <h4
-          className="text-[15px] sm:text-[16px] font-semibold text-[#0A0A0A] tracking-[-0.01em] leading-snug"
+          className="text-sm sm:text-base font-semibold text-[#0A0A0A] tracking-[-0.01em] leading-snug group-hover:text-[#EB4604] transition-colors duration-300"
           style={{ fontFamily: 'var(--font-family--primary-font)' }}
         >
           {label}
         </h4>
-        <p className="text-[13px] text-neutral-500 font-light leading-[1.5]">
+        <p className="text-xs sm:text-[13px] text-neutral-500 font-light leading-relaxed max-w-[260px]">
           {description}
         </p>
       </div>

@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState, useEffect, useCallback } from 'react'
+import { createPortal } from 'react-dom'
 import Image from 'next/image'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -23,6 +24,10 @@ export function Curved3DProjectsGallery({
   const [activeGalleryIndex, setActiveGalleryIndex] = useState(0)
   const [isMobile, setIsMobile] = useState(false)
   const [isCompactDesktop, setIsCompactDesktop] = useState(false)
+  const [portalMounted, setPortalMounted] = useState(false)
+
+  // Ensure portal only renders client-side
+  useEffect(() => { setPortalMounted(true) }, [])
 
   // Detect mobile & compact desktop viewport
   useEffect(() => {
@@ -351,8 +356,9 @@ export function Curved3DProjectsGallery({
         </div>
       </motion.div>
 
-      {/* ── EXPANSIVE LUXURY ZERO-SCROLL 2-COLUMN PROJECT MODAL ── */}
-      <AnimatePresence>
+      {/* ── PROJECT MODAL — rendered via Portal into document.body to escape 3D transform stacking context ── */}
+      {portalMounted && createPortal(
+        <AnimatePresence>
         {expandedProject && (() => {
           const gallery = expandedProject.galleryImages || [
             expandedProject.coverImage || getImageSrc(expandedProject.slug),
@@ -361,7 +367,7 @@ export function Curved3DProjectsGallery({
 
           return (
             <div
-              className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 lg:p-6 overscroll-contain"
+              className="fixed inset-0 z-[9999] flex items-end sm:items-center justify-center sm:p-5 lg:p-6 overscroll-contain"
               onTouchMove={(e) => e.stopPropagation()}
             >
               {/* Backdrop Blur Overlay */}
@@ -371,7 +377,7 @@ export function Curved3DProjectsGallery({
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.35, ease: 'easeOut' }}
                 onClick={() => setExpandedProject(null)}
-                className="absolute inset-0 bg-black/95 backdrop-blur-3xl"
+                className="absolute inset-0 bg-black sm:bg-black/95 backdrop-blur-3xl"
               />
 
               {/* Morphing Minimalist 2-Column Modal Window (Fluid Responsive & Ergonomic) */}
@@ -402,30 +408,31 @@ export function Curved3DProjectsGallery({
                     ease: [0.16, 1, 0.3, 1],
                   },
                 }}
-                className={`relative w-full max-w-5xl max-h-[92vh] sm:max-h-[90vh] overflow-y-auto overscroll-contain ${
+                className={`relative w-full max-w-5xl overflow-hidden ${
                   theme === 'light'
                     ? 'bg-white text-neutral-900 border border-neutral-200 shadow-[0_30px_90px_rgba(0,0,0,0.18)]'
                     : 'bg-[#0A0A0E] text-white border border-white/15 shadow-[0_40px_120px_rgba(0,0,0,0.98)]'
-                } rounded-[20px] sm:rounded-[32px] flex flex-col z-10 my-auto`}
+                } rounded-t-[28px] sm:rounded-[32px] flex flex-col z-10 sm:my-auto max-h-[94svh] sm:max-h-[90vh]`}
                 style={{
                   perspective: '1200px',
                   transformStyle: 'preserve-3d',
                 }}
               >
-                {/* ── 1. Sticky Top Header Bar with Accessible Touch Target ── */}
+
+                {/* ── 1. Sticky Top Header Bar — desktop only ── */}
                 <div
-                  className={`sticky top-0 z-30 px-4 py-3 sm:px-7 sm:py-4 border-b ${
+                  className={`hidden sm:flex sticky top-0 z-30 px-7 py-4 border-b ${
                     theme === 'light'
                       ? 'border-neutral-200 bg-white/95 text-neutral-900'
                       : 'border-white/10 bg-[#0A0A0E]/95 text-white'
-                  } backdrop-blur-xl flex items-center justify-between shrink-0`}
+                  } backdrop-blur-xl items-center justify-between shrink-0`}
                 >
-                  <div className="flex items-center gap-2 sm:gap-3 min-w-0">
-                    <span className="px-2.5 sm:px-3 py-1 rounded-full bg-[#EB4604]/15 border border-[#EB4604]/30 text-[#EB4604] text-[9.5px] sm:text-[11px] font-mono font-semibold uppercase tracking-wider truncate">
+                  <div className="flex items-center gap-3 min-w-0">
+                    <span className="px-3 py-1 rounded-full bg-[#EB4604]/15 border border-[#EB4604]/30 text-[#EB4604] text-[11px] font-mono font-semibold uppercase tracking-wider truncate">
                       {expandedProject.category}
                     </span>
                     <span
-                      className={`px-2 py-1 rounded-full text-[9.5px] sm:text-[11px] font-mono shrink-0 ${
+                      className={`px-2 py-1 rounded-full text-[11px] font-mono shrink-0 ${
                         theme === 'light'
                           ? 'bg-neutral-200/70 border border-neutral-300 text-neutral-600'
                           : 'bg-white/[0.05] border border-white/10 text-neutral-400'
@@ -439,7 +446,7 @@ export function Curved3DProjectsGallery({
                     type="button"
                     onClick={() => setExpandedProject(null)}
                     aria-label="Fermer le modal"
-                    className={`w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center text-xs font-semibold transition-all duration-300 border hover:scale-105 active:scale-95 shrink-0 ${
+                    className={`w-9 h-9 rounded-full flex items-center justify-center text-xs font-semibold transition-all duration-300 border hover:scale-105 active:scale-95 shrink-0 ${
                       theme === 'light'
                         ? 'bg-neutral-100 hover:bg-[#EB4604] hover:text-white text-neutral-800 border-neutral-300'
                         : 'bg-white/[0.08] hover:bg-[#EB4604] text-white border-white/15'
@@ -450,9 +457,9 @@ export function Curved3DProjectsGallery({
                 </div>
 
                 {/* ── 2. Two-Column Minimalist Content Grid (Mobile Ordered: Visual First, Details Second) ── */}
-                <div className="p-4 sm:p-6 lg:p-7 flex flex-col md:grid md:grid-cols-12 gap-5 lg:gap-8 items-start text-left">
+                <div className="p-3 sm:p-6 lg:p-7 flex flex-col md:grid md:grid-cols-12 gap-3 sm:gap-5 lg:gap-8 items-start text-left overflow-y-auto overscroll-contain flex-1">
                   {/* Visual Gallery Viewport (Order 1 on mobile, Order 2 on desktop) */}
-                  <div className="w-full order-1 md:order-2 md:col-span-7 flex flex-col space-y-2.5 sm:space-y-3">
+                  <div className="w-full order-1 md:order-2 md:col-span-7 flex flex-col space-y-2 sm:space-y-3">
                     <div className="flex items-center justify-between text-[10px] font-mono text-neutral-400">
                       <span className="uppercase tracking-widest font-semibold text-[#EB4604]">
                         Galerie ({activeGalleryIndex + 1}/{gallery.length})
@@ -605,7 +612,7 @@ export function Curved3DProjectsGallery({
                     )}
 
                     {/* Action Buttons Integrated into Left Column */}
-                    <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3">
+                    <div className="pt-1 sm:pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3">
                       <Link
                         href={`/projects/${expandedProject.slug}`}
                         className="w-full sm:flex-1 inline-flex items-center justify-center gap-2 py-3 px-5 rounded-full bg-[#EB4604] hover:bg-[#D43D00] text-white text-xs sm:text-sm font-semibold transition-all duration-300 shadow-md shadow-[#EB4604]/25 group text-center"
@@ -632,7 +639,9 @@ export function Curved3DProjectsGallery({
             </div>
           )
         })()}
-      </AnimatePresence>
+        </AnimatePresence>,
+        document.body
+      )}
     </>
   )
 }

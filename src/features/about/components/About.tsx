@@ -52,7 +52,7 @@ export function About() {
       {/* ── Auto-Scrolling Portrait Photo Strip (4K HD) ── */}
       <RevealOnScroll delay={0.3}>
         <div className="w-full overflow-hidden">
-          {/* CSS Keyframes for infinite scroll */}
+          {/* CSS Keyframes for continuous uninterrupted infinite scroll */}
           <style jsx>{`
             @keyframes scroll-portraits {
               0% { transform: translateX(0); }
@@ -60,9 +60,6 @@ export function About() {
             }
             .portrait-marquee {
               animation: scroll-portraits 30s linear infinite;
-            }
-            .portrait-marquee:hover {
-              animation-play-state: paused;
             }
           `}</style>
 
@@ -104,25 +101,27 @@ export function About() {
       </RevealOnScroll>
 
       {/* ── Stats counter row (En chiffres) ── */}
-      <Container className="pt-12 sm:pt-16 lg:pt-28 pb-8 sm:pb-12 lg:pb-20">
-        {/* Tag — capsule style like other sections */}
+      <Container className="pt-14 sm:pt-20 lg:pt-28 pb-10 sm:pb-16 lg:pb-24">
+        {/* Header Row — Tag only */}
         <RevealOnScroll>
-          <div className="mb-8 sm:mb-12 lg:mb-16">
+          <div className="pb-6 sm:pb-8 border-b border-neutral-200/80 mb-8 sm:mb-12">
             <Tag variant="v2">En chiffres</Tag>
           </div>
         </RevealOnScroll>
 
-        {/* Stats grid — Compact 2x2 grid on mobile, 4 columns on desktop */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
+        {/* Minimalist Stats Grid (Clean Architectural Dividers, No Boxy Cards) */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 lg:gap-0 lg:divide-x lg:divide-neutral-200/70">
           {stats.map((stat, idx) => (
-            <Counter
-              key={stat.id}
-              delay={idx * 0.1}
-              value={stat.value}
-              suffix={stat.suffix}
-              label={stat.label}
-              description={stat.description}
-            />
+            <div key={stat.id} className="lg:px-8 xl:px-10">
+              <Counter
+                index={idx}
+                delay={idx * 0.08}
+                value={stat.value}
+                suffix={stat.suffix}
+                label={stat.label}
+                description={stat.description}
+              />
+            </div>
           ))}
         </div>
       </Container>
