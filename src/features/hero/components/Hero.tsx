@@ -13,7 +13,7 @@ export function Hero() {
     <section className="w-full bg-white p-2 sm:p-3 md:p-3.5 lg:p-4 xl:p-5">
       {/* Hero Inset Card (Sleek, Framed Proportions on Laptops and Desktops) */}
       <div className="relative rounded-2xl md:rounded-[20px] bg-[#070709] text-white overflow-hidden p-4 sm:p-5 lg:p-6 xl:p-10 min-h-[75svh] sm:min-h-[78svh] lg:min-h-[480px] xl:min-h-[calc(100vh-40px)] xl:max-h-[860px] flex flex-col justify-between shadow-2xl">
-        {/* Background Team Image — Responsive Placement (Perfect Framing on Mobile & Desktop) */}
+        {/* Background Team Image — Responsive Placement (Perfect 4-Person Framing on Mobile & Desktop) */}
         <picture className="absolute inset-0 pointer-events-none select-none">
           <source media="(max-width: 767px)" srcSet="/images/heroes/4-of-us-mobile.png" />
           <Image
@@ -22,7 +22,7 @@ export function Hero() {
             fill
             priority
             quality={100}
-            className="object-cover object-[70%_20%] sm:object-[65%_center] md:object-center pointer-events-none select-none"
+            className="object-cover object-top md:object-center pointer-events-none select-none"
           />
         </picture>
 
