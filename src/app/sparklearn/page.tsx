@@ -20,8 +20,9 @@ export default async function SparklearnPage() {
     <main className="min-h-screen bg-white text-neutral-900">
       <PageHero
         tag="Mission Éducative"
-        title="La connaissance est aussi"
-        highlight="une étincelle."
+        title="Forger les compétences"
+        pillImage="/images/heroes/sparklearn.jpg"
+        highlight="du futur digital."
         subtitle="Sparklearn est l'engagement citoyen et éducatif de SPARKLINE pour le mentorat, le partage et l'émancipation des talents numériques en Afrique."
         breadcrumbs={[{ label: 'Sparklearn', href: '/sparklearn' }]}
       />

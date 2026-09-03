@@ -13,10 +13,11 @@ export const metadata: Metadata = {
 export default function ServicesPage() {
   return (
     <main className="min-h-screen bg-white text-neutral-900">
-      {/* 1. Page Hero (Untouched) */}
+      {/* 1. Page Hero */}
       <PageHero
         tag="Nos Services"
         title="Un éventail complet"
+        pillImage="/images/heroes/services.jpg"
         highlight="d'expertises digitales."
         subtitle="Nous ne nous contentons pas de concevoir des produits : nous architecturons des écosystèmes complets bâtis pour un impact pérenne."
         breadcrumbs={[{ label: 'Services', href: '/services' }]}

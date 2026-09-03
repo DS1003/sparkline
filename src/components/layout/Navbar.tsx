@@ -57,8 +57,8 @@ export function Navbar() {
             href="/contact"
             className="hidden sm:inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-white text-black text-xs font-semibold hover:bg-neutral-200 transition-all group shadow-md"
           >
-            <div className="w-5 h-5 rounded-full bg-gradient-to-tr from-[#EB4604] to-[#FFB901] flex items-center justify-center p-0.5">
-              <Logo variant="symbol" className="w-full h-full" />
+            <div className="w-5.5 h-5.5 rounded-full bg-gradient-to-tr from-[#EB4604] to-[#FFB901] flex items-center justify-center p-1 shadow-sm shrink-0">
+              <Logo variant="symbol" className="w-full h-full brightness-0 invert" />
             </div>
             <span>Démarrer un projet</span>
             <svg

@@ -16,10 +16,11 @@ export default async function ProjectsPage() {
 
   return (
     <main className="min-h-screen bg-white text-neutral-900">
-      {/* 1. Page Hero (Untouched) */}
+      {/* 1. Page Hero */}
       <PageHero
         tag="Nos Réalisations"
         title="Des produits digitaux conçus pour"
+        pillImage="/images/heroes/projects.jpg"
         highlight="l’impact."
         subtitle="Nous façonnons des expériences numériques stratégiques qui génèrent une croissance concrète. Explorez nos études de cas."
         breadcrumbs={[{ label: 'Projets', href: '/projects' }]}

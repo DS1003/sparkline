@@ -37,7 +37,7 @@ const serviceStackItems: ServiceStackItemData[] = [
       'Applications SaaS & Métier',
       'Architectures API & Microservices',
     ],
-    image: '/images/services/development.jpg',
+    image: '/images/services/card1.png',
     href: '/services/digital-solutions',
   },
   {
@@ -54,7 +54,7 @@ const serviceStackItems: ServiceStackItemData[] = [
       'Design Systems sur mesure',
       'Audits d’ergonomie & Accessibilité',
     ],
-    image: '/images/services/ui-ux.jpg',
+    image: '/images/services/card2.png',
     href: '/services/ui-ux-design',
   },
   {
@@ -71,7 +71,7 @@ const serviceStackItems: ServiceStackItemData[] = [
       'Conteneurisation Docker & Orchestration',
       'Sécurité, Monitoring & 99.9% Uptime',
     ],
-    image: '/images/services/development.jpg',
+    image: '/images/services/card3.png',
     href: '/services/digital-solutions',
   },
   {
@@ -88,7 +88,7 @@ const serviceStackItems: ServiceStackItemData[] = [
       'Storytelling & Territoire de Marque',
       'Direction Artistique Globale',
     ],
-    image: '/images/services/branding.jpg',
+    image: '/images/services/card4.png',
     href: '/services/branding-communication',
   },
   {
@@ -105,7 +105,7 @@ const serviceStackItems: ServiceStackItemData[] = [
       'Voix Off & Sound Design',
       'Contenus Vidéo Réseaux Sociaux',
     ],
-    image: '/images/services/branding.jpg',
+    image: '/images/services/card5.png',
     href: '/services/audiovisual',
   },
 ]
@@ -134,21 +134,21 @@ export function Services({ isServicesPage = false, hideHeader = false }: Service
             <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4 sm:gap-6 lg:gap-16">
               <RevealOnScroll delay={0.1}>
                 <h2
-                  className="text-[clamp(2rem,4vw,54px)] font-normal text-[#0A0A0A] leading-[1.08] tracking-[-0.03em] max-w-2xl flex flex-wrap items-center gap-x-2.5 gap-y-1.5"
+                  className="text-[clamp(2rem,4vw,54px)] font-normal text-[#0A0A0A] leading-[1.12] tracking-[-0.03em] max-w-2xl"
                   style={{ fontFamily: 'var(--font-family--primary-font)' }}
                 >
-                  <span>Tout ce dont</span>
-                  <span className="inline-flex items-center justify-center w-10 h-6 sm:w-14 sm:h-8 rounded-full overflow-hidden border border-neutral-300 relative align-middle shadow-sm shrink-0 -translate-y-0.5">
+                  Tout ce dont{' '}
+                  <span className="inline-flex items-center justify-center align-middle mx-1.5 sm:mx-2.5 -translate-y-[0.1em] w-11 h-6 sm:w-15 sm:h-8 md:w-18 md:h-9.5 rounded-full overflow-hidden border border-neutral-300/90 shadow-sm relative shrink-0 transition-transform duration-300 hover:scale-105">
                     <Image
                       src="/images/services/header-avatar.jpg"
                       alt="Portrait"
                       fill
                       quality={100}
-                      sizes="64px"
+                      sizes="80px"
                       className="object-cover"
                     />
-                  </span>
-                  <span>vous avez besoin pour dominer votre marché.</span>
+                  </span>{' '}
+                  vous avez besoin pour dominer votre marché.
                 </h2>
               </RevealOnScroll>
 
@@ -240,23 +240,17 @@ export function Services({ isServicesPage = false, hideHeader = false }: Service
                     </div>
                   </div>
 
-                  {/* Right Column: Visual Image */}
-                  <div className="lg:col-span-5">
-                    <div className="relative aspect-[16/10] sm:aspect-[4/3] rounded-xl sm:rounded-2xl lg:rounded-3xl overflow-hidden bg-neutral-900 border border-white/10 shadow-2xl group/img">
+                  {/* Right Column: Visual Image (Full Artwork Integrity: 0% Cropping, 0% Zoom) */}
+                  <div className="lg:col-span-5 flex items-center justify-center">
+                    <div className="relative w-full aspect-[3/2] rounded-xl sm:rounded-2xl lg:rounded-3xl overflow-hidden bg-[#0A0A0C] border border-white/10 shadow-2xl flex items-center justify-center">
                       <Image
                         src={service.image}
                         alt={service.title}
                         fill
-                        quality={85}
-                        className="object-cover transition-transform duration-700 ease-out group-hover/img:scale-105"
-                        sizes="(max-width: 1024px) 100vw, 420px"
+                        quality={90}
+                        className="object-contain p-0.5 sm:p-1"
+                        sizes="(max-width: 1024px) 100vw, 480px"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
-                      <div className="absolute bottom-2.5 left-2.5 right-2.5 sm:bottom-3 sm:left-3 sm:right-3 flex items-center justify-between pointer-events-none z-10">
-                        <span className="px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md text-[9.5px] sm:text-[10.5px] font-mono text-white border border-white/10">
-                          SPARKLINE • {service.category}
-                        </span>
-                      </div>
                     </div>
                   </div>
                 </div>

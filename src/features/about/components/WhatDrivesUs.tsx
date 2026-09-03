@@ -48,12 +48,12 @@ export function WhatDrivesUs() {
 
           <RevealOnScroll delay={0.1}>
             <h2
-              className="text-[clamp(2.25rem,4.8vw,64px)] font-normal text-[#0A0A0A] leading-[1.08] tracking-[-0.03em]"
+              className="text-[clamp(2.25rem,4.8vw,64px)] font-normal text-[#0A0A0A] leading-[1.12] tracking-[-0.03em]"
               style={{ fontFamily: 'var(--font-family--primary-font)' }}
             >
               <span>De l’idée initiale au</span><br className="hidden sm:inline" />
               <span> lancement final</span>{' '}
-              <span className="inline-flex items-center justify-center w-12 h-7 sm:w-16 sm:h-9 md:w-20 md:h-11 rounded-full overflow-hidden border border-neutral-300 shadow-md relative align-middle mx-1 sm:mx-2 -translate-y-0.5 sm:-translate-y-1 shrink-0">
+              <span className="inline-flex items-center justify-center w-12 h-6.5 sm:w-16 sm:h-8.5 md:w-20 md:h-10 rounded-full overflow-hidden border border-neutral-300 shadow-md relative align-middle mx-1 sm:mx-2 -translate-y-[0.1em] shrink-0 transition-transform duration-300 hover:scale-105">
                 <Image
                   src="/images/services/header-avatar.jpg"
                   alt="Portrait"

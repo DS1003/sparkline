@@ -22,6 +22,7 @@ export default async function InsightsPage() {
       <PageHero
         tag="Connaissances & Insights"
         title="Des idées qui"
+        pillImage="/images/heroes/insights.jpg"
         highlight="illuminent le progrès."
         subtitle="Notre journal sur la transformation digitale, les bonnes pratiques d'ingénierie, les design systems et l'innovation technologique en Afrique."
         breadcrumbs={[{ label: 'Insights', href: '/insights' }]}

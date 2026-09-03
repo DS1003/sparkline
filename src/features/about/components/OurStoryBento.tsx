@@ -25,14 +25,14 @@ export function OurStoryBento() {
               style={{ fontFamily: 'var(--font-family--primary-font)' }}
             >
               <span>Depuis 2024, nous transformons des idées audacieuses </span>
-              <span className="inline-flex items-center align-middle mx-1.5 sm:mx-2.5 my-1 overflow-hidden rounded-full w-12 h-7 sm:w-16 sm:h-9 md:w-20 md:h-11 border-2 border-neutral-200 shadow-sm relative shrink-0 transition-transform duration-300 hover:scale-105">
+              <span className="inline-flex items-center align-middle mx-1.5 sm:mx-2.5 -translate-y-[0.1em] overflow-hidden rounded-full w-14 h-7 sm:w-18 sm:h-9 md:w-22 md:h-11 border-2 border-neutral-200 shadow-sm relative shrink-0 transition-transform duration-300 hover:scale-105">
                 <Image
-                  src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=400&auto=format&fit=crop"
+                  src="/images/asset-usage/creative-portrait.png"
                   alt="Créativité & Ingénierie SPARKLINE"
                   fill
-                  unoptimized
-                  className="object-cover"
-                  sizes="80px"
+                  quality={95}
+                  className="object-cover object-center"
+                  sizes="120px"
                 />
               </span>
               <span> en marques et produits leaders ↗</span>

@@ -24,7 +24,7 @@ const steps: Step[] = [
     title: 'Cadrage & Découverte',
     description:
       'Analyse approfondie de votre vision, de vos défis clés et alignement des objectifs stratégiques pour poser des fondations inébranlables.',
-    image: '/images/approach/step-1.jpg',
+    image: '/images/approach/div1.png',
   },
   {
     number: '02',
@@ -32,7 +32,7 @@ const steps: Step[] = [
     title: 'Architecture & UX/UI',
     description:
       'Création d’interfaces intuitives, design systems pérennes et modélisation technique prête à absorber votre croissance.',
-    image: '/images/approach/step-2.jpg',
+    image: '/images/approach/div3.png',
   },
   {
     number: '03',
@@ -40,7 +40,7 @@ const steps: Step[] = [
     title: 'Développement Agile',
     description:
       'Développement logiciel haute performance, code maintenable et intégration continue selon les meilleurs standards.',
-    image: '/images/approach/step-3.jpg',
+    image: '/images/approach/div4.png',
   },
   {
     number: '04',
@@ -48,7 +48,7 @@ const steps: Step[] = [
     title: 'Mise en Ligne & Impact',
     description:
       'Déploiement sécurisé, monitoring en temps réel et optimisations continues pour maximiser durablement votre retour sur investissement.',
-    image: '/images/approach/step-4.jpg',
+    image: '/images/approach/div2.png',
   },
 ]
 
@@ -135,21 +135,21 @@ export function Approach() {
               onMouseLeave={() => setHoveredIdx(null)}
               className="relative min-h-[190px] sm:h-[260px] lg:h-[280px] rounded-[24px] sm:rounded-[32px] overflow-hidden group shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:shadow-[0_24px_60px_rgba(0,0,0,0.2)] border border-neutral-200/80 hover:border-[#EB4604]/50 transition-all duration-700 cursor-pointer bg-[#0A0A0E] will-change-transform"
             >
-              {/* Background High-Definition Photography with Parallax Zoom */}
+              {/* Background High-Definition Photography with Subtle Tint */}
               <Image
                 src={step.image}
                 alt={step.title}
                 fill
-                quality={85}
-                className="object-cover transition-transform duration-1000 ease-out group-hover:scale-108 filter brightness-[0.72] contrast-[1.06]"
+                quality={90}
+                className="object-cover transition-transform duration-700 ease-out group-hover:scale-103 brightness-[0.88]"
                 sizes="(max-width: 768px) 100vw, 50vw"
               />
 
-              {/* Dark Gradient Overlay for Maximum Readability */}
-              <div className="absolute inset-0 bg-gradient-to-r from-black/92 via-black/70 to-black/45 transition-opacity duration-500 group-hover:opacity-85" />
+              {/* Subtle Dark Gradient Overlay to Guarantee Crisp Text Legibility */}
+              <div className="absolute inset-0 bg-gradient-to-r from-black/65 via-black/40 to-black/55 transition-opacity duration-500 group-hover:opacity-85 pointer-events-none" />
 
               {/* Signature Orange Atmospheric Light Accent on Hover */}
-              <div className="absolute top-0 right-0 w-72 h-72 bg-[#EB4604]/25 rounded-full blur-[100px] opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
+              <div className="absolute top-0 right-0 w-72 h-72 bg-[#EB4604]/20 rounded-full blur-[100px] opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
 
               {/* Card Content Layout */}
               <div className="relative z-10 w-full h-full p-5 sm:p-8 lg:p-10 flex items-center justify-between gap-3 sm:gap-8">
@@ -161,7 +161,7 @@ export function Approach() {
                   className="shrink-0"
                 >
                   <span
-                    className="text-[55px] sm:text-[110px] lg:text-[130px] font-extralight tracking-tighter text-white/30 group-hover:text-white/65 transition-all duration-500 select-none leading-none block group-hover:scale-105"
+                    className="text-[55px] sm:text-[110px] lg:text-[130px] font-extralight tracking-tighter text-white/35 group-hover:text-white/70 transition-all duration-500 select-none leading-none block group-hover:scale-105"
                     style={{
                       fontFamily: 'var(--font-family--primary-font)',
                       fontVariantNumeric: 'tabular-nums',

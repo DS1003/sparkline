@@ -53,18 +53,18 @@ export default async function AboutPage() {
               <h1 className="text-3xl sm:text-5xl md:text-5xl lg:text-[56px] xl:text-7xl 2xl:text-8xl font-bold tracking-tight text-white leading-[1.08]">
                 Bâtir des réussites
                 <br className="hidden sm:inline" />
-                {' '}digitales{' '}
+                {' '}<span className="text-[#EB4604]">digitales</span>{' '}
                 <span className="inline-flex items-center align-middle mx-1 sm:mx-2.5 my-0.5 overflow-hidden rounded-full w-12 h-7 sm:w-16 sm:h-10 md:w-18 md:h-11 xl:w-24 xl:h-14 border-2 border-white/30 shadow-lg relative shrink-0">
                   <Image
-                    src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=300&auto=format&fit=crop"
+                    src="/images/asset-usage/ChatGPT Image Sep 3, 2026, 12_52_44 AM.png"
                     alt="Créateur SPARKLINE"
                     fill
-                    unoptimized
+                    quality={95}
                     className="object-cover"
-                    sizes="96px"
+                    sizes="120px"
                   />
-                </span>
-                {' '}durables.
+                </span>{' '}
+                <span className="text-[#EB4604]">durables.</span>
               </h1>
             </RevealOnScroll>
           </div>

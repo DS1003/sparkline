@@ -16,10 +16,11 @@ export default async function TeamPage() {
 
   return (
     <main className="min-h-screen bg-white text-neutral-900">
-      {/* 1. Page Hero (Untouched) */}
+      {/* 1. Page Hero */}
       <PageHero
         tag="Notre Équipe"
         title="Des talents multidisciplinaires"
+        pillImage="/images/heroes/team.jpg"
         highlight="unis par l’exigence."
         subtitle="Un collectif soudé d'ingénieurs, designers, architectes et stratèges bâtissant des solutions digitales impactantes."
         breadcrumbs={[{ label: 'Équipe', href: '/team' }]}
