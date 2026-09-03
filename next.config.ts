@@ -10,6 +10,8 @@ const nextConfig: NextConfig = {
     '192.168.1.27:3000',
     'localhost',
     '127.0.0.1',
+    '172.20.10.3',
+    '172.20.10.*',
   ],
   compress: true,
   images: {
