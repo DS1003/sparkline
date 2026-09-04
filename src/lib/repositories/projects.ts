@@ -121,6 +121,36 @@ export const projectsData: Project[] = [
       '/images/projects/wer-asset-preview.webp',
     ],
   },
+  {
+    slug: 'diakhou-beauty',
+    title: 'Diakhou Hair & Beauty',
+    client: 'DIAKHOU HAIR & BEAUTY',
+    category: 'UI/UX',
+    type: 'E-COMMERCE',
+    year: '2026',
+    summary:
+      'Une boutique en ligne élégante et immersive conçue pour mettre en valeur une collection haute coiffure et perruques haut de gamme.',
+    description:
+      'Diakhou Hair & Beauty avait besoin d’une boutique en ligne élégante capable de mettre en valeur sa collection de perruques tout en proposant une expérience d’achat simple, moderne et premium. L’interface a été pensée pour donner une place centrale aux visuels, faciliter la découverte des modèles et accompagner naturellement la cliente jusqu’à la commande.',
+    challenge:
+      'Offrir une mise en valeur haut de gamme des textures, des finitions HD Lace et des nuances capillaires, tout en garantissant un parcours d’achat fluide et rassurant.',
+    solution:
+      'Conception d’un design épuré et immersif propulsé par Next.js et Framer Motion, avec un catalogue visuel haute résolution, des fiches modèles détaillées et un tunnel de commande sans friction.',
+    impact:
+      'Renforcement notable de l’image de marque de luxe, augmentation de l’engagement sur mobile et hausse des commandes directes.',
+    deliverables: [
+      'Boutique e-commerce sur-mesure',
+      'Direction artistique & UI/UX premium',
+      'Catalogue visuel haute définition',
+      'Expérience mobile-first optimisée',
+    ],
+    technologies: ['Next.js', 'Tailwind CSS', 'TypeScript', 'Framer Motion'],
+    url: 'https://diakhou-e-com.vercel.app/',
+    coverImage: '/images/projects/diakhou-beauty.webp',
+    galleryImages: [
+      '/images/projects/diakhou-beauty-preview.webp',
+    ],
+  },
 ]
 
 export const projectsRepository = {
@@ -133,7 +163,8 @@ export const projectsRepository = {
         (p) =>
           p.slug === slug ||
           (slug === 'baraka-electronics' && p.slug === 'baraka-shop') ||
-          (slug === 'fidele-construction' && p.slug === 'fidele-sarl')
+          (slug === 'fidele-construction' && p.slug === 'fidele-sarl') ||
+          (slug === 'diakhou-hair-beauty' && p.slug === 'diakhou-beauty')
       ) || null
     )
   },
