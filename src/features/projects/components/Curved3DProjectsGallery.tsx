@@ -330,7 +330,7 @@ export function Curved3DProjectsGallery({
                 {/* ── 3D Card Flipper & Frame ── */}
                 <div
                   onDragStart={(e) => e.preventDefault()}
-                  className="relative w-full h-full rounded-[28px] sm:rounded-[32px] bg-[#08080a] border border-white/12 overflow-hidden flex flex-col justify-between p-4 sm:p-5 group select-none"
+                  className="relative w-full h-full rounded-[28px] sm:rounded-[32px] bg-[#08080a] border border-white/12 overflow-hidden flex flex-col justify-end p-4 sm:p-5 group select-none"
                   style={{
                     boxShadow: isCenter
                       ? '0 30px 70px -15px rgba(0, 0, 0, 0.98), 0 10px 30px rgba(0, 0, 0, 0.8)'
@@ -354,16 +354,6 @@ export function Curved3DProjectsGallery({
                       sizes="(max-width: 768px) 270px, 340px"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black via-black/45 to-black/20 pointer-events-none" />
-                  </div>
-
-                  {/* Top Badges */}
-                  <div className="relative z-10 flex items-center justify-between gap-2">
-                    <span className="px-3 py-1 rounded-full bg-black/70 backdrop-blur-md text-[10px] sm:text-[11px] font-mono font-medium uppercase tracking-wider text-white/90 border border-white/15">
-                      {project.type || project.category}
-                    </span>
-                    <span className="px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md text-[10px] sm:text-[11px] font-mono text-white/80 border border-white/10">
-                      [{project.year}]
-                    </span>
                   </div>
 
                   {/* Bottom Content & Interactive Expand Prompt */}

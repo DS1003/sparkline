@@ -5,6 +5,7 @@ export interface Project {
   title: string
   client: string
   category: string
+  categories?: string[]
   type?: string
   year: string
   summary: string

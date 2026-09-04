@@ -6,6 +6,7 @@ export const projectsData: Project[] = [
     title: 'MBOR Store',
     client: 'MBOR BUSINESS STORE',
     category: 'App web',
+    categories: ['App web', 'UI/UX', 'Branding'],
     type: 'E-COMMERCE',
     year: '2026',
     summary:
@@ -35,7 +36,8 @@ export const projectsData: Project[] = [
     slug: 'baraka-shop',
     title: 'Baraka Shop',
     client: 'BARAKA SHOP',
-    category: 'UI/UX',
+    category: 'App web',
+    categories: ['App web', 'UI/UX'],
     type: 'E-COMMERCE',
     year: '2026',
     summary:
@@ -65,7 +67,8 @@ export const projectsData: Project[] = [
     slug: 'fidele-sarl',
     title: 'FIDELE SARL',
     client: 'FIDELE SARL',
-    category: 'Branding',
+    category: 'App web',
+    categories: ['App web', 'Branding'],
     type: 'CORPORATE WEBSITE',
     year: '2026',
     summary:
@@ -96,6 +99,7 @@ export const projectsData: Project[] = [
     title: 'WËR ASSET',
     client: 'WËR ASSET',
     category: 'App web',
+    categories: ['App web', 'UI/UX'],
     type: 'SAAS',
     year: '2026',
     summary:
@@ -125,7 +129,8 @@ export const projectsData: Project[] = [
     slug: 'diakhou-beauty',
     title: 'Diakhou Hair & Beauty',
     client: 'DIAKHOU HAIR & BEAUTY',
-    category: 'UI/UX',
+    category: 'App web',
+    categories: ['App web', 'UI/UX', 'Branding'],
     type: 'E-COMMERCE',
     year: '2026',
     summary:

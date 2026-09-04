@@ -33,14 +33,21 @@ export function SelectedWork({
   // Filter projects by active category tab
   const filteredProjects = useMemo(() => {
     if (activeCategory === 'Tous') return projectsData
-    return projectsData.filter((p) => p.category === activeCategory)
+    return projectsData.filter(
+      (p) => p.category === activeCategory || p.categories?.includes(activeCategory)
+    )
   }, [activeCategory])
 
   const handleCategoryChange = (category: string) => {
     // If clicking an already active filter (other than 'Tous'), toggle back to 'Tous'
     const nextCategory = activeCategory === category && category !== 'Tous' ? 'Tous' : category
     setActiveCategory(nextCategory)
-    const list = nextCategory === 'Tous' ? projectsData : projectsData.filter((p) => p.category === nextCategory)
+    const list =
+      nextCategory === 'Tous'
+        ? projectsData
+        : projectsData.filter(
+            (p) => p.category === nextCategory || p.categories?.includes(nextCategory)
+          )
     setActiveIndex(Math.floor(list.length / 2))
   }
 
