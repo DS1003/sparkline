@@ -170,74 +170,84 @@ export function SelectedWork({
           />
         </div>
 
-        {/* ── Ultra-Modern Unified Controller & CTA Dock ── */}
+        {/* ── Ultra-Modern Minimalist Navigation Controller Dock ── */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 pt-6">
-          {/* Navigation Island */}
+          {/* Navigation Island Pill */}
           <div
-            className={`h-11 sm:h-12 inline-flex items-center gap-3 px-2.5 sm:px-3 rounded-full ${
+            className={`h-11 sm:h-12 inline-flex items-center gap-2 sm:gap-3 px-3 sm:px-4 rounded-full transition-all duration-300 ${
               theme === 'light'
-                ? 'bg-white border border-neutral-200/90 shadow-[0_10px_25px_rgba(0,0,0,0.06)]'
-                : 'bg-white/[0.05] border border-white/10 backdrop-blur-xl shadow-[0_10px_30px_rgba(0,0,0,0.5)]'
+                ? 'bg-white/90 border border-neutral-200/80 shadow-[0_12px_32px_-8px_rgba(0,0,0,0.08)] backdrop-blur-md'
+                : 'bg-white/[0.04] border border-white/10 backdrop-blur-xl shadow-[0_16px_40px_-10px_rgba(0,0,0,0.6)]'
             }`}
           >
             {/* Prev Button */}
             <button
               onClick={handlePrev}
+              type="button"
               aria-label="Projet précédent"
-              className={`w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 active:scale-95 text-xs font-semibold ${
+              className={`group relative w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 active:scale-90 ${
                 theme === 'light'
-                  ? 'bg-neutral-100 hover:bg-[#EB4604] text-neutral-700 hover:text-white'
-                  : 'bg-white/5 hover:bg-[#EB4604] text-white/70 hover:text-white'
+                  ? 'bg-neutral-100 hover:bg-[#EB4604] text-neutral-600 hover:text-white'
+                  : 'bg-white/5 hover:bg-[#EB4604] text-neutral-300 hover:text-white'
               }`}
             >
-              ←
+              <svg
+                className="w-4 h-4 transition-transform duration-300 group-hover:-translate-x-0.5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M15 18l-6-6 6-6" />
+              </svg>
             </button>
 
-            {/* Monospace Slide Index & Visual Dots */}
-            <div className="flex items-center gap-2.5 px-1.5">
-              <span
-                className={`text-xs font-mono font-bold tracking-wider ${
-                  theme === 'light' ? 'text-neutral-900' : 'text-white'
-                }`}
-              >
-                0{activeIndex + 1}
-              </span>
-              <div className="flex items-center gap-1.5">
-                {filteredProjects.map((_, dotIdx) => (
+            {/* Dynamic Sleek Pagination Dots */}
+            <div className="flex items-center gap-1.5 sm:gap-2 px-1">
+              {filteredProjects.map((project, dotIdx) => {
+                const isActive = activeIndex === dotIdx
+                return (
                   <button
-                    key={dotIdx}
+                    key={project.slug || dotIdx}
                     onClick={() => setActiveIndex(dotIdx)}
+                    type="button"
                     aria-label={`Aller au projet ${dotIdx + 1}`}
-                    className={`transition-all duration-300 rounded-full ${
-                      activeIndex === dotIdx
-                        ? 'w-4 h-1.5 bg-[#EB4604]'
+                    className={`relative h-2 rounded-full transition-all duration-500 ease-out cursor-pointer ${
+                      isActive
+                        ? 'w-7 sm:w-8 bg-[#EB4604] shadow-sm shadow-[#EB4604]/40'
                         : theme === 'light'
-                        ? 'w-1.5 h-1.5 bg-neutral-300 hover:bg-neutral-400'
-                        : 'w-1.5 h-1.5 bg-white/20 hover:bg-white/50'
+                        ? 'w-2 bg-neutral-300 hover:bg-neutral-400 hover:w-3'
+                        : 'w-2 bg-white/20 hover:bg-white/50 hover:w-3'
                     }`}
                   />
-                ))}
-              </div>
-              <span
-                className={`text-xs font-mono font-light ${
-                  theme === 'light' ? 'text-neutral-400' : 'text-neutral-500'
-                }`}
-              >
-                0{filteredProjects.length}
-              </span>
+                )
+              })}
             </div>
 
             {/* Next Button */}
             <button
               onClick={handleNext}
+              type="button"
               aria-label="Projet suivant"
-              className={`w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 active:scale-95 text-xs font-semibold ${
+              className={`group relative w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 active:scale-90 ${
                 theme === 'light'
-                  ? 'bg-neutral-100 hover:bg-[#EB4604] text-neutral-700 hover:text-white'
-                  : 'bg-white/5 hover:bg-[#EB4604] text-white/70 hover:text-white'
+                  ? 'bg-neutral-100 hover:bg-[#EB4604] text-neutral-600 hover:text-white'
+                  : 'bg-white/5 hover:bg-[#EB4604] text-neutral-300 hover:text-white'
               }`}
             >
-              →
+              <svg
+                className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M9 18l6-6-6-6" />
+              </svg>
             </button>
           </div>
 

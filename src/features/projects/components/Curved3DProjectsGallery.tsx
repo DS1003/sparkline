@@ -52,9 +52,8 @@ export function Curved3DProjectsGallery({
     return () => window.removeEventListener('resize', checkDimensions)
   }, [])
 
-  // Auto-close modal when activeIndex changes externally
+  // Reset gallery index when activeIndex changes (but do not forcefully close the modal if it was just opened)
   useEffect(() => {
-    setExpandedProject(null)
     setActiveGalleryIndex(0)
   }, [activeIndex])
 
@@ -126,6 +125,7 @@ export function Curved3DProjectsGallery({
 
   // ── High-Performance Smooth Swipe & Drag Controller (Zero Section Trembling) ──
   const [isDragging, setIsDragging] = useState(false)
+  const dragDistance = useRef(0)
   const touchStartX = useRef(0)
   const touchStartY = useRef(0)
   const touchDeltaX = useRef(0)
@@ -135,6 +135,7 @@ export function Curved3DProjectsGallery({
     touchStartX.current = e.touches[0].clientX
     touchStartY.current = e.touches[0].clientY
     touchDeltaX.current = 0
+    dragDistance.current = 0
     isHorizontalSwipe.current = null
   }
 
@@ -151,7 +152,8 @@ export function Curved3DProjectsGallery({
 
     if (isHorizontalSwipe.current) {
       touchDeltaX.current = deltaX
-      if (Math.abs(deltaX) > 10) {
+      dragDistance.current = Math.abs(deltaX)
+      if (Math.abs(deltaX) > 20) {
         setIsDragging(true)
       }
     }
@@ -163,7 +165,11 @@ export function Curved3DProjectsGallery({
       const nextIndex = (activeIndex + direction + projects.length) % projects.length
       onActiveChange(nextIndex)
     }
-    setTimeout(() => setIsDragging(false), 80)
+    if (dragDistance.current <= 15) {
+      setIsDragging(false)
+    } else {
+      setTimeout(() => setIsDragging(false), 80)
+    }
     isHorizontalSwipe.current = null
     touchDeltaX.current = 0
   }
@@ -174,13 +180,15 @@ export function Curved3DProjectsGallery({
 
   const handleMouseDown = (e: React.MouseEvent) => {
     mouseStartX.current = e.clientX
+    dragDistance.current = 0
     isMouseDown.current = true
   }
 
   const handleMouseMove = (e: React.MouseEvent) => {
     if (!isMouseDown.current) return
-    const deltaX = e.clientX - mouseStartX.current
-    if (Math.abs(deltaX) > 10) {
+    const deltaX = Math.abs(e.clientX - mouseStartX.current)
+    dragDistance.current = deltaX
+    if (deltaX > 20) {
       setIsDragging(true)
     }
   }
@@ -194,20 +202,22 @@ export function Curved3DProjectsGallery({
       const nextIndex = (activeIndex + direction + projects.length) % projects.length
       onActiveChange(nextIndex)
     }
-    setTimeout(() => setIsDragging(false), 80)
+    if (dragDistance.current <= 15) {
+      setIsDragging(false)
+    } else {
+      setTimeout(() => setIsDragging(false), 80)
+    }
   }
 
   // Card click / expand handler
   const handleCardClick = (project: Project, idx: number, isCenter: boolean) => {
-    if (isDragging) return
-    if (!isCenter) {
-      // If clicking a side card, center it smoothly
-      setExpandedProject(null)
-      onActiveChange(idx)
-    } else {
-      // If clicking center card, expand smoothly into modal
-      setExpandedProject(project)
-    }
+    // If the user actually dragged (>15px movement), ignore click
+    if (dragDistance.current > 15) return
+    
+    // Always change active index so the gallery smoothly centers the clicked card
+    onActiveChange(idx)
+    // Open modal window for the clicked project
+    setExpandedProject(project)
   }
 
   // Dimensions for 3D stage
@@ -330,11 +340,15 @@ export function Curved3DProjectsGallery({
                 {/* ── 3D Card Flipper & Frame ── */}
                 <div
                   onDragStart={(e) => e.preventDefault()}
-                  className="relative w-full h-full rounded-[28px] sm:rounded-[32px] bg-white/[0.03] backdrop-blur-md border border-white/10 group-hover:border-white/25 overflow-hidden flex flex-col justify-end p-4 sm:p-5 group select-none"
+                  className="relative w-full h-full rounded-[28px] sm:rounded-[32px] bg-white/[0.02] backdrop-blur-sm border border-neutral-200/20 group-hover:border-neutral-200/40 overflow-hidden flex flex-col justify-end p-4 sm:p-5 group select-none"
                   style={{
                     boxShadow: isCenter
-                      ? '0 40px 80px -20px rgba(0, 0, 0, 0.9), inset 0 0 0 1px rgba(255,255,255,0.05)'
-                      : '0 20px 40px -10px rgba(0, 0, 0, 0.6)',
+                      ? (theme === 'light' 
+                          ? '0 25px 50px -12px rgba(0, 0, 0, 0.15)' 
+                          : '0 30px 60px -15px rgba(0, 0, 0, 0.4)')
+                      : (theme === 'light'
+                          ? '0 10px 25px -5px rgba(0, 0, 0, 0.08)'
+                          : '0 15px 30px -10px rgba(0, 0, 0, 0.25)'),
                     transform: isExpanded ? 'scale(1.02)' : 'scale(1)',
                     opacity: isExpanded ? 0.35 : 1,
                     transition: 'transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease, border-color 0.3s ease',
