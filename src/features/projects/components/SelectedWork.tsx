@@ -12,7 +12,6 @@ import { Curved3DProjectsGallery } from './Curved3DProjectsGallery'
 const categories = [
   'Tous',
   'App web',
-  'App mobile',
   'Branding',
   'UI/UX',
 ]

@@ -5,6 +5,7 @@ export interface Project {
   title: string
   client: string
   category: string
+  type?: string
   year: string
   summary: string
   description: string
@@ -13,6 +14,7 @@ export interface Project {
   impact: string
   deliverables: string[]
   technologies: string[]
+  url?: string
   coverImage?: string
   galleryImages?: string[]
   testimonial?: {

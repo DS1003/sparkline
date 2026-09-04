@@ -71,11 +71,24 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
             </RevealOnScroll>
           </div>
 
-          {/* Bottom Meta: Client + Technologies */}
-          <div className="relative z-10 pt-6 border-t border-white/10 flex flex-wrap gap-8 text-xs font-mono text-neutral-400 uppercase tracking-widest">
-            <div><span className="text-[#EB4604] font-bold">+</span> Client : <span className="text-white">{project.client}</span></div>
-            <div><span className="text-[#EB4604] font-bold">+</span> Année : <span className="text-white">{project.year}</span></div>
-            <div><span className="text-[#EB4604] font-bold">+</span> Catégorie : <span className="text-white">{project.category}</span></div>
+          {/* Bottom Meta: Client + Technologies + Live Link */}
+          <div className="relative z-10 pt-6 border-t border-white/10 flex flex-wrap items-center justify-between gap-4 text-xs font-mono text-neutral-400 uppercase tracking-widest">
+            <div className="flex flex-wrap gap-8">
+              <div><span className="text-[#EB4604] font-bold">+</span> Client : <span className="text-white">{project.client}</span></div>
+              <div><span className="text-[#EB4604] font-bold">+</span> Année : <span className="text-white">{project.year}</span></div>
+              <div><span className="text-[#EB4604] font-bold">+</span> Type : <span className="text-white">{project.type || project.category}</span></div>
+            </div>
+            {project.url && (
+              <a
+                href={project.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#EB4604] hover:bg-[#D43D00] text-white font-semibold lowercase tracking-normal text-xs transition-all shadow-md shadow-[#EB4604]/20"
+              >
+                <span>Visiter le site</span>
+                <span className="text-sm">↗</span>
+              </a>
+            )}
           </div>
         </div>
       </section>

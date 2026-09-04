@@ -359,7 +359,7 @@ export function Curved3DProjectsGallery({
                   {/* Top Badges */}
                   <div className="relative z-10 flex items-center justify-between gap-2">
                     <span className="px-3 py-1 rounded-full bg-black/70 backdrop-blur-md text-[10px] sm:text-[11px] font-mono font-medium uppercase tracking-wider text-white/90 border border-white/15">
-                      {project.category}
+                      {project.type || project.category}
                     </span>
                     <span className="px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md text-[10px] sm:text-[11px] font-mono text-white/80 border border-white/10">
                       [{project.year}]
@@ -479,7 +479,7 @@ export function Curved3DProjectsGallery({
                 >
                   <div className="flex items-center gap-3 min-w-0">
                     <span className="px-3 py-1 rounded-full bg-[#EB4604]/15 border border-[#EB4604]/30 text-[#EB4604] text-[11px] font-mono font-semibold uppercase tracking-wider truncate">
-                      {expandedProject.category}
+                      {expandedProject.type || expandedProject.category}
                     </span>
                     <span
                       className={`px-2 py-1 rounded-full text-[11px] font-mono shrink-0 ${
@@ -531,7 +531,7 @@ export function Curved3DProjectsGallery({
                         fill
                         quality={90}
                         draggable={false}
-                        className="object-cover transition-transform duration-700 ease-out select-none"
+                        className="object-cover object-top transition-transform duration-700 ease-out select-none"
                         sizes="(max-width: 768px) 100vw, 600px"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/20 pointer-events-none" />
@@ -671,13 +671,25 @@ export function Curved3DProjectsGallery({
                     {/* Action Buttons */}
                     <div className="pt-1 sm:pt-2 flex flex-row items-center gap-2 sm:gap-3">
                       {/* Primary CTA */}
-                      <Link
-                        href={`/projects/${expandedProject.slug}`}
-                        className="group flex-1 inline-flex items-center justify-center gap-2 py-3 px-5 rounded-full bg-[#EB4604] hover:bg-[#D43D00] text-white text-xs sm:text-sm font-semibold tracking-tight transition-all duration-300 shadow-md shadow-[#EB4604]/30 hover:shadow-[#EB4604]/50 hover:scale-[1.02] active:scale-[0.98]"
-                      >
-                        <span>Voir le projet</span>
-                        <span className="w-5 h-5 rounded-full bg-white/20 group-hover:bg-white/30 flex items-center justify-center text-[11px] transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">↗</span>
-                      </Link>
+                      {expandedProject.url ? (
+                        <a
+                          href={expandedProject.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="group flex-1 inline-flex items-center justify-center gap-2 py-3 px-5 rounded-full bg-[#EB4604] hover:bg-[#D43D00] text-white text-xs sm:text-sm font-semibold tracking-tight transition-all duration-300 shadow-md shadow-[#EB4604]/30 hover:shadow-[#EB4604]/50 hover:scale-[1.02] active:scale-[0.98]"
+                        >
+                          <span>Visiter le site</span>
+                          <span className="w-5 h-5 rounded-full bg-white/20 group-hover:bg-white/30 flex items-center justify-center text-[11px] transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">↗</span>
+                        </a>
+                      ) : (
+                        <Link
+                          href={`/projects/${expandedProject.slug}`}
+                          className="group flex-1 inline-flex items-center justify-center gap-2 py-3 px-5 rounded-full bg-[#EB4604] hover:bg-[#D43D00] text-white text-xs sm:text-sm font-semibold tracking-tight transition-all duration-300 shadow-md shadow-[#EB4604]/30 hover:shadow-[#EB4604]/50 hover:scale-[1.02] active:scale-[0.98]"
+                        >
+                          <span>Voir le projet</span>
+                          <span className="w-5 h-5 rounded-full bg-white/20 group-hover:bg-white/30 flex items-center justify-center text-[11px] transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">↗</span>
+                        </Link>
+                      )}
 
                       {/* Close — compact icon pill */}
                       <button

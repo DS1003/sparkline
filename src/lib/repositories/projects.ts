@@ -4,91 +4,121 @@ export const projectsData: Project[] = [
   {
     slug: 'mbor-store',
     title: 'MBOR Store',
-    client: 'MBOR Business Store',
+    client: 'MBOR BUSINESS STORE',
     category: 'App web',
-    year: '2024',
-    summary: 'Une plateforme e-commerce moderne et performante pour une marque de sport et de lifestyle dynamique, conçue pour convertir.',
-    description: 'MBOR avait besoin d’une boutique en ligne capable de retranscrire l’énergie de sa marque tout en offrant une expérience d’achat fluide et ultra-rapide pour ses équipements sportifs.',
-    challenge: 'Créer une expérience immersive qui valorise les collections de maillots et d’équipements, tout en intégrant des solutions de paiement adaptées au marché local et en supportant de forts pics de trafic lors des lancements.',
-    solution: 'Nous avons développé une architecture headless propulsée par Next.js, offrant des temps de chargement instantanés. Le design audacieux met en valeur les produits avec une navigation intuitive.',
-    impact: 'Hausse de 120 % des ventes en ligne lors du premier trimestre et une augmentation significative de l’engagement sur mobile.',
-    deliverables: ['Boutique e-commerce headless', 'Design UI/UX audacieux', 'Intégration paiements locaux', 'Système de gestion de catalogue'],
-    technologies: ['Next.js', 'Tailwind CSS', 'Shopify', 'Framer Motion'],
+    type: 'E-COMMERCE',
+    year: '2026',
+    summary:
+      'Une boutique en ligne capable de retranscrire l’énergie de sa marque et de proposer une expérience d’achat moderne, rapide et immersive.',
+    description:
+      'MBOR avait besoin d’une boutique en ligne capable de retranscrire l’énergie de sa marque et de proposer une expérience d’achat moderne, rapide et immersive autour du football, des sneakers et du streetwear.',
+    challenge:
+      'Créer une expérience immersive qui valorise les collections de maillots et d’équipements, tout en intégrant des solutions de paiement adaptées au marché local et en supportant de forts pics de trafic lors des lancements.',
+    solution:
+      'Nous avons développé une architecture headless propulsée par Next.js, offrant des temps de chargement instantanés. Le design audacieux met en valeur les produits avec une navigation intuitive.',
+    impact:
+      'Hausse de 120 % des ventes en ligne lors du premier trimestre et une augmentation significative de l’engagement sur mobile.',
+    deliverables: [
+      'Boutique e-commerce headless',
+      'Design UI/UX audacieux',
+      'Intégration paiements locaux',
+      'Système de gestion de catalogue',
+    ],
+    technologies: ['Next.js', 'Tailwind CSS', 'Framer Motion', 'Shopify'],
+    url: 'https://mbor-b-store-web-site17.vercel.app/',
     coverImage: '/images/projects/mbor-store.webp',
     galleryImages: [
-      '/images/projects/mbor-store.webp',
+      '/images/projects/mbor-store-preview.webp',
     ],
   },
   {
-    slug: 'fidele-construction',
-    title: 'Fidele Construction',
-    client: 'FIDELE SARL',
-    category: 'Branding',
-    year: '2023',
-    summary: 'Identité visuelle forte et présence numérique institutionnelle pour un leader du secteur de la construction et de l’ingénierie.',
-    description: 'FIDELE SARL souhaitait moderniser son image de marque pour refléter son expertise, son envergure sur les grands chantiers et son engagement envers l’innovation dans la construction.',
-    challenge: 'Traduire la solidité et l’ingénierie de précision de l’entreprise à travers une plateforme digitale corporate capable de présenter des projets d’infrastructure complexes.',
-    solution: 'Refonte complète de l’identité visuelle et création d’un site vitrine haut de gamme, intégrant des galeries immersives de leurs réalisations architecturales et des études de cas détaillées.',
-    impact: 'Positionnement de marque renforcé auprès des partenaires institutionnels et augmentation des demandes de devis qualifiées B2B.',
-    deliverables: ['Refonte de l’identité visuelle', 'Site vitrine corporate', 'Stratégie de contenu', 'Portefeuille de projets interactif'],
-    technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Sanity CMS'],
-    coverImage: '/images/projects/fidele-construction.webp',
-    galleryImages: [
-      '/images/projects/fidele-construction.webp',
-    ],
-  },
-  {
-    slug: 'baraka-electronics',
-    title: 'Baraka',
-    client: 'Baraka Store',
+    slug: 'baraka-shop',
+    title: 'Baraka Shop',
+    client: 'BARAKA SHOP',
     category: 'UI/UX',
-    year: '2024',
-    summary: 'Refonte de l’expérience d’achat omnicanale pour une chaîne de magasins spécialisée dans l’électronique, les smartphones et les gadgets.',
-    description: 'Afin d’accompagner sa croissance physique, Baraka souhaitait offrir à ses clients une vitrine en ligne premium permettant de consulter les stocks, comparer les appareils et commander en toute simplicité.',
-    challenge: 'Gérer un catalogue vaste et en constante évolution, tout en offrant une recherche ultra-rapide et un parcours d’achat sans friction, particulièrement sur smartphone.',
-    solution: 'Mise en place d’une plateforme e-commerce optimisée avec une recherche intelligente, des filtres dynamiques, et un design épuré mettant en valeur les produits technologiques.',
-    impact: 'Une expérience d’achat unifiée qui a permis de doubler le taux de rétention client et de simplifier considérablement le click-and-collect.',
-    deliverables: ['Plateforme E-commerce', 'Moteur de recherche avancé', 'Optimisation Mobile-first', 'Intégration Click & Collect'],
-    technologies: ['React', 'Next.js', 'Tailwind CSS', 'Algolia', 'PostgreSQL'],
+    type: 'E-COMMERCE',
+    year: '2026',
+    summary:
+      'Repenser l’expérience digitale de Baraka à travers une plateforme e-commerce premium pour un large catalogue électronique.',
+    description:
+      'Repenser l’expérience digitale de Baraka à travers une plateforme e-commerce premium capable d’organiser un large catalogue électronique tout en rendant la découverte, la comparaison et l’achat de produits simples et intuitifs.',
+    challenge:
+      'Gérer un catalogue vaste et en constante évolution, tout en offrant une recherche ultra-rapide et un parcours d’achat sans friction, particulièrement sur smartphone.',
+    solution:
+      'Mise en place d’une plateforme e-commerce optimisée avec une recherche intelligente, des filtres dynamiques, et un design épuré mettant en valeur les produits technologiques.',
+    impact:
+      'Une expérience d’achat unifiée qui a permis de doubler le taux de rétention client et de simplifier considérablement le click-and-collect.',
+    deliverables: [
+      'Plateforme E-commerce',
+      'Moteur de recherche avancé',
+      'Optimisation Mobile-first',
+      'Intégration Click & Collect',
+    ],
+    technologies: ['Next.js', 'Tailwind CSS', 'TypeScript', 'Framer Motion'],
+    url: 'https://www.baraka.sn/',
     coverImage: '/images/projects/baraka-tech.webp',
     galleryImages: [
-      '/images/projects/baraka-tech.webp',
+      '/images/projects/baraka-shop-preview.webp',
+    ],
+  },
+  {
+    slug: 'fidele-sarl',
+    title: 'FIDELE SARL',
+    client: 'FIDELE SARL',
+    category: 'Branding',
+    type: 'CORPORATE WEBSITE',
+    year: '2026',
+    summary:
+      'Une présence digitale à la hauteur de son expertise dans le BTP et l’ingénierie.',
+    description:
+      'FIDELE SARL avait besoin d’une présence digitale à la hauteur de son expertise. Nous avons conçu une expérience corporate moderne mettant en valeur ses métiers, ses réalisations et son savoir-faire dans le BTP et l’ingénierie.',
+    challenge:
+      'Traduire la solidité et l’ingénierie de précision de l’entreprise à travers une plateforme digitale corporate capable de présenter des projets d’infrastructure complexes.',
+    solution:
+      'Refonte complète de l’identité visuelle et création d’un site vitrine haut de gamme, intégrant des galeries immersives de leurs réalisations architecturales et des études de cas détaillées.',
+    impact:
+      'Positionnement de marque renforcé auprès des partenaires institutionnels et augmentation des demandes de devis qualifiées B2B.',
+    deliverables: [
+      'Refonte de l’identité visuelle',
+      'Site vitrine corporate',
+      'Stratégie de contenu',
+      'Portefeuille de projets interactif',
+    ],
+    technologies: ['Next.js', 'Tailwind CSS', 'TypeScript', 'Framer Motion'],
+    url: 'https://btp-website-fawn.vercel.app/',
+    coverImage: '/images/projects/fidele-construction.webp',
+    galleryImages: [
+      '/images/projects/fidele-sarl-preview.webp',
     ],
   },
   {
     slug: 'wer-asset',
-    title: 'Wër Asset Manager',
-    client: 'Wër Asset',
+    title: 'WËR ASSET',
+    client: 'WËR ASSET',
     category: 'App web',
-    year: '2024',
-    summary: 'Une solution SaaS complète pour la maintenance et la gestion des équipements industriels, combinant application mobile et tableau de bord d’analyse.',
-    description: 'Wër Asset est une plateforme innovante conçue pour numériser la maintenance industrielle, permettant aux techniciens d’intervenir sur le terrain et aux gestionnaires de suivre la santé des équipements en temps réel.',
-    challenge: 'Remplacer des processus papier fastidieux par une solution numérique intuitive, capable de fonctionner en milieu industriel (scans QR code) tout en consolidant des données complexes dans un dashboard central.',
-    solution: 'Développement d’une application mobile pour les techniciens (suivi d’interventions, scan de machines) couplée à un tableau de bord web puissant offrant des graphiques prédictifs et le suivi du MTTR.',
-    impact: 'Réduction de 35 % des temps d’arrêt machine et optimisation drastique de la planification des équipes de maintenance.',
-    deliverables: ['Dashboard d’analyse SaaS', 'Application mobile technicien', 'Système de scan QR Code', 'Génération de rapports automatisés'],
-    technologies: ['Next.js', 'React Native', 'Tailwind CSS', 'Recharts', 'Node.js', 'PostgreSQL'],
+    type: 'SAAS',
+    year: '2026',
+    summary:
+      'WËR ASSET transforme la gestion des équipements en un système simple, traçable et orienté terrain.',
+    description:
+      'WËR ASSET transforme la gestion des équipements en un système simple, traçable et orienté terrain. La plateforme centralise l’identité des actifs, leur maintenance, leurs interventions et leurs coûts autour d’une expérience QR-first.',
+    challenge:
+      'Remplacer des processus papier fastidieux par une solution numérique intuitive, capable de fonctionner en milieu industriel (scans QR code) tout en consolidant des données complexes dans un dashboard central.',
+    solution:
+      'Développement d’une application mobile pour les techniciens (suivi d’interventions, scan de machines) couplée à un tableau de bord web puissant offrant des graphiques prédictifs et le suivi du MTTR.',
+    impact:
+      'Réduction de 35 % des temps d’arrêt machine et optimisation drastique de la planification des équipes de maintenance.',
+    deliverables: [
+      'Dashboard d’analyse SaaS',
+      'Application mobile technicien',
+      'Système de scan QR Code',
+      'Génération de rapports automatisés',
+    ],
+    technologies: ['Next.js', 'Supabase', 'PWA', 'QR Code'],
+    url: 'https://wer-asset-landing.vercel.app/',
     coverImage: '/images/projects/wer-asset.webp',
     galleryImages: [
-      '/images/projects/wer-asset.webp',
-    ],
-  },
-  {
-    slug: 'bay-sa-warr',
-    title: 'Plateforme Bay Sa Warr',
-    client: 'Fabira Agro-Food',
-    category: 'App mobile',
-    year: '2023',
-    summary: 'Marketplace agro-alimentaire connectant les producteurs locaux aux consommateurs, valorisant les produits naturels et bio.',
-    description: 'Le projet Bay Sa Warr par Fabira vise à créer un pont numérique direct entre les cultivateurs, transformateurs locaux et les clients finaux, pour promouvoir une alimentation saine et authentique.',
-    challenge: 'Créer une plateforme facile d’utilisation pour des vendeurs parfois peu numérisés, tout en offrant aux consommateurs une expérience d’achat rassurante et transparente sur l’origine des produits.',
-    solution: 'Conception d’une application mobile intuitive "vendeurs premium" et d’une vitrine d’achat épurée, mettant en avant la qualité des produits (sirops, poudres, huiles) grâce à une identité visuelle chaleureuse.',
-    impact: 'Digitalisation réussie d’une dizaine de coopératives agricoles et création d’un nouveau canal de vente direct très rentable.',
-    deliverables: ['Application mobile E-commerce', 'Portail Vendeurs', 'Design UI/UX chaleureux', 'Système de gestion des commandes'],
-    technologies: ['React Native', 'Next.js', 'Firebase', 'Tailwind CSS'],
-    coverImage: '/images/projects/bay-sa-warr.webp',
-    galleryImages: [
-      '/images/projects/bay-sa-warr.webp',
+      '/images/projects/wer-asset-preview.webp',
     ],
   },
 ]
@@ -98,7 +128,14 @@ export const projectsRepository = {
     return projectsData
   },
   async getBySlug(slug: string): Promise<Project | null> {
-    return projectsData.find((p) => p.slug === slug) || null
+    return (
+      projectsData.find(
+        (p) =>
+          p.slug === slug ||
+          (slug === 'baraka-electronics' && p.slug === 'baraka-shop') ||
+          (slug === 'fidele-construction' && p.slug === 'fidele-sarl')
+      ) || null
+    )
   },
   async getFeatured(): Promise<Project[]> {
     return projectsData.slice(0, 3)
