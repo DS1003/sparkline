@@ -12,6 +12,10 @@ export function Preloader() {
   const [isComplete, setIsComplete] = useState(false)
 
   useGSAP(() => {
+    if (typeof window !== 'undefined' && 'scrollRestoration' in history) {
+      history.scrollRestoration = 'manual'
+    }
+
     // 1. Verrouillage strict du scroll (Body + HTML) pour éviter les sauts de layout au reload
     document.documentElement.style.overflow = 'hidden'
     document.body.style.overflow = 'hidden'
@@ -31,7 +35,10 @@ export function Preloader() {
           scale: 1,
           transformOrigin: 'center center',
           zIndex: 101,
-          position: 'relative'
+          position: 'fixed', // Fixed removes it from flow, avoiding scroll jumps
+          top: 0,
+          left: 0,
+          width: '100%'
         })
       }
       
