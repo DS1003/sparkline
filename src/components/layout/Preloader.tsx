@@ -12,35 +12,43 @@ export function Preloader() {
   const [isComplete, setIsComplete] = useState(false)
 
   useGSAP(() => {
+    // 1. Verrouillage strict du scroll (Body + HTML) pour éviter les sauts de layout au reload
+    document.documentElement.style.overflow = 'hidden'
     document.body.style.overflow = 'hidden'
+    window.scrollTo(0, 0)
 
-    const heroContainer = document.getElementById('main-hero')
+    // 2. Récupération robuste du Hero
+    let heroContainer = document.getElementById('main-hero')
     
-    if (heroContainer) {
-      // Préparation du Hero : caché en dessous de l'écran, prêt à remonter
-      gsap.set(heroContainer, { 
-        y: '100vh', 
-        opacity: 1, // Visible car il va pousser l'écran
-        scale: 1,
-        transformOrigin: 'center center',
-        zIndex: 101,
-        position: 'relative'
-      })
-    }
-    
-    gsap.set(sparkleRef.current, { scale: 0, opacity: 0, rotation: -90 })
-    gsap.set(logoRef.current, { scale: 0.95, opacity: 0, filter: 'blur(10px)' })
-
-    const tl = gsap.timeline({
-      onComplete: () => {
-        setIsComplete(true)
-        document.body.style.overflow = ''
-        if (typeof window !== 'undefined') {
-          ;(window as unknown as { __SPARKLINE_LOADED__?: boolean }).__SPARKLINE_LOADED__ = true
-          window.dispatchEvent(new CustomEvent('sparkline:loader-complete'))
-        }
+    // Si le layout charge avant la page (Next.js), on s'assure de l'attraper
+    const initAnimation = () => {
+      heroContainer = document.getElementById('main-hero')
+      
+      if (heroContainer) {
+        gsap.set(heroContainer, { 
+          y: '100vh', 
+          opacity: 1, 
+          scale: 1,
+          transformOrigin: 'center center',
+          zIndex: 101,
+          position: 'relative'
+        })
       }
-    })
+      
+      gsap.set(sparkleRef.current, { scale: 0, opacity: 0, rotation: -90 })
+      gsap.set(logoRef.current, { scale: 0.95, opacity: 0, filter: 'blur(10px)' })
+
+      const tl = gsap.timeline({
+        onComplete: () => {
+          setIsComplete(true)
+          document.documentElement.style.overflow = ''
+          document.body.style.overflow = ''
+          if (typeof window !== 'undefined') {
+            ;(window as unknown as { __SPARKLINE_LOADED__?: boolean }).__SPARKLINE_LOADED__ = true
+            window.dispatchEvent(new CustomEvent('sparkline:loader-complete'))
+          }
+        }
+      })
 
     // ---------------------------------------------------------
     // ACTE 1 : L'ÉVEIL DU SPARKLE (0s -> 0.8s)
@@ -105,6 +113,12 @@ export function Preloader() {
         ease: 'power3.inOut'
       }, 2.8)
     }
+    } // End of initAnimation
+
+    // Lancer l'animation de manière asynchrone pour être sûr que React a fini le rendu du DOM (surtout lors des HMR)
+    requestAnimationFrame(() => {
+      requestAnimationFrame(initAnimation)
+    })
 
   }, { scope: containerRef })
 
