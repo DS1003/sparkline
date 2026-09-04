@@ -2,6 +2,37 @@ import { Project } from '@/types'
 
 export const projectsData: Project[] = [
   {
+    slug: 'amfpr',
+    title: 'AMFPR',
+    client: 'Amicale des Femmes de la Présidence',
+    category: 'App web',
+    categories: ['App web', 'UI/UX', 'Institutionnel'],
+    type: 'CORPORATE WEBSITE',
+    year: '2026',
+    summary:
+      'Une plateforme institutionnelle moderne et chaleureuse pour fédérer les femmes engagées de la Présidence de la République.',
+    description:
+      'L\'Amicale des Femmes de la Présidence de la République du Sénégal (AMFPR) rassemble des femmes engagées pour un Sénégal plus solidaire. Le site met en avant leurs piliers fondateurs : solidarité, autonomisation, éducation et développement.',
+    challenge:
+      'Créer une vitrine digitale institutionnelle élégante, capable de fédérer les membres autour d\'un idéal commun et de valoriser un réseau fort d\'entraide et d\'action sociale.',
+    solution:
+      'Conception d\'un site web immersif aux couleurs de la Présidence, avec une galerie photo dynamique, un agenda d\'actions sociales et une présentation claire du leadership de l\'amicale.',
+    impact:
+      'Une visibilité institutionnelle renforcée et une plateforme centralisée pour coordonner les actions citoyennes et solidaires.',
+    deliverables: [
+      'Site web institutionnel',
+      'Design UI/UX élégant',
+      'Système d\'actualités et agenda',
+      'Galerie photo immersive',
+    ],
+    technologies: ['Next.js', 'Tailwind CSS', 'TypeScript'],
+    url: 'https://www.amicaledesfemmesdelapresidence.com/',
+    coverImage: '/images/projects/amfpr-card.jpg',
+    galleryImages: [
+      '/images/projects/amfpr-preview.png',
+    ],
+  },
+  {
     slug: 'mbor-store',
     title: 'MBOR Store',
     client: 'MBOR BUSINESS STORE',

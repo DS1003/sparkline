@@ -9,6 +9,14 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    id: 'amfpr',
+    title: 'AMFPR',
+    category: 'Site Institutionnel',
+    description:
+      'Une plateforme institutionnelle moderne pour fédérer les femmes engagées de la Présidence de la République du Sénégal autour d\'actions solidaires.',
+    year: '2026',
+  },
+  {
     id: 'ndakaru',
     title: 'NDAKARU',
     category: 'Plateforme E-commerce',
