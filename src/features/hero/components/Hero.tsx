@@ -25,7 +25,7 @@ export function Hero() {
               priority
               sizes="100vw"
               quality={85}
-              className="object-cover object-center"
+              className="hero-bg-img object-cover object-center"
             />
           </div>
           {/* Desktop Image */}
@@ -37,7 +37,7 @@ export function Hero() {
               priority
               sizes="100vw"
               quality={85}
-              className="object-cover object-center"
+              className="hero-bg-img object-cover object-center"
             />
           </div>
         </div>
@@ -50,7 +50,7 @@ export function Hero() {
 
         {/* Main Hero Headline Area with Real Spark Writing Effect */}
         <div className="relative z-10 mt-auto mb-2 md:my-auto pt-16 sm:pt-20 md:pt-0 max-w-3xl xl:max-w-4xl py-1.5 sm:py-2.5 lg:py-2 xl:py-4 space-y-2 sm:space-y-3 lg:space-y-2.5 xl:space-y-4 flex flex-col items-center text-center lg:items-start lg:text-left">
-          <RevealOnScroll delay={0.1} className="hidden md:block">
+          <RevealOnScroll delay={0.1} className="hero-badge hidden md:block">
             <div className="relative inline-flex items-center group cursor-default">
               {/* Controlled Subtle Neon Rim Aura (tight & crisp, no excessive blur) */}
               <div
@@ -108,7 +108,7 @@ export function Hero() {
           {/* Spark Writing Title on Strictly 3 Lines */}
           <SparkTitle lines={['Concevoir la', 'nouvelle génération', 'de marques']} />
 
-          <RevealOnScroll delay={0.3}>
+          <RevealOnScroll delay={0.3} className="hero-subtext">
             <p className="text-xs sm:text-sm lg:text-[13px] xl:text-base text-neutral-300 max-w-md xl:max-w-lg font-normal leading-relaxed">
               Accompagner les marques dans leur lancement, leur croissance et leur leadership grâce à un design d'exception.
             </p>
@@ -116,7 +116,7 @@ export function Hero() {
         </div>
 
         {/* Bottom Split Row: Left Subheading & Metadata | Right Action Buttons */}
-        <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-3 sm:gap-4 lg:gap-6 items-end pt-2.5 sm:pt-3.5 lg:pt-3 xl:pt-5 border-t border-white/10">
+        <div className="hero-bottom-bar relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-3 sm:gap-4 lg:gap-6 items-end pt-2.5 sm:pt-3.5 lg:pt-3 xl:pt-5 border-t border-white/10">
           {/* Left Column: Subheading & Metadata */}
           <div className="lg:col-span-7 flex flex-col items-center text-center lg:items-start lg:text-left space-y-2 sm:space-y-2.5">
             <RevealOnScroll delay={0.4}>

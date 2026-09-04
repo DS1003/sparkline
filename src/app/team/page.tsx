@@ -20,7 +20,7 @@ export default async function TeamPage() {
       <PageHero
         tag="Notre Équipe"
         title="Des talents multidisciplinaires"
-        pillImage="/images/heroes/team.jpg"
+        pillImage="/images/heroes/team.webp"
         highlight="unis par l’exigence."
         subtitle="Un collectif soudé d'ingénieurs, designers, architectes et stratèges bâtissant des solutions digitales impactantes."
         breadcrumbs={[{ label: 'Équipe', href: '/team' }]}

@@ -20,7 +20,7 @@ export default async function ProjectsPage() {
       <PageHero
         tag="Nos Réalisations"
         title="Des produits digitaux conçus pour"
-        pillImage="/images/heroes/projects.jpg"
+        pillImage="/images/heroes/projects.webp"
         highlight="l’impact."
         subtitle="Nous façonnons des expériences numériques stratégiques qui génèrent une croissance concrète. Explorez nos études de cas."
         breadcrumbs={[{ label: 'Projets', href: '/projects' }]}

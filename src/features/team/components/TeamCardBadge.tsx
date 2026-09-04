@@ -12,7 +12,7 @@ interface TeamCardBadgeProps {
 export function TeamCardBadge({ member }: TeamCardBadgeProps) {
   const [isFlipped, setIsFlipped] = useState(false)
   const isTouchDevice = useRef(false)
-  const avatarSrc = member.avatar || '/images/brand/Seydina.png'
+  const avatarSrc = member.avatar || '/images/brand/Seydina.webp'
 
   useEffect(() => {
     if (typeof window !== 'undefined' && !window.matchMedia('(hover: hover)').matches) {

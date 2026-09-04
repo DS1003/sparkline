@@ -23,7 +23,7 @@ export default async function CareersPage() {
       <PageHero
         tag="Rejoindre SPARKLINE"
         title="Bâtir le futur"
-        pillImage="/images/heroes/careers.jpg"
+        pillImage="/images/heroes/careers.webp"
         highlight="avec nous."
         subtitle="Nous réunissons des talents ambitieux, créatifs et rigoureux, passionnés par l'excellence logicielle et l'impact digital."
         breadcrumbs={[{ label: 'Carrières', href: '/careers' }]}

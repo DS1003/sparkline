@@ -16,14 +16,14 @@ interface Curved3DProjectsGalleryProps {
 
 const getImageSrc = (slug: string) => {
   return slug === 'ndakaru-commerce'
-    ? '/images/projects/ndakaru.jpg'
+    ? '/images/projects/ndakaru.webp'
     : slug === 'teranga-dashboard'
-    ? '/images/services/development.jpg'
+    ? '/images/services/development.webp'
     : slug === 'baobab-fintech'
-    ? '/images/services/branding.jpg'
+    ? '/images/services/branding.webp'
     : slug === 'sunu-health'
-    ? '/images/services/mobile.jpg'
-    : '/images/services/ui-ux.jpg'
+    ? '/images/services/mobile.webp'
+    : '/images/services/ui-ux.webp'
 }
 
 export function Curved3DProjectsGallery({
@@ -330,14 +330,14 @@ export function Curved3DProjectsGallery({
                 {/* ── 3D Card Flipper & Frame ── */}
                 <div
                   onDragStart={(e) => e.preventDefault()}
-                  className="relative w-full h-full rounded-[28px] sm:rounded-[32px] bg-[#08080a] border border-white/12 overflow-hidden flex flex-col justify-end p-4 sm:p-5 group select-none"
+                  className="relative w-full h-full rounded-[28px] sm:rounded-[32px] bg-white/[0.03] backdrop-blur-md border border-white/10 group-hover:border-white/25 overflow-hidden flex flex-col justify-end p-4 sm:p-5 group select-none"
                   style={{
                     boxShadow: isCenter
-                      ? '0 30px 70px -15px rgba(0, 0, 0, 0.98), 0 10px 30px rgba(0, 0, 0, 0.8)'
-                      : '0 20px 40px -10px rgba(0, 0, 0, 0.8)',
+                      ? '0 40px 80px -20px rgba(0, 0, 0, 0.9), inset 0 0 0 1px rgba(255,255,255,0.05)'
+                      : '0 20px 40px -10px rgba(0, 0, 0, 0.6)',
                     transform: isExpanded ? 'scale(1.02)' : 'scale(1)',
                     opacity: isExpanded ? 0.35 : 1,
-                    transition: 'transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease',
+                    transition: 'transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease, border-color 0.3s ease',
                   }}
                 >
                   {/* Artwork Image (Draggable false to prevent browser native ghost dragging) */}
@@ -353,7 +353,7 @@ export function Curved3DProjectsGallery({
                       }`}
                       sizes="(max-width: 768px) 270px, 340px"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/45 to-black/20 pointer-events-none" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent pointer-events-none" />
                   </div>
 
                   {/* Bottom Content & Interactive Expand Prompt */}

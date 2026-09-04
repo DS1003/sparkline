@@ -55,7 +55,7 @@ export function WhatDrivesUs() {
               <span> lancement final</span>{' '}
               <span className="inline-flex items-center justify-center w-12 h-6.5 sm:w-16 sm:h-8.5 md:w-20 md:h-10 rounded-full overflow-hidden border border-neutral-300 shadow-md relative align-middle mx-1 sm:mx-2 -translate-y-[0.1em] shrink-0 transition-transform duration-300 hover:scale-105">
                 <Image
-                  src="/images/services/header-avatar.jpg"
+                  src="/images/services/header-avatar.webp"
                   alt="Portrait"
                   fill
                   quality={85}

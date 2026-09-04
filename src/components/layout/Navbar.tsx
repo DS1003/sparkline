@@ -30,12 +30,12 @@ export function Navbar() {
     <>
       <nav className="w-full flex items-center justify-between py-1 sm:py-2 mb-3 sm:mb-6 lg:mb-8 relative z-30">
         {/* Official SPARKLINE Logo */}
-        <Link href="/" className="flex items-center group transition-transform group-hover:opacity-95">
+        <Link href="/" id="navbar-logo" className="flex items-center group transition-transform group-hover:opacity-95">
           <Logo variant="white" size="md" />
         </Link>
 
         {/* Desktop Nav Links */}
-        <div className="hidden xl:flex items-center gap-7 text-sm font-medium text-neutral-300">
+        <div className="navbar-navlinks hidden xl:flex items-center gap-7 text-sm font-medium text-neutral-300">
           {navLinks.map((link) => {
             const active = isActive(link.href)
             return (
@@ -52,7 +52,7 @@ export function Navbar() {
         </div>
 
         {/* Action Button & Mobile Hamburger */}
-        <div className="flex items-center gap-4">
+        <div className="navbar-actions flex items-center gap-4">
           <Link
             href="/contact"
             className="hidden sm:inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-white text-black text-xs font-semibold hover:bg-neutral-200 transition-all group shadow-md"

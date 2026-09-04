@@ -54,15 +54,24 @@ const TRAIL_SPARK_CONFIGS: TrailSparkConfig[] = [
 
 export function Preloader() {
   const containerRef = useRef<HTMLDivElement>(null)
+  const backdropRef = useRef<HTMLDivElement>(null)
   const sparkleRef = useRef<HTMLDivElement>(null)
   const tailRef = useRef<HTMLDivElement>(null)
-  const logoRef = useRef<HTMLDivElement>(null)
+  const logoContainerRef = useRef<HTMLDivElement>(null)
+  const logoInnerRef = useRef<HTMLDivElement>(null)
   const trailRefs = useRef<(HTMLDivElement | null)[]>([])
   const [isComplete, setIsComplete] = useState(false)
   const [trailPositions, setTrailPositions] = useState<{ x: number; y: number }[]>([])
 
   // Calcul unique des coordonnées de départ et de tous les points de traînée
   useEffect(() => {
+    if (typeof window !== 'undefined' && (window as unknown as { __SPARKLINE_LOADED__?: boolean }).__SPARKLINE_LOADED__) {
+      setIsComplete(true)
+      const navLogo = document.getElementById('navbar-logo')
+      if (navLogo) gsap.set(navLogo, { opacity: 1 })
+      return
+    }
+
     const startX = -Math.min(window.innerWidth * 0.42, 520)
     const startY = -Math.min(window.innerHeight * 0.38, 380)
 
@@ -80,6 +89,13 @@ export function Preloader() {
   }, [])
 
   useGSAP(() => {
+    if (typeof window !== 'undefined' && (window as unknown as { __SPARKLINE_LOADED__?: boolean }).__SPARKLINE_LOADED__) {
+      setIsComplete(true)
+      const navLogo = document.getElementById('navbar-logo')
+      if (navLogo) gsap.set(navLogo, { opacity: 1 })
+      return
+    }
+
     if (typeof window !== 'undefined' && 'scrollRestoration' in history) {
       history.scrollRestoration = 'manual'
     }
@@ -95,19 +111,32 @@ export function Preloader() {
     const getLenis = () => (window as unknown as { __lenis?: { stop: () => void; start: () => void } }).__lenis
     getLenis()?.stop()
 
-    // 2. Récupération robuste du Hero
+    // 2. Initialisation et préparation du Hero et de la Navbar
     let heroContainer = document.getElementById('main-hero')
     
     const initAnimation = () => {
       heroContainer = document.getElementById('main-hero')
-      
+      const navLogo = document.getElementById('navbar-logo')
+      const navLinks = document.querySelector('.navbar-navlinks')
+      const navActions = document.querySelector('.navbar-actions')
+      const heroBadge = document.querySelector('.hero-badge')
+      const heroSubtext = document.querySelector('.hero-subtext')
+      const heroBottomBar = document.querySelector('.hero-bottom-bar')
+      const heroBgImages = document.querySelectorAll('.hero-bg-img')
+
+      // Le Hero reste à sa place naturelle (y: 0) — pas de saut 100vh
       if (heroContainer) {
-        gsap.set(heroContainer, { 
-          y: '100vh', 
-          opacity: 1, 
-          zIndex: 101,
-        })
+        gsap.set(heroContainer, { y: 0, opacity: 1 })
       }
+
+      // Préparation discrète des éléments pour l'apparition stylée
+      if (navLogo) gsap.set(navLogo, { opacity: 0 })
+      if (navLinks) gsap.set(navLinks, { opacity: 0, y: -8 })
+      if (navActions) gsap.set(navActions, { opacity: 0, scale: 0.94 })
+      if (heroBadge) gsap.set(heroBadge, { opacity: 0, y: -12 })
+      if (heroSubtext) gsap.set(heroSubtext, { opacity: 0, y: 12 })
+      if (heroBottomBar) gsap.set(heroBottomBar, { opacity: 0, y: 15 })
+      if (heroBgImages.length > 0) gsap.set(heroBgImages, { scale: 1.05 })
       
       const startX = -Math.min(window.innerWidth * 0.42, 520)
       const startY = -Math.min(window.innerHeight * 0.38, 380)
@@ -121,7 +150,9 @@ export function Preloader() {
         rotation: -90,
       })
       gsap.set(tailRef.current, { opacity: 0 })
-      gsap.set(logoRef.current, { scale: 0.95, opacity: 0, filter: 'blur(10px)' })
+      if (logoInnerRef.current) {
+        gsap.set(logoInnerRef.current, { x: 0, y: 0, scale: 0.95, opacity: 0, filter: 'blur(10px)' })
+      }
 
       // Initialiser chaque petite étincelle de la traînée
       trailRefs.current.forEach((el) => {
@@ -134,6 +165,17 @@ export function Preloader() {
           window.removeEventListener('wheel', preventScroll)
           window.removeEventListener('touchmove', preventScroll)
           getLenis()?.start()
+
+          // Restauration propre des styles pour conserver les interactions et hover
+          if (navLogo) gsap.set(navLogo, { opacity: 1 })
+          if (navLinks) gsap.set(navLinks, { clearProps: 'all' })
+          if (navActions) gsap.set(navActions, { clearProps: 'all' })
+          if (heroBadge) gsap.set(heroBadge, { clearProps: 'all' })
+          if (heroSubtext) gsap.set(heroSubtext, { clearProps: 'all' })
+          if (heroBottomBar) gsap.set(heroBottomBar, { clearProps: 'all' })
+          if (heroBgImages.length > 0) gsap.set(heroBgImages, { clearProps: 'all' })
+          if (heroContainer) gsap.set(heroContainer, { clearProps: 'all' })
+
           if (typeof window !== 'undefined') {
             ;(window as unknown as { __SPARKLINE_LOADED__?: boolean }).__SPARKLINE_LOADED__ = true
             window.dispatchEvent(new CustomEvent('sparkline:loader-complete'))
@@ -152,17 +194,16 @@ export function Preloader() {
       }, 0.05)
 
       // ---------------------------------------------------------
-      // ACTE 2 : DÉPLACEMENT VERS LE MILIEU + TRAÎNÉE D'ÉTINCELLES (0.15s -> 1.0s)
+      // ACTE 2 : DÉPLACEMENT VERS LE MILIEU + TRAÎNÉE D'ÉTINCELLES (0.15s -> 0.95s)
       // ---------------------------------------------------------
       tl.to(sparkleRef.current, {
         x: 0,
         y: 0,
         rotation: 0,
-        duration: 0.85,
+        duration: 0.80,
         ease: 'power2.inOut',
       }, 0.15)
 
-      // Activation douce de la traînée lumineuse derrière l'icône
       tl.to(tailRef.current, {
         opacity: 0.9,
         duration: 0.2,
@@ -171,7 +212,7 @@ export function Preloader() {
       tl.to(tailRef.current, {
         opacity: 0,
         duration: 0.25,
-      }, 0.85)
+      }, 0.80)
 
       // Allumage et dissipation synchronisés de chaque étincelle
       TRAIL_SPARK_CONFIGS.forEach((cfg, i) => {
@@ -179,7 +220,7 @@ export function Preloader() {
         if (!el) return
 
         const isCenterBurst = cfg.progress >= 0.99
-        const sparkTime = isCenterBurst ? 1.0 : 0.15 + cfg.progress * 0.85
+        const sparkTime = isCenterBurst ? 0.95 : 0.15 + cfg.progress * 0.80
 
         tl.fromTo(el,
           { scale: 0, opacity: 0, rotation: 0 },
@@ -206,55 +247,146 @@ export function Preloader() {
       })
 
       // ---------------------------------------------------------
-      // ACTE 3 : PULSATION COURTE AU CENTRE (1.0s -> 1.4s)
+      // ACTE 3 : PULSATION COURTE AU CENTRE (0.95s -> 1.30s)
       // ---------------------------------------------------------
       tl.to(sparkleRef.current, {
         scale: 0.8,
         rotation: 45,
-        duration: 0.4,
+        duration: 0.35,
         ease: 'power2.inOut',
-      }, 1.0)
+      }, 0.95)
 
       // ---------------------------------------------------------
-      // ACTE 4 : L'EXPANSION MASSIVE (1.4s -> 2.2s)
+      // ACTE 4 : L'EXPANSION MASSIVE (1.30s -> 2.00s)
       // ---------------------------------------------------------
       tl.to(sparkleRef.current, {
         scale: 400, 
         rotation: 90, 
-        duration: 0.8,
+        duration: 0.70,
         ease: 'power2.inOut',
-      }, 1.4)
+      }, 1.30)
+
+      // Coloration du fond en noir pour un fondu parfait sans flash blanc
+      tl.set(backdropRef.current, { backgroundColor: '#070709' }, 1.80)
 
       // ---------------------------------------------------------
-      // ACTE 5 : L'EMBLÈME SPARKLINE (2.0s -> 2.8s)
+      // ACTE 5 : L'EMBLÈME SPARKLINE AU CENTRE (1.90s -> 2.60s)
       // ---------------------------------------------------------
-      tl.to(logoRef.current, {
+      tl.to(logoInnerRef.current, {
         scale: 1,
         opacity: 1,
         filter: 'blur(0px)',
-        duration: 0.8,
+        duration: 0.70,
         ease: 'power3.out',
-      }, 2.0)
+      }, 1.90)
 
       // ---------------------------------------------------------
-      // ACTE 6 : L'ASCENSION DU HERO (3.0s -> 3.8s)
+      // ACTE 6 : VOL DU LOGO VERS LA NAVBAR SANS INTERRUPTION NI DISPARITION (2.75s -> 3.80s)
+      // Le logo glisse dans un mouvement direct, fluide et continu
       // ---------------------------------------------------------
-      if (heroContainer) {
-        tl.to(heroContainer, {
-          y: 0,
-          duration: 0.8,
-          ease: 'power3.inOut',
-        }, 3.0)
-        
-        tl.set(containerRef.current, { autoAlpha: 0 })
-        tl.set(heroContainer, { clearProps: 'transform,zIndex' })
-      } else {
-        tl.to(containerRef.current, {
-          opacity: 0,
-          duration: 0.8,
-          ease: 'power3.inOut',
-        }, 3.0)
+      tl.to(logoInnerRef.current, {
+        x: () => {
+          const target = document.querySelector('#navbar-logo img') || document.getElementById('navbar-logo')
+          const flyer = logoInnerRef.current
+          if (!target || !flyer) return 0
+          const targetRect = target.getBoundingClientRect()
+          return (targetRect.left + targetRect.width / 2) - (window.innerWidth / 2)
+        },
+        y: () => {
+          const target = document.querySelector('#navbar-logo img') || document.getElementById('navbar-logo')
+          const flyer = logoInnerRef.current
+          if (!target || !flyer) return 0
+          const targetRect = target.getBoundingClientRect()
+          return (targetRect.top + targetRect.height / 2) - (window.innerHeight / 2)
+        },
+        scale: () => {
+          const target = document.querySelector('#navbar-logo img') || document.getElementById('navbar-logo')
+          const flyer = logoInnerRef.current
+          if (!target || !flyer) return 0.35
+          const targetRect = target.getBoundingClientRect()
+          const flyerWidth = flyer.offsetWidth || 400
+          return targetRect.width / flyerWidth
+        },
+        duration: 1.05,
+        ease: 'power3.inOut',
+      }, 2.75)
+
+      // Fondu doux du fond SEULEMENT (le logo reste à 100% d'opacité en vol sans disparaître)
+      tl.to(backdropRef.current, {
+        opacity: 0,
+        duration: 0.85,
+        ease: 'power2.inOut',
+      }, 2.85)
+
+      tl.to(sparkleRef.current, {
+        opacity: 0,
+        duration: 0.85,
+        ease: 'power2.inOut',
+      }, 2.85)
+
+      // Dézoom subtil de l'image de fond du Hero (effet de profondeur)
+      if (heroBgImages.length > 0) {
+        tl.to(heroBgImages, {
+          scale: 1,
+          duration: 1.1,
+          ease: 'power2.out',
+        }, 2.85)
       }
+
+      // Arrivée en cascade des liens et actions de la Navbar
+      if (navLinks) {
+        tl.to(navLinks, {
+          opacity: 1,
+          y: 0,
+          duration: 0.55,
+          ease: 'power2.out',
+        }, 3.35)
+      }
+
+      if (navActions) {
+        tl.to(navActions, {
+          opacity: 1,
+          scale: 1,
+          duration: 0.55,
+          ease: 'back.out(1.4)',
+        }, 3.40)
+      }
+
+      // Révélation des composants du Hero
+      if (heroBadge) {
+        tl.to(heroBadge, {
+          opacity: 1,
+          y: 0,
+          duration: 0.55,
+          ease: 'power2.out',
+        }, 3.45)
+      }
+
+      if (heroSubtext) {
+        tl.to(heroSubtext, {
+          opacity: 1,
+          y: 0,
+          duration: 0.55,
+          ease: 'power2.out',
+        }, 3.50)
+      }
+
+      if (heroBottomBar) {
+        tl.to(heroBottomBar, {
+          opacity: 1,
+          y: 0,
+          duration: 0.55,
+          ease: 'power2.out',
+        }, 3.55)
+      }
+
+      // À l'atterrissage exact (3.80s) : passage de relais invisible et sans disparition
+      tl.set(navLogo, { opacity: 1 }, 3.80)
+      tl.to(logoInnerRef.current, {
+        opacity: 0,
+        duration: 0.08,
+        ease: 'power1.out',
+      }, 3.80)
     }
 
     requestAnimationFrame(initAnimation)
@@ -262,6 +394,11 @@ export function Preloader() {
     return () => {
       window.removeEventListener('wheel', preventScroll)
       window.removeEventListener('touchmove', preventScroll)
+      getLenis()?.start()
+      const navLogo = document.getElementById('navbar-logo')
+      if (navLogo) {
+        navLogo.style.opacity = '1'
+      }
     }
 
   }, { scope: containerRef })
@@ -292,96 +429,104 @@ export function Preloader() {
     }
   }
 
+  if (isComplete) return null
+
   return (
     <div
       ref={containerRef}
-      className={`fixed inset-0 z-[100] bg-white flex items-center justify-center overflow-hidden touch-none pointer-events-none ${
-        isComplete ? 'hidden' : ''
-      }`}
+      className="fixed inset-0 z-[100] pointer-events-none touch-none"
     >
-      {/* Traînée d'étincelles subtiles disposées le long de la trajectoire et à l'impact */}
-      <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
-        {trailPositions.map((pos, i) => {
-          const cfg = TRAIL_SPARK_CONFIGS[i]
-          const colors = getSparkColorClasses(cfg.color)
-
-          return (
-            <div
-              key={i}
-              ref={(el) => { trailRefs.current[i] = el }}
-              className="absolute pointer-events-none will-change-transform"
-              style={{
-                transform: `translate(${pos.x}px, ${pos.y}px) scale(0)`,
-                opacity: 0,
-              }}
-            >
-              {cfg.isStar ? (
-                <svg
-                  viewBox="0 0 24 24"
-                  className={`${colors.textColor} ${colors.dropShadow}`}
-                  style={{ width: `${cfg.size * 2.2}px`, height: `${cfg.size * 2.2}px` }}
-                  fill="currentColor"
-                >
-                  <path d="M12 0C12 0 12 10.5 24 12C24 12 12 13.5 12 24C12 24 12 13.5 0 12C0 12 12 10.5 12 0Z" />
-                </svg>
-              ) : (
-                <div
-                  className={`rounded-full ${colors.bgColor}`}
-                  style={{
-                    width: `${cfg.size}px`,
-                    height: `${cfg.size}px`,
-                    boxShadow: colors.boxShadow,
-                  }}
-                />
-              )}
-            </div>
-          )
-        })}
-      </div>
-
-      {/* 
-        L'icône Sparkle 4 branches.
-        Couleur fixée à #070709 (Noir). En grandissant, elle assombrit toute la page.
-      */}
-      <div 
-        ref={sparkleRef}
-        className="absolute z-10 flex items-center justify-center text-[#070709] will-change-transform"
-        style={{ transform: 'scale(0)' }}
+      {/* ── 1. Fond sombre et étincelles (qui s'efface pour révéler le Hero) ── */}
+      <div
+        ref={backdropRef}
+        className="absolute inset-0 bg-white flex items-center justify-center overflow-hidden z-10"
       >
-        {/* Traînée lumineuse subtile dans le sillage du spark */}
+        {/* Traînée d'étincelles subtiles disposées le long de la trajectoire et à l'impact */}
+        <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
+          {trailPositions.map((pos, i) => {
+            const cfg = TRAIL_SPARK_CONFIGS[i]
+            const colors = getSparkColorClasses(cfg.color)
+
+            return (
+              <div
+                key={i}
+                ref={(el) => { trailRefs.current[i] = el }}
+                className="absolute pointer-events-none will-change-transform"
+                style={{
+                  transform: `translate(${pos.x}px, ${pos.y}px) scale(0)`,
+                  opacity: 0,
+                }}
+              >
+                {cfg.isStar ? (
+                  <svg
+                    viewBox="0 0 24 24"
+                    className={`${colors.textColor} ${colors.dropShadow}`}
+                    style={{ width: `${cfg.size * 2.2}px`, height: `${cfg.size * 2.2}px` }}
+                    fill="currentColor"
+                  >
+                    <path d="M12 0C12 0 12 10.5 24 12C24 12 12 13.5 12 24C12 24 12 13.5 0 12C0 12 12 10.5 12 0Z" />
+                  </svg>
+                ) : (
+                  <div
+                    className={`rounded-full ${colors.bgColor}`}
+                    style={{
+                      width: `${cfg.size}px`,
+                      height: `${cfg.size}px`,
+                      boxShadow: colors.boxShadow,
+                    }}
+                  />
+                )}
+              </div>
+            )
+          })}
+        </div>
+
+        {/* 
+          L'icône Sparkle 4 branches.
+          Couleur fixée à #070709 (Noir). En grandissant, elle assombrit toute la page.
+        */}
         <div 
-          ref={tailRef}
-          className="absolute -top-4 -left-4 w-14 h-14 pointer-events-none rounded-full blur-[4px]"
-          style={{
-            background: 'radial-gradient(circle at bottom right, rgba(235,70,4,0.85) 0%, rgba(255,185,1,0.5) 40%, rgba(255,255,255,0.3) 65%, transparent 80%)',
-          }}
-        />
-
-        <svg 
-          viewBox="0 0 24 24" 
-          className="w-12 h-12 sm:w-16 sm:h-16 relative z-10 drop-shadow-[0_0_10px_rgba(235,70,4,0.6)]"
-          fill="currentColor"
+          ref={sparkleRef}
+          className="absolute z-10 flex items-center justify-center text-[#070709] will-change-transform"
+          style={{ transform: 'scale(0)' }}
         >
-          <path d="M12 0C12 0 12 10.5 24 12C24 12 12 13.5 12 24C12 24 12 13.5 0 12C0 12 12 10.5 12 0Z" />
-        </svg>
+          {/* Traînée lumineuse subtile dans le sillage du spark */}
+          <div 
+            ref={tailRef}
+            className="absolute -top-4 -left-4 w-14 h-14 pointer-events-none rounded-full blur-[4px]"
+            style={{
+              background: 'radial-gradient(circle at bottom right, rgba(235,70,4,0.85) 0%, rgba(255,185,1,0.5) 40%, rgba(255,255,255,0.3) 65%, transparent 80%)',
+            }}
+          />
+
+          <svg 
+            viewBox="0 0 24 24" 
+            className="w-12 h-12 sm:w-16 sm:h-16 relative z-10 drop-shadow-[0_0_10px_rgba(235,70,4,0.6)]"
+            fill="currentColor"
+          >
+            <path d="M12 0C12 0 12 10.5 24 12C24 12 12 13.5 12 24C12 24 12 13.5 0 12C0 12 12 10.5 12 0Z" />
+          </svg>
+        </div>
       </div>
 
-      {/* 
-        Le Logo SPARKLINE horizontal inversé (blanc sur fond noir).
-      */}
+      {/* ── 2. Le Logo SPARKLINE (Z-INDEX 20 : AU-DESSUS DU FOND, NE DISPARAÎT JAMAIS PENDANT LE VOL) ── */}
       <div 
-        ref={logoRef}
-        className="relative z-20 flex flex-col items-center justify-center w-full px-4"
-        style={{ transform: 'scale(0.95)', filter: 'blur(10px)', opacity: 0 }}
+        ref={logoContainerRef}
+        className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none"
       >
-        <div className="relative w-[300px] sm:w-[400px] md:w-[500px] flex items-center justify-center drop-shadow-[0_15px_40px_rgba(0,0,0,0.3)]">
+        <div 
+          ref={logoInnerRef}
+          className="relative w-[280px] sm:w-[380px] md:w-[460px] flex items-center justify-center drop-shadow-[0_15px_40px_rgba(0,0,0,0.5)] will-change-transform select-none"
+          style={{ transform: 'scale(0.95)', filter: 'blur(10px)', opacity: 0 }}
+        >
           <Image
-            src="/images/brand/Logo - horizontal/inversé.png"
+            src="/images/brand/sparkline-logo-white.svg"
             alt="SPARKLINE Official Logo"
-            width={500}
-            height={100}
+            width={460}
+            height={93}
             priority
             className="w-full h-auto object-contain"
+            style={{ aspectRatio: '1983 / 400' }}
           />
         </div>
       </div>

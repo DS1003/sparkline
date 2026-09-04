@@ -19,7 +19,7 @@ const bubbleNavLinks = [
 export function BubbleNav() {
   const pathname = usePathname()
   const [visible, setVisible] = useState(false)
-  const [mounted, setMounted] = useState(false)
+  const [hasScrolled, setHasScrolled] = useState(false)
   const [collapsed, setCollapsed] = useState(false)
   const [hovered, setHovered] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -28,37 +28,40 @@ export function BubbleNav() {
   const collapseTimerRef = useRef<NodeJS.Timeout | null>(null)
   const navRef = useRef<HTMLDivElement>(null)
 
+  const visibleRef = useRef(false)
+
   const isActive = (path: string) => {
     if (path === '/' && pathname === '/') return true
     if (path !== '/' && pathname?.startsWith(path)) return true
     return false
   }
 
-  const handleScroll = useCallback(() => {
-    if (ticking.current) return
-    ticking.current = true
-
-    requestAnimationFrame(() => {
-      const scrollY = window.scrollY
-      const shouldShow = scrollY > 150
-
-      if (shouldShow !== visible) {
-        setVisible(shouldShow)
-        if (shouldShow && !mounted) {
-          setMounted(true)
-        }
-      }
-
-      lastScrollY.current = scrollY
-      ticking.current = false
-    })
-  }, [visible, mounted])
-
   useEffect(() => {
+    const handleScroll = () => {
+      if (ticking.current) return
+      ticking.current = true
+
+      requestAnimationFrame(() => {
+        const scrollY = window.scrollY
+        const shouldShow = scrollY > 150
+
+        if (shouldShow !== visibleRef.current) {
+          visibleRef.current = shouldShow
+          setVisible(shouldShow)
+          if (shouldShow) {
+            setHasScrolled(true)
+          }
+        }
+
+        lastScrollY.current = scrollY
+        ticking.current = false
+      })
+    }
+
     window.addEventListener('scroll', handleScroll, { passive: true })
     handleScroll()
     return () => window.removeEventListener('scroll', handleScroll)
-  }, [handleScroll])
+  }, [])
 
   // Auto-collapse desktop after 3s when visible and not hovered
   useEffect(() => {
@@ -87,9 +90,15 @@ export function BubbleNav() {
     }
   }, [visible])
 
-  // Close mobile nav on route change
+  // Close mobile nav & sync state on route change
   useEffect(() => {
     setMobileMenuOpen(false)
+    const isScrolled = window.scrollY > 150
+    visibleRef.current = isScrolled
+    setVisible(isScrolled)
+    if (isScrolled) {
+      setHasScrolled(true)
+    }
   }, [pathname])
 
   const handleMouseEnter = () => {
@@ -115,14 +124,13 @@ export function BubbleNav() {
       {/* ═══════════════════════════════════════════════════════════
           DESKTOP BUBBLE NAVBAR (≥ 1280px / xl) — 100% UNTOUCHED
           ═══════════════════════════════════════════════════════════ */}
-      {mounted && (
+      {hasScrolled && (
         <div
-          className={`fixed top-5 inset-x-0 z-[100] hidden xl:flex justify-center pointer-events-none ${
-            visible ? 'bubble-nav-enter' : 'bubble-nav-exit'
+          className={`fixed top-5 inset-x-0 z-[100] hidden xl:flex justify-center ${
+            visible
+              ? 'bubble-nav-enter pointer-events-auto'
+              : 'bubble-nav-exit pointer-events-none'
           }`}
-          onAnimationEnd={() => {
-            if (!visible) setMounted(visible || lastScrollY.current > 500)
-          }}
         >
           <div
             ref={navRef}

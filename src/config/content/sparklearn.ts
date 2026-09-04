@@ -42,21 +42,21 @@ export interface Stat {
 export const stats: Stat[] = [
   {
     id: 'projects',
-    value: 50,
+    value: 10,
     suffix: '+',
     label: 'Projets réalisés',
     description: 'Des solutions digitales stratégiques pour divers secteurs.',
   },
   {
     id: 'clients',
-    value: 30,
+    value: 10,
     suffix: '+',
     label: 'Clients accompagnés',
     description: 'Des startups audacieuses aux institutions établies.',
   },
   {
     id: 'satisfaction',
-    value: 100,
+    value: 98,
     suffix: '%',
     label: 'Satisfaction client',
     description: 'Un engagement absolu envers l’excellence et l’impact.',

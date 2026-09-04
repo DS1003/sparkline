@@ -55,11 +55,13 @@ export function About() {
           {/* CSS Keyframes for continuous uninterrupted infinite scroll */}
           <style jsx>{`
             @keyframes scroll-portraits {
-              0% { transform: translateX(0); }
-              100% { transform: translateX(-50%); }
+              0% { transform: translate3d(0, 0, 0); }
+              100% { transform: translate3d(-50%, 0, 0); }
             }
             .portrait-marquee {
               animation: scroll-portraits 30s linear infinite;
+              will-change: transform;
+              backface-visibility: hidden;
             }
           `}</style>
 

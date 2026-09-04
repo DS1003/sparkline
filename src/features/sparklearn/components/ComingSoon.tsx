@@ -26,7 +26,7 @@ export function ComingSoon() {
         {/* ── Background Image Visible & Vibrant ── */}
         <div className="absolute inset-0 pointer-events-none select-none">
           <Image
-            src="/images/heroes/sparklearn-comingsoon-bg.png"
+            src="/images/heroes/sparklearn-comingsoon-bg.webp"
             alt="SPARKlearn Background"
             fill
             priority

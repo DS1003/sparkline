@@ -17,7 +17,7 @@ export default function ServicesPage() {
       <PageHero
         tag="Nos Services"
         title="Un éventail complet"
-        pillImage="/images/heroes/services.jpg"
+        pillImage="/images/heroes/services.webp"
         highlight="d'expertises digitales."
         subtitle="Nous ne nous contentons pas de concevoir des produits : nous architecturons des écosystèmes complets bâtis pour un impact pérenne."
         breadcrumbs={[{ label: 'Services', href: '/services' }]}

@@ -54,7 +54,7 @@ export default function ContactPage() {
       <PageHero
         tag="Nous Contacter"
         title="Parlons de votre projet et"
-        pillImage="/images/heroes/contact.jpg"
+        pillImage="/images/heroes/contact.webp"
         highlight="illuminons vos ambitions."
         subtitle="Que vous lanciez un produit digital, développiez une marque ou formiez vos équipes — nous sommes prêts à collaborer."
         breadcrumbs={[{ label: 'Contact', href: '/contact' }]}
@@ -275,7 +275,7 @@ export default function ContactPage() {
             {/* ── Right Imagery Card (Smooth Rounded 3D) ── */}
             <div className="lg:col-span-5 relative rounded-[28px] sm:rounded-[40px] overflow-hidden min-h-[220px] sm:min-h-[380px] lg:min-h-full border border-neutral-200/80 shadow-[inset_0_1px_1px_rgba(255,255,255,1),inset_0_-2px_4px_rgba(0,0,0,0.03),0_16px_40px_-15px_rgba(0,0,0,0.06)] group flex flex-col justify-between p-5 sm:p-8">
               <Image
-                src="/images/contact/dakar-vision.jpg"
+                src="/images/contact/dakar-vision.webp"
                 alt="SPARKLINE Studio & Collaboration — Dakar, Sénégal"
                 fill
                 quality={95}

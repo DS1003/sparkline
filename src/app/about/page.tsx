@@ -56,7 +56,7 @@ export default async function AboutPage() {
                 {' '}<span className="text-[#EB4604]">digitales</span>{' '}
                 <span className="inline-flex items-center align-middle mx-1 sm:mx-2.5 my-0.5 overflow-hidden rounded-full w-12 h-7 sm:w-16 sm:h-10 md:w-18 md:h-11 xl:w-24 xl:h-14 border-2 border-white/30 shadow-lg relative shrink-0">
                   <Image
-                    src="/images/asset-usage/ChatGPT Image Sep 3, 2026, 12_52_44 AM.png"
+                    src="/images/asset-usage/ChatGPT Image Sep 3, 2026, 12_52_44 AM.webp"
                     alt="Créateur SPARKLINE"
                     fill
                     quality={95}
@@ -162,7 +162,7 @@ export default async function AboutPage() {
                 {/* ── Block 03: 3D Abstract Ribbon Sculpture Window (Centered below across both columns on mobile) ── */}
                 <div className="col-span-2 lg:col-span-1 rounded-[20px] sm:rounded-[32px] overflow-hidden relative min-h-[190px] sm:min-h-[260px] lg:min-h-[300px] bg-neutral-900 border border-white/10 group">
                   <Image
-                    src="/images/approach/sparkline-synergy.png"
+                    src="/images/approach/sparkline-synergy.webp"
                     alt="SPARKLINE 3D Creative Synergy"
                     fill
                     quality={90}

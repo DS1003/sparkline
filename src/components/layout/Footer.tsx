@@ -25,7 +25,7 @@ export function Footer() {
         {/* Background Watermark: White SPARKLINE Symbol */}
         <div className="absolute top-1/2 right-[-5%] sm:right-[-2%] -translate-y-1/2 w-[400px] h-[400px] sm:w-[550px] sm:h-[550px] lg:w-[700px] lg:h-[700px] pointer-events-none select-none">
           <Image
-            src="/images/brand/Symbole/Blanc.png"
+            src="/images/brand/Symbole/Blanc.svg"
             alt=""
             fill
             sizes="700px"

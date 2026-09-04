@@ -38,6 +38,7 @@ export function SparkTitle({
       maxLife: number
     }>
   >([])
+  const startLoopRef = useRef<(() => void) | null>(null)
 
   // 0. Wait for the preloader to complete before starting from the beginning (Guaranteed Single Execution)
   useEffect(() => {
@@ -149,33 +150,42 @@ export function SparkTitle({
           maxLife: 20 + Math.random() * 25,
         })
       }
+
+      startLoopRef.current?.()
     }
   }, [isStarted, currentLineIndex, currentCharIndex, isCompleted, sparkPos.active])
 
-  // 3. Canvas Ember & Spark Particles Animation Loop
+  // 3. Canvas Ember & Spark Particles Animation Loop (Auto-sleep when no active particles)
   useEffect(() => {
     const canvas = canvasRef.current
     const container = containerRef.current
     if (!canvas || !container) return
 
-    const ctx = canvas.getContext('2d')
+    const ctx = canvas.getContext('2d', { alpha: true })
     if (!ctx) return
 
-    let animationFrameId: number
+    let animationFrameId: number | null = null
 
     const handleResize = () => {
+      if (!container) return
       const rect = container.getBoundingClientRect()
       canvas.width = rect.width + 120
       canvas.height = rect.height + 60
     }
 
     handleResize()
-    window.addEventListener('resize', handleResize)
+    window.addEventListener('resize', handleResize, { passive: true })
 
     const render = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height)
 
-      // Draw and update embers
+      // Auto-sleep: if no active particles, stop the requestAnimationFrame loop to release CPU/GPU
+      if (particlesRef.current.length === 0) {
+        animationFrameId = null
+        return
+      }
+
+      // Fast, hardware-accelerated drawing without expensive software blur
       for (let i = particlesRef.current.length - 1; i >= 0; i--) {
         const p = particlesRef.current[i]
         p.x += p.vx
@@ -189,24 +199,34 @@ export function SparkTitle({
           continue
         }
 
-        ctx.save()
         ctx.globalAlpha = Math.max(0, p.alpha)
         ctx.fillStyle = p.color
-        ctx.shadowColor = p.color
-        ctx.shadowBlur = 6
         ctx.beginPath()
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2)
         ctx.fill()
-        ctx.restore()
       }
 
-      animationFrameId = requestAnimationFrame(render)
+      // Continue loop only while particles exist
+      if (particlesRef.current.length > 0) {
+        animationFrameId = requestAnimationFrame(render)
+      } else {
+        ctx.clearRect(0, 0, canvas.width, canvas.height)
+        animationFrameId = null
+      }
     }
 
-    render()
+    // Wake up the loop on demand
+    const checkAndStartLoop = () => {
+      if (!animationFrameId && particlesRef.current.length > 0) {
+        animationFrameId = requestAnimationFrame(render)
+      }
+    }
+
+    startLoopRef.current = checkAndStartLoop
 
     return () => {
-      cancelAnimationFrame(animationFrameId)
+      if (animationFrameId) cancelAnimationFrame(animationFrameId)
+      startLoopRef.current = null
       window.removeEventListener('resize', handleResize)
     }
   }, [])

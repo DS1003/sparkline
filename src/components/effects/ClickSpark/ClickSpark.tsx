@@ -105,6 +105,16 @@ export const ClickSpark: React.FC<ClickSparkProps> = ({
 
   const isAnimatingRef = useRef(false);
   const animationIdRef = useRef<number | null>(null);
+  const resolvedColorRef = useRef(sparkColor);
+
+  useEffect(() => {
+    if (sparkColor.startsWith('var(')) {
+      const varName = sparkColor.slice(4, -1);
+      resolvedColorRef.current = getComputedStyle(document.documentElement).getPropertyValue(varName).trim() || sparkColor;
+    } else {
+      resolvedColorRef.current = sparkColor;
+    }
+  }, [sparkColor]);
 
   const startAnimation = useCallback(() => {
     if (isAnimatingRef.current) return;
@@ -114,17 +124,10 @@ export const ClickSpark: React.FC<ClickSparkProps> = ({
     if (!ctx) return;
 
     isAnimatingRef.current = true;
-
-    let resolvedColor = sparkColor;
-    if (sparkColor.startsWith('var(')) {
-      const varName = sparkColor.slice(4, -1);
-      resolvedColor = getComputedStyle(document.documentElement).getPropertyValue(varName).trim() || sparkColor;
-    }
+    const resolvedColor = resolvedColorRef.current;
 
     const draw = (timestamp: number) => {
-      const width = window.innerWidth;
-      const height = window.innerHeight;
-      ctx.clearRect(0, 0, width, height);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       sparksRef.current = sparksRef.current.filter((spark: Spark) => {
         const elapsed = timestamp - spark.startTime;
@@ -156,14 +159,14 @@ export const ClickSpark: React.FC<ClickSparkProps> = ({
       if (sparksRef.current.length > 0) {
         animationIdRef.current = requestAnimationFrame(draw);
       } else {
-        ctx.clearRect(0, 0, width, height);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
         isAnimatingRef.current = false;
         animationIdRef.current = null;
       }
     };
 
     animationIdRef.current = requestAnimationFrame(draw);
-  }, [sparkColor, sparkSize, sparkRadius, duration, easeFunc, extraScale]);
+  }, [sparkSize, sparkRadius, duration, easeFunc, extraScale]);
 
   useEffect(() => {
     return () => {

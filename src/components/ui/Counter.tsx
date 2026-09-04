@@ -29,7 +29,7 @@ export function Counter({
 }: CounterProps) {
   const [displayValue, setDisplayValue] = useState(0)
   const ref = useRef<HTMLDivElement>(null)
-  const isInView = useInView(ref, { once: false, amount: 0.3 })
+  const isInView = useInView(ref, { once: true, amount: 0.3 })
 
   // Animate the count whenever the card enters the viewport on scroll
   useEffect(() => {

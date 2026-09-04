@@ -5,13 +5,15 @@ import Image from 'next/image'
 import { Container } from '../layout/Container'
 
 const partnerLogos = [
-  { name: 'LuxeAura', symbol: '❖' },
-  { name: 'DigiMinds', symbol: '✻' },
-  { name: 'Energetix', symbol: '⎈' },
-  { name: 'ZestyBite', symbol: '✣' },
-  { name: 'NexaTech', symbol: '⬡' },
-  { name: 'TerangaPay', symbol: '✦' },
-  { name: 'BaobabLabs', symbol: '✧' },
+  { name: 'Sonatel', symbol: '✦' },
+  { name: 'Orange Digital Center', symbol: '✻' },
+  { name: 'Baraka', symbol: '⎈' },
+  { name: 'Sonatel Academy', symbol: '⬡' },
+  { name: 'FIDELE Sarl', symbol: '✣' },
+  { name: 'Mbor', symbol: '❖' },
+  { name: 'Saphir Alpha', symbol: '✧' },
+  { name: 'Wër Asset', symbol: '⬢' },
+  { name: 'Diakhou Hair & Beauty', symbol: '✦' },
 ]
 
 export function MarqueeStrip() {

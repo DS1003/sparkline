@@ -140,7 +140,7 @@ export function Services({ isServicesPage = false, hideHeader = false }: Service
                   Tout ce dont{' '}
                   <span className="inline-flex items-center justify-center align-middle mx-1.5 sm:mx-2.5 -translate-y-[0.1em] w-11 h-6 sm:w-15 sm:h-8 md:w-18 md:h-9.5 rounded-full overflow-hidden border border-neutral-300/90 shadow-sm relative shrink-0 transition-transform duration-300 hover:scale-105">
                     <Image
-                      src="/images/services/header-avatar.jpg"
+                      src="/images/services/header-avatar.webp"
                       alt="Portrait"
                       fill
                       quality={100}
