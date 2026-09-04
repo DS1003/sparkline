@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback, useRef } from 'react'
 import { createPortal } from 'react-dom'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -12,6 +12,18 @@ interface Curved3DProjectsGalleryProps {
   activeIndex: number
   onActiveChange: (index: number) => void
   theme?: 'dark' | 'light'
+}
+
+const getImageSrc = (slug: string) => {
+  return slug === 'ndakaru-commerce'
+    ? '/images/projects/ndakaru.jpg'
+    : slug === 'teranga-dashboard'
+    ? '/images/services/development.jpg'
+    : slug === 'baobab-fintech'
+    ? '/images/services/branding.jpg'
+    : slug === 'sunu-health'
+    ? '/images/services/mobile.jpg'
+    : '/images/services/ui-ux.jpg'
 }
 
 export function Curved3DProjectsGallery({
@@ -112,26 +124,77 @@ export function Curved3DProjectsGallery({
     }
   }, [expandedProject])
 
-  // React Bits gesture & spring drag mechanics
+  // ── High-Performance Smooth Swipe & Drag Controller (Zero Section Trembling) ──
   const [isDragging, setIsDragging] = useState(false)
-  const DRAG_BUFFER = 20
-  const VELOCITY_THRESHOLD = 300
+  const touchStartX = useRef(0)
+  const touchStartY = useRef(0)
+  const touchDeltaX = useRef(0)
+  const isHorizontalSwipe = useRef<boolean | null>(null)
 
-  const handleDragEnd = (_: any, info: { offset: { x: number; y: number }; velocity: { x: number; y: number } }) => {
-    setTimeout(() => setIsDragging(false), 50)
-    const { offset, velocity } = info
-    const direction =
-      offset.x < -DRAG_BUFFER || velocity.x < -VELOCITY_THRESHOLD
-        ? 1
-        : offset.x > DRAG_BUFFER || velocity.x > VELOCITY_THRESHOLD
-          ? -1
-          : 0
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX
+    touchStartY.current = e.touches[0].clientY
+    touchDeltaX.current = 0
+    isHorizontalSwipe.current = null
+  }
 
-    if (direction === 0 || projects.length === 0) return
+  const handleTouchMove = (e: React.TouchEvent) => {
+    const currentX = e.touches[0].clientX
+    const currentY = e.touches[0].clientY
+    const deltaX = currentX - touchStartX.current
+    const deltaY = currentY - touchStartY.current
 
-    // Infinite wrapping circular navigation
-    const nextIndex = (activeIndex + direction + projects.length) % projects.length
-    onActiveChange(nextIndex)
+    // Lock direction once movement exceeds 8px: if vertical, never block page scroll
+    if (isHorizontalSwipe.current === null && (Math.abs(deltaX) > 8 || Math.abs(deltaY) > 8)) {
+      isHorizontalSwipe.current = Math.abs(deltaX) > Math.abs(deltaY)
+    }
+
+    if (isHorizontalSwipe.current) {
+      touchDeltaX.current = deltaX
+      if (Math.abs(deltaX) > 10) {
+        setIsDragging(true)
+      }
+    }
+  }
+
+  const handleTouchEnd = () => {
+    if (isHorizontalSwipe.current && Math.abs(touchDeltaX.current) > 35 && projects.length > 0) {
+      const direction = touchDeltaX.current < 0 ? 1 : -1
+      const nextIndex = (activeIndex + direction + projects.length) % projects.length
+      onActiveChange(nextIndex)
+    }
+    setTimeout(() => setIsDragging(false), 80)
+    isHorizontalSwipe.current = null
+    touchDeltaX.current = 0
+  }
+
+  // Desktop Mouse Drag Controller
+  const mouseStartX = useRef(0)
+  const isMouseDown = useRef(false)
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    mouseStartX.current = e.clientX
+    isMouseDown.current = true
+  }
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isMouseDown.current) return
+    const deltaX = e.clientX - mouseStartX.current
+    if (Math.abs(deltaX) > 10) {
+      setIsDragging(true)
+    }
+  }
+
+  const handleMouseUp = (e: React.MouseEvent) => {
+    if (!isMouseDown.current) return
+    isMouseDown.current = false
+    const deltaX = e.clientX - mouseStartX.current
+    if (Math.abs(deltaX) > 35 && projects.length > 0) {
+      const direction = deltaX < 0 ? 1 : -1
+      const nextIndex = (activeIndex + direction + projects.length) % projects.length
+      onActiveChange(nextIndex)
+    }
+    setTimeout(() => setIsDragging(false), 80)
   }
 
   // Card click / expand handler
@@ -147,18 +210,6 @@ export function Curved3DProjectsGallery({
     }
   }
 
-  const getImageSrc = (slug: string) => {
-    return slug === 'ndakaru-commerce'
-      ? '/images/projects/ndakaru.jpg'
-      : slug === 'teranga-dashboard'
-      ? '/images/services/development.jpg'
-      : slug === 'baobab-fintech'
-      ? '/images/services/branding.jpg'
-      : slug === 'sunu-health'
-      ? '/images/services/mobile.jpg'
-      : '/images/services/ui-ux.jpg'
-  }
-
   // Dimensions for 3D stage
   const cardWidth = isMobile ? 260 : isCompactDesktop ? 295 : 340
   const cardHeight = isMobile ? 360 : isCompactDesktop ? 410 : 470
@@ -167,14 +218,16 @@ export function Curved3DProjectsGallery({
 
   return (
     <>
-      {/* ── Symmetrical 3D Stage Container with React Bits Drag Mechanics ── */}
-      <motion.div
+      {/* ── Symmetrical 3D Stage Container (Stable, Zero-Tremble) ── */}
+      <div
         className="relative w-full overflow-hidden select-none py-4 sm:py-8 lg:py-10 cursor-grab active:cursor-grabbing touch-pan-y"
-        drag="x"
-        dragConstraints={{ left: 0, right: 0 }}
-        dragElastic={0.18}
-        onDragStart={() => setIsDragging(true)}
-        onDragEnd={handleDragEnd}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+        onMouseDown={handleMouseDown}
+        onMouseMove={handleMouseMove}
+        onMouseUp={handleMouseUp}
+        onMouseLeave={handleMouseUp}
         style={{
           perspective: '1500px',
           perspectiveOrigin: '50% 50%',
@@ -282,9 +335,9 @@ export function Curved3DProjectsGallery({
                     boxShadow: isCenter
                       ? '0 30px 70px -15px rgba(0, 0, 0, 0.98), 0 10px 30px rgba(0, 0, 0, 0.8)'
                       : '0 20px 40px -10px rgba(0, 0, 0, 0.8)',
-                    transformStyle: 'preserve-3d',
-                    transform: isExpanded ? 'rotateY(180deg) scale(0.95)' : 'rotateY(0deg) scale(1)',
-                    transition: 'transform 0.65s cubic-bezier(0.16, 1, 0.3, 1)',
+                    transform: isExpanded ? 'scale(1.02)' : 'scale(1)',
+                    opacity: isExpanded ? 0.35 : 1,
+                    transition: 'transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease',
                   }}
                 >
                   {/* Artwork Image (Draggable false to prevent browser native ghost dragging) */}
@@ -337,14 +390,14 @@ export function Curved3DProjectsGallery({
                         aria-label="Explorer les détails"
                         className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/10 group-hover:bg-[#EB4604] text-white flex items-center justify-center backdrop-blur-md border border-white/20 transition-all duration-300 group-hover:scale-110 shadow-md shrink-0"
                       >
-                        <span className="text-xs font-semibold">↺</span>
+                        <span className="text-xs font-semibold transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5">↗</span>
                       </button>
                     </div>
 
                     {isCenter && (
                       <div className="pt-1 text-center">
                         <span className="text-[10px] font-mono text-neutral-400 group-hover:text-white transition-colors">
-                          Cliquer pour détails ↺
+                          Cliquer pour détails ↗
                         </span>
                       </div>
                     )}
@@ -354,7 +407,7 @@ export function Curved3DProjectsGallery({
             )
           })}
         </div>
-      </motion.div>
+      </div>
 
       {/* ── PROJECT MODAL — rendered via Portal into document.body to escape 3D transform stacking context ── */}
       {portalMounted && createPortal(
@@ -375,36 +428,33 @@ export function Curved3DProjectsGallery({
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 0.35, ease: 'easeOut' }}
+                transition={{ duration: 0.3, ease: 'easeOut' }}
                 onClick={() => setExpandedProject(null)}
-                className="absolute inset-0 bg-black sm:bg-black/95 backdrop-blur-3xl"
+                className="absolute inset-0 bg-black/80 sm:bg-black/90 backdrop-blur-2xl"
               />
 
               {/* Morphing Minimalist 2-Column Modal Window (Fluid Responsive & Ergonomic) */}
               <motion.div
                 initial={{
                   opacity: 0,
-                  scale: 0.75,
-                  rotateY: 45,
-                  y: 20,
+                  scale: 0.92,
+                  y: 16,
                 }}
                 animate={{
                   opacity: 1,
                   scale: 1,
-                  rotateY: 0,
                   y: 0,
                   transition: {
-                    duration: 0.45,
+                    duration: 0.35,
                     ease: [0.16, 1, 0.3, 1],
                   },
                 }}
                 exit={{
                   opacity: 0,
-                  scale: 0.75,
-                  rotateY: 45,
-                  y: 20,
+                  scale: 0.94,
+                  y: 10,
                   transition: {
-                    duration: 0.3,
+                    duration: 0.25,
                     ease: [0.16, 1, 0.3, 1],
                   },
                 }}

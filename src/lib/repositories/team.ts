@@ -12,7 +12,7 @@ export const teamData: TeamMember[] = [
     specialties: ['Développement Full Stack', 'Consulting IT ServiceNow', 'Architecture Cloud & API', 'Intégration d’entreprise'],
     skills: ['React', 'Next.js', 'Node.js', 'ServiceNow', 'TypeScript', 'PostgreSQL', 'Docker'],
     experienceYears: 5,
-    avatar: '/images/brand/Ndiaga.png',
+    avatar: '/images/brand/Ndiaga.webp',
     socials: {
       linkedin: 'https://linkedin.com/in/ndiaga-lo',
       github: 'https://github.com/ndiaga-lo',
@@ -29,7 +29,7 @@ export const teamData: TeamMember[] = [
     specialties: ['Product Management', 'Ingénierie Logicielle', 'Stratégie Produit & Roadmap', 'Architecture Digitale'],
     skills: ['Product Strategy', 'Agile / Scrum', 'TypeScript', 'React', 'Next.js', 'API Management', 'SQL'],
     experienceYears: 5,
-    avatar: '/images/brand/Fanta.png',
+    avatar: '/images/brand/Fanta.webp',
     socials: {
       linkedin: 'https://linkedin.com/in/fanta-ndao',
       github: 'https://github.com/fanta-ndao',
@@ -46,7 +46,7 @@ export const teamData: TeamMember[] = [
     specialties: ['DevOps & Cloud Automation', 'Site Reliability Engineering (SRE)', 'Kubernetes & Docker', 'Backend & Microservices'],
     skills: ['Docker', 'Kubernetes', 'Linux', 'AWS Cloud', 'Node.js', 'PostgreSQL', 'CI/CD Pipelines'],
     experienceYears: 5,
-    avatar: '/images/brand/Serigne fallou.png',
+    avatar: '/images/brand/Serigne fallou.webp',
     socials: {
       linkedin: 'https://linkedin.com/in/serigne-fallou-seck',
       github: 'https://github.com/fallou-seck',
@@ -63,7 +63,7 @@ export const teamData: TeamMember[] = [
     specialties: ['Lead UI/UX Design', 'Architecture Full Stack', 'Design Systems', 'Micro-interactions & 3D Web'],
     skills: ['Next.js', 'React', 'TypeScript', 'Figma', 'Tailwind CSS', 'Three.js', 'Node.js', 'PostgreSQL'],
     experienceYears: 5,
-    avatar: '/images/brand/Seydina.png',
+    avatar: '/images/brand/Seydina.webp',
     socials: {
       linkedin: 'https://linkedin.com/in/seydina-diop',
       github: 'https://github.com/seydiop07',

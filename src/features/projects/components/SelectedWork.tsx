@@ -11,10 +11,10 @@ import { Curved3DProjectsGallery } from './Curved3DProjectsGallery'
 
 const categories = [
   'Tous',
-  'Plateforme E-commerce',
-  'Tableau de bord SaaS',
-  'Identité & Plateforme',
-  'Application Mobile',
+  'App web',
+  'App mobile',
+  'Branding',
+  'UI/UX',
 ]
 
 interface SelectedWorkProps {
@@ -38,8 +38,10 @@ export function SelectedWork({
   }, [activeCategory])
 
   const handleCategoryChange = (category: string) => {
-    setActiveCategory(category)
-    const list = category === 'Tous' ? projectsData : projectsData.filter((p) => p.category === category)
+    // If clicking an already active filter (other than 'Tous'), toggle back to 'Tous'
+    const nextCategory = activeCategory === category && category !== 'Tous' ? 'Tous' : category
+    setActiveCategory(nextCategory)
+    const list = nextCategory === 'Tous' ? projectsData : projectsData.filter((p) => p.category === nextCategory)
     setActiveIndex(Math.floor(list.length / 2))
   }
 

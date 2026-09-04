@@ -37,7 +37,7 @@ const serviceStackItems: ServiceStackItemData[] = [
       'Applications SaaS & Métier',
       'Architectures API & Microservices',
     ],
-    image: '/images/services/card1.png',
+    image: '/images/services/card1.webp',
     href: '/services/digital-solutions',
   },
   {
@@ -54,7 +54,7 @@ const serviceStackItems: ServiceStackItemData[] = [
       'Design Systems sur mesure',
       'Audits d’ergonomie & Accessibilité',
     ],
-    image: '/images/services/card2.png',
+    image: '/images/services/card2.webp',
     href: '/services/ui-ux-design',
   },
   {
@@ -71,7 +71,7 @@ const serviceStackItems: ServiceStackItemData[] = [
       'Conteneurisation Docker & Orchestration',
       'Sécurité, Monitoring & 99.9% Uptime',
     ],
-    image: '/images/services/card3.png',
+    image: '/images/services/card3.webp',
     href: '/services/digital-solutions',
   },
   {
@@ -88,7 +88,7 @@ const serviceStackItems: ServiceStackItemData[] = [
       'Storytelling & Territoire de Marque',
       'Direction Artistique Globale',
     ],
-    image: '/images/services/card4.png',
+    image: '/images/services/card4.webp',
     href: '/services/branding-communication',
   },
   {
@@ -105,7 +105,7 @@ const serviceStackItems: ServiceStackItemData[] = [
       'Voix Off & Sound Design',
       'Contenus Vidéo Réseaux Sociaux',
     ],
-    image: '/images/services/card5.png',
+    image: '/images/services/card5.webp',
     href: '/services/audiovisual',
   },
 ]
@@ -121,7 +121,7 @@ export function Services({ isServicesPage = false, hideHeader = false }: Service
       id="services"
       className={`${
         isServicesPage ? 'pt-8 sm:pt-12 pb-16 sm:pb-24 lg:pb-32' : 'pt-8 sm:pt-14 lg:pt-16 pb-16 sm:pb-24 lg:pb-32'
-      } bg-white`}
+      } bg-white overflow-visible`}
     >
       <Container>
         {/* ── Top Editorial Header (Omitted if hideHeader is true, e.g. on /services where PageHero exists) ── */}
@@ -188,7 +188,7 @@ export function Services({ isServicesPage = false, hideHeader = false }: Service
         >
           {serviceStackItems.map((service) => (
             <ScrollStackItem key={service.id}>
-              <SpotlightCard className="rounded-[22px] sm:rounded-[32px] lg:rounded-[36px] bg-[#070709] text-white border border-neutral-800/90 shadow-[0_20px_50px_rgba(0,0,0,0.5)] p-5 sm:p-7 lg:p-8 xl:p-11 overflow-hidden">
+              <SpotlightCard className="rounded-[22px] sm:rounded-[32px] lg:rounded-[36px] bg-[#070709] text-white border border-neutral-800/80 p-5 sm:p-7 lg:p-8 xl:p-11 overflow-hidden">
                 {/* Subtle ambient orbital glow */}
                 <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-[#EB4604]/20 via-transparent to-transparent rounded-full blur-3xl pointer-events-none" />
 

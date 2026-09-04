@@ -1,5 +1,10 @@
 @import "tailwindcss";
 
+html {
+  scrollbar-gutter: stable;
+  overflow-y: scroll;
+}
+
 /* ─── Geist Typography System ─── */
 @theme {
   --font-sans: var(--font-geist-sans), system-ui, -apple-system, sans-serif;

@@ -103,15 +103,17 @@ export const ClickSpark: React.FC<ClickSparkProps> = ({
     [easing]
   );
 
-  useEffect(() => {
-    if (prefersReducedMotion) return;
+  const isAnimatingRef = useRef(false);
+  const animationIdRef = useRef<number | null>(null);
 
+  const startAnimation = useCallback(() => {
+    if (isAnimatingRef.current) return;
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    let animationId: number;
+    isAnimatingRef.current = true;
 
     let resolvedColor = sparkColor;
     if (sparkColor.startsWith('var(')) {
@@ -120,10 +122,6 @@ export const ClickSpark: React.FC<ClickSparkProps> = ({
     }
 
     const draw = (timestamp: number) => {
-      if (!startTimeRef.current) {
-        startTimeRef.current = timestamp;
-      }
-      
       const width = window.innerWidth;
       const height = window.innerHeight;
       ctx.clearRect(0, 0, width, height);
@@ -155,15 +153,25 @@ export const ClickSpark: React.FC<ClickSparkProps> = ({
         return true;
       });
 
-      animationId = requestAnimationFrame(draw);
+      if (sparksRef.current.length > 0) {
+        animationIdRef.current = requestAnimationFrame(draw);
+      } else {
+        ctx.clearRect(0, 0, width, height);
+        isAnimatingRef.current = false;
+        animationIdRef.current = null;
+      }
     };
 
-    animationId = requestAnimationFrame(draw);
+    animationIdRef.current = requestAnimationFrame(draw);
+  }, [sparkColor, sparkSize, sparkRadius, duration, easeFunc, extraScale]);
 
+  useEffect(() => {
     return () => {
-      cancelAnimationFrame(animationId);
+      if (animationIdRef.current) {
+        cancelAnimationFrame(animationIdRef.current);
+      }
     };
-  }, [sparkColor, sparkSize, sparkRadius, sparkCount, duration, easeFunc, extraScale, prefersReducedMotion]);
+  }, []);
 
   const handleClick = useCallback((e: MouseEvent): void => {
     if (prefersReducedMotion) return;
@@ -181,7 +189,8 @@ export const ClickSpark: React.FC<ClickSparkProps> = ({
     }));
 
     sparksRef.current.push(...newSparks);
-  }, [prefersReducedMotion, sparkCount]);
+    startAnimation();
+  }, [prefersReducedMotion, sparkCount, startAnimation]);
 
   useEffect(() => {
     window.addEventListener('click', handleClick);

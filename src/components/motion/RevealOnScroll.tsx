@@ -33,37 +33,42 @@ export function RevealOnScroll({
     const el = ref.current
     if (!el || hasTriggered.current) return
 
-    // Generous pre-trigger margin (+500px) so fast scrolling never hits blank elements
-    const checkVisibility = () => {
-      if (hasTriggered.current) return
-      const rect = el.getBoundingClientRect()
-      if (rect.top < window.innerHeight + 500 && rect.bottom > -300) {
-        reveal()
-      }
-    }
-
-    // Immediate check on mount for all elements in the first 2 viewports
-    const rect = el.getBoundingClientRect()
-    if (rect.top < window.innerHeight * 1.8 && rect.bottom > -200) {
+    if (typeof IntersectionObserver === 'undefined') {
       reveal()
       return
     }
 
-    requestAnimationFrame(() => {
-      checkVisibility()
-    })
+    // Generous pre-trigger margin (+350px) so fast scrolling never hits un-revealed elements
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const [entry] = entries
+        if (entry?.isIntersecting) {
+          reveal()
+          observer.disconnect()
+        }
+      },
+      {
+        rootMargin: '350px 0px 350px 0px',
+        threshold: 0,
+      }
+    )
 
-    const hydrationTimer = setTimeout(checkVisibility, 50)
+    observer.observe(el)
 
-    window.addEventListener('scroll', checkVisibility, { passive: true })
-    window.addEventListener('resize', checkVisibility, { passive: true })
-    window.addEventListener('sparkline:loader-complete', checkVisibility)
+    const handleLoaderComplete = () => {
+      if (hasTriggered.current) return
+      const rect = el.getBoundingClientRect()
+      if (rect.top < window.innerHeight + 350 && rect.bottom > -200) {
+        reveal()
+        observer.disconnect()
+      }
+    }
+
+    window.addEventListener('sparkline:loader-complete', handleLoaderComplete)
 
     return () => {
-      window.removeEventListener('scroll', checkVisibility)
-      window.removeEventListener('resize', checkVisibility)
-      window.removeEventListener('sparkline:loader-complete', checkVisibility)
-      clearTimeout(hydrationTimer)
+      observer.disconnect()
+      window.removeEventListener('sparkline:loader-complete', handleLoaderComplete)
     }
   }, [reveal])
 

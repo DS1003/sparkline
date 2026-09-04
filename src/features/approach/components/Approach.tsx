@@ -24,7 +24,7 @@ const steps: Step[] = [
     title: 'Cadrage & Découverte',
     description:
       'Analyse approfondie de votre vision, de vos défis clés et alignement des objectifs stratégiques pour poser des fondations inébranlables.',
-    image: '/images/approach/div1.png',
+    image: '/images/approach/div1.webp',
   },
   {
     number: '02',
@@ -32,7 +32,7 @@ const steps: Step[] = [
     title: 'Architecture & UX/UI',
     description:
       'Création d’interfaces intuitives, design systems pérennes et modélisation technique prête à absorber votre croissance.',
-    image: '/images/approach/div3.png',
+    image: '/images/approach/div3.webp',
   },
   {
     number: '03',
@@ -40,7 +40,7 @@ const steps: Step[] = [
     title: 'Développement Agile',
     description:
       'Développement logiciel haute performance, code maintenable et intégration continue selon les meilleurs standards.',
-    image: '/images/approach/div4.png',
+    image: '/images/approach/div4.webp',
   },
   {
     number: '04',
@@ -48,7 +48,7 @@ const steps: Step[] = [
     title: 'Mise en Ligne & Impact',
     description:
       'Déploiement sécurisé, monitoring en temps réel et optimisations continues pour maximiser durablement votre retour sur investissement.',
-    image: '/images/approach/div2.png',
+    image: '/images/approach/div2.webp',
   },
 ]
 

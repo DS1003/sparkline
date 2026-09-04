@@ -16,10 +16,16 @@ export function Preloader() {
       history.scrollRestoration = 'manual'
     }
 
-    // 1. Verrouillage strict du scroll (Body + HTML) pour éviter les sauts de layout au reload
-    document.documentElement.style.overflow = 'hidden'
-    document.body.style.overflow = 'hidden'
+    // 1. Verrouillage non intrusif du scroll (sans altérer le overflow CSS pour éviter le saut de scrollbar à droite)
+    const preventScroll = (e: Event) => {
+      e.preventDefault()
+    }
+    window.addEventListener('wheel', preventScroll, { passive: false })
+    window.addEventListener('touchmove', preventScroll, { passive: false })
     window.scrollTo(0, 0)
+
+    const getLenis = () => (window as unknown as { __lenis?: { stop: () => void; start: () => void } }).__lenis
+    getLenis()?.stop()
 
     // 2. Récupération robuste du Hero
     let heroContainer = document.getElementById('main-hero')
@@ -32,13 +38,7 @@ export function Preloader() {
         gsap.set(heroContainer, { 
           y: '100vh', 
           opacity: 1, 
-          scale: 1,
-          transformOrigin: 'center center',
           zIndex: 101,
-          position: 'fixed', // Fixed removes it from flow, avoiding scroll jumps
-          top: 0,
-          left: 0,
-          width: '100%'
         })
       }
       
@@ -48,8 +48,9 @@ export function Preloader() {
       const tl = gsap.timeline({
         onComplete: () => {
           setIsComplete(true)
-          document.documentElement.style.overflow = ''
-          document.body.style.overflow = ''
+          window.removeEventListener('wheel', preventScroll)
+          window.removeEventListener('touchmove', preventScroll)
+          getLenis()?.start()
           if (typeof window !== 'undefined') {
             ;(window as unknown as { __SPARKLINE_LOADED__?: boolean }).__SPARKLINE_LOADED__ = true
             window.dispatchEvent(new CustomEvent('sparkline:loader-complete'))
@@ -111,7 +112,7 @@ export function Preloader() {
       // Sécurité : On cache le loader instantanément AVANT de nettoyer le z-index du Hero
       // pour éviter le flash d'une frame (React state lag)
       tl.set(containerRef.current, { autoAlpha: 0 })
-      tl.set(heroContainer, { clearProps: 'all' })
+      tl.set(heroContainer, { clearProps: 'transform,zIndex' })
       
     } else {
       tl.to(containerRef.current, {
@@ -129,12 +130,12 @@ export function Preloader() {
 
   }, { scope: containerRef })
 
-  if (isComplete) return null
-
   return (
     <div
       ref={containerRef}
-      className="fixed inset-0 z-[100] bg-white flex items-center justify-center overflow-hidden touch-none pointer-events-none"
+      className={`fixed inset-0 z-[100] bg-white flex items-center justify-center overflow-hidden touch-none pointer-events-none ${
+        isComplete ? 'hidden' : ''
+      }`}
     >
       {/* 
         L'éclat d'énergie (Sparkle 4 branches).

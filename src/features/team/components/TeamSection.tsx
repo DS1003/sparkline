@@ -11,10 +11,10 @@ import { RevealOnScroll } from '@/components/motion/RevealOnScroll'
 import { SpotlightCard } from '@/components/motion/SpotlightCard'
 
 const memberImages: Record<string, string> = {
-  seydina: '/images/brand/Seydina.png',
-  fanta: '/images/brand/Fanta.png',
-  ndiaga: '/images/brand/Ndiaga.png',
-  fallou: '/images/brand/Serigne fallou.png',
+  seydina: '/images/brand/Seydina.webp',
+  fanta: '/images/brand/Fanta.webp',
+  ndiaga: '/images/brand/Ndiaga.webp',
+  fallou: '/images/brand/Serigne fallou.webp',
 }
 
 export function TeamSection() {

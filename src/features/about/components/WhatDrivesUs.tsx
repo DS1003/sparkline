@@ -9,25 +9,25 @@ import { RevealOnScroll } from '@/components/motion/RevealOnScroll'
 
 const fanCards = [
   {
-    src: '/images/services/branding.jpg',
+    src: '/images/services/branding.webp',
     alt: 'Design & Direction Artistique',
     rotation: '-rotate-3 sm:-rotate-4 hover:rotate-0',
     translate: 'translate-y-2 sm:translate-y-3',
   },
   {
-    src: '/images/services/ui-ux.jpg',
+    src: '/images/services/ui-ux.webp',
     alt: 'UI/UX & Expérience Produit',
     rotation: '-rotate-1 sm:-rotate-2 hover:rotate-0',
     translate: '-translate-y-2 sm:-translate-y-4',
   },
   {
-    src: '/images/services/development.jpg',
+    src: '/images/services/development.webp',
     alt: 'Ingénierie & Architecture Digitale',
     rotation: 'rotate-1 sm:rotate-2 hover:rotate-0',
     translate: '-translate-y-2 sm:-translate-y-4',
   },
   {
-    src: '/images/services/mobile.jpg',
+    src: '/images/services/mobile.webp',
     alt: 'Stratégie & Solutions Mobiles',
     rotation: 'rotate-3 sm:rotate-4 hover:rotate-0',
     translate: 'translate-y-2 sm:translate-y-3',

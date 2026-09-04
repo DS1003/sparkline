@@ -23,7 +23,7 @@ export const metadata: Metadata = {
 
 export default function HomePage() {
   return (
-    <main className="min-h-screen bg-white text-neutral-900 overflow-hidden">
+    <main className="min-h-screen bg-white text-neutral-900 overflow-x-clip">
       <Preloader />
 
       {/* 1. Immersive Hero with Nested Navbar */}

@@ -5,6 +5,7 @@ import { siteConfig } from '@/config/site'
 import { ScrollToTop } from '@/components/ui/ScrollToTop'
 import { BubbleNav } from '@/components/layout/BubbleNav'
 import { ClickSpark } from '@/components/effects/ClickSpark'
+import { SmoothScrollProvider } from '@/components/layout/SmoothScrollProvider'
 
 
 const geistSans = Geist({
@@ -70,9 +71,11 @@ export default function RootLayout({
           duration={350}
           easing="ease-out"
         >
-          <BubbleNav />
-          {children}
-          <ScrollToTop />
+          <SmoothScrollProvider>
+            <BubbleNav />
+            {children}
+            <ScrollToTop />
+          </SmoothScrollProvider>
         </ClickSpark>
       </body>
     </html>

@@ -11,10 +11,10 @@ import { Container } from '@/components/layout/Container'
 import { stats } from '@/config/content/sparklearn'
 
 const teamPortraits = [
-  { src: '/images/brand/Seydina.png', alt: 'Seydina Diop' },
-  { src: '/images/brand/Ndiaga.png', alt: 'Ndiaga Lo' },
-  { src: '/images/brand/Fanta.png', alt: 'Fanta Ndao' },
-  { src: '/images/brand/Serigne fallou.png', alt: 'Serigne Fallou' },
+  { src: '/images/brand/Seydina.webp', alt: 'Seydina Diop' },
+  { src: '/images/brand/Ndiaga.webp', alt: 'Ndiaga Lo' },
+  { src: '/images/brand/Fanta.webp', alt: 'Fanta Ndao' },
+  { src: '/images/brand/Serigne fallou.webp', alt: 'Serigne Fallou' },
 ]
 
 export function About() {

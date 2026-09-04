@@ -27,10 +27,10 @@ export function OurStoryBento() {
               <span>Depuis 2024, nous transformons des idées audacieuses </span>
               <span className="inline-flex items-center align-middle mx-1.5 sm:mx-2.5 -translate-y-[0.1em] overflow-hidden rounded-full w-14 h-7 sm:w-18 sm:h-9 md:w-22 md:h-11 border-2 border-neutral-200 shadow-sm relative shrink-0 transition-transform duration-300 hover:scale-105">
                 <Image
-                  src="/images/asset-usage/creative-portrait.png"
+                  src="/images/asset-usage/creative-portrait.webp"
                   alt="Créativité & Ingénierie SPARKLINE"
                   fill
-                  quality={95}
+                  quality={85}
                   className="object-cover object-center"
                   sizes="120px"
                 />
@@ -204,7 +204,7 @@ export function OurStoryBento() {
                     <div className="flex -space-x-2 shrink-0">
                       <div className="relative w-7 h-7 sm:w-8 sm:h-8 rounded-full overflow-hidden border-2 border-white shadow-xs">
                         <Image
-                          src="/images/brand/Ndiaga.png"
+                          src="/images/brand/Ndiaga.webp"
                           alt="Ndiaga Lo"
                           fill
                           sizes="32px"
@@ -213,7 +213,7 @@ export function OurStoryBento() {
                       </div>
                       <div className="relative w-7 h-7 sm:w-8 sm:h-8 rounded-full overflow-hidden border-2 border-white shadow-xs">
                         <Image
-                          src="/images/brand/Fanta.png"
+                          src="/images/brand/Fanta.webp"
                           alt="Fanta Ndao Tine"
                           fill
                           sizes="32px"
@@ -222,7 +222,7 @@ export function OurStoryBento() {
                       </div>
                       <div className="relative w-7 h-7 sm:w-8 sm:h-8 rounded-full overflow-hidden border-2 border-white shadow-xs">
                         <Image
-                          src="/images/brand/Seydina.png"
+                          src="/images/brand/Seydina.webp"
                           alt="Seydina Mohamed Diop"
                           fill
                           sizes="32px"
@@ -231,7 +231,7 @@ export function OurStoryBento() {
                       </div>
                       <div className="relative w-7 h-7 sm:w-8 sm:h-8 rounded-full overflow-hidden border-2 border-white shadow-xs">
                         <Image
-                          src="/images/brand/Serigne fallou.png"
+                          src="/images/brand/Serigne fallou.webp"
                           alt="Serigne Fallou Seck"
                           fill
                           sizes="32px"

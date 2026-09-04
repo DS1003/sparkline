@@ -10,31 +10,33 @@ import { SparkTitle } from './SparkTitle'
 
 export function Hero() {
   return (
-    <section id="main-hero" className="w-full bg-white p-2 sm:p-3 md:p-3.5 lg:p-4 xl:p-5">
+    <section id="main-hero" className="relative w-full bg-white p-2 sm:p-3 md:p-3.5 lg:p-4 xl:p-5">
       {/* Hero Inset Card (Sleek, Framed Proportions on Laptops and Desktops) */}
-      <div className="relative rounded-2xl md:rounded-[20px] bg-[#070709] text-white overflow-hidden p-5 sm:p-6 lg:p-8 xl:p-10 min-h-[85svh] sm:min-h-[80svh] lg:min-h-[480px] xl:min-h-[calc(100vh-40px)] xl:max-h-[860px] flex flex-col justify-between shadow-2xl">
+      <div className="relative rounded-2xl md:rounded-[20px] bg-[#070709] text-white overflow-hidden p-5 sm:p-6 lg:p-8 xl:p-10 min-h-[85svh] sm:min-h-[80svh] lg:min-h-[calc(100vh-32px)] xl:min-h-[calc(100vh-40px)] xl:max-h-[860px] flex flex-col justify-between shadow-2xl">
         {/* Background Team Image — Responsive Placement (Perfect 4-Person Framing on Mobile & Desktop) */}
         {/* Background Images — Responsive Art Direction */}
         <div className="absolute inset-0 pointer-events-none select-none">
           {/* Mobile Image */}
           <div className="absolute inset-0 block md:hidden">
             <Image
-              src="/images/heroes/ChatGPT Image Sep 4, 2026, 08_14_02 AM.png"
+              src="/images/heroes/ChatGPT Image Sep 4, 2026, 08_14_02 AM.webp"
               alt="SPARKLINE Hero Background Mobile"
               fill
               priority
-              quality={100}
+              sizes="100vw"
+              quality={85}
               className="object-cover object-center"
             />
           </div>
           {/* Desktop Image */}
           <div className="absolute inset-0 hidden md:block">
             <Image
-              src="/images/heroes/Gemini_Generated_Image_prl3ndprl3ndprl3.jpeg"
+              src="/images/heroes/Gemini_Generated_Image_prl3ndprl3ndprl3.webp"
               alt="SPARKLINE Hero Background Desktop"
               fill
               priority
-              quality={100}
+              sizes="100vw"
+              quality={85}
               className="object-cover object-center"
             />
           </div>
@@ -48,7 +50,7 @@ export function Hero() {
 
         {/* Main Hero Headline Area with Real Spark Writing Effect */}
         <div className="relative z-10 mt-auto mb-2 md:my-auto pt-16 sm:pt-20 md:pt-0 max-w-3xl xl:max-w-4xl py-1.5 sm:py-2.5 lg:py-2 xl:py-4 space-y-2 sm:space-y-3 lg:space-y-2.5 xl:space-y-4 flex flex-col items-center text-center lg:items-start lg:text-left">
-          <RevealOnScroll delay={0.1}>
+          <RevealOnScroll delay={0.1} className="hidden md:block">
             <div className="relative inline-flex items-center group cursor-default">
               {/* Controlled Subtle Neon Rim Aura (tight & crisp, no excessive blur) */}
               <div 
