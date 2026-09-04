@@ -15,8 +15,8 @@ export function Hero() {
       <div className="relative rounded-2xl md:rounded-[20px] bg-[#070709] text-white overflow-hidden p-5 sm:p-6 lg:p-8 xl:p-10 min-h-[85svh] sm:min-h-[80svh] lg:min-h-[calc(100vh-32px)] xl:min-h-[calc(100vh-40px)] xl:max-h-[860px] flex flex-col justify-between shadow-2xl">
         {/* Background Team Image — Responsive Placement (Perfect 4-Person Framing on Mobile & Desktop) */}
         {/* Background Images — Responsive Art Direction */}
-        <div className="absolute inset-0 pointer-events-none select-none">
-          {/* Mobile Image */}
+        <div className="hero-bg-container absolute inset-0 pointer-events-none select-none overflow-hidden">
+          {/* Mobile Image — Perfectly Centered Focal Point */}
           <div className="absolute inset-0 block md:hidden">
             <Image
               src="/images/heroes/ChatGPT Image Sep 4, 2026, 08_14_02 AM.webp"
@@ -25,7 +25,7 @@ export function Hero() {
               priority
               sizes="100vw"
               quality={85}
-              className="hero-bg-img object-cover object-center"
+              className="object-cover object-center"
             />
           </div>
           {/* Desktop Image */}
@@ -37,13 +37,16 @@ export function Hero() {
               priority
               sizes="100vw"
               quality={85}
-              className="hero-bg-img object-cover object-center"
+              className="object-cover object-center"
             />
           </div>
         </div>
 
-        {/* Tight Left-Side Contrast Shadow (Terminates strictly after the title text ~42%) */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#070709]/90 from-0% via-[#070709]/60 via-30% to-transparent to-50% pointer-events-none" />
+        {/* Mobile Centered Symmetrical Gradient (Protects text legibility without pulling visual weight left) */}
+        <div className="absolute inset-0 block md:hidden bg-gradient-to-b from-[#070709]/60 via-[#070709]/30 to-[#070709]/95 pointer-events-none" />
+
+        {/* Desktop Left-Side Contrast Shadow (Terminates strictly after the title text ~42%) */}
+        <div className="absolute inset-0 hidden md:block bg-gradient-to-r from-[#070709]/90 from-0% via-[#070709]/60 via-30% to-transparent to-50% pointer-events-none" />
 
         {/* Top Navbar with Official Logo */}
         <Navbar />

@@ -122,7 +122,7 @@ export function Preloader() {
       const heroBadge = document.querySelector('.hero-badge')
       const heroSubtext = document.querySelector('.hero-subtext')
       const heroBottomBar = document.querySelector('.hero-bottom-bar')
-      const heroBgImages = document.querySelectorAll('.hero-bg-img')
+      const heroBgContainer = document.querySelector('.hero-bg-container')
 
       // Le Hero reste à sa place naturelle (y: 0) — pas de saut 100vh
       if (heroContainer) {
@@ -136,7 +136,7 @@ export function Preloader() {
       if (heroBadge) gsap.set(heroBadge, { opacity: 0, y: -12 })
       if (heroSubtext) gsap.set(heroSubtext, { opacity: 0, y: 12 })
       if (heroBottomBar) gsap.set(heroBottomBar, { opacity: 0, y: 15 })
-      if (heroBgImages.length > 0) gsap.set(heroBgImages, { scale: 1.05 })
+      if (heroBgContainer) gsap.set(heroBgContainer, { scale: 1.05 })
       
       const startX = -Math.min(window.innerWidth * 0.42, 520)
       const startY = -Math.min(window.innerHeight * 0.38, 380)
@@ -173,7 +173,7 @@ export function Preloader() {
           if (heroBadge) gsap.set(heroBadge, { clearProps: 'all' })
           if (heroSubtext) gsap.set(heroSubtext, { clearProps: 'all' })
           if (heroBottomBar) gsap.set(heroBottomBar, { clearProps: 'all' })
-          if (heroBgImages.length > 0) gsap.set(heroBgImages, { clearProps: 'all' })
+          if (heroBgContainer) gsap.set(heroBgContainer, { clearProps: 'transform' })
           if (heroContainer) gsap.set(heroContainer, { clearProps: 'all' })
 
           if (typeof window !== 'undefined') {
@@ -325,8 +325,8 @@ export function Preloader() {
       }, 2.85)
 
       // Dézoom subtil de l'image de fond du Hero (effet de profondeur)
-      if (heroBgImages.length > 0) {
-        tl.to(heroBgImages, {
+      if (heroBgContainer) {
+        tl.to(heroBgContainer, {
           scale: 1,
           duration: 1.1,
           ease: 'power2.out',
