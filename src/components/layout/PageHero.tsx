@@ -29,16 +29,12 @@ export function PageHero({
   return (
     <section className="w-full bg-white p-2.5 sm:p-3.5 md:p-4 lg:p-5">
       <div className="relative rounded-2xl md:rounded-[20px] bg-[#070709] text-white overflow-hidden p-5 sm:p-7 lg:p-8 xl:p-11 min-h-[440px] sm:min-h-[480px] lg:min-h-[500px] xl:min-h-[560px] flex flex-col justify-between items-center text-center shadow-2xl">
-        {/* Subtle Ambient Studio Background (Matching About Page Hero) */}
-        <div
-          className="absolute inset-0 bg-cover bg-center opacity-15 mix-blend-luminosity scale-105 pointer-events-none"
-          style={{
-            backgroundImage: `url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2064&auto=format&fit=crop')`,
-          }}
-        />
+        {/* High-Performance Lightweight Ambient Lighting (Zero External Network Overhead) */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(235,70,4,0.14)_0%,transparent_65%)] pointer-events-none" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,rgba(255,185,1,0.06)_0%,transparent_60%)] pointer-events-none" />
 
         {/* Central Radial Glow */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-tr from-[#EB4604]/20 via-[#FFB901]/10 to-transparent rounded-full blur-[150px] pointer-events-none" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] sm:w-[600px] h-[400px] sm:h-[600px] bg-gradient-to-tr from-[#EB4604]/20 via-[#FFB901]/10 to-transparent rounded-full blur-[100px] sm:blur-[150px] pointer-events-none" />
 
         {/* 1. Integrated Navbar Inside Hero Card (Matches Homepage & About) */}
         <Navbar />
@@ -64,7 +60,8 @@ export function PageHero({
                     src={pillImage}
                     alt={title}
                     fill
-                    quality={95}
+                    priority
+                    quality={90}
                     className="object-cover"
                     sizes="120px"
                   />
