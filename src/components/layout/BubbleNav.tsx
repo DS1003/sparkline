@@ -133,14 +133,14 @@ export function BubbleNav() {
             <nav
               className="flex items-center rounded-full overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)]"
               style={{
-                background: 'rgba(10, 10, 12, 0.72)',
-                backdropFilter: 'blur(24px) saturate(180%)',
-                WebkitBackdropFilter: 'blur(24px) saturate(180%)',
-                border: '1px solid rgba(255, 255, 255, 0.08)',
+                background: 'rgba(10, 10, 12, 0.78)',
+                backdropFilter: 'blur(28px) saturate(190%)',
+                WebkitBackdropFilter: 'blur(28px) saturate(190%)',
+                border: '1px solid rgba(255, 255, 255, 0.10)',
                 boxShadow: collapsed && !hovered
-                  ? '0 4px 20px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(235, 70, 4, 0.15), 0 0 20px rgba(235, 70, 4, 0.08)'
-                  : '0 8px 32px rgba(0, 0, 0, 0.4), 0 2px 8px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.05)',
-                padding: isExpanded ? '8px' : '6px',
+                  ? '0 4px 20px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(235, 70, 4, 0.2), 0 0 20px rgba(235, 70, 4, 0.1)'
+                  : '0 12px 40px -8px rgba(0, 0, 0, 0.6), 0 2px 8px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.08)',
+                padding: isExpanded ? '6px 8px' : '6px',
               }}
             >
               {/* Logo pill - always visible */}
@@ -160,33 +160,38 @@ export function BubbleNav() {
               <div
                 className="flex items-center transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] overflow-hidden"
                 style={{
-                  maxWidth: isExpanded ? '800px' : '0px',
+                  maxWidth: isExpanded ? '920px' : '0px',
                   opacity: isExpanded ? 1 : 0,
-                  marginLeft: isExpanded ? '4px' : '0px',
+                  marginLeft: isExpanded ? '8px' : '0px',
                 }}
               >
-                {/* Nav links */}
-                {bubbleNavLinks.map((link) => {
-                  const active = isActive(link.href)
-                  return (
-                    <Link
-                      key={link.href}
-                      href={link.href}
-                      className={`relative px-3.5 py-2 rounded-full text-[13px] font-medium transition-all duration-300 whitespace-nowrap ${
-                        active
-                          ? 'text-white bg-[#EB4604] shadow-[0_2px_12px_rgba(235,70,4,0.35)]'
-                          : 'text-neutral-400 hover:text-white hover:bg-white/[0.08]'
-                      }`}
-                    >
-                      {link.label}
-                    </Link>
-                  )
-                })}
+                {/* Nav links with clear gap and breathing room */}
+                <div className="flex items-center gap-1.5 px-0.5">
+                  {bubbleNavLinks.map((link) => {
+                    const active = isActive(link.href)
+                    return (
+                      <Link
+                        key={link.href}
+                        href={link.href}
+                        className={`relative px-3.5 py-1.5 rounded-full text-[13px] font-medium transition-all duration-200 whitespace-nowrap ${
+                          active
+                            ? 'text-white bg-[#EB4604] shadow-[0_2px_12px_rgba(235,70,4,0.45)] font-semibold'
+                            : 'text-neutral-300/85 hover:text-white hover:bg-white/[0.08]'
+                        }`}
+                      >
+                        {link.label}
+                      </Link>
+                    )
+                  })}
+                </div>
+
+                {/* Subtle Glass Divider */}
+                <div className="h-4 w-[1px] bg-white/15 mx-2 shrink-0" />
 
                 {/* CTA Button */}
                 <Link
                   href="/contact"
-                  className="ml-1 flex items-center gap-2 px-4 py-2 rounded-full bg-white text-[#070709] text-[13px] font-semibold hover:bg-neutral-200 transition-all duration-200 shrink-0 group whitespace-nowrap"
+                  className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-white text-[#070709] text-[13px] font-semibold hover:bg-neutral-200 transition-all duration-200 shrink-0 group whitespace-nowrap shadow-sm hover:shadow-md active:scale-95"
                 >
                   <span>Démarrer</span>
                   <svg

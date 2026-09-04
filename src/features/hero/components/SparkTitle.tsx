@@ -235,15 +235,22 @@ export function SparkTitle({
           }}
         >
           {/* Intense Core Spark */}
-          <div className="relative w-4 h-4 flex items-center justify-center">
+          <div className="relative w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center">
             {/* Outer Blazing Glow */}
-            <div className="absolute w-12 h-12 rounded-full bg-[#FF9100]/50 blur-md animate-ping" />
-            <div className="absolute w-8 h-8 rounded-full bg-[#EB4604]/80 blur-sm" />
-            {/* White-Hot Center Flare */}
-            <div className="w-3 h-3 rounded-full bg-white shadow-[0_0_15px_#FFFFFF,0_0_25px_#FFE57F,0_0_40px_#EB4604]" />
-            {/* Ray spikes */}
-            <div className="absolute w-8 h-[2px] bg-white/90 blur-[0.5px] rotate-45" />
-            <div className="absolute w-8 h-[2px] bg-white/90 blur-[0.5px] -rotate-45" />
+            <div className="absolute w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-[#FF9100]/40 blur-md animate-pulse" />
+            <div className="absolute w-10 h-10 sm:w-14 sm:h-14 rounded-full bg-[#EB4604]/60 blur-sm" />
+
+            {/* Official Spark Icon SVG (Enlarged) */}
+            <svg
+              viewBox="0 0 24 24"
+              className="w-7 h-7 sm:w-8 sm:h-8 xl:w-9 xl:h-9 text-[#FFB901] relative z-10 drop-shadow-[0_0_10px_rgba(255,185,1,0.95)] drop-shadow-[0_0_20px_rgba(235,70,4,0.85)]"
+              fill="currentColor"
+            >
+              <path d="M12 0C12 0 12 10.5 24 12C24 12 12 13.5 12 24C12 24 12 13.5 0 12C0 12 12 10.5 12 0Z" />
+            </svg>
+
+            {/* White-Hot Center Spark Core */}
+            <div className="absolute w-2 h-2 rounded-full bg-white shadow-[0_0_8px_#FFFFFF,0_0_16px_#FFB901] z-20 pointer-events-none" />
           </div>
         </div>
       )}

@@ -53,19 +53,19 @@ export function Hero() {
           <RevealOnScroll delay={0.1} className="hidden md:block">
             <div className="relative inline-flex items-center group cursor-default">
               {/* Controlled Subtle Neon Rim Aura (tight & crisp, no excessive blur) */}
-              <div 
-                className="absolute -inset-0.5 rounded-full bg-gradient-to-r from-[#EB4604]/40 via-[#FF6A1A]/50 to-[#EB4604]/40 blur-[6px] opacity-60 pointer-events-none" 
+              <div
+                className="absolute -inset-0.5 rounded-full bg-gradient-to-r from-[#EB4604]/40 via-[#FF6A1A]/50 to-[#EB4604]/40 blur-[6px] opacity-60 pointer-events-none"
               />
 
               {/* 3D Extruded Outer Rim: Directional Light Gradient (Light on top, deep shadow on bottom) */}
-              <div 
+              <div
                 className="relative p-[1.5px] rounded-full bg-gradient-to-b from-[#FFA873] via-[#EB4604] to-[#380D00]"
                 style={{
                   boxShadow: '0 10px 25px -4px rgba(0,0,0,0.85), 0 4px 10px rgba(0,0,0,0.6), 0 0 14px rgba(235,70,4,0.35)'
                 }}
               >
                 {/* 3D Convex Pill Body */}
-                <div 
+                <div
                   className="relative inline-flex items-center gap-2 sm:gap-2.5 px-4.5 py-1.5 sm:px-5 sm:py-2 rounded-full bg-gradient-to-b from-[#1F120A] via-[#0E0805] to-[#060403] backdrop-blur-xl overflow-hidden"
                   style={{
                     boxShadow: 'inset 0 1.5px 1px rgba(255,255,255,0.45), inset 0 -2px 3px rgba(0,0,0,0.85), inset 0 0 10px rgba(235,70,4,0.3)'
@@ -83,22 +83,22 @@ export function Hero() {
                   <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(255,106,26,0.18)_0%,transparent_70%)] pointer-events-none" />
 
                   {/* Sparkling Icon with hot white core & dimensional shadow */}
-                  <svg 
-                    viewBox="0 0 24 24" 
-                    className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white animate-neon-spark relative z-10 shrink-0 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]" 
+                  <svg
+                    viewBox="0 0 24 24"
+                    className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white animate-neon-spark relative z-10 shrink-0 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
                     fill="currentColor"
                   >
                     <path d="M12 0C12 0 12 10.5 24 12C24 12 12 13.5 12 24C12 24 12 13.5 0 12C0 12 12 10.5 12 0Z" />
                   </svg>
 
                   {/* 3D Embossed Neon Text: Crisp White-Hot Core with Controlled Orange Glow and Under-Shadow */}
-                  <span 
+                  <span
                     className="relative z-10 text-[9.5px] sm:text-[10.5px] xl:text-[12px] font-bold tracking-[0.2em] sm:tracking-[0.24em] uppercase text-[#FFFBF7]"
-                    style={{ 
-                      textShadow: '0 1px 3px rgba(0,0,0,0.9), 0 0 2px #FFFFFF, 0 0 8px #FF7A29, 0 0 16px rgba(235,70,4,0.7)' 
+                    style={{
+                      textShadow: '0 1px 3px rgba(0,0,0,0.9), 0 0 2px #FFFFFF, 0 0 8px #FF7A29, 0 0 16px rgba(235,70,4,0.7)'
                     }}
                   >
-                    Agence de transformation digitale
+                    Spark The Change, Illuminate Success
                   </span>
                 </div>
               </div>
