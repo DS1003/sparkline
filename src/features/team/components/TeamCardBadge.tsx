@@ -91,13 +91,31 @@ export function TeamCardBadge({ member }: TeamCardBadgeProps) {
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 360px"
             />
 
-            {/* Flip Hint Indicator Badge (Hidden when card is flipped) */}
+            {/* Centered Circular Glassmorphism Flip Cue */}
             {!isFlipped && (
-              <div className="absolute top-3.5 right-3.5 z-10 opacity-90 sm:opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-white/90 backdrop-blur-md text-neutral-800 text-[9.5px] font-mono border border-neutral-200/80 shadow-md">
-                  <span className="text-[#EB4604]">↺</span>
-                  <span>Détails</span>
-                </span>
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10 opacity-95 sm:opacity-0 sm:group-hover:opacity-100 transition-all duration-300">
+                <div className="relative flex items-center justify-center">
+                  {/* Subtle pulsing warmth halo */}
+                  <div className="absolute -inset-2.5 rounded-full bg-gradient-to-tr from-[#EB4604]/30 via-white/10 to-[#FFB901]/30 blur-md animate-pulse pointer-events-none" />
+
+                  {/* Circular 3D Glassmorphism Disc */}
+                  <div className="relative w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-black/30 sm:bg-black/35 backdrop-blur-xl border border-white/50 shadow-[0_8px_32px_rgba(0,0,0,0.35),inset_0_1.5px_2px_rgba(255,255,255,0.7),inset_0_-1.5px_2px_rgba(0,0,0,0.2)] flex items-center justify-center text-white transition-transform duration-500 group-hover:scale-110 group-active:scale-95">
+                    <svg
+                      viewBox="0 0 24 24"
+                      className="w-5 h-5 sm:w-6 sm:h-6 text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.6)] transition-transform duration-700 ease-out group-hover:rotate-180"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8" />
+                      <path d="M21 3v5h-5" />
+                      <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16" />
+                      <path d="M3 21v-5h5" />
+                    </svg>
+                  </div>
+                </div>
               </div>
             )}
           </div>
