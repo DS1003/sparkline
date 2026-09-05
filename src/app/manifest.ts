@@ -12,6 +12,11 @@ export default function manifest(): MetadataRoute.Manifest {
     theme_color: '#DE322D',
     icons: [
       {
+        src: '/images/brand/favicon-sparkline.png',
+        sizes: '192x192 512x512',
+        type: 'image/png',
+      },
+      {
         src: '/favicon.ico',
         sizes: 'any',
         type: 'image/x-icon',

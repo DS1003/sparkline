@@ -27,6 +27,16 @@ export const metadata: Metadata = {
   keywords: [...siteConfig.keywords],
   authors: [...siteConfig.authors],
   creator: siteConfig.creator,
+  icons: {
+    icon: [
+      { url: '/images/brand/favicon-sparkline.png', type: 'image/png' },
+      { url: '/favicon.ico', sizes: 'any' },
+    ],
+    apple: [
+      { url: '/images/brand/favicon-sparkline.png', sizes: '180x180', type: 'image/png' },
+    ],
+    shortcut: '/images/brand/favicon-sparkline.png',
+  },
   openGraph: {
     type: 'website',
     locale: 'fr_FR',

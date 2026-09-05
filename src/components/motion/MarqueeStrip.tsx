@@ -5,10 +5,7 @@ import Image from 'next/image'
 import { Container } from '../layout/Container'
 
 const partnerLogos = [
-  { name: 'Sonatel', symbol: '✦' },
-  { name: 'Orange Digital Center', symbol: '✻' },
   { name: 'Baraka', symbol: '⎈' },
-  { name: 'Sonatel Academy', symbol: '⬡' },
   { name: 'FIDELE Sarl', symbol: '✣' },
   { name: 'Mbor', symbol: '❖' },
   { name: 'Saphir Alpha', symbol: '✧' },
