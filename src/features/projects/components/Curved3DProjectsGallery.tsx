@@ -427,14 +427,14 @@ export function Curved3DProjectsGallery({
               className="fixed inset-0 z-[9999] flex items-end sm:items-center justify-center sm:p-5 lg:p-6 overscroll-contain"
               onTouchMove={(e) => e.stopPropagation()}
             >
-              {/* Backdrop Blur Overlay */}
+              {/* True Blurred Glass (Frosted Glass / Effet Vitre) Overlay */}
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.3, ease: 'easeOut' }}
                 onClick={() => setExpandedProject(null)}
-                className="absolute inset-0 bg-black/80 sm:bg-black/90 backdrop-blur-2xl"
+                className="absolute inset-0 bg-black/45 sm:bg-black/50 backdrop-blur-md"
               />
 
               {/* Morphing Minimalist 2-Column Modal Window (Fluid Responsive & Ergonomic) */}
@@ -464,9 +464,9 @@ export function Curved3DProjectsGallery({
                 }}
                 className={`relative w-full max-w-5xl overflow-hidden ${
                   theme === 'light'
-                    ? 'bg-white text-neutral-900 border border-neutral-200 shadow-[0_30px_90px_rgba(0,0,0,0.18)]'
-                    : 'bg-[#0A0A0E] text-white border border-white/15 shadow-[0_40px_120px_rgba(0,0,0,0.98)]'
-                } rounded-t-[28px] sm:rounded-[32px] flex flex-col z-10 sm:my-auto max-h-[94svh] sm:max-h-[90vh]`}
+                    ? 'bg-white/95 text-neutral-900 border border-neutral-200 shadow-[0_30px_90px_rgba(0,0,0,0.18)]'
+                    : 'bg-[#0A0A0E]/95 text-white border border-white/15 shadow-[0_30px_90px_rgba(0,0,0,0.7),inset_0_1px_1px_rgba(255,255,255,0.1)]'
+                } backdrop-blur-2xl rounded-t-[28px] sm:rounded-[32px] flex flex-col z-10 sm:my-auto max-h-[94svh] sm:max-h-[90vh]`}
                 style={{
                   perspective: '1200px',
                   transformStyle: 'preserve-3d',
@@ -477,8 +477,8 @@ export function Curved3DProjectsGallery({
                 <div
                   className={`hidden sm:flex sticky top-0 z-30 px-7 py-4 border-b ${
                     theme === 'light'
-                      ? 'border-neutral-200 bg-white/95 text-neutral-900'
-                      : 'border-white/10 bg-[#0A0A0E]/95 text-white'
+                      ? 'border-neutral-200 bg-white/90 text-neutral-900'
+                      : 'border-white/10 bg-[#0A0A0E]/90 text-white'
                   } backdrop-blur-xl items-center justify-between shrink-0`}
                 >
                   <div className="flex items-center gap-3 min-w-0">
@@ -551,7 +551,7 @@ export function Curved3DProjectsGallery({
                               setActiveGalleryIndex((prev) => (prev > 0 ? prev - 1 : gallery.length - 1))
                             }}
                             aria-label="Image précédente"
-                            className="group pointer-events-auto flex items-center justify-center w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/40 backdrop-blur-xl text-white transition-all duration-300 hover:scale-105 active:scale-95 shadow-lg"
+                            className="group pointer-events-auto flex items-center justify-center w-9 h-9 rounded-full bg-black/50 hover:bg-black/70 border border-white/20 hover:border-white/40 backdrop-blur-md text-white transition-all duration-300 hover:scale-105 active:scale-95 shadow-lg"
                           >
                             <svg className="w-3.5 h-3.5 transition-transform duration-300 group-hover:-translate-x-0.5" fill="none" viewBox="0 0 14 14" stroke="currentColor" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round">
                               <path d="M9 11L5 7l4-4" />
@@ -566,7 +566,7 @@ export function Curved3DProjectsGallery({
                               setActiveGalleryIndex((prev) => (prev < gallery.length - 1 ? prev + 1 : 0))
                             }}
                             aria-label="Image suivante"
-                            className="group pointer-events-auto flex items-center justify-center w-9 h-9 rounded-full bg-white/10 hover:bg-[#EB4604] border border-white/20 hover:border-[#EB4604] backdrop-blur-xl text-white transition-all duration-300 hover:scale-105 active:scale-95 shadow-lg hover:shadow-[#EB4604]/30"
+                            className="group pointer-events-auto flex items-center justify-center w-9 h-9 rounded-full bg-black/50 hover:bg-[#EB4604] border border-white/20 hover:border-[#EB4604] backdrop-blur-md text-white transition-all duration-300 hover:scale-105 active:scale-95 shadow-lg hover:shadow-[#EB4604]/30"
                           >
                             <svg className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-0.5" fill="none" viewBox="0 0 14 14" stroke="currentColor" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round">
                               <path d="M5 3l4 4-4 4" />
