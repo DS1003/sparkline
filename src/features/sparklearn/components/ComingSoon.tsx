@@ -46,7 +46,7 @@ export function ComingSoon() {
         <Navbar />
 
         {/* 2. Main Centered Coming Soon Content */}
-        <div className="relative z-10 my-auto max-w-3xl xl:max-w-4xl mx-auto text-center py-1 sm:py-2 flex flex-col items-center">
+        <div className="relative z-10 my-auto w-full max-w-3xl xl:max-w-4xl mx-auto text-center py-1 sm:py-2 flex flex-col items-center">
           {/* Tag Badge */}
           <RevealOnScroll>
             <div className="mb-2.5 sm:mb-3.5 lg:mb-3 xl:mb-4">
@@ -73,7 +73,7 @@ export function ComingSoon() {
           </RevealOnScroll>
 
           {/* Email Notification Form */}
-          <RevealOnScroll delay={0.2}>
+          <RevealOnScroll delay={0.2} className="w-full flex justify-center">
             <div className="w-full max-w-sm sm:max-w-md mb-3.5 sm:mb-5 lg:mb-4 xl:mb-5">
               <AnimatePresence mode="wait">
                 {submitted ? (
@@ -83,12 +83,12 @@ export function ComingSoon() {
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: -8, scale: 0.98 }}
                     transition={{ duration: 0.3, ease: 'easeOut' }}
-                    className="p-2.5 sm:p-3 pl-3.5 pr-4 rounded-full bg-[#121214] border border-[#EB4604] text-white flex items-center justify-between gap-3 shadow-xl w-full"
+                    className="p-2 sm:p-2.5 pl-3 sm:pl-3.5 pr-2.5 sm:pr-3 rounded-full bg-[#121214] border border-[#EB4604] text-white flex items-center justify-between gap-2 sm:gap-3 shadow-xl w-full max-w-full"
                   >
-                    <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
-                      <div className="w-7 h-7 rounded-full bg-[#EB4604] text-white flex items-center justify-center shrink-0 shadow-sm">
+                    <div className="flex items-center gap-2 sm:gap-2.5 min-w-0 flex-1">
+                      <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-[#EB4604] text-white flex items-center justify-center shrink-0 shadow-sm">
                         <svg
-                          className="w-3.5 h-3.5"
+                          className="w-3 h-3 sm:w-3.5 sm:h-3.5"
                           viewBox="0 0 24 24"
                           fill="none"
                           stroke="currentColor"
@@ -99,14 +99,15 @@ export function ComingSoon() {
                           <polyline points="20 6 9 17 4 12" />
                         </svg>
                       </div>
-                      <span className="text-xs sm:text-sm font-medium text-white truncate">
-                        Merci ! Vous serez informé(e) en priorité.
+                      <span className="text-xs sm:text-sm font-medium text-white truncate text-left">
+                        <span className="sm:hidden">Merci ! Inscription validée.</span>
+                        <span className="hidden sm:inline">Merci ! Vous serez informé(e) en priorité.</span>
                       </span>
                     </div>
 
                     <button
                       onClick={() => setSubmitted(false)}
-                      className="text-xs text-neutral-400 hover:text-white px-2.5 py-1 rounded-full bg-white/10 hover:bg-white/15 transition-colors shrink-0 font-medium"
+                      className="text-[11px] sm:text-xs text-neutral-400 hover:text-white px-2.5 py-1 rounded-full bg-white/10 hover:bg-white/15 transition-colors shrink-0 font-medium cursor-pointer"
                     >
                       Modifier
                     </button>
@@ -119,20 +120,20 @@ export function ComingSoon() {
                     exit={{ opacity: 0, y: -8 }}
                     transition={{ duration: 0.25 }}
                     onSubmit={handleSubmit}
-                    className="w-full"
+                    className="w-full max-w-full"
                   >
-                    <div className="rounded-full border border-white/20 bg-black/60 hover:border-white/35 focus-within:border-[#EB4604] p-1.5 pl-4 sm:pl-5 flex items-center justify-between transition-all duration-300 shadow-xl w-full">
+                    <div className="rounded-full border border-white/20 bg-black/60 hover:border-white/35 focus-within:border-[#EB4604] p-1.5 pl-3.5 sm:pl-5 flex items-center justify-between transition-all duration-300 shadow-xl w-full max-w-full">
                       <input
                         type="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder="Entrez votre e-mail..."
                         required
-                        className="bg-transparent text-white placeholder:text-neutral-400 focus:outline-none w-full text-base sm:text-sm font-normal py-1 pr-2 touch-manipulation"
+                        className="bg-transparent text-white placeholder:text-neutral-400 focus:outline-none w-full min-w-0 text-base sm:text-sm font-normal py-1 pr-2 touch-manipulation"
                       />
                       <button
                         type="submit"
-                        className="group px-4.5 sm:px-5 py-2 rounded-full bg-[#EB4604] hover:bg-[#D43D00] text-white text-xs sm:text-xs xl:text-sm font-semibold transition-all duration-300 hover:scale-[1.02] shadow-md shadow-[#EB4604]/30 active:scale-[0.98] shrink-0 inline-flex items-center justify-center gap-1.5 select-none"
+                        className="group px-3.5 sm:px-5 py-2 rounded-full bg-[#EB4604] hover:bg-[#D43D00] text-white text-xs sm:text-xs xl:text-sm font-semibold transition-all duration-300 hover:scale-[1.02] shadow-md shadow-[#EB4604]/30 active:scale-[0.98] shrink-0 inline-flex items-center justify-center gap-1.5 select-none"
                       >
                         <span>Être notifié</span>
                         <svg
