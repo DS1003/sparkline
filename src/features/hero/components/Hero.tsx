@@ -149,12 +149,12 @@ export function Hero() {
           {/* Right Column: Dual Action Buttons */}
           <div className="lg:col-span-5 flex items-center justify-center lg:justify-end">
             <RevealOnScroll delay={0.5}>
-              <div className="flex flex-wrap sm:flex-nowrap items-center justify-center lg:justify-end gap-2 sm:gap-2.5 w-full sm:w-auto">
+              <div className="flex flex-wrap sm:flex-nowrap items-center justify-center lg:justify-end gap-2.5 sm:gap-3 w-full sm:w-auto">
                 {/* Red/Orange Pill Button with Official Brand Color */}
                 <Button
                   href="/projects"
                   variant="primary"
-                  className="px-3.5 sm:px-4.5 xl:px-6 py-1.5 sm:py-2 xl:py-2.5 text-[11px] sm:text-xs shrink-0"
+                  className="px-4.5 sm:px-5.5 xl:px-6 py-2 sm:py-2.5 xl:py-3 text-xs sm:text-[13px] shrink-0"
                 >
                   Voir les projets
                 </Button>
@@ -163,7 +163,7 @@ export function Hero() {
                 <Button
                   href="/contact"
                   variant="secondary"
-                  className="px-3.5 sm:px-4.5 xl:px-6 py-1.5 sm:py-2 xl:py-2.5 text-[11px] sm:text-xs shrink-0"
+                  className="px-4.5 sm:px-5.5 xl:px-6 py-2 sm:py-2.5 xl:py-3 text-xs sm:text-[13px] shrink-0"
                 >
                   Nous contacter
                 </Button>
