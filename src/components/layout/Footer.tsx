@@ -3,6 +3,7 @@
 import React, { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { motion, AnimatePresence } from 'framer-motion'
 import { siteConfig } from '@/config/site'
 
 export function Footer() {
@@ -60,33 +61,75 @@ export function Footer() {
               actualités de SPARKLINE
             </h2>
 
-            {/* Newsletter Subscription Pill Input */}
-            {subscribed ? (
-              <div className="w-full max-w-xl p-3.5 sm:p-4 rounded-full bg-[#EB4604]/10 border border-[#EB4604]/40 text-xs sm:text-sm text-[#FFB901] flex items-center gap-2">
-                <span className="text-[#EB4604] font-bold">✓</span>
-                <span>Merci ! Vous êtes désormais abonné à nos actualités.</span>
-              </div>
-            ) : (
-              <form onSubmit={handleSubscribe} className="w-full max-w-xl">
-                <div className="rounded-full border border-white/80 bg-transparent p-1.5 sm:p-2.5 pl-4 sm:pl-7 flex items-center justify-between transition-colors shadow-sm">
-                  <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Entrez votre adresse e-mail"
-                    required
-                    className="bg-transparent text-white placeholder-neutral-400 focus:outline-none w-full text-base font-light tracking-wide py-1"
-                  />
-                  <button
-                    type="submit"
-                    aria-label="S'abonner"
-                    className="w-9 h-9 sm:w-12 sm:h-12 rounded-full bg-white text-[#070709] flex items-center justify-center font-bold text-sm sm:text-lg shrink-0 ml-2 hover:bg-[#EB4604] hover:text-white transition-all shadow-md"
+            {/* Newsletter Subscription Pill Input & Animated Confirmation */}
+            <div className="w-full max-w-xl">
+              <AnimatePresence mode="wait">
+                {subscribed ? (
+                  <motion.div
+                    key="success"
+                    initial={{ opacity: 0, y: 8, scale: 0.98 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: -8, scale: 0.98 }}
+                    transition={{ duration: 0.3, ease: 'easeOut' }}
+                    className="p-3 sm:p-3.5 pl-4 pr-5 rounded-full bg-[#121214] border border-[#EB4604] text-white flex items-center justify-between gap-3 shadow-lg"
                   >
-                    ↗
-                  </button>
-                </div>
-              </form>
-            )}
+                    <div className="flex items-center gap-3 min-w-0">
+                      <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#EB4604] text-white flex items-center justify-center shrink-0 shadow-sm">
+                        <svg
+                          className="w-3.5 h-3.5 sm:w-4 sm:h-4"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2.8"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <polyline points="20 6 9 17 4 12" />
+                        </svg>
+                      </div>
+                      <span className="text-xs sm:text-sm font-medium text-white truncate">
+                        Merci ! Vous êtes désormais abonné à nos actualités.
+                      </span>
+                    </div>
+
+                    <button
+                      onClick={() => setSubscribed(false)}
+                      className="text-xs text-neutral-400 hover:text-white px-3 py-1 rounded-full bg-white/10 hover:bg-white/15 transition-colors shrink-0 font-medium"
+                    >
+                      Modifier
+                    </button>
+                  </motion.div>
+                ) : (
+                  <motion.form
+                    key="form"
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -8 }}
+                    transition={{ duration: 0.25 }}
+                    onSubmit={handleSubscribe}
+                    className="w-full"
+                  >
+                    <div className="rounded-full border border-white/80 bg-transparent p-1.5 sm:p-2.5 pl-4 sm:pl-7 flex items-center justify-between transition-colors shadow-sm">
+                      <input
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="Entrez votre adresse e-mail"
+                        required
+                        className="bg-transparent text-white placeholder-neutral-400 focus:outline-none w-full text-base font-light tracking-wide py-1"
+                      />
+                      <button
+                        type="submit"
+                        aria-label="S'abonner"
+                        className="w-9 h-9 sm:w-12 sm:h-12 rounded-full bg-white text-[#070709] flex items-center justify-center font-bold text-sm sm:text-lg shrink-0 ml-2 hover:bg-[#EB4604] hover:text-white transition-all shadow-md"
+                      >
+                        ↗
+                      </button>
+                    </div>
+                  </motion.form>
+                )}
+              </AnimatePresence>
+            </div>
 
             {/* Social Pill Badges */}
             <div className="flex flex-wrap items-center justify-center lg:justify-start gap-2.5 sm:gap-3 pt-3">
@@ -95,7 +138,7 @@ export function Footer() {
                   label: 'LinkedIn',
                   href: siteConfig.socials.linkedin,
                   icon: (
-                    <svg className="w-4 h-4 fill-white" viewBox="0 0 24 24">
+                    <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
                       <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z" />
                     </svg>
                   ),
@@ -104,7 +147,7 @@ export function Footer() {
                   label: 'Instagram',
                   href: siteConfig.socials.instagram,
                   icon: (
-                    <svg className="w-4 h-4 fill-white" viewBox="0 0 24 24">
+                    <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
                       <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
                     </svg>
                   ),
@@ -113,7 +156,7 @@ export function Footer() {
                   label: 'Facebook',
                   href: siteConfig.socials.facebook,
                   icon: (
-                    <svg className="w-4 h-4 fill-white" viewBox="0 0 24 24">
+                    <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
                       <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
                     </svg>
                   ),
@@ -125,10 +168,22 @@ export function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={soc.label}
-                  className="px-3.5 sm:px-4 py-2 rounded-full bg-[#1c1c20] hover:bg-[#2c2c34] text-white transition-all flex items-center gap-2 group shadow-sm hover:scale-105"
+                  className="px-4 py-2 sm:px-4.5 sm:py-2.5 rounded-full bg-white/[0.08] hover:bg-white text-white hover:text-[#070709] border border-white/20 hover:border-white shadow-[0_4px_16px_rgba(0,0,0,0.4),inset_0_1px_1px_rgba(255,255,255,0.18)] transition-all duration-300 flex items-center gap-2.5 group hover:scale-105 active:scale-95 hover:shadow-[0_8px_24px_rgba(255,255,255,0.25)] select-none"
                 >
-                  <span className="text-white flex items-center justify-center shrink-0">{soc.icon}</span>
-                  <span className="text-xs text-neutral-300 group-hover:text-white transition-colors font-medium">↗</span>
+                  <span className="flex items-center justify-center shrink-0">{soc.icon}</span>
+                  <span className="text-xs sm:text-[13px] font-medium tracking-tight">{soc.label}</span>
+                  <svg
+                    className="w-3 h-3 text-neutral-400 group-hover:text-[#070709] transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 shrink-0"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.4"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <line x1="7" y1="17" x2="17" y2="7" />
+                    <polyline points="7 7 17 7 17 17" />
+                  </svg>
                 </a>
               ))}
             </div>
@@ -137,18 +192,70 @@ export function Footer() {
           {/* Right Columns: Clean Official Sitemap Navigation */}
           <div className="lg:col-span-6 grid grid-cols-2 gap-8 text-sm text-center lg:text-left">
             {/* Column 1 */}
-            <div className="space-y-3.5 flex flex-col items-center lg:items-start">
-              <Link href="/" className="text-neutral-300 hover:text-white hover:translate-x-0.5 transition-all">Accueil</Link>
-              <Link href="/about" className="text-neutral-300 hover:text-white hover:translate-x-0.5 transition-all">À propos</Link>
-              <Link href="/services" className="text-neutral-300 hover:text-white hover:translate-x-0.5 transition-all">Services</Link>
-              <Link href="/projects" className="text-neutral-300 hover:text-white hover:translate-x-0.5 transition-all">Projets</Link>
+            <div className="space-y-2 sm:space-y-2.5 flex flex-col items-center lg:items-start">
+              {[
+                { label: 'Accueil', href: '/' },
+                { label: 'À propos', href: '/about' },
+                { label: 'Services', href: '/services' },
+                { label: 'Projets', href: '/projects' },
+              ].map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="group inline-flex items-center gap-2 py-1 select-none transition-colors duration-300"
+                >
+                  <span className="text-[14px] sm:text-[15px] font-medium text-neutral-300 group-hover:text-white transition-all duration-300 group-hover:translate-x-1">
+                    {link.label}
+                  </span>
+                  <span className="w-5 h-5 rounded-full bg-[#EB4604]/0 group-hover:bg-[#EB4604]/15 border border-transparent group-hover:border-[#EB4604]/30 flex items-center justify-center text-[#EB4604] opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 ease-out shrink-0">
+                    <svg
+                      className="w-2.5 h-2.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <line x1="7" y1="17" x2="17" y2="7" />
+                      <polyline points="7 7 17 7 17 17" />
+                    </svg>
+                  </span>
+                </Link>
+              ))}
             </div>
 
             {/* Column 2 */}
-            <div className="space-y-3.5 flex flex-col items-center lg:items-start">
-              <Link href="/team" className="text-neutral-300 hover:text-white hover:translate-x-0.5 transition-all">Équipe</Link>
-              <Link href="/sparklearn" className="text-neutral-300 hover:text-white hover:translate-x-0.5 transition-all">Sparklearn</Link>
-              <Link href="/contact" className="text-neutral-300 hover:text-white hover:translate-x-0.5 transition-all">Contact</Link>
+            <div className="space-y-2 sm:space-y-2.5 flex flex-col items-center lg:items-start">
+              {[
+                { label: 'Équipe', href: '/team' },
+                { label: 'Sparklearn', href: '/sparklearn' },
+                { label: 'Contact', href: '/contact' },
+              ].map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="group inline-flex items-center gap-2 py-1 select-none transition-colors duration-300"
+                >
+                  <span className="text-[14px] sm:text-[15px] font-medium text-neutral-300 group-hover:text-white transition-all duration-300 group-hover:translate-x-1">
+                    {link.label}
+                  </span>
+                  <span className="w-5 h-5 rounded-full bg-[#EB4604]/0 group-hover:bg-[#EB4604]/15 border border-transparent group-hover:border-[#EB4604]/30 flex items-center justify-center text-[#EB4604] opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 ease-out shrink-0">
+                    <svg
+                      className="w-2.5 h-2.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <line x1="7" y1="17" x2="17" y2="7" />
+                      <polyline points="7 7 17 7 17 17" />
+                    </svg>
+                  </span>
+                </Link>
+              ))}
             </div>
           </div>
         </div>
@@ -156,7 +263,7 @@ export function Footer() {
         {/* 3. Bottom Bar: Copyright, Tagline & Legal */}
         <div className="relative z-10 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between text-xs text-neutral-400 gap-3 text-center">
           <p>
-            SPARKLINE © {new Date().getFullYear()}. Tous droits réservés. Propulsé par <span className="text-white font-medium">SPARKLINE</span>.
+            SPARKLINE ©  {new Date().getFullYear()}   <span className="text-neutral-600">|</span>  Tous droits réservés.
           </p>
           <div className="flex items-center gap-3">
             <Link href="/privacy" className="hover:text-white transition-colors">Politique de confidentialité</Link>
