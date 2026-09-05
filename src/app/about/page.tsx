@@ -12,6 +12,7 @@ import { Tag } from '@/components/ui/Tag'
 import { WhatDrivesUs } from '@/features/about/components/WhatDrivesUs'
 import { TechConstellation } from '@/features/about/components/TechConstellation'
 import { OurStoryBento } from '@/features/about/components/OurStoryBento'
+import { SparklineMotionVideo } from '@/features/about/components/SparklineMotionVideo'
 
 export const metadata: Metadata = {
   title: 'À propos | SPARKLINE — Manifeste, Vision & Ingénierie Digitale',
@@ -165,16 +166,9 @@ export default async function AboutPage() {
                   </div>
                 </div>
 
-                {/* ── Block 03: 3D Abstract Ribbon Sculpture Window (Centered below across both columns on mobile) ── */}
+                {/* ── Block 03: SPARKLINE Motion Looping Video Window ── */}
                 <div className="col-span-2 lg:col-span-1 rounded-[20px] sm:rounded-[32px] overflow-hidden relative min-h-[190px] sm:min-h-[260px] lg:min-h-[300px] bg-neutral-900 border border-white/10 group">
-                  <Image
-                    src="/images/approach/sparkline-synergy.webp"
-                    alt="SPARKLINE 3D Creative Synergy"
-                    fill
-                    quality={90}
-                    sizes="(max-width: 1024px) 100vw, 400px"
-                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                  />
+                  <SparklineMotionVideo className="transition-transform duration-700 ease-out group-hover:scale-105" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
                 </div>
               </div>
