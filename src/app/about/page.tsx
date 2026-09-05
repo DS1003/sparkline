@@ -136,7 +136,7 @@ export default async function AboutPage() {
 
                   <div className="pt-2 sm:pt-4 border-t border-white/20">
                     <span className="text-[9px] sm:text-xs font-mono font-semibold uppercase tracking-wider text-white/80 block">
-                      [ CRÉATIVITÉ • AUDACE ]
+                      CRÉATIVITÉ • AUDACE
                     </span>
                   </div>
                 </div>
@@ -160,7 +160,7 @@ export default async function AboutPage() {
 
                   <div className="pt-2 sm:pt-4 border-t border-neutral-200/80">
                     <span className="text-[9px] sm:text-xs font-mono font-semibold uppercase tracking-wider text-neutral-500 block">
-                      [ STRATÉGIE • IMPACT ]
+                      STRATÉGIE • IMPACT
                     </span>
                   </div>
                 </div>

@@ -197,7 +197,7 @@ export function Services({ isServicesPage = false, hideHeader = false }: Service
                   <div className="lg:col-span-7 space-y-3 sm:space-y-4 xl:space-y-5">
                     <div className="flex items-center gap-2 sm:gap-2.5">
                       <span className="text-[#EB4604] font-mono text-base sm:text-xl xl:text-2xl font-bold tracking-tight">
-                        [{service.number}]
+                        {service.number}
                       </span>
                       <span className="px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-full bg-white/10 text-white text-[9.5px] sm:text-[10.5px] font-mono font-medium uppercase tracking-wider backdrop-blur-sm border border-white/10 truncate">
                         {service.tag}

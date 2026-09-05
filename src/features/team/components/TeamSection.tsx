@@ -100,7 +100,7 @@ export function TeamSection() {
 
                     <div className="pt-4 border-t border-neutral-100 flex items-center justify-between text-xs font-mono text-neutral-400">
                       <span>SPARKLINE CORE</span>
-                      <span className="text-[#EB4604] font-semibold">[0{idx + 1}]</span>
+                      <span className="text-[#EB4604] font-semibold">0{idx + 1}</span>
                     </div>
                   </SpotlightCard>
                 </Link>
