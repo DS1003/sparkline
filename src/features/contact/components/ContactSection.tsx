@@ -83,17 +83,19 @@ export function ContactSection() {
                 {/* ── Direct Quick Links ── */}
                 <div className="pt-4 space-y-3">
                   <a
-                    href="https://wa.me/221785286330"
+                    href={`https://wa.me/${siteConfig.contact.phone.replace(/[^0-9]/g, '')}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center gap-3 p-3.5 rounded-2xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 transition-all text-xs font-mono text-neutral-200 hover:text-white group"
                   >
-                    <span className="w-8 h-8 rounded-full bg-[#25D366]/20 text-[#25D366] flex items-center justify-center text-sm shrink-0">
-                      💬
+                    <span className="w-8 h-8 rounded-full bg-[#25D366]/20 text-[#25D366] flex items-center justify-center shrink-0">
+                      <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                        <path d="M12 2C6.48 2 2 6.03 2 11c0 2.87 1.5 5.43 3.86 7.03L5 22l4.18-1.57C10.07 20.72 11.02 21 12 21c5.52 0 10-4.03 10-9s-4.48-9-10-9z" />
+                      </svg>
                     </span>
                     <div className="flex-1">
                       <span className="text-[10px] text-neutral-400 block uppercase tracking-wider">WhatsApp Direct</span>
-                      <span className="font-semibold text-white">+221 78 528 63 30</span>
+                      <span className="font-semibold text-white">{siteConfig.contact.phone}</span>
                     </div>
                     <span className="text-neutral-400 group-hover:translate-x-0.5 transition-transform">→</span>
                   </a>
@@ -102,8 +104,10 @@ export function ContactSection() {
                     href={`mailto:${siteConfig.contact.email}`}
                     className="flex items-center gap-3 p-3.5 rounded-2xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 transition-all text-xs font-mono text-neutral-200 hover:text-white group"
                   >
-                    <span className="w-8 h-8 rounded-full bg-[#EB4604]/20 text-[#EB4604] flex items-center justify-center text-sm shrink-0">
-                      ✉
+                    <span className="w-8 h-8 rounded-full bg-[#EB4604]/20 text-[#EB4604] flex items-center justify-center shrink-0">
+                      <svg className="w-4 h-4 fill-none stroke-current stroke-[1.8]" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+                      </svg>
                     </span>
                     <div className="flex-1">
                       <span className="text-[10px] text-neutral-400 block uppercase tracking-wider">E-mail Direct</span>
@@ -222,12 +226,16 @@ export function ContactSection() {
                   {/* ── Quick Action Direct Buttons ── */}
                   <div className="grid grid-cols-2 gap-3 pt-1">
                     <a
-                      href="https://wa.me/221785286330"
+                      href={`https://wa.me/${siteConfig.contact.phone.replace(/[^0-9]/g, '')}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="py-3 px-4 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 text-white text-xs font-mono flex items-center justify-center gap-2 transition-all hover:scale-[1.01]"
                     >
-                      <span className="text-[#25D366] text-sm">💬</span>
+                      <span className="text-[#25D366] flex items-center justify-center">
+                        <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+                          <path d="M12 2C6.48 2 2 6.03 2 11c0 2.87 1.5 5.43 3.86 7.03L5 22l4.18-1.57C10.07 20.72 11.02 21 12 21c5.52 0 10-4.03 10-9s-4.48-9-10-9z" />
+                        </svg>
+                      </span>
                       <span>WhatsApp</span>
                     </a>
 
@@ -235,7 +243,11 @@ export function ContactSection() {
                       href={`mailto:${siteConfig.contact.email}`}
                       className="py-3 px-4 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 text-white text-xs font-mono flex items-center justify-center gap-2 transition-all hover:scale-[1.01]"
                     >
-                      <span className="text-[#EB4604] text-sm">✉</span>
+                      <span className="text-[#EB4604] flex items-center justify-center">
+                        <svg className="w-3.5 h-3.5 fill-none stroke-current stroke-[1.8]" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+                        </svg>
+                      </span>
                       <span>Email</span>
                     </a>
                   </div>
@@ -302,7 +314,7 @@ export function ContactSection() {
                         </label>
                         <input
                           type="tel"
-                          placeholder="+221 78 528 63 30"
+                          placeholder={siteConfig.contact.phone}
                           value={formData.phone}
                           onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                           className="w-full px-4 py-3 rounded-xl bg-white/[0.04] border border-white/10 text-white text-base sm:text-sm placeholder-neutral-600 focus:outline-none focus:border-white/40 transition-colors"

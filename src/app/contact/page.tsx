@@ -255,7 +255,7 @@ export default function ContactPage() {
                       </button>
 
                       <a
-                        href="https://wa.me/221785286330"
+                        href={`https://wa.me/${siteConfig.contact.phone.replace(/[^0-9]/g, '')}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="w-full sm:w-auto px-6 py-3 rounded-full bg-white hover:bg-neutral-50 text-neutral-800 text-xs font-semibold border border-neutral-200/90 shadow-2xs hover:border-[#EB4604]/40 active:scale-95 transition-all flex items-center justify-center gap-2"
@@ -370,7 +370,7 @@ export default function ContactPage() {
                           autoComplete="tel"
                           inputMode="tel"
                           enterKeyHint="next"
-                          placeholder="+221 78 528 63 30"
+                          placeholder={siteConfig.contact.phone}
                           value={formData.phone}
                           onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                           className="w-full px-3 sm:px-4 py-2.5 rounded-xl sm:rounded-2xl bg-[#F8F9FB] focus:bg-white text-base sm:text-sm text-neutral-900 placeholder:text-neutral-400 border border-neutral-200/90 shadow-[inset_0_1.5px_3px_rgba(0,0,0,0.04)] focus:border-[#EB4604] focus:shadow-[0_0_0_3px_rgba(235,70,4,0.12)] focus:outline-none transition-all font-medium touch-manipulation"
@@ -546,7 +546,7 @@ export default function ContactPage() {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 sm:gap-8 lg:gap-12 pt-8 sm:pt-12 border-t border-neutral-200/70">
             {/* Col 1: Call & WhatsApp */}
             <a
-              href="tel:+221785286330"
+              href={`tel:${siteConfig.contact.phone.replace(/\s+/g, '')}`}
               className="flex flex-row sm:flex-col items-center sm:text-center text-left gap-3.5 sm:gap-3 p-3.5 sm:p-0 rounded-2xl sm:rounded-none bg-white sm:bg-transparent border sm:border-0 border-neutral-200/80 shadow-[0_2px_8px_rgba(0,0,0,0.03)] sm:shadow-none group min-w-0 transition-all active:scale-[0.98] sm:active:scale-100 touch-manipulation"
             >
               <div className="w-11 h-11 sm:w-13 sm:h-13 rounded-2xl bg-[#F8F9FB] sm:bg-white border border-neutral-200/90 shadow-[inset_0_1.5px_1px_rgba(255,255,255,1),inset_0_-2px_3px_rgba(0,0,0,0.04),0_4px_12px_rgba(0,0,0,0.04)] flex items-center justify-center text-neutral-800 group-hover:border-[#EB4604]/40 group-hover:text-[#EB4604] group-hover:scale-105 transition-all duration-300 shrink-0">
@@ -559,7 +559,7 @@ export default function ContactPage() {
                   Téléphone
                 </h4>
                 <p className="text-xs sm:text-sm text-neutral-800 group-hover:text-[#EB4604] transition-colors font-semibold truncate">
-                  +221 78 528 63 30
+                  {siteConfig.contact.phone}
                 </p>
                 <span className="text-[10px] sm:text-xs text-neutral-400 font-light block truncate">
                   WhatsApp Direct • Appel

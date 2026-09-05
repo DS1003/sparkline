@@ -13,8 +13,8 @@ interface PageHeroProps {
   highlight?: string
   pillImage?: string
   subtitle: string
-  breadcrumbs?: { label: string; href: string }[]
-  metaItems?: { label: string; value: string }[]
+  breadcrumbs?: { label: string; shortLabel?: string; href: string }[]
+  metaItems?: { label: string; shortLabel?: string; value: string }[]
 }
 
 export function PageHero({
@@ -82,12 +82,15 @@ export function PageHero({
           )}
         </div>
 
-        {/* 4. Bottom Bar: Category / Meta & Breadcrumbs / Year */}
-        <div className="relative z-10 w-full pt-4 sm:pt-5 border-t border-white/10 flex items-center justify-between text-[10px] sm:text-xs font-mono text-neutral-400 uppercase tracking-wider xl:tracking-widest px-1 sm:px-2">
-          <span>
+        {/* 4. Bottom Bar: Category / Meta & Breadcrumbs / Year (Guaranteed Single-Line on Mobile) */}
+        <div className="relative z-10 w-full pt-3 sm:pt-5 border-t border-white/10 flex items-center justify-between text-[9px] sm:text-xs font-mono text-neutral-400 uppercase tracking-wider xl:tracking-widest px-0.5 sm:px-2 whitespace-nowrap gap-2 overflow-hidden">
+          <span className="shrink-0 truncate">
             {metaItems && metaItems.length > 0 ? (
               <span>
-                <span className="text-[#EB4604] font-bold">+</span> {metaItems[0].label}: <span className="text-white">{metaItems[0].value}</span>
+                <span className="text-[#EB4604] font-bold">+</span>{' '}
+                <span className="sm:hidden">{metaItems[0].shortLabel || metaItems[0].label}:</span>
+                <span className="hidden sm:inline">{metaItems[0].label}:</span>{' '}
+                <span className="text-white">{metaItems[0].value}</span>
               </span>
             ) : (
               'STUDIO DIGITAL & CRÉATIF'
@@ -95,25 +98,29 @@ export function PageHero({
           </span>
 
           {breadcrumbs && breadcrumbs.length > 0 ? (
-            <div className="flex items-center gap-1.5 text-neutral-400">
-              <Link href="/" className="hover:text-white transition-colors">
+            <div className="flex items-center gap-1 sm:gap-1.5 text-neutral-400 shrink-0 justify-end">
+              <Link href="/" className="hover:text-white transition-colors shrink-0">
                 Accueil
               </Link>
               {breadcrumbs.map((crumb, idx) => (
                 <React.Fragment key={idx}>
-                  <span className="text-neutral-600">/</span>
-                  <Link href={crumb.href} className="hover:text-[#EB4604] transition-colors">
-                    {crumb.label}
+                  <span className="text-neutral-600 shrink-0">/</span>
+                  <Link href={crumb.href} className="hover:text-[#EB4604] transition-colors shrink-0">
+                    <span className="sm:hidden">{crumb.shortLabel || crumb.label}</span>
+                    <span className="hidden sm:inline">{crumb.label}</span>
                   </Link>
                 </React.Fragment>
               ))}
             </div>
           ) : metaItems && metaItems.length > 1 ? (
-            <span>
-              <span className="text-[#EB4604] font-bold">+</span> {metaItems[1].label}: <span className="text-white">{metaItems[1].value}</span>
+            <span className="shrink-0 truncate">
+              <span className="text-[#EB4604] font-bold">+</span>{' '}
+              <span className="sm:hidden">{metaItems[1].shortLabel || metaItems[1].label}:</span>
+              <span className="hidden sm:inline">{metaItems[1].label}:</span>{' '}
+              <span className="text-white">{metaItems[1].value}</span>
             </span>
           ) : (
-            <span>DEPUIS 2024</span>
+            <span className="shrink-0">DEPUIS 2024</span>
           )}
         </div>
       </div>

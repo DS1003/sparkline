@@ -186,8 +186,8 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                 {siteConfig.contact.email}
               </a>
               <span className="text-neutral-300">•</span>
-              <a href="tel:+221785286330" className="hover:text-neutral-900 transition-colors shrink-0">
-                +221 78 528 63 30
+              <a href={`tel:${siteConfig.contact.phone.replace(/\s+/g, '')}`} className="hover:text-neutral-900 transition-colors shrink-0">
+                {siteConfig.contact.phone}
               </a>
             </div>
           </div>

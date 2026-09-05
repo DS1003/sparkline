@@ -7,16 +7,14 @@ export const siteConfig = {
   url: 'https://sparkline.sn',
   ogImage: 'https://sparkline.sn/images/brand/sparkline-logo.png',
   contact: {
-    phone: '+221 78 528 63 30',
+    phone: '+221 78 942 24 23',
     email: 'sparkline221@gmail.com',
     website: 'https://sparkline.sn',
   },
   socials: {
-    linkedin: 'https://linkedin.com/company/sparkline-sn',
-    instagram: 'https://instagram.com/sparkline_sn',
-    twitter: 'https://twitter.com/sparkline_sn',
-    facebook: 'https://facebook.com/sparkline.sn',
-    youtube: 'https://youtube.com/@sparkline_sn',
+    linkedin: 'https://www.linkedin.com/in/sparkline-/',
+    instagram: 'https://www.instagram.com/sparkline221?igsi=MWhuYWI4anZ2d3pqdQ==',
+    facebook: 'https://www.facebook.com/profile.php?id=61571444070883',
   },
   keywords: [
     'transformation digitale',
