@@ -42,12 +42,6 @@ export function Hero() {
           </div>
         </div>
 
-        {/* Mobile Centered Symmetrical Gradient (Protects text legibility without pulling visual weight left) */}
-        <div className="absolute inset-0 block md:hidden bg-gradient-to-b from-[#070709]/60 via-[#070709]/30 to-[#070709]/95 pointer-events-none" />
-
-        {/* Desktop Left-Side Contrast Shadow (Terminates strictly after the title text ~42%) */}
-        <div className="absolute inset-0 hidden md:block bg-gradient-to-r from-[#070709]/90 from-0% via-[#070709]/60 via-30% to-transparent to-50% pointer-events-none" />
-
         {/* Top Navbar with Official Logo */}
         <Navbar />
 
@@ -112,24 +106,24 @@ export function Hero() {
           <SparkTitle lines={['Concevoir la', 'nouvelle génération', 'de marques']} />
 
           <RevealOnScroll delay={0.3} className="hero-subtext">
-            <p className="text-xs sm:text-sm lg:text-[13px] xl:text-base text-neutral-300 max-w-md xl:max-w-lg font-normal leading-relaxed">
+            <p className="text-xs sm:text-sm lg:text-[13px] xl:text-base text-neutral-100 max-w-md xl:max-w-lg font-normal leading-relaxed drop-shadow-[0_2px_4px_rgba(0,0,0,0.85)]">
               Accompagner les marques dans leur lancement, leur croissance et leur leadership grâce à un design d'exception.
             </p>
           </RevealOnScroll>
         </div>
 
         {/* Bottom Split Row: Left Subheading & Metadata | Right Action Buttons */}
-        <div className="hero-bottom-bar relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-3 sm:gap-4 lg:gap-6 items-end pt-2.5 sm:pt-3.5 lg:pt-3 xl:pt-5 border-t border-white/10">
+        <div className="hero-bottom-bar relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-3 sm:gap-4 lg:gap-6 items-end pt-2.5 sm:pt-3.5 lg:pt-3 xl:pt-5 border-t border-white/20">
           {/* Left Column: Subheading & Metadata */}
           <div className="lg:col-span-7 flex flex-col items-center text-center lg:items-start lg:text-left space-y-2 sm:space-y-2.5">
             <RevealOnScroll delay={0.4}>
-              <h2 className="text-xs sm:text-sm lg:text-sm xl:text-lg font-medium text-white max-w-md xl:max-w-lg leading-snug">
+              <h2 className="text-xs sm:text-sm lg:text-sm xl:text-lg font-medium text-white max-w-md xl:max-w-lg leading-snug drop-shadow-[0_2px_4px_rgba(0,0,0,0.85)]">
                 Branding, design et conception d'applications mobiles & web pour startups et leaders
               </h2>
             </RevealOnScroll>
 
             <RevealOnScroll delay={0.45}>
-              <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3 sm:gap-4 xl:gap-6 text-[8.5px] sm:text-[10px] xl:text-xs font-mono text-neutral-400 uppercase tracking-wider xl:tracking-widest pt-0.5">
+              <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3 sm:gap-4 xl:gap-6 text-[8.5px] sm:text-[10px] xl:text-xs font-mono text-neutral-200 uppercase tracking-wider xl:tracking-widest pt-0.5 drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)]">
                 <div className="flex items-center gap-1.5">
                   <svg viewBox="0 0 24 24" className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-[#EB4604]" fill="currentColor">
                     <path d="M12 0C12 0 12 10.5 24 12C24 12 12 13.5 12 24C12 24 12 13.5 0 12C0 12 12 10.5 12 0Z" />

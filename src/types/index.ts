@@ -58,6 +58,7 @@ export interface TeamMember {
   socials?: {
     linkedin?: string
     github?: string
+    instagram?: string
     twitter?: string
   }
 }

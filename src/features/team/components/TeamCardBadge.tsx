@@ -228,7 +228,20 @@ export function TeamCardBadge({ member }: TeamCardBadgeProps) {
                 </a>
               )}
 
-              {member.socials?.github && (
+              {member.socials?.instagram && (
+                <a
+                  href={member.socials.instagram}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(e) => e.stopPropagation()}
+                  className="flex-1 py-2 sm:py-2.5 px-3 sm:px-4 rounded-full bg-gradient-to-r from-[#833AB4] via-[#FD1D1D] to-[#F77737] hover:opacity-90 text-white text-[11px] sm:text-xs font-semibold text-center transition-all duration-300 flex items-center justify-center gap-1 shadow-sm active:scale-98"
+                >
+                  <span>Instagram</span>
+                  <span className="text-[9px]">↗</span>
+                </a>
+              )}
+
+              {!member.socials?.instagram && member.socials?.github && (
                 <a
                   href={member.socials.github}
                   target="_blank"

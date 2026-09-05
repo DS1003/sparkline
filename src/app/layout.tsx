@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
 import { siteConfig } from '@/config/site'
 import { ScrollToTop } from '@/components/ui/ScrollToTop'
+import { ScrollProgressBar } from '@/components/ui/ScrollProgressBar'
 import { BubbleNav } from '@/components/layout/BubbleNav'
 import { ClickSpark } from '@/components/effects/ClickSpark'
 import { SmoothScrollProvider } from '@/components/layout/SmoothScrollProvider'
@@ -81,6 +82,7 @@ export default function RootLayout({
           duration={350}
           easing="ease-out"
         >
+          <ScrollProgressBar />
           <SmoothScrollProvider>
             <BubbleNav />
             {children}

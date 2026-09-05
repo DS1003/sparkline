@@ -305,7 +305,7 @@ export function SparkTitle({
                       : 'transparent',
                     textShadow: isCurrentTip
                       ? '0 0 10px #FFFFFF, 0 0 20px #FF9100, 0 0 35px #EB4604'
-                      : 'none',
+                      : '0 2px 10px rgba(0,0,0,0.65), 0 1px 3px rgba(0,0,0,0.8)',
                   }}
                 >
                   {char === ' ' ? '\u00A0' : char}

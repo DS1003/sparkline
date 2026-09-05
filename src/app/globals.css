@@ -1,8 +1,54 @@
 @import "tailwindcss";
 
+/* ─── Custom Bespoke SPARKLINE Scrollbar ─── */
+:root {
+  --scrollbar-track: #070709;
+  --scrollbar-thumb: #EB4604;
+  --scrollbar-thumb-hover: #FF6A1A;
+}
+
+/* W3C Standard (Firefox & compliant engines) */
 html {
   scrollbar-gutter: stable;
   overflow-y: scroll;
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+}
+
+/* WebKit / Chromium Browsers (Chrome, Safari, Edge, Arc, Brave) */
+::-webkit-scrollbar {
+  width: 9px;
+  height: 9px;
+  background-color: var(--scrollbar-track);
+}
+
+::-webkit-scrollbar-track {
+  background: #070709;
+  border-left: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #FFB901 0%, #EB4604 55%, #D43D00 100%);
+  border-radius: 9999px;
+  border: 2px solid #070709;
+  background-clip: padding-box;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.35);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #FFD043 0%, #FF6A1A 50%, #EB4604 100%);
+  border: 1.5px solid #070709;
+  box-shadow: 0 0 12px rgba(235, 70, 4, 0.75), inset 0 1px 2px rgba(255, 255, 255, 0.5);
+}
+
+::-webkit-scrollbar-thumb:active {
+  background: linear-gradient(180deg, #FF6A1A 0%, #EB4604 70%, #B83200 100%);
+  box-shadow: 0 0 16px rgba(235, 70, 4, 0.95);
+}
+
+::-webkit-scrollbar-corner {
+  background: #070709;
 }
 
 /* ─── Geist Typography System ─── */
