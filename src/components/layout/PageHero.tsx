@@ -98,17 +98,24 @@ export function PageHero({
           </span>
 
           {breadcrumbs && breadcrumbs.length > 0 ? (
-            <div className="flex items-center gap-1 sm:gap-1.5 text-neutral-400 shrink-0 justify-end">
-              <Link href="/" className="hover:text-white transition-colors shrink-0">
+            <div className="flex items-center gap-1 sm:gap-1.5 text-neutral-400 shrink-0 justify-end font-medium">
+              <Link href="/" className="hover:text-white transition-colors duration-200 shrink-0">
                 Accueil
               </Link>
               {breadcrumbs.map((crumb, idx) => (
                 <React.Fragment key={idx}>
-                  <span className="text-neutral-600 shrink-0">/</span>
-                  <Link href={crumb.href} className="hover:text-[#EB4604] transition-colors shrink-0">
-                    <span className="sm:hidden">{crumb.shortLabel || crumb.label}</span>
-                    <span className="hidden sm:inline">{crumb.label}</span>
-                  </Link>
+                  <span className="text-white/40 shrink-0">/</span>
+                  {idx === breadcrumbs.length - 1 ? (
+                    <span className="text-[#EB4604] shrink-0">
+                      <span className="sm:hidden">{crumb.shortLabel || crumb.label}</span>
+                      <span className="hidden sm:inline">{crumb.label}</span>
+                    </span>
+                  ) : (
+                    <Link href={crumb.href} className="hover:text-white transition-colors duration-200 shrink-0">
+                      <span className="sm:hidden">{crumb.shortLabel || crumb.label}</span>
+                      <span className="hidden sm:inline">{crumb.label}</span>
+                    </Link>
+                  )}
                 </React.Fragment>
               ))}
             </div>

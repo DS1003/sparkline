@@ -26,16 +26,12 @@ export default async function AboutPage() {
       {/* 1. Stodio-Inspired About Hero Section */}
       <section className="w-full bg-white p-2.5 sm:p-3.5 md:p-4 lg:p-5">
         <div className="relative rounded-2xl md:rounded-[20px] bg-[#070709] text-white overflow-hidden p-5 sm:p-7 lg:p-8 xl:p-11 min-h-[440px] sm:min-h-[480px] lg:min-h-[500px] xl:min-h-[560px] flex flex-col justify-between items-center text-center shadow-2xl">
-          {/* Subtle Ambient Studio Background */}
-          <div
-            className="absolute inset-0 bg-cover bg-center opacity-15 mix-blend-luminosity scale-105 pointer-events-none"
-            style={{
-              backgroundImage: `url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2064&auto=format&fit=crop')`,
-            }}
-          />
+          {/* High-Performance Lightweight Ambient Lighting (Zero External Network Overhead) */}
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(235,70,4,0.14)_0%,transparent_65%)] pointer-events-none" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,rgba(255,185,1,0.06)_0%,transparent_60%)] pointer-events-none" />
 
           {/* Central Radial Glow */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-tr from-[#EB4604]/20 via-[#FFB901]/10 to-transparent rounded-full blur-[150px] pointer-events-none" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] sm:w-[600px] h-[400px] sm:h-[600px] bg-gradient-to-tr from-[#EB4604]/20 via-[#FFB901]/10 to-transparent rounded-full blur-[100px] sm:blur-[150px] pointer-events-none" />
 
           {/* Integrated Navbar Inside Hero Card (Matches Homepage) */}
           <Navbar />
@@ -50,15 +46,19 @@ export default async function AboutPage() {
           {/* Center: Hero Headline with Inline Portrait Pill */}
           <div className="relative z-10 my-auto max-w-5xl py-4 sm:py-6 space-y-3 sm:space-y-4">
             <RevealOnScroll delay={0.1}>
-              <h1 className="text-3xl sm:text-5xl md:text-5xl lg:text-[56px] xl:text-7xl 2xl:text-8xl font-bold tracking-tight text-white leading-[1.08]">
+              <h1
+                className="text-3xl sm:text-5xl md:text-5xl lg:text-[56px] xl:text-7xl 2xl:text-8xl font-bold tracking-tight text-white leading-[1.08]"
+                style={{ fontFamily: 'var(--font-family--primary-font)' }}
+              >
                 Bâtir des réussites
                 <br className="hidden sm:inline" />
                 {' '}<span className="text-[#EB4604]">digitales</span>{' '}
-                <span className="inline-flex items-center align-middle mx-1 sm:mx-2.5 my-0.5 overflow-hidden rounded-full w-12 h-7 sm:w-16 sm:h-10 md:w-18 md:h-11 xl:w-24 xl:h-14 border-2 border-white/30 shadow-lg relative shrink-0">
+                <span className="inline-flex items-center align-middle mx-1 sm:mx-2.5 my-0.5 overflow-hidden rounded-full w-12 h-7 sm:w-16 sm:h-10 md:w-18 md:h-11 xl:w-24 xl:h-14 border-2 border-white/30 shadow-lg relative shrink-0 transition-transform duration-300 hover:scale-105">
                   <Image
                     src="/images/asset-usage/ChatGPT Image Sep 3, 2026, 12_52_44 AM.webp"
                     alt="Créateur SPARKLINE"
                     fill
+                    priority
                     quality={95}
                     className="object-cover"
                     sizes="120px"
@@ -69,10 +69,16 @@ export default async function AboutPage() {
             </RevealOnScroll>
           </div>
 
-          {/* Bottom Bar: Agency Category & Year */}
-          <div className="relative z-10 w-full pt-4 sm:pt-5 border-t border-white/10 flex items-center justify-between text-[10px] sm:text-xs font-mono text-neutral-400 uppercase tracking-wider xl:tracking-widest px-1 sm:px-2">
-            <span>STUDIO DIGITAL & CRÉATIF</span>
-            <span>DEPUIS 2024</span>
+          {/* Bottom Bar: Agency Category & Breadcrumbs (Unified with all sub-pages) */}
+          <div className="relative z-10 w-full pt-3 sm:pt-5 border-t border-white/10 flex items-center justify-between text-[9px] sm:text-xs font-mono text-neutral-400 uppercase tracking-wider xl:tracking-widest px-0.5 sm:px-2 whitespace-nowrap gap-2 overflow-hidden">
+            <span className="shrink-0 truncate">STUDIO DIGITAL & CRÉATIF</span>
+            <span className="shrink-0 font-medium inline-flex items-center gap-1 sm:gap-1.5">
+              <Link href="/" className="hover:text-white transition-colors duration-200">
+                Accueil
+              </Link>
+              <span className="text-white/40">/</span>
+              <span className="text-[#EB4604]">À propos</span>
+            </span>
           </div>
         </div>
       </section>

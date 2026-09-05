@@ -39,19 +39,22 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
       {/* Case Study Hero */}
       <section className="w-full bg-white p-2.5 sm:p-4 lg:p-5">
         <div className="relative rounded-2xl md:rounded-[20px] bg-[#070709] text-white overflow-hidden p-6 sm:p-8 lg:p-12 min-h-[520px] flex flex-col justify-between shadow-2xl">
+          {/* High-Performance Lightweight Ambient Lighting */}
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(235,70,4,0.14)_0%,transparent_65%)] pointer-events-none" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,rgba(255,185,1,0.06)_0%,transparent_60%)] pointer-events-none" />
           <div className="absolute top-1/2 left-1/3 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[550px] bg-gradient-to-tr from-[#EB4604]/20 via-[#FFB901]/10 to-transparent rounded-full blur-[140px] pointer-events-none" />
 
           {/* Integrated Navbar Inside Hero Card */}
           <Navbar />
 
           {/* Top: Breadcrumbs + Meta */}
-          <div className="relative z-10 flex flex-wrap items-center justify-between gap-4 pt-6">
-            <div className="flex items-center gap-2 text-xs font-mono text-neutral-400">
-              <Link href="/" className="hover:text-white transition-colors">Accueil</Link>
-              <span className="text-neutral-600">/</span>
-              <Link href="/projects" className="hover:text-[#EB4604] transition-colors">Projets</Link>
-              <span className="text-neutral-600">/</span>
-              <span className="text-white">{project.title}</span>
+          <div className="relative z-10 flex flex-wrap items-center justify-between gap-4 pt-6 font-medium">
+            <div className="flex items-center gap-1 sm:gap-1.5 text-xs font-mono text-neutral-400 uppercase tracking-wider">
+              <Link href="/" className="hover:text-white transition-colors duration-200">Accueil</Link>
+              <span className="text-white/40">/</span>
+              <Link href="/projects" className="hover:text-white transition-colors duration-200">Projets</Link>
+              <span className="text-white/40">/</span>
+              <span className="text-[#EB4604]">{project.title}</span>
             </div>
             <span className="text-xs font-mono text-neutral-500">{project.year}</span>
           </div>

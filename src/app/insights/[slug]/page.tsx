@@ -32,20 +32,22 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
 
   return (
     <main className="min-h-screen bg-white text-neutral-900">
-      {/* Article Hero */}
       <section className="w-full bg-white p-2.5 sm:p-4 lg:p-5">
         <div className="relative rounded-2xl md:rounded-[20px] bg-[#070709] text-white overflow-hidden p-6 sm:p-8 lg:p-12 min-h-[420px] flex flex-col justify-between shadow-2xl">
+          {/* High-Performance Lightweight Ambient Lighting */}
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(235,70,4,0.14)_0%,transparent_65%)] pointer-events-none" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,rgba(255,185,1,0.06)_0%,transparent_60%)] pointer-events-none" />
           <div className="absolute top-1/2 left-1/3 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-gradient-to-tr from-[#EB4604]/20 via-[#FFB901]/10 to-transparent rounded-full blur-[140px] pointer-events-none" />
 
           {/* Integrated Navbar Inside Hero Card */}
           <Navbar />
 
-          <div className="relative z-10 flex items-center gap-2 text-xs font-mono text-neutral-400 pt-6">
-            <Link href="/" className="hover:text-white transition-colors">Accueil</Link>
-            <span className="text-neutral-600">/</span>
-            <Link href="/insights" className="hover:text-[#EB4604] transition-colors">Insights</Link>
-            <span className="text-neutral-600">/</span>
-            <span className="text-white truncate max-w-[200px]">{article.title}</span>
+          <div className="relative z-10 flex items-center gap-1 sm:gap-1.5 text-xs font-mono text-neutral-400 uppercase tracking-wider pt-6 font-medium">
+            <Link href="/" className="hover:text-white transition-colors duration-200">Accueil</Link>
+            <span className="text-white/40">/</span>
+            <Link href="/insights" className="hover:text-white transition-colors duration-200">Insights</Link>
+            <span className="text-white/40">/</span>
+            <span className="text-[#EB4604] truncate max-w-[280px]">{article.title}</span>
           </div>
 
           <div className="relative z-10 my-auto max-w-3xl py-8 space-y-5">
