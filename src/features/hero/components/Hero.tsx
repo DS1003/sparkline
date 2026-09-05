@@ -113,7 +113,7 @@ export function Hero() {
         </div>
 
         {/* Bottom Split Row: Left Subheading & Metadata | Right Action Buttons */}
-        <div className="hero-bottom-bar relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-3 sm:gap-4 lg:gap-6 items-end pt-2.5 sm:pt-3.5 lg:pt-3 xl:pt-5">
+        <div className="hero-bottom-bar relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-3 sm:gap-4 lg:gap-6 items-end pt-3 sm:pt-4 lg:pt-4 xl:pt-5.5 border-t border-white/[0.2]">
           {/* Left Column: Subheading & Metadata */}
           <div className="lg:col-span-7 flex flex-col items-center text-center lg:items-start lg:text-left space-y-2 sm:space-y-2.5">
             <RevealOnScroll delay={0.4}>
