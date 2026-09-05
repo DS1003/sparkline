@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
 import { siteConfig } from '@/config/site'
@@ -61,6 +61,11 @@ export const metadata: Metadata = {
     creator: '@sparkline_sn',
   },
   metadataBase: new URL(siteConfig.url),
+}
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
 }
 
 export default function RootLayout({

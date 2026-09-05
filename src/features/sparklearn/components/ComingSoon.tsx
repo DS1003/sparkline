@@ -128,7 +128,7 @@ export function ComingSoon() {
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder="Entrez votre e-mail..."
                         required
-                        className="bg-transparent text-white placeholder:text-neutral-400 focus:outline-none w-full text-xs sm:text-sm font-normal py-1 pr-2"
+                        className="bg-transparent text-white placeholder:text-neutral-400 focus:outline-none w-full text-base sm:text-sm font-normal py-1 pr-2 touch-manipulation"
                       />
                       <button
                         type="submit"
