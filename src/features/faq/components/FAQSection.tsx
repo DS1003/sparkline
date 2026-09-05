@@ -140,8 +140,12 @@ export function FAQSection() {
                           : 'bg-white border-neutral-200/80 text-neutral-600 group-hover:border-neutral-300 group-hover:bg-white group-hover:text-[#0A0A0A]'
                           }`}
                       >
-                        <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+                        <svg
+                          viewBox="0 0 24 24"
+                          className="w-3.5 h-3.5 sm:w-4 sm:h-4"
+                          fill="currentColor"
+                        >
+                          <path d="M12 0C12 0 12 10.5 24 12C24 12 12 13.5 12 24C12 24 12 13.5 0 12C0 12 12 10.5 12 0Z" />
                         </svg>
                       </div>
                     </div>
