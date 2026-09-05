@@ -13,15 +13,23 @@ interface TeamShowcaseProps {
   members: TeamMember[]
 }
 
-const departments = ['Tous les talents', 'Engineering', 'Design & UX', 'Product & Tech', 'DevOps & SRE']
+const departments = ['Tous les talents', 'Engineering', 'Design & UX', 'Product & Tech', 'DevOps & SRE', 'ServiceNow']
 
 export function TeamShowcase({ members }: TeamShowcaseProps) {
   const [activeDept, setActiveDept] = useState('Tous les talents')
 
   const filteredMembers = members.filter((member) => {
     if (activeDept === 'Tous les talents') return true
+    if (activeDept === 'ServiceNow') {
+      return (
+        member.slug === 'ndiaga-lo' ||
+        member.role.toLowerCase().includes('servicenow') ||
+        member.skills.some((s) => s.toLowerCase().includes('servicenow')) ||
+        member.specialties.some((s) => s.toLowerCase().includes('servicenow'))
+      )
+    }
     if (activeDept === 'Engineering') {
-      return member.department === 'Engineering' || member.role.toLowerCase().includes('full stack') || member.role.toLowerCase().includes('logiciel')
+      return true
     }
     if (activeDept === 'Design & UX') {
       return member.department === 'Design & Engineering' || member.role.toLowerCase().includes('ui/ux') || member.role.toLowerCase().includes('designer')
@@ -67,7 +75,7 @@ export function TeamShowcase({ members }: TeamShowcaseProps) {
         {/* ── 2. Filter Pills ── */}
         <div className="mb-8 sm:mb-12">
           <RevealOnScroll delay={0.2}>
-            {/* Desktop / Tablet: Unified Centered Capsule */}
+            {/* Desktop / Tablet: Unified Capsule */}
             <div className="hidden sm:inline-flex items-center gap-2 p-1.5 rounded-full bg-white border border-[#E5E7EB] shadow-xs">
               {departments.map((dept) => {
                 const isSelected = activeDept === dept
@@ -88,14 +96,14 @@ export function TeamShowcase({ members }: TeamShowcaseProps) {
             </div>
 
             {/* Mobile: Centered Flex-Wrap Chips (Zero Horizontal Scroll) */}
-            <div className="sm:hidden flex flex-wrap items-center gap-1.5 pt-1">
+            <div className="sm:hidden flex flex-wrap items-center justify-center gap-2 pt-1 mx-auto max-w-sm">
               {departments.map((dept) => {
                 const isSelected = activeDept === dept
                 return (
                   <button
                     key={dept}
                     onClick={() => setActiveDept(dept)}
-                    className={`px-3 py-1.5 rounded-full text-[11px] font-mono transition-all duration-300 cursor-pointer ${
+                    className={`px-3.5 py-1.5 rounded-full text-[11px] font-mono transition-all duration-200 cursor-pointer touch-manipulation active:scale-95 ${
                       isSelected
                         ? 'bg-[#EB4604] text-white font-semibold shadow-sm shadow-[#EB4604]/20'
                         : 'bg-white text-neutral-600 border border-[#E5E7EB] shadow-2xs active:bg-neutral-100'
@@ -112,7 +120,7 @@ export function TeamShowcase({ members }: TeamShowcaseProps) {
         {/* ── 3. High-Precision Badge Grid (1-Col Mobile / 2-Cols Tablet / 4-Cols Desktop) ── */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-6 lg:gap-8 max-w-[360px] sm:max-w-none mx-auto">
           {filteredMembers.map((member, idx) => (
-            <RevealOnScroll key={member.slug} delay={0.05 + idx * 0.08} direction="up">
+            <RevealOnScroll key={member.slug} delay={Math.min(idx * 0.04, 0.12)} direction="up">
               <TeamCardBadge member={member} index={idx} />
             </RevealOnScroll>
           ))}

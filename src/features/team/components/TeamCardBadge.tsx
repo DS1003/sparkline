@@ -9,7 +9,7 @@ interface TeamCardBadgeProps {
   index?: number
 }
 
-export function TeamCardBadge({ member }: TeamCardBadgeProps) {
+export function TeamCardBadge({ member, index }: TeamCardBadgeProps) {
   const [isFlipped, setIsFlipped] = useState(false)
   const isTouchDevice = useRef(false)
   const avatarSrc = member.avatar || '/images/brand/Seydina.webp'
@@ -40,7 +40,7 @@ export function TeamCardBadge({ member }: TeamCardBadgeProps) {
 
   return (
     <div
-      className="relative w-full aspect-[7/10.4] select-none cursor-pointer group"
+      className="relative w-full aspect-[7/10.4] select-none cursor-pointer group touch-manipulation"
       style={{ perspective: '1200px' }}
       onTouchStart={handleTouchStart}
       onMouseEnter={handleMouseEnter}
@@ -48,7 +48,7 @@ export function TeamCardBadge({ member }: TeamCardBadgeProps) {
       onClick={handleClick}
       role="button"
       tabIndex={0}
-      aria-label={`Carte de ${member.name} — Cliquer ou survoler pour détails`}
+      aria-label={`Carte de ${member.name} — Cliquer ou toucher pour détails`}
       onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault()
@@ -56,20 +56,20 @@ export function TeamCardBadge({ member }: TeamCardBadgeProps) {
         }
       }}
     >
-      {/* ── 3D Flipper Box with GPU Acceleration ── */}
+      {/* ── 3D Flipper Box with Hardware Acceleration ── */}
       <div
-        className="relative w-full h-full rounded-[24px] sm:rounded-[30px] will-change-transform"
+        className="relative w-full h-full rounded-[24px] sm:rounded-[30px]"
         style={{
           transformStyle: 'preserve-3d',
           transform: isFlipped ? 'rotateY(180deg) translateY(-4px) scale(1.015)' : 'rotateY(0deg) translateY(0) scale(1)',
-          transition: 'transform 0.75s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s ease',
+          transition: 'transform 0.55s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease',
           boxShadow: isFlipped
             ? '0 20px 50px -10px rgba(0, 0, 0, 0.12), 0 10px 25px rgba(235, 70, 4, 0.08)'
             : '0 6px 20px rgba(0, 0, 0, 0.04)',
         }}
       >
         {/* ═══════════════════════════════════════════════════════════
-            FRONT FACE: Official Poster Badge Image (Isolated for iOS)
+            FRONT FACE: Official Poster Badge Image
             ═══════════════════════════════════════════════════════════ */}
         <div
           className={`absolute inset-0 w-full h-full rounded-[24px] sm:rounded-[30px] bg-white border border-[#E5E7EB] overflow-hidden flex flex-col justify-between transition-opacity duration-300 ${
@@ -86,23 +86,24 @@ export function TeamCardBadge({ member }: TeamCardBadgeProps) {
               src={avatarSrc}
               alt={`${member.name} — ${member.role}`}
               fill
-              quality={90}
+              priority={index !== undefined && index < 4}
+              quality={80}
               className="object-cover"
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 360px"
+              sizes="(max-width: 640px) 90vw, (max-width: 1024px) 50vw, 360px"
             />
 
             {/* Centered Circular Glassmorphism Flip Cue */}
             {!isFlipped && (
-              <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10 opacity-95 sm:opacity-0 sm:group-hover:opacity-100 transition-all duration-300">
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10 opacity-95 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300">
                 <div className="relative flex items-center justify-center">
-                  {/* Subtle pulsing warmth halo */}
-                  <div className="absolute -inset-2.5 rounded-full bg-gradient-to-tr from-[#EB4604]/30 via-white/10 to-[#FFB901]/30 blur-md animate-pulse pointer-events-none" />
+                  {/* Static hardware-accelerated glowing halo (zero CPU repaint) */}
+                  <div className="absolute -inset-2 rounded-full bg-gradient-to-tr from-[#EB4604]/25 via-white/10 to-[#FFB901]/25 blur-sm pointer-events-none" />
 
-                  {/* Circular 3D Glassmorphism Disc */}
-                  <div className="relative w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-black/30 sm:bg-black/35 backdrop-blur-xl border border-white/50 shadow-[0_8px_32px_rgba(0,0,0,0.35),inset_0_1.5px_2px_rgba(255,255,255,0.7),inset_0_-1.5px_2px_rgba(0,0,0,0.2)] flex items-center justify-center text-white transition-transform duration-500 group-hover:scale-110 group-active:scale-95">
+                  {/* Circular 3D Glassmorphism Disc (Lightweight blur) */}
+                  <div className="relative w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-black/35 backdrop-blur-md border border-white/50 shadow-[0_4px_20px_rgba(0,0,0,0.3),inset_0_1px_1.5px_rgba(255,255,255,0.6)] flex items-center justify-center text-white transition-transform duration-300 group-hover:scale-110 active:scale-95">
                     <svg
                       viewBox="0 0 24 24"
-                      className="w-5 h-5 sm:w-6 sm:h-6 text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.6)] transition-transform duration-700 ease-out group-hover:rotate-180"
+                      className="w-5 h-5 sm:w-6 sm:h-6 text-white drop-shadow-[0_1.5px_3px_rgba(0,0,0,0.6)] transition-transform duration-500 ease-out group-hover:rotate-180"
                       fill="none"
                       stroke="currentColor"
                       strokeWidth={2}
@@ -122,7 +123,7 @@ export function TeamCardBadge({ member }: TeamCardBadgeProps) {
         </div>
 
         {/* ═══════════════════════════════════════════════════════════
-            BACK FACE: High-End Digital Pass Profile (Isolated for iOS)
+            BACK FACE: High-End Digital Pass Profile
             ═══════════════════════════════════════════════════════════ */}
         <div
           className={`absolute inset-0 w-full h-full rounded-[24px] sm:rounded-[30px] bg-white border border-neutral-200 text-neutral-900 p-4.5 sm:p-5 lg:p-6 flex flex-col justify-between overflow-hidden shadow-xl transition-opacity duration-300 ${
@@ -134,13 +135,16 @@ export function TeamCardBadge({ member }: TeamCardBadgeProps) {
             transform: 'rotateY(180deg) translateZ(1px)',
           }}
         >
-          {/* Ambient Background Watermark */}
+          {/* Ambient Background Watermark (Lightweight direct vector image) */}
           <div className="absolute -top-10 -right-10 w-44 h-44 opacity-[0.04] pointer-events-none select-none">
-            <Image
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
               src="/images/brand/sparkline-symbol.svg"
               alt=""
-              fill
-              className="object-contain"
+              width={176}
+              height={176}
+              loading="lazy"
+              className="w-full h-full object-contain"
             />
           </div>
 
@@ -148,11 +152,13 @@ export function TeamCardBadge({ member }: TeamCardBadgeProps) {
           <div className="relative z-10 flex items-center justify-between gap-2 border-b border-neutral-100 pb-2.5 sm:pb-3 shrink-0">
             <div className="flex items-center gap-1.5 shrink-0">
               <div className="relative w-4.5 h-4.5 sm:w-5 sm:h-5 shrink-0">
-                <Image
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
                   src="/images/brand/sparkline-symbol.svg"
                   alt="Sparkline"
-                  fill
-                  className="object-contain"
+                  width={20}
+                  height={20}
+                  className="w-full h-full object-contain"
                 />
               </div>
               <span
