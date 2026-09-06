@@ -86,8 +86,10 @@ export function PageHero({
         <div className="relative z-10 w-full pt-3 sm:pt-5 border-t border-white/10 flex items-center justify-between text-[9px] sm:text-xs font-mono text-neutral-400 uppercase tracking-wider xl:tracking-widest px-0.5 sm:px-2 whitespace-nowrap gap-2 overflow-hidden">
           <span className="shrink-0 truncate">
             {metaItems && metaItems.length > 0 ? (
-              <span>
-                <span className="text-[#EB4604] font-bold">+</span>{' '}
+              <span className="inline-flex items-center gap-1.5">
+                <svg viewBox="0 0 24 24" className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-[#EB4604] shrink-0 drop-shadow-[0_0_6px_rgba(235,70,4,0.6)]" fill="currentColor">
+                  <path d="M12 0C12 0 12 10.5 24 12C24 12 12 13.5 12 24C12 24 12 13.5 0 12C0 12 12 10.5 12 0Z" />
+                </svg>
                 <span className="sm:hidden">{metaItems[0].shortLabel || metaItems[0].label}:</span>
                 <span className="hidden sm:inline">{metaItems[0].label}:</span>{' '}
                 <span className="text-white">{metaItems[0].value}</span>
@@ -120,8 +122,10 @@ export function PageHero({
               ))}
             </div>
           ) : metaItems && metaItems.length > 1 ? (
-            <span className="shrink-0 truncate">
-              <span className="text-[#EB4604] font-bold">+</span>{' '}
+            <span className="shrink-0 truncate inline-flex items-center gap-1.5">
+              <svg viewBox="0 0 24 24" className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-[#EB4604] shrink-0 drop-shadow-[0_0_6px_rgba(235,70,4,0.6)]" fill="currentColor">
+                <path d="M12 0C12 0 12 10.5 24 12C24 12 12 13.5 12 24C12 24 12 13.5 0 12C0 12 12 10.5 12 0Z" />
+              </svg>
               <span className="sm:hidden">{metaItems[1].shortLabel || metaItems[1].label}:</span>
               <span className="hidden sm:inline">{metaItems[1].label}:</span>{' '}
               <span className="text-white">{metaItems[1].value}</span>

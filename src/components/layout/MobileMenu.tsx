@@ -143,7 +143,13 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
 
                     <div className="flex items-center gap-2">
                       {active ? (
-                        <span className="w-2 h-2 rounded-full bg-[#EB4604] shadow-[0_0_8px_rgba(235,70,4,0.7)] animate-pulse" />
+                        <svg
+                          viewBox="0 0 24 24"
+                          className="w-3.5 h-3.5 text-[#EB4604] drop-shadow-[0_0_8px_rgba(235,70,4,0.7)] shrink-0 animate-pulse"
+                          fill="currentColor"
+                        >
+                          <path d="M12 0C12 0 12 10.5 24 12C24 12 12 13.5 12 24C12 24 12 13.5 0 12C0 12 12 10.5 12 0Z" />
+                        </svg>
                       ) : (
                         <svg
                           className="w-4 h-4 text-neutral-300 group-hover:text-[#EB4604] group-hover:translate-x-0.5 transition-all duration-200"

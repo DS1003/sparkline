@@ -3,6 +3,7 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { motion } from 'framer-motion'
 import { Logo } from '../ui/Logo'
 import { MobileMenu } from './MobileMenu'
 
@@ -22,6 +23,7 @@ export function BubbleNav() {
   const [hasScrolled, setHasScrolled] = useState(false)
   const [collapsed, setCollapsed] = useState(false)
   const [hovered, setHovered] = useState(false)
+  const [hoveredLink, setHoveredLink] = useState<string | null>(null)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const lastScrollY = useRef(0)
   const ticking = useRef(false)
@@ -174,20 +176,44 @@ export function BubbleNav() {
                 }}
               >
                 {/* Nav links with clear gap and breathing room */}
-                <div className="flex items-center gap-1.5 px-0.5">
+                <div
+                  onMouseLeave={() => setHoveredLink(null)}
+                  className="flex items-center gap-1 px-0.5 relative"
+                >
                   {bubbleNavLinks.map((link) => {
                     const active = isActive(link.href)
+                    const activeLink = bubbleNavLinks.find((l) => isActive(l.href))
+                    const highlightedLink = hoveredLink ?? activeLink?.href ?? null
+                    const isHighlighted = highlightedLink === link.href
+
                     return (
                       <Link
                         key={link.href}
                         href={link.href}
-                        className={`relative px-3.5 py-1.5 rounded-full text-[13px] font-medium transition-all duration-200 whitespace-nowrap ${
-                          active
-                            ? 'text-white bg-[#EB4604] shadow-[0_2px_12px_rgba(235,70,4,0.45)] font-semibold'
-                            : 'text-neutral-300/85 hover:text-white hover:bg-white/[0.08]'
+                        onMouseEnter={() => setHoveredLink(link.href)}
+                        className={`relative px-3.5 py-1.5 rounded-full text-[13px] font-medium transition-colors duration-200 whitespace-nowrap select-none ${
+                          isHighlighted || active
+                            ? 'text-white'
+                            : 'text-neutral-300/80 hover:text-white'
                         }`}
                       >
-                        {link.label}
+                        {isHighlighted && (
+                          <motion.div
+                            layoutId="bubble-sliding-pill"
+                            className={`absolute inset-0 rounded-full pointer-events-none transition-colors duration-200 ${
+                              active
+                                ? 'bg-[#EB4604] shadow-[0_2px_12px_rgba(235,70,4,0.45)]'
+                                : 'bg-white/[0.12] border border-white/15 shadow-[0_2px_8px_rgba(0,0,0,0.3)]'
+                            }`}
+                            transition={{
+                              type: 'spring',
+                              stiffness: 380,
+                              damping: 30,
+                              mass: 0.8,
+                            }}
+                          />
+                        )}
+                        <span className="relative z-10">{link.label}</span>
                       </Link>
                     )
                   })}

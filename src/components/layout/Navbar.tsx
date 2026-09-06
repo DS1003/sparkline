@@ -3,6 +3,7 @@
 import React, { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { motion } from 'framer-motion'
 import { Logo } from '../ui/Logo'
 import { MobileMenu } from './MobileMenu'
 
@@ -19,12 +20,16 @@ const navLinks = [
 export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const pathname = usePathname()
+  const [hoveredPath, setHoveredPath] = useState<string | null>(null)
 
   const isActive = (path: string) => {
     if (path === '/' && pathname === '/') return true
     if (path !== '/' && pathname?.startsWith(path)) return true
     return false
   }
+
+  const activeLink = navLinks.find((link) => isActive(link.href))
+  const highlightedPath = hoveredPath ?? activeLink?.href ?? null
 
   return (
     <>
@@ -34,24 +39,58 @@ export function Navbar() {
           <Logo variant="white" size="md" />
         </Link>
 
-        {/* Desktop Nav Links — Sleek Floating Glassmorphic Capsule */}
-        <div className="navbar-navlinks hidden xl:flex items-center gap-1 p-1.5 rounded-full bg-neutral-900/60 backdrop-blur-2xl border border-white/10 shadow-[0_8px_32px_-4px_rgba(0,0,0,0.6),inset_0_1px_1px_rgba(255,255,255,0.12)]">
+        {/* Desktop Nav Links — Sleek Floating Glassmorphic Capsule Tube */}
+        <div
+          onMouseLeave={() => setHoveredPath(null)}
+          className="navbar-navlinks hidden xl:flex items-center gap-1 p-1.5 rounded-full bg-neutral-900/60 backdrop-blur-2xl border border-white/10 shadow-[0_8px_32px_-4px_rgba(0,0,0,0.6),inset_0_1px_1px_rgba(255,255,255,0.12)] relative"
+        >
           {navLinks.map((link) => {
             const active = isActive(link.href)
+            const isHighlighted = highlightedPath === link.href
+
             return (
               <Link
                 key={link.href}
                 href={link.href}
-                className={`relative px-4 py-1.5 rounded-full text-[13px] tracking-wide transition-all duration-200 flex items-center gap-1.5 ${
-                  active
-                    ? 'text-white font-semibold bg-white/[0.12] border border-white/15 shadow-[0_2px_10px_rgba(0,0,0,0.35),inset_0_1px_0_rgba(255,255,255,0.2)]'
-                    : 'text-neutral-400 font-medium hover:text-white hover:bg-white/[0.06]'
+                onMouseEnter={() => setHoveredPath(link.href)}
+                className={`relative px-4 py-1.5 rounded-full text-[13px] tracking-wide transition-colors duration-200 flex items-center gap-1.5 select-none ${
+                  isHighlighted || active
+                    ? 'text-white font-medium'
+                    : 'text-neutral-400 font-medium hover:text-neutral-200'
                 }`}
               >
-                {active && (
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#EB4604] shadow-[0_0_8px_#EB4604] shrink-0" />
+                {/* 3D Smooth Sliding Pill (Glides inside the tube like a capsule) */}
+                {isHighlighted && (
+                  <motion.div
+                    layoutId="navbar-sliding-pill"
+                    className="absolute inset-0 rounded-full bg-white/[0.13] border border-white/15 shadow-[0_2px_10px_rgba(0,0,0,0.35),inset_0_1px_0_rgba(255,255,255,0.25)] pointer-events-none"
+                    transition={{
+                      type: 'spring',
+                      stiffness: 380,
+                      damping: 30,
+                      mass: 0.8,
+                    }}
+                  />
                 )}
-                <span>{link.label}</span>
+
+                {/* Active Indicator Spark Icon */}
+                {active && (
+                  <motion.span
+                    layoutId="navbar-active-spark"
+                    className="relative z-10 flex items-center justify-center shrink-0 text-[#EB4604] drop-shadow-[0_0_6px_rgba(235,70,4,0.85)]"
+                    transition={{
+                      type: 'spring',
+                      stiffness: 380,
+                      damping: 30,
+                    }}
+                  >
+                    <svg viewBox="0 0 24 24" className="w-3 h-3" fill="currentColor">
+                      <path d="M12 0C12 0 12 10.5 24 12C24 12 12 13.5 12 24C12 24 12 13.5 0 12C0 12 12 10.5 12 0Z" />
+                    </svg>
+                  </motion.span>
+                )}
+
+                <span className="relative z-10">{link.label}</span>
               </Link>
             )
           })}

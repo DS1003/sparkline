@@ -183,7 +183,9 @@ export function ComingSoon() {
         {/* 3. Bottom Meta Bar */}
         <div className="relative z-10 w-full pt-3 sm:pt-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-[10px] sm:text-xs font-mono text-neutral-300 uppercase tracking-wider px-1 text-center sm:text-left">
           <div className="flex items-center justify-center sm:justify-start gap-2">
-            <span className="text-[#EB4604] font-bold">+</span>
+            <svg viewBox="0 0 24 24" className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-[#EB4604] shrink-0 drop-shadow-[0_0_6px_rgba(235,70,4,0.6)]" fill="currentColor">
+              <path d="M12 0C12 0 12 10.5 24 12C24 12 12 13.5 12 24C12 24 12 13.5 0 12C0 12 12 10.5 12 0Z" />
+            </svg>
             <span>Lancement : <span className="text-white font-semibold">Q1 2027</span></span>
           </div>
 

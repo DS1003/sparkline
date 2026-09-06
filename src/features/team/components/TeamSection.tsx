@@ -12,8 +12,8 @@ import { SpotlightCard } from '@/components/motion/SpotlightCard'
 
 const memberImages: Record<string, string> = {
   seydina: '/images/brand/Seydina.webp',
-  fanta: '/images/brand/Fanta.webp',
-  ndiaga: '/images/brand/Ndiaga.webp',
+  fanta: '/images/brand/fanta-badge.webp',
+  ndiaga: '/images/brand/ndiaga-badge.webp',
   fallou: '/images/brand/Serigne fallou.webp',
 }
 

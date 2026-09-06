@@ -91,7 +91,7 @@ export function OurStoryBento() {
                     <div className="flex -space-x-2 shrink-0">
                       <div className="relative w-7 h-7 sm:w-8 sm:h-8 rounded-full overflow-hidden border-2 border-white shadow-xs">
                         <Image
-                          src="/images/brand/Ndiaga.webp"
+                          src="/images/brand/ndiaga-badge.webp"
                           alt="Ndiaga Lo"
                           fill
                           sizes="32px"
@@ -100,7 +100,7 @@ export function OurStoryBento() {
                       </div>
                       <div className="relative w-7 h-7 sm:w-8 sm:h-8 rounded-full overflow-hidden border-2 border-white shadow-xs">
                         <Image
-                          src="/images/brand/Fanta.webp"
+                          src="/images/brand/fanta-badge.webp"
                           alt="Fanta Ndao Tine"
                           fill
                           sizes="32px"

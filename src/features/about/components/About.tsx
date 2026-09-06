@@ -12,8 +12,8 @@ import { stats } from '@/config/content/sparklearn'
 
 const teamPortraits = [
   { src: '/images/brand/Seydina.webp', alt: 'Seydina Diop' },
-  { src: '/images/brand/Ndiaga.webp', alt: 'Ndiaga Lo' },
-  { src: '/images/brand/Fanta.webp', alt: 'Fanta Ndao' },
+  { src: '/images/brand/ndiaga-badge.webp', alt: 'Ndiaga Lo' },
+  { src: '/images/brand/fanta-badge.webp', alt: 'Fanta Ndao' },
   { src: '/images/brand/Serigne fallou.webp', alt: 'Serigne Fallou' },
 ]
 

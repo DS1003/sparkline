@@ -77,9 +77,24 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
           {/* Bottom Meta: Client + Technologies + Live Link */}
           <div className="relative z-10 pt-6 border-t border-white/10 flex flex-wrap items-center justify-between gap-4 text-xs font-mono text-neutral-400 uppercase tracking-widest">
             <div className="flex flex-wrap gap-8">
-              <div><span className="text-[#EB4604] font-bold">+</span> Client : <span className="text-white">{project.client}</span></div>
-              <div><span className="text-[#EB4604] font-bold">+</span> Année : <span className="text-white">{project.year}</span></div>
-              <div><span className="text-[#EB4604] font-bold">+</span> Type : <span className="text-white">{project.type || project.category}</span></div>
+              <div className="inline-flex items-center gap-1.5">
+                <svg viewBox="0 0 24 24" className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-[#EB4604] shrink-0 drop-shadow-[0_0_6px_rgba(235,70,4,0.6)]" fill="currentColor">
+                  <path d="M12 0C12 0 12 10.5 24 12C24 12 12 13.5 12 24C12 24 12 13.5 0 12C0 12 12 10.5 12 0Z" />
+                </svg>
+                Client : <span className="text-white">{project.client}</span>
+              </div>
+              <div className="inline-flex items-center gap-1.5">
+                <svg viewBox="0 0 24 24" className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-[#EB4604] shrink-0 drop-shadow-[0_0_6px_rgba(235,70,4,0.6)]" fill="currentColor">
+                  <path d="M12 0C12 0 12 10.5 24 12C24 12 12 13.5 12 24C12 24 12 13.5 0 12C0 12 12 10.5 12 0Z" />
+                </svg>
+                Année : <span className="text-white">{project.year}</span>
+              </div>
+              <div className="inline-flex items-center gap-1.5">
+                <svg viewBox="0 0 24 24" className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-[#EB4604] shrink-0 drop-shadow-[0_0_6px_rgba(235,70,4,0.6)]" fill="currentColor">
+                  <path d="M12 0C12 0 12 10.5 24 12C24 12 12 13.5 12 24C12 24 12 13.5 0 12C0 12 12 10.5 12 0Z" />
+                </svg>
+                Type : <span className="text-white">{project.type || project.category}</span>
+              </div>
             </div>
             {project.url && (
               <a

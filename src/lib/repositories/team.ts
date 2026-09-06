@@ -12,7 +12,7 @@ export const teamData: TeamMember[] = [
     specialties: ['Développement Full Stack', 'Consulting IT ServiceNow', 'Architecture Cloud & API', 'Intégration d’entreprise'],
     skills: ['React', 'Next.js', 'Node.js', 'ServiceNow', 'TypeScript', 'PostgreSQL', 'Docker'],
     experienceYears: 5,
-    avatar: '/images/brand/Ndiaga.webp',
+    avatar: '/images/brand/ndiaga-badge.webp',
     socials: {
       linkedin: 'https://www.linkedin.com/in/ndiaga-l-4a7581139/',
       instagram: 'https://www.instagram.com/sohn.hero?igsi=MWUzNXl6dWM0dWMwNQ%3D%3D&utm_source=qr',
@@ -29,7 +29,7 @@ export const teamData: TeamMember[] = [
     specialties: ['Product Management', 'Ingénierie Logicielle', 'Stratégie Produit & Roadmap', 'Architecture Digitale'],
     skills: ['Product Strategy', 'Agile / Scrum', 'TypeScript', 'React', 'Next.js', 'API Management', 'SQL'],
     experienceYears: 5,
-    avatar: '/images/brand/Fanta.webp',
+    avatar: '/images/brand/fanta-badge.webp',
     socials: {
       linkedin: 'https://www.linkedin.com/in/fanta-tine-/',
       instagram: 'https://www.instagram.com/tina__bello?igsi=YXFnODhydGNwMzFu',
