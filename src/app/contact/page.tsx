@@ -41,6 +41,15 @@ export default function ContactPage() {
     message: '',
   })
 
+  // Ensure the page strictly scrolls to the top on arrival
+  React.useEffect(() => {
+    window.scrollTo(0, 0)
+    const lenis = (window as unknown as { __lenis?: { scrollTo: (target: number, opts?: { immediate?: boolean }) => void } }).__lenis
+    if (lenis) {
+      lenis.scrollTo(0, { immediate: true })
+    }
+  }, [])
+
   const toggleService = React.useCallback((service: string) => {
     setFormData((prev) => {
       const exists = prev.services.includes(service)
@@ -96,7 +105,7 @@ export default function ContactPage() {
       />
 
       {/* ── 2. SMOOTH 3D SOFT PILL CONTACT SECTION ── */}
-      <Section className="py-8 sm:py-16 lg:py-24 bg-[#F7F8FA]">
+      <Section id="contact" className="py-8 sm:py-16 lg:py-24 bg-[#F7F8FA]">
         <Container>
           {/* Top Section Header */}
           <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-3 sm:gap-6 mb-6 sm:mb-12">

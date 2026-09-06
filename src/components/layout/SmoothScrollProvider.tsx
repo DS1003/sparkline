@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useEffect, useRef } from 'react'
+import { usePathname } from 'next/navigation'
 import Lenis from 'lenis'
 
 interface SmoothScrollProviderProps {
@@ -9,6 +10,7 @@ interface SmoothScrollProviderProps {
 
 export function SmoothScrollProvider({ children }: SmoothScrollProviderProps) {
   const lenisRef = useRef<Lenis | null>(null)
+  const pathname = usePathname()
 
   useEffect(() => {
     // Honor reduced motion accessibility
@@ -52,6 +54,36 @@ export function SmoothScrollProvider({ children }: SmoothScrollProviderProps) {
       }
     }
   }, [])
+
+  // Automatically reset scroll to top on page navigation
+  useEffect(() => {
+    // Handle anchor links if present
+    if (typeof window !== 'undefined' && window.location.hash) {
+      const targetEl = document.querySelector(window.location.hash)
+      if (targetEl && lenisRef.current) {
+        lenisRef.current.scrollTo(targetEl as HTMLElement, { immediate: true })
+        return
+      }
+    }
+
+    // Otherwise scroll immediately to the very top of the new page
+    window.scrollTo(0, 0)
+    if (lenisRef.current) {
+      lenisRef.current.scrollTo(0, { immediate: true })
+    }
+
+    // Double-check on next frame after DOM rendering
+    const frameId = requestAnimationFrame(() => {
+      if (typeof window !== 'undefined' && !window.location.hash) {
+        window.scrollTo(0, 0)
+        if (lenisRef.current) {
+          lenisRef.current.scrollTo(0, { immediate: true })
+        }
+      }
+    })
+
+    return () => cancelAnimationFrame(frameId)
+  }, [pathname])
 
   return <>{children}</>
 }

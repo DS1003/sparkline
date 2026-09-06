@@ -234,6 +234,16 @@ export function Services({ isServicesPage = false, hideHeader = false }: Service
                     <div className="pt-1">
                       <Link
                         href="/contact?inquiry=services"
+                        scroll={true}
+                        onClick={() => {
+                          if (typeof window !== 'undefined') {
+                            window.scrollTo(0, 0)
+                            const lenis = (window as unknown as { __lenis?: { scrollTo: (t: number, o?: { immediate?: boolean }) => void } }).__lenis
+                            if (lenis) {
+                              lenis.scrollTo(0, { immediate: true })
+                            }
+                          }
+                        }}
                         className="inline-flex items-center gap-2 px-4 sm:px-5 xl:px-6 py-2 sm:py-2.5 rounded-full bg-[#EB4604] text-white text-xs sm:text-sm font-semibold hover:bg-[#D43D00] transition-all duration-300 shadow-lg shadow-[#EB4604]/25 group"
                       >
                         <span>Contactez-nous</span>
