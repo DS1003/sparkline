@@ -46,6 +46,7 @@ export function Footer() {
                 height={400}
                 priority
                 className="w-full h-auto max-w-full object-contain object-left filter drop-shadow-[0_0_40px_rgba(235,70,4,0.4)]"
+                style={{ height: 'auto' }}
               />
             </div>
           </Link>

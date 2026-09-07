@@ -23,7 +23,7 @@ export function Hero() {
               alt="SPARKLINE Hero Background Mobile"
               fill
               priority
-              sizes="100vw"
+              sizes="(max-width: 768px) 100vw, 768px"
               quality={85}
               className="object-cover object-center"
             />
@@ -35,7 +35,7 @@ export function Hero() {
               alt="SPARKLINE Hero Background Desktop"
               fill
               priority
-              sizes="100vw"
+              sizes="(max-width: 1280px) 95vw, 1500px"
               quality={85}
               className="object-cover object-center"
             />

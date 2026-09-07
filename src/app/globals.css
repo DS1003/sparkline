@@ -620,3 +620,14 @@ div:hover > .animate-vertical-track-reverse {
     font-size: 16px !important;
   }
 }
+
+/* ─── Ultra-Smooth Mobile Native Inertial Scrolling & Offscreen Skipping ─── */
+html,
+body {
+  -webkit-overflow-scrolling: touch;
+}
+
+.content-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 700px;
+}

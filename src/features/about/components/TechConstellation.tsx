@@ -76,7 +76,7 @@ function splitIntoColumns(items: TechItem[], numCols: number): TechItem[][] {
 
 function TechCard({ tech }: { tech: TechItem }) {
   return (
-    <div className="group relative flex items-center gap-4 px-4 py-3.5 rounded-2xl bg-white/80 backdrop-blur-sm border border-transparent hover:border-neutral-200/60 shadow-[0_1px_3px_rgba(0,0,0,0.02)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)] transition-all duration-300 cursor-default select-none w-full overflow-hidden">
+    <div className="group relative flex items-center gap-4 px-4 py-3.5 rounded-2xl bg-white border border-neutral-100/80 hover:border-neutral-200/60 shadow-[0_1px_3px_rgba(0,0,0,0.02)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)] transition-all duration-300 cursor-default select-none w-full overflow-hidden">
       {/* Subtle left accent line on hover */}
       <div
         className="absolute left-0 top-3 bottom-3 w-[3px] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"

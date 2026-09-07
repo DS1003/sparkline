@@ -17,6 +17,11 @@ export function SmoothScrollProvider({ children }: SmoothScrollProviderProps) {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (prefersReducedMotion) return
 
+    // Disable Lenis on mobile/touch devices so mobile browsers use native 120Hz GPU momentum scrolling
+    const isTouchDevice =
+      window.matchMedia('(pointer: coarse)').matches || window.innerWidth < 1024
+    if (isTouchDevice) return
+
     const lenis = new Lenis({
       duration: 1.0,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),

@@ -53,19 +53,29 @@ export default function HomePage() {
       <Services />
 
       {/* 5. Selected Work Showcase */}
-      <SelectedWork />
+      <div className="content-auto">
+        <SelectedWork />
+      </div>
 
       {/* 7. Approach Methodology */}
-      <Approach />
+      <div className="content-auto">
+        <Approach />
+      </div>
 
       {/* 8. Partners & Ecosystem Ribbon Marquee Section */}
-      <PartnersSection />
+      <div className="content-auto">
+        <PartnersSection />
+      </div>
 
       {/* 10. Frequently Asked Questions (FAQ) */}
-      <FAQSection />
+      <div className="content-auto">
+        <FAQSection />
+      </div>
 
       {/* 11. High-Impact Closing CTA Banner */}
-      <SectionCTA />
+      <div className="content-auto">
+        <SectionCTA />
+      </div>
 
       {/* 11. Complete Footer */}
       <Footer />

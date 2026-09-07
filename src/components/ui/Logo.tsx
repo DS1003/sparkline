@@ -35,6 +35,7 @@ export function Logo({
           height={dimensions.symbol.height}
           priority={priority}
           className="w-auto h-full object-contain"
+          style={{ width: 'auto' }}
         />
       </div>
     )
@@ -57,6 +58,7 @@ export function Logo({
         priority={priority}
         className="w-auto h-8 sm:h-9 object-contain"
         style={{
+          width: 'auto',
           aspectRatio: '1983 / 400',
         }}
       />
