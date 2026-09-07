@@ -532,16 +532,16 @@ export function Curved3DProjectsGallery({
                           </div>
                         )}
 
-                        {/* Action CTA */}
-                        <div>
+                        {/* Action CTA & Mobile Close Button */}
+                        <div className="flex items-center gap-2.5 w-full">
                           {expandedProject.url ? (
                             <a
                               href={expandedProject.url}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="group w-full inline-flex items-center justify-center gap-2 px-5 py-2.5 sm:py-3.5 rounded-full bg-[#EB4604] hover:bg-[#D43D00] text-white text-xs sm:text-sm font-semibold tracking-tight shadow-md shadow-[#EB4604]/25 hover:shadow-[#EB4604]/40 hover:scale-[1.01] active:scale-[0.98] transition-all duration-300 select-none cursor-pointer"
+                              className="group flex-1 inline-flex items-center justify-center gap-2 px-4 sm:px-5 py-2.5 sm:py-3.5 rounded-full bg-[#EB4604] hover:bg-[#D43D00] text-white text-xs sm:text-sm font-semibold tracking-tight shadow-md shadow-[#EB4604]/25 hover:shadow-[#EB4604]/40 hover:scale-[1.01] active:scale-[0.98] transition-all duration-300 select-none cursor-pointer"
                             >
-                              <span>Visiter le site</span>
+                              <span>Voir le site</span>
                               <span className="w-5 h-5 rounded-full bg-white/20 group-hover:bg-white/30 flex items-center justify-center text-[11px] transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
                                 ↗
                               </span>
@@ -549,7 +549,7 @@ export function Curved3DProjectsGallery({
                           ) : (
                             <Link
                               href={`/projects/${expandedProject.slug}`}
-                              className="group w-full inline-flex items-center justify-center gap-2 px-5 py-2.5 sm:py-3.5 rounded-full bg-[#EB4604] hover:bg-[#D43D00] text-white text-xs sm:text-sm font-semibold tracking-tight shadow-md shadow-[#EB4604]/25 hover:shadow-[#EB4604]/40 hover:scale-[1.01] active:scale-[0.98] transition-all duration-300 select-none cursor-pointer"
+                              className="group flex-1 inline-flex items-center justify-center gap-2 px-4 sm:px-5 py-2.5 sm:py-3.5 rounded-full bg-[#EB4604] hover:bg-[#D43D00] text-white text-xs sm:text-sm font-semibold tracking-tight shadow-md shadow-[#EB4604]/25 hover:shadow-[#EB4604]/40 hover:scale-[1.01] active:scale-[0.98] transition-all duration-300 select-none cursor-pointer"
                             >
                               <span>Voir le projet</span>
                               <span className="w-5 h-5 rounded-full bg-white/20 group-hover:bg-white/30 flex items-center justify-center text-[11px] transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
@@ -557,6 +557,27 @@ export function Curved3DProjectsGallery({
                               </span>
                             </Link>
                           )}
+
+                          {/* Close Button (X) — Mobile Only, anchored at bottom right beside CTA */}
+                          <button
+                            type="button"
+                            onClick={() => setExpandedProject(null)}
+                            aria-label="Fermer le modal"
+                            className="md:hidden shrink-0 w-[42px] h-[42px] rounded-full bg-neutral-100 hover:bg-neutral-200 active:bg-neutral-300 text-neutral-800 border border-neutral-300/80 shadow-xs flex items-center justify-center transition-all duration-200 active:scale-90 cursor-pointer touch-manipulation"
+                          >
+                            <svg
+                              className="w-4 h-4 text-neutral-700"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="2.5"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            >
+                              <line x1="18" y1="6" x2="6" y2="18" />
+                              <line x1="6" y1="6" x2="18" y2="18" />
+                            </svg>
+                          </button>
                         </div>
                       </div>
                     </div>
@@ -613,12 +634,12 @@ export function Curved3DProjectsGallery({
                             </div>
                           )}
 
-                          {/* Close Button — High Visibility, Touch-Friendly, Beautiful tactile pill */}
+                          {/* Close Button — Desktop only in top right, hidden on mobile */}
                           <button
                             type="button"
                             onClick={() => setExpandedProject(null)}
                             aria-label="Fermer le modal"
-                            className="w-9 h-9 sm:w-8 sm:h-8 rounded-full bg-white/20 hover:bg-white text-white hover:text-black border border-white/30 shadow-md flex items-center justify-center transition-all duration-200 hover:scale-105 active:scale-90 cursor-pointer touch-manipulation"
+                            className="hidden md:flex w-8 h-8 rounded-full bg-white/20 hover:bg-white text-white hover:text-black border border-white/30 shadow-md items-center justify-center transition-all duration-200 hover:scale-105 active:scale-90 cursor-pointer touch-manipulation"
                           >
                             <svg
                               className="w-4 h-4"
