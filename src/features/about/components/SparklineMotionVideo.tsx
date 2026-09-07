@@ -40,7 +40,7 @@ export function SparklineMotionVideo({ className = '' }: SparklineMotionVideoPro
       playsInline
       preload="auto"
       poster="/video/Sparkline-Motion-poster.webp"
-      className={`w-full h-full object-cover select-none pointer-events-none ${className}`}
+      className={`w-full h-full object-contain lg:object-cover object-center select-none pointer-events-none ${className}`}
       aria-label="Animation SPARKLINE Motion en boucle"
     >
       <source src="/video/Sparkline-Motion.mp4" type="video/mp4" />

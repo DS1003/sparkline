@@ -114,60 +114,60 @@ export default async function AboutPage() {
             </RevealOnScroll>
           </div>
 
-          {/* Master Bento Container (Inverted Pyramid Layout on Mobile: SPARK & LINE side-by-side, Image centered below) */}
+          {/* Master Bento Container (Dualité Fondatrice: Scaled down & stretched video for 16:9 on smaller PCs) */}
           <RevealOnScroll delay={0.2}>
-            <div className="rounded-[28px] sm:rounded-[44px] bg-[#070709] p-2.5 sm:p-4 md:p-5 border border-white/10 shadow-2xl overflow-hidden">
-              <div className="grid grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-4 items-stretch">
+            <div className="rounded-[24px] sm:rounded-[36px] lg:rounded-[32px] xl:rounded-[40px] bg-[#070709] p-2.5 sm:p-3.5 md:p-4 border border-white/10 shadow-2xl overflow-hidden">
+              <div className="grid grid-cols-2 lg:grid-cols-[1fr_1fr_1.55fr] xl:grid-cols-[1fr_1fr_1.5fr] 2xl:grid-cols-[1fr_1fr_1.4fr] gap-2.5 sm:gap-3.5 lg:gap-3 xl:gap-4 items-stretch">
                 {/* ── Block 01: SPARK (Highlighted Accent Card - Solid Orange #EB4604) ── */}
-                <div className="col-span-1 rounded-[20px] sm:rounded-[32px] bg-[#EB4604] text-white p-4 sm:p-7 md:p-9 flex flex-col justify-between space-y-3 sm:space-y-6 shadow-md min-h-[240px] sm:min-h-[300px] group transition-all duration-300 hover:scale-[1.01]">
+                <div className="col-span-1 rounded-[18px] sm:rounded-[24px] lg:rounded-[22px] xl:rounded-[28px] bg-[#EB4604] text-white p-3.5 sm:p-5 lg:p-4 xl:p-5.5 2xl:p-7 flex flex-col justify-between space-y-2 sm:space-y-3 lg:space-y-2 xl:space-y-3.5 shadow-md min-h-[210px] sm:min-h-[240px] lg:min-h-[230px] xl:min-h-[250px] group transition-all duration-300 hover:scale-[1.01]">
                   <div>
-                    <span className="text-base sm:text-2xl font-bold font-mono block mb-2 sm:mb-4">
+                    <span className="text-sm sm:text-lg lg:text-base xl:text-lg 2xl:text-xl font-bold font-mono block mb-1 sm:mb-1.5 lg:mb-1 xl:mb-2">
                       01
                     </span>
                     <h3
-                      className="text-sm sm:text-2xl lg:text-3xl font-bold text-white tracking-tight leading-snug sm:leading-tight mb-2 sm:mb-3"
+                      className="text-sm sm:text-lg lg:text-base xl:text-xl 2xl:text-2xl font-bold text-white tracking-tight leading-snug mb-1 sm:mb-1.5 lg:mb-1 xl:mb-2"
                       style={{ fontFamily: 'var(--font-family--primary-font)' }}
                     >
                       SPARK (L&apos;Étincelle)
                     </h3>
-                    <p className="text-white/90 text-[11px] sm:text-sm lg:text-base leading-snug sm:leading-relaxed font-light">
+                    <p className="text-white/95 text-[12.5px] sm:text-[14px] lg:text-[13.5px] xl:text-[14.5px] 2xl:text-[15.5px] leading-snug sm:leading-normal font-normal">
                       L&apos;impulsion créative, la vision de rupture, l&apos;intuition esthétique et l&apos;ambition qui bousculent le statu quo. Sans étincelle, aucune transformation ne prend vie.
                     </p>
                   </div>
 
-                  <div className="pt-2 sm:pt-4 border-t border-white/20">
-                    <span className="text-[9px] sm:text-xs font-mono font-semibold uppercase tracking-wider text-white/80 block">
+                  <div className="pt-2 sm:pt-2.5 lg:pt-2 xl:pt-2.5 border-t border-white/20">
+                    <span className="text-[8px] sm:text-[9.5px] lg:text-[8.5px] xl:text-[9.5px] font-mono font-semibold uppercase tracking-wider text-white/80 block">
                       CRÉATIVITÉ • AUDACE
                     </span>
                   </div>
                 </div>
 
                 {/* ── Block 02: LINE (White Background Card) ── */}
-                <div className="col-span-1 rounded-[20px] sm:rounded-[32px] bg-white text-neutral-900 p-4 sm:p-7 md:p-9 flex flex-col justify-between space-y-3 sm:space-y-6 min-h-[240px] sm:min-h-[300px] shadow-md group transition-all duration-300 hover:scale-[1.01]">
+                <div className="col-span-1 rounded-[18px] sm:rounded-[24px] lg:rounded-[22px] xl:rounded-[28px] bg-white text-neutral-900 p-3.5 sm:p-5 lg:p-4 xl:p-5.5 2xl:p-7 flex flex-col justify-between space-y-2 sm:space-y-3 lg:space-y-2 xl:space-y-3.5 min-h-[210px] sm:min-h-[240px] lg:min-h-[230px] xl:min-h-[250px] shadow-md group transition-all duration-300 hover:scale-[1.01]">
                   <div>
-                    <span className="text-base sm:text-2xl font-bold font-mono text-neutral-900 block mb-2 sm:mb-4">
+                    <span className="text-sm sm:text-lg lg:text-base xl:text-lg 2xl:text-xl font-bold font-mono text-neutral-900 block mb-1 sm:mb-1.5 lg:mb-1 xl:mb-2">
                       02
                     </span>
                     <h3
-                      className="text-sm sm:text-2xl lg:text-3xl font-bold text-neutral-900 tracking-tight leading-snug sm:leading-tight mb-2 sm:mb-3"
+                      className="text-sm sm:text-lg lg:text-base xl:text-xl 2xl:text-2xl font-bold text-neutral-900 tracking-tight leading-snug mb-1 sm:mb-1.5 lg:mb-1 xl:mb-2"
                       style={{ fontFamily: 'var(--font-family--primary-font)' }}
                     >
                       LINE (La Ligne)
                     </h3>
-                    <p className="text-neutral-600 text-[11px] sm:text-sm lg:text-base leading-snug sm:leading-relaxed font-light">
+                    <p className="text-neutral-700 text-[12.5px] sm:text-[14px] lg:text-[13.5px] xl:text-[14.5px] 2xl:text-[15.5px] leading-snug sm:leading-normal font-normal">
                       La trajectoire d&apos;impact. L&apos;ingénierie logicielle rigoureuse, la direction claire et la discipline qui relient une idée brute à un impact économique mesurable et pérenne.
                     </p>
                   </div>
 
-                  <div className="pt-2 sm:pt-4 border-t border-neutral-200/80">
-                    <span className="text-[9px] sm:text-xs font-mono font-semibold uppercase tracking-wider text-neutral-500 block">
+                  <div className="pt-2 sm:pt-2.5 lg:pt-2 xl:pt-2.5 border-t border-neutral-200/80">
+                    <span className="text-[8px] sm:text-[9.5px] lg:text-[8.5px] xl:text-[9.5px] font-mono font-semibold uppercase tracking-wider text-neutral-500 block">
                       STRATÉGIE • IMPACT
                     </span>
                   </div>
                 </div>
 
                 {/* ── Block 03: SPARKLINE Motion Looping Video Window ── */}
-                <div className="col-span-2 lg:col-span-1 rounded-[20px] sm:rounded-[32px] overflow-hidden relative min-h-[190px] sm:min-h-[260px] lg:min-h-[300px] bg-neutral-900 border border-white/10 group">
+                <div className="col-span-2 lg:col-span-1 rounded-[18px] sm:rounded-[24px] lg:rounded-[22px] xl:rounded-[28px] overflow-hidden relative aspect-video lg:aspect-auto min-h-[190px] sm:min-h-[230px] lg:min-h-[230px] bg-[#070709] border border-white/10 group flex items-center justify-center">
                   <SparklineMotionVideo className="transition-transform duration-700 ease-out group-hover:scale-105" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
                 </div>
