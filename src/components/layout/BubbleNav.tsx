@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation'
 import { motion } from 'framer-motion'
 import { Logo } from '../ui/Logo'
 import { MobileMenu } from './MobileMenu'
+import { MobileBottomBar } from './MobileBottomBar'
 
 const bubbleNavLinks = [
   { label: 'Accueil', href: '/' },
@@ -25,6 +26,7 @@ export function BubbleNav() {
   const [hovered, setHovered] = useState(false)
   const [hoveredLink, setHoveredLink] = useState<string | null>(null)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [mobileBottomBarVisible, setMobileBottomBarVisible] = useState(false)
   const lastScrollY = useRef(0)
   const ticking = useRef(false)
   const collapseTimerRef = useRef<NodeJS.Timeout | null>(null)
@@ -37,6 +39,47 @@ export function BubbleNav() {
     if (path !== '/' && pathname?.startsWith(path)) return true
     return false
   }
+
+  // Track visibility of top burger opener button:
+  // When top burger button is visible in viewport -> mobileBottomBar is hidden.
+  // As soon as top burger button scrolls out of view -> mobileBottomBar activates.
+  useEffect(() => {
+    let observer: IntersectionObserver | null = null
+    let fallbackCleanup: (() => void) | null = null
+
+    const attach = () => {
+      const burgerEl = document.getElementById('navbar-mobile-burger')
+      if (burgerEl && typeof IntersectionObserver !== 'undefined') {
+        observer = new IntersectionObserver(
+          ([entry]) => {
+            // When top burger button leaves the viewport (not intersecting), show the bottom bar!
+            setMobileBottomBarVisible(!entry.isIntersecting)
+          },
+          {
+            root: null,
+            threshold: 0,
+            rootMargin: '-5px 0px 0px 0px',
+          }
+        )
+        observer.observe(burgerEl)
+      } else {
+        const handleScroll = () => {
+          setMobileBottomBarVisible(window.scrollY > 75)
+        }
+        window.addEventListener('scroll', handleScroll, { passive: true })
+        handleScroll()
+        fallbackCleanup = () => window.removeEventListener('scroll', handleScroll)
+      }
+    }
+
+    const timer = setTimeout(attach, 80)
+
+    return () => {
+      clearTimeout(timer)
+      if (observer) observer.disconnect()
+      if (fallbackCleanup) fallbackCleanup()
+    }
+  }, [pathname])
 
   useEffect(() => {
     const handleScroll = () => {
@@ -249,35 +292,15 @@ export function BubbleNav() {
       )}
 
       {/* ═══════════════════════════════════════════════════════════
-          MOBILE & TABLET BUBBLE NAVBAR (< 1280px / xl)
-          Fixed Top-Right Scrolled Burger Menu Button with Pulsing Dot
-          Appears ONLY when scrolled (scrollY > 200), never overlaps top header
+          MOBILE PWA BOTTOM NAVIGATION DOCK (< 1280px / xl)
+          Appears automatically as soon as the top burger opener scrolls out of view.
+          Provides instant native app-style thumb-accessible navigation.
           ═══════════════════════════════════════════════════════════ */}
-      <div
-        className={`fixed top-4 right-4 sm:top-5 sm:right-6 z-[100] xl:hidden transition-all duration-300 ${
-          visible
-            ? 'opacity-100 scale-100 pointer-events-auto'
-            : 'opacity-0 scale-90 pointer-events-none'
-        }`}
-      >
-        <button
-          onClick={() => setMobileMenuOpen(true)}
-          aria-label="Ouvrir le menu de navigation"
-          className="relative w-11 h-11 sm:w-12 sm:h-12 rounded-full flex flex-col items-center justify-center gap-1.5 transition-all duration-300 active:scale-95 shadow-2xl cursor-pointer group"
-          style={{
-            background: 'rgba(10, 10, 12, 0.88)',
-            backdropFilter: 'blur(24px) saturate(190%)',
-            WebkitBackdropFilter: 'blur(24px) saturate(190%)',
-            border: '1px solid rgba(255, 255, 255, 0.14)',
-            boxShadow: '0 8px 30px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(235, 70, 4, 0.25), 0 0 20px rgba(235, 70, 4, 0.15)',
-          }}
-        >
-          {/* 3 Burger Bars */}
-          <span className="w-5 h-[2px] bg-white rounded-full transition-all duration-300 group-hover:bg-[#EB4604]" />
-          <span className="w-5 h-[2px] bg-white rounded-full transition-all duration-300 group-hover:bg-[#EB4604]" />
-          <span className="w-3.5 h-[2px] bg-white/70 self-start ml-3 rounded-full transition-all duration-300 group-hover:bg-[#EB4604]" />
-        </button>
-      </div>
+      <MobileBottomBar
+        visible={mobileBottomBarVisible}
+        onOpenMenu={() => setMobileMenuOpen(true)}
+        isMenuOpen={mobileMenuOpen}
+      />
 
       {/* Floating Bento Island Navigation Sheet Overlay */}
       <MobileMenu isOpen={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)} />

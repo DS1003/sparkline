@@ -51,7 +51,7 @@ export function ScrollToTop() {
           transition={{ type: 'spring', stiffness: 340, damping: 26 }}
           whileHover={{ scale: 1.08 }}
           whileTap={{ scale: 0.93 }}
-          className="group fixed bottom-6 right-6 sm:bottom-8 sm:right-8 z-50 cursor-pointer"
+          className="group fixed bottom-22 right-4 sm:bottom-8 sm:right-8 z-50 cursor-pointer"
         >
           {/* Outer container */}
           <div

@@ -135,6 +135,7 @@ export function Navbar() {
 
           {/* Hamburger button (44x44px accessible touch target) */}
           <button
+            id="navbar-mobile-burger"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="xl:hidden w-11 h-11 rounded-full border border-white/15 bg-white/[0.06] hover:bg-white/10 text-white flex flex-col items-center justify-center gap-1.5 p-2.5 focus:outline-none active:scale-95 transition-transform"
             aria-label="Toggle menu"
