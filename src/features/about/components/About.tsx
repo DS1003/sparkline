@@ -76,7 +76,7 @@ export function About() {
                   src={portrait.src}
                   alt={portrait.alt}
                   fill
-                  quality={90}
+                  quality={80}
                   className="object-cover object-top transition-transform duration-700 group-hover:scale-105"
                   sizes="(max-width: 640px) 280px, (max-width: 768px) 320px, (max-width: 1024px) 350px, (max-width: 1280px) 380px, 410px"
                 />
@@ -92,7 +92,7 @@ export function About() {
                   src={portrait.src}
                   alt={portrait.alt}
                   fill
-                  quality={90}
+                  quality={80}
                   className="object-cover object-top transition-transform duration-700 group-hover:scale-105"
                   sizes="(max-width: 640px) 280px, (max-width: 768px) 320px, (max-width: 1024px) 350px, (max-width: 1280px) 380px, 410px"
                 />

@@ -27,9 +27,9 @@ export const projectsData: Project[] = [
     ],
     technologies: ['Next.js', 'Tailwind CSS', 'TypeScript'],
     url: 'https://www.amicaledesfemmesdelapresidence.com/',
-    coverImage: '/images/projects/amfpr-card.jpg',
+    coverImage: '/images/projects/amfpr-card.webp',
     galleryImages: [
-      '/images/projects/amfpr-preview.png',
+      '/images/projects/amfpr-preview.webp',
     ],
   },
   {

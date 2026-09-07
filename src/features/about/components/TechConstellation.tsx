@@ -93,6 +93,8 @@ function TechCard({ tech }: { tech: TechItem }) {
         <img
           src={tech.customUrl || `https://cdn.reicon.dev/logos/${tech.slug}/original.svg`}
           alt={`${tech.name} Logo`}
+          loading="lazy"
+          decoding="async"
           className={`relative z-10 w-7 h-7 group-hover:scale-110 transition-transform duration-300 ${tech.customUrl ? 'object-cover rounded-lg' : 'object-contain'}`}
           onError={(e) => {
             e.currentTarget.style.display = 'none';

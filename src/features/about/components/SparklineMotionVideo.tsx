@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useRef, useEffect } from 'react'
+import React, { useRef, useEffect, useState } from 'react'
 
 interface SparklineMotionVideoProps {
   className?: string
@@ -8,10 +8,39 @@ interface SparklineMotionVideoProps {
 
 export function SparklineMotionVideo({ className = '' }: SparklineMotionVideoProps) {
   const videoRef = useRef<HTMLVideoElement>(null)
+  const [shouldLoad, setShouldLoad] = useState(false)
 
   useEffect(() => {
     const video = videoRef.current
     if (!video) return
+
+    let observer: IntersectionObserver | null = null
+
+    if (typeof IntersectionObserver !== 'undefined') {
+      observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            setShouldLoad(true)
+            video.play().catch(() => {})
+          } else {
+            video.pause()
+          }
+        },
+        { rootMargin: '250px 0px' }
+      )
+      observer.observe(video)
+    } else {
+      setShouldLoad(true)
+    }
+
+    return () => {
+      if (observer) observer.disconnect()
+    }
+  }, [])
+
+  useEffect(() => {
+    const video = videoRef.current
+    if (!video || !shouldLoad) return
 
     video.defaultMuted = true
     video.muted = true
@@ -19,7 +48,6 @@ export function SparklineMotionVideo({ className = '' }: SparklineMotionVideoPro
     const playPromise = video.play()
     if (playPromise !== undefined) {
       playPromise.catch(() => {
-        // Autoplay policy fallback: re-attempt play on first user interaction if blocked
         const handleUserInteraction = () => {
           video.play().catch(() => {})
           window.removeEventListener('touchstart', handleUserInteraction)
@@ -29,21 +57,20 @@ export function SparklineMotionVideo({ className = '' }: SparklineMotionVideoPro
         window.addEventListener('click', handleUserInteraction, { once: true, passive: true })
       })
     }
-  }, [])
+  }, [shouldLoad])
 
   return (
     <video
       ref={videoRef}
-      autoPlay
       loop
       muted
       playsInline
-      preload="auto"
+      preload="none"
       poster="/video/Sparkline-Motion-poster.webp"
       className={`w-full h-full object-contain lg:object-cover object-center select-none pointer-events-none ${className}`}
       aria-label="Animation SPARKLINE Motion en boucle"
     >
-      <source src="/video/Sparkline-Motion.mp4" type="video/mp4" />
+      {shouldLoad && <source src="/video/Sparkline-Motion.mp4" type="video/mp4" />}
       Votre navigateur ne supporte pas la lecture de cette vidéo.
     </video>
   )

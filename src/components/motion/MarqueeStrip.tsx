@@ -25,6 +25,9 @@ export function MarqueeStrip() {
           display: flex;
           width: max-content;
           animation: marquee-partner-scroll 26s linear infinite;
+          will-change: transform;
+          backface-visibility: hidden;
+          transform: translateZ(0);
         }
         .animate-marquee-partners:hover {
           animation-play-state: paused;

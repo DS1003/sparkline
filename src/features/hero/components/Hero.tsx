@@ -31,12 +31,12 @@ export function Hero() {
           {/* Desktop Image */}
           <div className="absolute inset-0 hidden md:block">
             <Image
-              src="/images/heroes/hd.png"
+              src="/images/heroes/hd.webp"
               alt="SPARKLINE Hero Background Desktop"
               fill
               priority
               sizes="100vw"
-              quality={90}
+              quality={85}
               className="object-cover object-center"
             />
           </div>

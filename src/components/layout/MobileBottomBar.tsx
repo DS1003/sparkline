@@ -1,9 +1,9 @@
 'use client'
 
-import React from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 
 interface MobileBottomBarProps {
   visible: boolean
@@ -20,6 +20,9 @@ interface BottomNavItem {
 
 export function MobileBottomBar({ visible, onOpenMenu, isMenuOpen }: MobileBottomBarProps) {
   const pathname = usePathname()
+  const [isCollapsed, setIsCollapsed] = useState(false)
+  const collapseTimerRef = useRef<NodeJS.Timeout | null>(null)
+  const navRef = useRef<HTMLElement>(null)
 
   const isActive = (path?: string) => {
     if (!path) return false
@@ -36,6 +39,88 @@ export function MobileBottomBar({ visible, onOpenMenu, isMenuOpen }: MobileBotto
     pathname?.startsWith('/insights') ||
     pathname === '/terms' ||
     pathname === '/privacy'
+
+  // Detect when ScrollToTop is visible (scrollY > 200) to adjust max expanded width
+  const [isScrollToTopVisible, setIsScrollToTopVisible] = useState(false)
+
+  useEffect(() => {
+    let lastState = window.scrollY > 200
+    setIsScrollToTopVisible(lastState)
+
+    const handleScroll = () => {
+      const nextState = window.scrollY > 200
+      if (nextState !== lastState) {
+        lastState = nextState
+        setIsScrollToTopVisible(nextState)
+      }
+    }
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  // Auto-collapse after 3s of inactivity
+  const resetTimer = () => {
+    if (collapseTimerRef.current) {
+      clearTimeout(collapseTimerRef.current)
+      collapseTimerRef.current = null
+    }
+    if (!visible || isMenuOpen) return
+    collapseTimerRef.current = setTimeout(() => {
+      setIsCollapsed(true)
+    }, 3000)
+  }
+
+  // Handle route change and initial appearance
+  useEffect(() => {
+    if (visible && !isMenuOpen) {
+      setIsCollapsed(false)
+      resetTimer()
+    } else if (!visible) {
+      setIsCollapsed(false)
+      if (collapseTimerRef.current) clearTimeout(collapseTimerRef.current)
+    }
+    return () => {
+      if (collapseTimerRef.current) clearTimeout(collapseTimerRef.current)
+    }
+  }, [visible, pathname])
+
+  // Pause auto-collapse when mobile menu sheet is open
+  useEffect(() => {
+    if (isMenuOpen) {
+      if (collapseTimerRef.current) clearTimeout(collapseTimerRef.current)
+      setIsCollapsed(false)
+    } else if (visible) {
+      resetTimer()
+    }
+  }, [isMenuOpen])
+
+  // Broadcast state to coordinate ScrollToTop lifting
+  useEffect(() => {
+    window.dispatchEvent(
+      new CustomEvent('mobile-bottom-bar-state', {
+        detail: {
+          visible,
+          expanded: visible && !isCollapsed,
+        },
+      })
+    )
+  }, [visible, isCollapsed])
+
+  // Collapse on click/touch outside when expanded
+  useEffect(() => {
+    if (isCollapsed || !visible) return
+    const handleOutside = (e: MouseEvent | TouchEvent) => {
+      if (navRef.current && !navRef.current.contains(e.target as Node)) {
+        setIsCollapsed(true)
+      }
+    }
+    window.addEventListener('touchstart', handleOutside, { passive: true })
+    window.addEventListener('mousedown', handleOutside)
+    return () => {
+      window.removeEventListener('touchstart', handleOutside)
+      window.removeEventListener('mousedown', handleOutside)
+    }
+  }, [isCollapsed, visible])
 
   const items: BottomNavItem[] = [
     {
@@ -164,103 +249,156 @@ export function MobileBottomBar({ visible, onOpenMenu, isMenuOpen }: MobileBotto
         damping: 30,
         mass: 0.8,
       }}
-      className={`fixed inset-x-0 z-[100] px-3 sm:px-6 flex justify-center xl:hidden ${
+      className={`fixed z-[100] xl:hidden ${
         visible ? 'pointer-events-auto' : 'pointer-events-none'
-      }`}
+      } left-6`}
       style={{
-        bottom: 'max(14px, env(safe-area-inset-bottom, 14px))',
+        bottom: 'max(24px, env(safe-area-inset-bottom, 24px))',
       }}
     >
-      <nav
+      <motion.nav
+        ref={navRef}
+        layout
         aria-label="Navigation mobile rapide PWA"
-        className="relative w-full max-w-[392px] h-[66px] rounded-[33px] px-2 py-1.5 flex items-center justify-between select-none shadow-2xl overflow-hidden"
+        initial={false}
+        animate={{
+          width: isCollapsed ? 54 : 'min(392px, calc(100vw - 48px))',
+          height: isCollapsed ? 54 : 66,
+          borderRadius: isCollapsed ? 27 : 33,
+        }}
+        transition={{
+          type: 'spring',
+          stiffness: 400,
+          damping: 32,
+          mass: 0.8,
+        }}
+        className="relative flex items-center select-none shadow-2xl overflow-hidden"
         style={{
-          background: 'rgba(12, 12, 16, 0.88)',
+          background: 'rgba(12, 12, 16, 0.90)',
           backdropFilter: 'blur(30px) saturate(210%)',
           WebkitBackdropFilter: 'blur(30px) saturate(210%)',
           border: '1px solid rgba(255, 255, 255, 0.12)',
           boxShadow:
             '0 20px 45px -8px rgba(0, 0, 0, 0.85), 0 0 0 1px rgba(255, 255, 255, 0.06), inset 0 1px 1px rgba(255, 255, 255, 0.25)',
         }}
+        onTouchStart={resetTimer}
+        onMouseEnter={resetTimer}
       >
-        {/* Subtle Specular Rim Light on Top Edge */}
-        <div className="absolute top-0 inset-x-8 h-[1px] bg-gradient-to-r from-transparent via-white/35 to-transparent pointer-events-none" />
-
-        {items.map((item) => {
-          const isItemActive = item.id === 'menu' ? isMenuSectionActive : isActive(item.href)
-
-          const content = (
-            <div className="relative flex flex-col items-center justify-center w-full h-full gap-1 z-10 select-none">
-              {/* Dynamic Sliding 3D Tactile Orange Pill Background (No glow, pure physical depth) */}
-              {isItemActive && (
-                <motion.div
-                  layoutId="pwa-bottom-pill"
-                  className="absolute inset-x-0.5 inset-y-1 rounded-[24px] pointer-events-none"
-                  style={{
-                    background: 'linear-gradient(180deg, #FF6622 0%, #EB4604 50%, #B83200 100%)',
-                    boxShadow:
-                      '0 3px 6px -1px rgba(0, 0, 0, 0.6), 0 1px 2px rgba(0, 0, 0, 0.35), inset 0 1px 0.5px rgba(255, 255, 255, 0.7), inset 0 2px 2px rgba(255, 255, 255, 0.22), inset 0 -1.5px 1.5px rgba(0, 0, 0, 0.45)',
-                    border: '1px solid rgba(255, 255, 255, 0.18)',
-                    borderBottomColor: 'rgba(0, 0, 0, 0.45)',
-                  }}
-                  transition={{
-                    type: 'spring',
-                    stiffness: 420,
-                    damping: 32,
-                    mass: 0.8,
-                  }}
-                />
-              )}
-
-              {/* Icon Container with subtle tactile lift */}
-              <div
-                className={`relative flex items-center justify-center transition-transform duration-200 shrink-0 ${
-                  isItemActive
-                    ? 'text-white scale-[1.02] drop-shadow-[0_1px_1.5px_rgba(0,0,0,0.45)]'
-                    : 'text-neutral-400 group-hover:text-neutral-200'
-                }`}
-              >
-                {item.icon(isItemActive)}
-              </div>
-
-              {/* Label */}
-              <span
-                className={`text-[9.5px] leading-none tracking-tight transition-colors duration-200 ${
-                  isItemActive
-                    ? 'text-white font-semibold drop-shadow-[0_1px_1px_rgba(0,0,0,0.4)]'
-                    : 'text-neutral-400 font-medium group-hover:text-neutral-200'
-                }`}
-              >
-                {item.label}
-              </span>
-            </div>
-          )
-
-          if (item.id === 'menu') {
-            return (
-              <button
-                key={item.id}
-                onClick={onOpenMenu}
-                aria-label="Ouvrir le menu complet"
-                className="relative flex-1 h-full flex flex-col items-center justify-center rounded-[24px] transition-transform active:scale-95 cursor-pointer group"
-              >
-                {content}
-              </button>
-            )
-          }
-
-          return (
-            <Link
-              key={item.id}
-              href={item.href!}
-              aria-label={item.label}
-              className="relative flex-1 h-full flex flex-col items-center justify-center rounded-[24px] transition-transform active:scale-95 cursor-pointer group"
+        <AnimatePresence mode="wait">
+          {isCollapsed ? (
+            <motion.button
+              key="collapsed-trigger"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.8 }}
+              transition={{ duration: 0.18 }}
+              onClick={(e) => {
+                e.stopPropagation()
+                setIsCollapsed(false)
+                resetTimer()
+              }}
+              aria-label="Déployer le menu de navigation"
+              className="w-full h-full flex items-center justify-center cursor-pointer active:scale-90 transition-transform"
             >
-              {content}
-            </Link>
-          )
-        })}
-      </nav>
+              {/* 3D Tactile Center Trigger Orb */}
+              <div className="w-10 h-10 rounded-full flex items-center justify-center bg-gradient-to-b from-[#FF6622] to-[#EB4604] shadow-[0_3px_10px_rgba(235,70,4,0.45),inset_0_1px_0.5px_rgba(255,255,255,0.7)] border border-white/20">
+                <div className="flex flex-col items-center justify-center gap-1">
+                  <span className="w-4 h-[2px] rounded-full bg-white shadow-sm" />
+                  <span className="w-4 h-[2px] rounded-full bg-white shadow-sm" />
+                  <span className="w-2.5 h-[2px] self-start ml-0.5 rounded-full bg-white shadow-sm" />
+                </div>
+              </div>
+            </motion.button>
+          ) : (
+            <motion.div
+              key="expanded-items"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.18 }}
+              className="flex items-center justify-between w-full h-full px-2 py-1.5 relative"
+            >
+              {/* Subtle Specular Rim Light on Top Edge */}
+              <div className="absolute top-0 inset-x-8 h-[1px] bg-gradient-to-r from-transparent via-white/35 to-transparent pointer-events-none" />
+
+              {items.map((item) => {
+                const isItemActive = item.id === 'menu' ? isMenuSectionActive : isActive(item.href)
+
+                const content = (
+                  <div className="relative flex flex-col items-center justify-center w-full h-full gap-1 z-10 select-none">
+                    {/* Dynamic Sliding 3D Tactile Orange Pill Background (No glow, pure physical depth) */}
+                    {isItemActive && (
+                      <motion.div
+                        layoutId="pwa-bottom-pill"
+                        className="absolute inset-x-0.5 inset-y-1 rounded-[24px] pointer-events-none"
+                        style={{
+                          background: 'linear-gradient(180deg, #FF6622 0%, #EB4604 50%, #B83200 100%)',
+                          boxShadow:
+                            '0 3px 6px -1px rgba(0, 0, 0, 0.6), 0 1px 2px rgba(0, 0, 0, 0.35), inset 0 1px 0.5px rgba(255, 255, 255, 0.7), inset 0 2px 2px rgba(255, 255, 255, 0.22), inset 0 -1.5px 1.5px rgba(0, 0, 0, 0.45)',
+                          border: '1px solid rgba(255, 255, 255, 0.18)',
+                          borderBottomColor: 'rgba(0, 0, 0, 0.45)',
+                        }}
+                        transition={{
+                          type: 'spring',
+                          stiffness: 420,
+                          damping: 32,
+                          mass: 0.8,
+                        }}
+                      />
+                    )}
+
+                    {/* Icon Container with subtle tactile lift */}
+                    <div
+                      className={`relative flex items-center justify-center transition-transform duration-200 shrink-0 ${
+                        isItemActive
+                          ? 'text-white scale-[1.02] drop-shadow-[0_1px_1.5px_rgba(0,0,0,0.45)]'
+                          : 'text-neutral-400 group-hover:text-neutral-200'
+                      }`}
+                    >
+                      {item.icon(isItemActive)}
+                    </div>
+
+                    {/* Label */}
+                    <span
+                      className={`text-[9.5px] leading-none tracking-tight transition-colors duration-200 ${
+                        isItemActive
+                          ? 'text-white font-semibold drop-shadow-[0_1px_1px_rgba(0,0,0,0.4)]'
+                          : 'text-neutral-400 font-medium group-hover:text-neutral-200'
+                      }`}
+                    >
+                      {item.label}
+                    </span>
+                  </div>
+                )
+
+                if (item.id === 'menu') {
+                  return (
+                    <button
+                      key={item.id}
+                      onClick={onOpenMenu}
+                      aria-label="Ouvrir le menu complet"
+                      className="relative flex-1 h-full flex flex-col items-center justify-center rounded-[24px] transition-transform active:scale-95 cursor-pointer group"
+                    >
+                      {content}
+                    </button>
+                  )
+                }
+
+                return (
+                  <Link
+                    key={item.id}
+                    href={item.href!}
+                    aria-label={item.label}
+                    className="relative flex-1 h-full flex flex-col items-center justify-center rounded-[24px] transition-transform active:scale-95 cursor-pointer group"
+                  >
+                    {content}
+                  </Link>
+                )
+              })}
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.nav>
     </motion.div>
   )
 }

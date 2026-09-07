@@ -414,6 +414,21 @@ const TextLoop = ({
       tween.resume();
     };
 
+    let observer: IntersectionObserver | null = null;
+    if (typeof IntersectionObserver !== 'undefined' && root) {
+      observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            tween.resume();
+          } else {
+            tween.pause();
+          }
+        },
+        { rootMargin: '100px' }
+      );
+      observer.observe(root);
+    }
+
     if (pauseOnHover && root) {
       root.addEventListener(
         'pointerenter',
@@ -428,6 +443,10 @@ const TextLoop = ({
 
     return () => {
       tween.kill();
+
+      if (observer) {
+        observer.disconnect();
+      }
 
       if (pauseOnHover && root) {
         root.removeEventListener(

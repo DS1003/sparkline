@@ -1,5 +1,4 @@
-import React from 'react'
-import Link from 'next/link'
+import dynamic from 'next/dynamic'
 import { Metadata } from 'next'
 import { Footer } from '@/components/layout/Footer'
 import { Preloader } from '@/components/layout/Preloader'
@@ -8,12 +7,24 @@ import { MarqueeStrip } from '@/components/motion/MarqueeStrip'
 import { ExpertiseMarqueeStrip } from '@/components/motion/ExpertiseMarqueeStrip'
 import { About } from '@/features/about/components/About'
 import { Services } from '@/features/services/components/Services'
-import { SelectedWork } from '@/features/projects/components/SelectedWork'
-import { Approach } from '@/features/approach/components/Approach'
-import { PartnersSection } from '@/features/partners/components/PartnersSection'
-import { FAQSection } from '@/features/faq/components/FAQSection'
-import { SectionCTA } from '@/components/layout/SectionCTA'
 import { siteConfig } from '@/config/site'
+
+// Dynamic imports for below-the-fold sections to drastically reduce initial JS execution and load time
+const SelectedWork = dynamic(
+  () => import('@/features/projects/components/SelectedWork').then((mod) => mod.SelectedWork)
+)
+const Approach = dynamic(
+  () => import('@/features/approach/components/Approach').then((mod) => mod.Approach)
+)
+const PartnersSection = dynamic(
+  () => import('@/features/partners/components/PartnersSection').then((mod) => mod.PartnersSection)
+)
+const FAQSection = dynamic(
+  () => import('@/features/faq/components/FAQSection').then((mod) => mod.FAQSection)
+)
+const SectionCTA = dynamic(
+  () => import('@/components/layout/SectionCTA').then((mod) => mod.SectionCTA)
+)
 
 
 export const metadata: Metadata = {

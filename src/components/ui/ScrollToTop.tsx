@@ -5,6 +5,8 @@ import { motion, AnimatePresence, useScroll, useSpring } from 'framer-motion'
 
 export function ScrollToTop() {
   const [isVisible, setIsVisible] = useState(false)
+  const [isBarExpanded, setIsBarExpanded] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
   const { scrollY, scrollYProgress } = useScroll()
 
   const smoothProgress = useSpring(scrollYProgress, {
@@ -14,6 +16,24 @@ export function ScrollToTop() {
   })
 
   const [percent, setPercent] = useState(0)
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 1280)
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
+
+  useEffect(() => {
+    const handleBarState = (e: Event) => {
+      const customEvent = e as CustomEvent<{ visible: boolean; expanded: boolean }>
+      if (customEvent.detail) {
+        setIsBarExpanded(customEvent.detail.visible && customEvent.detail.expanded)
+      }
+    }
+    window.addEventListener('mobile-bottom-bar-state', handleBarState)
+    return () => window.removeEventListener('mobile-bottom-bar-state', handleBarState)
+  }, [])
 
   useEffect(() => {
     const unsubScroll = scrollY.on('change', (latest) => {
@@ -46,12 +66,19 @@ export function ScrollToTop() {
           onClick={scrollToTop}
           aria-label="Retourner en haut de la page"
           initial={{ opacity: 0, scale: 0.7, y: 16 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
+          animate={{
+            opacity: 1,
+            scale: 1,
+            y: isMobile && isBarExpanded ? -76 : 0,
+          }}
           exit={{ opacity: 0, scale: 0.7, y: 12 }}
-          transition={{ type: 'spring', stiffness: 340, damping: 26 }}
+          transition={{ type: 'spring', stiffness: 360, damping: 28 }}
           whileHover={{ scale: 1.08 }}
           whileTap={{ scale: 0.93 }}
-          className="group fixed bottom-22 right-4 sm:bottom-8 sm:right-8 z-50 cursor-pointer"
+          className="group fixed bottom-6 right-6 sm:bottom-8 sm:right-8 z-50 cursor-pointer"
+          style={{
+            bottom: 'max(24px, env(safe-area-inset-bottom, 24px))',
+          }}
         >
           {/* Outer container */}
           <div
