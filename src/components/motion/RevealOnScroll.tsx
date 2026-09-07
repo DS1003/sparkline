@@ -12,6 +12,15 @@ interface RevealOnScrollProps {
   threshold?: number
 }
 
+const directionClasses: Record<string, string> = {
+  up: 'reveal-up',
+  down: 'reveal-down',
+  left: 'reveal-left',
+  right: 'reveal-right',
+  zoom: 'reveal-zoom',
+  none: 'reveal-none',
+}
+
 export function RevealOnScroll({
   children,
   className = '',
@@ -38,7 +47,7 @@ export function RevealOnScroll({
       return
     }
 
-    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768
+    const isMobile = window.innerWidth < 768
     const rootMargin = isMobile ? '800px 0px 800px 0px' : '400px 0px 400px 0px'
 
     const observer = new IntersectionObserver(
@@ -75,42 +84,33 @@ export function RevealOnScroll({
     }
   }, [reveal])
 
-  const getInitialTransform = () => {
-    switch (direction) {
-      case 'up':
-        return 'translate3d(0, 14px, 0) scale(0.99)'
-      case 'down':
-        return 'translate3d(0, -14px, 0) scale(0.99)'
-      case 'left':
-        return 'translate3d(14px, 0, 0) scale(0.99)'
-      case 'right':
-        return 'translate3d(-14px, 0, 0) scale(0.99)'
-      case 'zoom':
-        return 'scale(0.97) translate3d(0, 8px, 0)'
-      case 'none':
-      default:
-        return 'none'
-    }
-  }
+  const dirClass = directionClasses[direction] || 'reveal-up'
+  const safeDelay = Math.min(delay, 0.12)
+  const safeDuration = Math.min(duration, 0.5)
 
-  // Snappy timing on mobile: 0s delay and faster transition to eliminate any perceived scroll delay
-  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768
-  const safeDelay = isMobile ? 0 : Math.min(delay, 0.12)
-  const animDuration = isMobile ? Math.min(duration, 0.24) : duration
+  // Style uses CSS variables for desktop delay/duration.
+  // On mobile (<768px), CSS media query @media (max-width: 767px) in globals.css
+  // overrides with 0s delay and 0.24s duration (!important).
+  // Both server and client render the exact same DOM -> ZERO hydration mismatch!
+  const styleObj: React.CSSProperties | undefined =
+    safeDelay > 0 || safeDuration !== 0.45
+      ? ({
+          '--reveal-delay': `${safeDelay}s`,
+          '--reveal-duration': `${safeDuration}s`,
+        } as React.CSSProperties)
+      : undefined
+
+  const revealedClass = isVisible ? ' is-revealed' : ''
+  const combinedClassName = `reveal-item ${dirClass}${revealedClass}${className ? ` ${className}` : ''}`
 
   return (
     <div
       ref={ref}
-      className={className}
-      style={{
-        opacity: isVisible ? 1 : 0,
-        transform: isVisible ? 'translate3d(0, 0, 0) scale(1)' : getInitialTransform(),
-        transition: `opacity ${animDuration}s cubic-bezier(0.16, 1, 0.3, 1) ${safeDelay}s, transform ${animDuration}s cubic-bezier(0.16, 1, 0.3, 1) ${safeDelay}s`,
-        willChange: isVisible ? 'auto' : 'opacity, transform',
-        backfaceVisibility: 'hidden',
-      }}
+      className={combinedClassName}
+      style={styleObj}
     >
       {children}
     </div>
   )
 }
+

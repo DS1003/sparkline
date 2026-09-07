@@ -15,14 +15,14 @@ export function Logo({
   priority = true,
   size = 'md',
 }: LogoProps) {
-  // Dimensions based on size preset (Original horizontal logo aspect ratio is ~1983x400 = 4.95:1)
-  const dimensions = {
-    sm: { width: 130, height: 26 },
-    md: { width: 160, height: 32 },
-    lg: { width: 200, height: 40 },
-    hero: { width: 240, height: 48 },
-    footer: { width: 220, height: 44 },
-    symbol: { width: 44, height: 44 },
+  // Size classes for horizontal brand logo
+  const sizeClasses = {
+    sm: 'h-6 sm:h-7',
+    md: 'h-8 sm:h-9',
+    lg: 'h-10 sm:h-11',
+    hero: 'h-12 sm:h-14',
+    footer: 'h-10 sm:h-11',
+    symbol: 'h-8 sm:h-9',
   }
 
   if (variant === 'symbol') {
@@ -31,11 +31,11 @@ export function Logo({
         <Image
           src="/images/brand/sparkline-symbol.svg"
           alt="SPARKLINE Symbol"
-          width={dimensions.symbol.width}
-          height={dimensions.symbol.height}
+          width={884}
+          height={884}
           priority={priority}
           className="w-auto h-full object-contain"
-          style={{ width: 'auto' }}
+          style={{ width: 'auto', height: 'auto' }}
         />
       </div>
     )
@@ -46,17 +46,15 @@ export function Logo({
       ? '/images/brand/sparkline-logo-dark.svg'
       : '/images/brand/sparkline-logo-white.svg'
 
-  const { width, height } = dimensions[size] || dimensions.md
-
   return (
     <div className={cn('relative inline-flex items-center shrink-0 select-none', className)}>
       <Image
         src={logoSrc}
         alt="SPARKLINE Official Logo"
-        width={width}
-        height={height}
+        width={1983}
+        height={400}
         priority={priority}
-        className="w-auto h-8 sm:h-9 object-contain"
+        className={cn('w-auto object-contain', sizeClasses[size] || sizeClasses.md)}
         style={{
           width: 'auto',
           aspectRatio: '1983 / 400',
@@ -65,3 +63,4 @@ export function Logo({
     </div>
   )
 }
+
