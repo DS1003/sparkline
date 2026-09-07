@@ -47,8 +47,7 @@ export function RevealOnScroll({
       return
     }
 
-    const isMobile = window.innerWidth < 768
-    const rootMargin = isMobile ? '800px 0px 800px 0px' : '400px 0px 400px 0px'
+    const rootMargin = '800px 0px 800px 0px'
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -69,8 +68,7 @@ export function RevealOnScroll({
     const handleLoaderComplete = () => {
       if (hasTriggered.current) return
       const rect = el.getBoundingClientRect()
-      const extraMargin = isMobile ? 800 : 400
-      if (rect.top < window.innerHeight + extraMargin && rect.bottom > -200) {
+      if (rect.top < window.innerHeight + 800 && rect.bottom > -200) {
         reveal()
         observer.disconnect()
       }

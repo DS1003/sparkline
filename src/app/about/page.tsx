@@ -178,19 +178,15 @@ export default async function AboutPage() {
       </section>
 
       {/* 4. Connected Landscape Tech Constellation */}
-      <div className="content-auto">
-        <TechConstellation />
-      </div>
+      <TechConstellation />
 
       {/* 5. Section CTA */}
-      <div className="content-auto">
-        <SectionCTA
-          title="BÂTISSONS VOTRE EMPREINTE DIGITALE."
-          subtitle="Transformez vos idées en solutions numériques d'exception avec SPARKLINE."
-          primaryLabel="Démarrer un projet"
-          primaryHref="/contact?inquiry=project"
-        />
-      </div>
+      <SectionCTA
+        title="BÂTISSONS VOTRE EMPREINTE DIGITALE."
+        subtitle="Transformez vos idées en solutions numériques d'exception avec SPARKLINE."
+        primaryLabel="Démarrer un projet"
+        primaryHref="/contact?inquiry=project"
+      />
 
       <Footer />
     </main>

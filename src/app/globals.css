@@ -627,11 +627,6 @@ body {
   -webkit-overflow-scrolling: touch;
 }
 
-.content-auto {
-  content-visibility: auto;
-  contain-intrinsic-size: 1px 700px;
-}
-
 /* ─── Ultra-Smooth RevealOnScroll Animation System (SSR & Mobile Safe) ─── */
 .reveal-item {
   opacity: 0;
@@ -677,12 +672,14 @@ body {
   transform: none !important;
 }
 
+/* On mobile touch screens, ensure all content is 100% visible immediately:
+   Eliminates all white flashing, blank space, and waiting during fast inertial scroll */
 @media screen and (max-width: 767px) {
   .reveal-item {
-    --reveal-duration: 0.24s !important;
-    --reveal-delay: 0s !important;
-    transition-duration: 0.24s !important;
-    transition-delay: 0s !important;
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+    will-change: auto !important;
   }
 }
 
@@ -693,3 +690,4 @@ body {
     transition: none !important;
   }
 }
+
