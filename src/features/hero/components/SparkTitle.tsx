@@ -234,7 +234,7 @@ export function SparkTitle({
   return (
     <h1
       ref={containerRef}
-      className={`relative heading-style-01 text-[clamp(1.75rem,6.5vw,36px)] sm:text-[clamp(2.1rem,4.2vw,46px)] lg:text-[clamp(28px,2.2vw,42px)] xl:text-[66px] 2xl:text-[76px] font-normal text-[#FFFFFF] tracking-[-0.035em] leading-[1.05] max-w-[800px] select-none ${className}`}
+      className={`relative heading-style-01 text-[clamp(1.75rem,6.5vw,36px)] sm:text-[clamp(2.1rem,4.2vw,46px)] md:text-[clamp(42px,4.5vw,54px)] lg:text-[clamp(52px,4.8vw,68px)] xl:text-[clamp(66px,5vw,84px)] 2xl:text-[clamp(78px,5.2vw,96px)] font-normal text-[#FFFFFF] tracking-[-0.035em] leading-[1.04] max-w-none lg:max-w-[960px] xl:max-w-[1200px] select-none ${className}`}
       style={{ fontFamily: 'var(--font-family--primary-font)' }}
     >
       {/* Canvas for Realistic Flying Embers / Spark Particles */}
@@ -263,7 +263,7 @@ export function SparkTitle({
             {/* Official Spark Icon SVG (Enlarged) */}
             <svg
               viewBox="0 0 24 24"
-              className="w-7 h-7 sm:w-8 sm:h-8 xl:w-9 xl:h-9 text-[#FFB901] relative z-10 drop-shadow-[0_0_10px_rgba(255,185,1,0.95)] drop-shadow-[0_0_20px_rgba(235,70,4,0.85)]"
+              className="w-7 h-7 sm:w-8 sm:h-8 lg:w-9 lg:h-9 xl:w-10 xl:h-10 text-[#FFB901] relative z-10 drop-shadow-[0_0_10px_rgba(255,185,1,0.95)] drop-shadow-[0_0_20px_rgba(235,70,4,0.85)]"
               fill="currentColor"
             >
               <path d="M12 0C12 0 12 10.5 24 12C24 12 12 13.5 12 24C12 24 12 13.5 0 12C0 12 12 10.5 12 0Z" />
@@ -280,6 +280,11 @@ export function SparkTitle({
         const isLineActive = isStarted && lineIdx === currentLineIndex
         const isLinePast = isStarted && lineIdx < currentLineIndex
 
+        // Match highlighted word: "marques" or "marque"
+        const highlightMatch = lineText.match(/\bmarques?\b/i)
+        const highlightStart = highlightMatch?.index ?? -1
+        const highlightEnd = highlightStart !== -1 ? highlightStart + highlightMatch![0].length : -1
+
         return (
           <span key={lineIdx} className="block whitespace-nowrap relative">
             {lineText.split('').map((char, charIdx) => {
@@ -287,24 +292,28 @@ export function SparkTitle({
                 isStarted &&
                 (isLinePast || (isLineActive && charIdx <= currentCharIndex))
               const isCurrentTip = !isCompleted && isLineActive && charIdx === currentCharIndex
+              const isMarqueChar = highlightStart !== -1 && charIdx >= highlightStart && charIdx < highlightEnd
 
               return (
                 <span
                   key={charIdx}
                   data-char-active={isCurrentTip ? 'true' : undefined}
-                  className="inline-block transition-all duration-300"
+                  className={`inline-block transition-all duration-300 ${isMarqueChar ? 'italic font-medium' : ''}`}
                   style={{
                     opacity: isCharRevealed ? 1 : 0,
                     transform: isCharRevealed
                       ? 'translate3d(0, 0, 0) scale(1)'
                       : 'translate3d(0, 8px, 0) scale(0.92)',
+                    fontStyle: isMarqueChar ? 'italic' : 'normal',
                     color: isCurrentTip
                       ? '#FFE57F'
                       : isCharRevealed
-                      ? '#FFFFFF'
+                      ? (isMarqueChar ? '#FF6A1A' : '#FFFFFF')
                       : 'transparent',
                     textShadow: isCurrentTip
                       ? '0 0 10px #FFFFFF, 0 0 20px #FF9100, 0 0 35px #EB4604'
+                      : isMarqueChar
+                      ? '0 2px 14px rgba(255, 106, 26, 0.5), 0 0 20px rgba(235, 70, 4, 0.4), 0 1px 3px rgba(0,0,0,0.9)'
                       : '0 2px 10px rgba(0,0,0,0.65), 0 1px 3px rgba(0,0,0,0.8)',
                   }}
                 >

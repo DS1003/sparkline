@@ -19,24 +19,30 @@ export function Hero() {
           {/* Mobile Image — Perfectly Centered Focal Point */}
           <div className="absolute inset-0 block md:hidden">
             <Image
-              src="/images/heroes/ChatGPT Image Sep 4, 2026, 08_14_02 AM.webp"
+              src="/images/heroes/227114de-efe6-4f47-b2ac-8ea4abfd27dd_chatgpt_image_sep_8_2026_12_46_32_am.png"
               alt="SPARKLINE Hero Background Mobile"
               fill
               priority
-              sizes="(max-width: 768px) 100vw, 768px"
-              quality={85}
+              unoptimized
               className="object-cover object-center"
+            />
+            {/* Mobile Bottom Scrim Gradient for Enhanced Text Legibility */}
+            <div
+              className="absolute inset-0 pointer-events-none"
+              style={{
+                background:
+                  'linear-gradient(180deg, rgba(7,7,9,0) 0%, rgba(7,7,9,0) 42%, rgba(7,7,9,0.38) 56%, rgba(7,7,9,0.72) 74%, rgba(7,7,9,0.94) 100%)',
+              }}
             />
           </div>
           {/* Desktop Image */}
           <div className="absolute inset-0 hidden md:block">
             <Image
-              src="/images/heroes/hd.webp"
+              src="/images/heroes/f1e92b4d-b294-4b2c-9a90-fe4d3612a789_enhanced_chatgpt_image_sep_8_2026_12_25_11_am.png"
               alt="SPARKLINE Hero Background Desktop"
               fill
               priority
-              sizes="(max-width: 1280px) 95vw, 1500px"
-              quality={85}
+              unoptimized
               className="object-cover object-center"
             />
           </div>
@@ -46,7 +52,7 @@ export function Hero() {
         <Navbar />
 
         {/* Main Hero Headline Area with Real Spark Writing Effect */}
-        <div className="relative z-10 mt-auto mb-2 md:my-auto pt-16 sm:pt-20 md:pt-0 max-w-3xl xl:max-w-4xl py-1.5 sm:py-2.5 lg:py-2 xl:py-4 space-y-2 sm:space-y-3 lg:space-y-2.5 xl:space-y-4 flex flex-col items-center text-center lg:items-start lg:text-left">
+        <div className="relative z-10 mt-auto mb-2 md:my-auto pt-16 sm:pt-20 md:pt-0 max-w-3xl lg:max-w-4xl xl:max-w-6xl py-1.5 sm:py-2.5 lg:py-2 xl:py-4 space-y-2 sm:space-y-3 lg:space-y-2.5 xl:space-y-4 flex flex-col items-center text-center lg:items-start lg:text-left">
           <RevealOnScroll delay={0.1} className="hero-badge hidden md:block">
             <div className="relative inline-flex items-center group cursor-default">
               {/* Controlled Subtle Neon Rim Aura (tight & crisp, no excessive blur) */}
