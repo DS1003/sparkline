@@ -12,26 +12,28 @@ export function Hero() {
   return (
     <section id="main-hero" className="relative w-full bg-white p-2 sm:p-3 md:p-3.5 lg:p-4 xl:p-5">
       {/* Hero Inset Card (Sleek, Framed Proportions on Laptops and Desktops) */}
-      <div className="relative rounded-2xl md:rounded-[20px] bg-[#070709] text-white overflow-hidden p-5 sm:p-6 lg:p-8 xl:p-10 min-h-[85svh] sm:min-h-[80svh] lg:min-h-[calc(100vh-32px)] xl:min-h-[calc(100vh-40px)] xl:max-h-[860px] flex flex-col justify-between shadow-2xl">
+      <div className="relative rounded-2xl md:rounded-[20px] bg-[#070709] text-white overflow-hidden p-5 sm:p-6 lg:p-8 xl:p-10 min-h-[88svh] sm:min-h-[82svh] lg:min-h-[calc(100vh-32px)] xl:min-h-[calc(100vh-40px)] xl:max-h-[860px] flex flex-col justify-between shadow-2xl">
         {/* Background Team Image — Responsive Placement (Perfect 4-Person Framing on Mobile & Desktop) */}
         {/* Background Images — Responsive Art Direction */}
         <div className="hero-bg-container absolute inset-0 pointer-events-none select-none overflow-hidden">
-          {/* Mobile Image — Perfectly Centered Focal Point */}
-          <div className="absolute inset-0 block md:hidden">
-            <Image
-              src="/images/heroes/227114de-efe6-4f47-b2ac-8ea4abfd27dd_chatgpt_image_sep_8_2026_12_46_32_am.png"
-              alt="SPARKLINE Hero Background Mobile"
-              fill
-              priority
-              unoptimized
-              className="object-cover object-center"
-            />
+          {/* Mobile Image — Shifted Higher to Perfectly Frame the Glowing Emblem above the Title */}
+          <div className="absolute inset-0 block md:hidden overflow-hidden">
+            <div className="relative w-full h-full -translate-y-12 sm:-translate-y-14 scale-[1.08] origin-center">
+              <Image
+                src="/images/heroes/227114de-efe6-4f47-b2ac-8ea4abfd27dd_chatgpt_image_sep_8_2026_12_46_32_am.png"
+                alt="SPARKLINE Hero Background Mobile"
+                fill
+                priority
+                unoptimized
+                className="object-cover object-center"
+              />
+            </div>
             {/* Mobile Bottom Scrim Gradient for Enhanced Text Legibility */}
             <div
               className="absolute inset-0 pointer-events-none"
               style={{
                 background:
-                  'linear-gradient(180deg, rgba(7,7,9,0) 0%, rgba(7,7,9,0) 42%, rgba(7,7,9,0.38) 56%, rgba(7,7,9,0.72) 74%, rgba(7,7,9,0.94) 100%)',
+                  'linear-gradient(180deg, rgba(7,7,9,0) 0%, rgba(7,7,9,0) 40%, rgba(7,7,9,0.4) 54%, rgba(7,7,9,0.76) 72%, rgba(7,7,9,0.96) 100%)',
               }}
             />
           </div>
@@ -52,7 +54,7 @@ export function Hero() {
         <Navbar />
 
         {/* Main Hero Headline Area with Real Spark Writing Effect */}
-        <div className="relative z-10 mt-auto mb-2 md:my-auto pt-16 sm:pt-20 md:pt-0 max-w-3xl lg:max-w-4xl xl:max-w-6xl py-1.5 sm:py-2.5 lg:py-2 xl:py-4 space-y-2 sm:space-y-3 lg:space-y-2.5 xl:space-y-4 flex flex-col items-center text-center lg:items-start lg:text-left">
+        <div className="relative z-10 mt-auto mb-2 md:my-auto pt-4 sm:pt-6 md:pt-0 max-w-3xl lg:max-w-4xl xl:max-w-6xl py-1.5 sm:py-2.5 lg:py-2 xl:py-4 space-y-2 sm:space-y-3 lg:space-y-2.5 xl:space-y-4 flex flex-col items-center text-center lg:items-start lg:text-left">
           <RevealOnScroll delay={0.1} className="hero-badge hidden md:block">
             <div className="relative inline-flex items-center group cursor-default">
               {/* Controlled Subtle Neon Rim Aura (tight & crisp, no excessive blur) */}
