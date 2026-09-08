@@ -140,12 +140,9 @@ export function Navbar() {
             className="group relative xl:hidden w-11 h-11 rounded-full flex items-center justify-center focus:outline-none transition-all duration-300 active:scale-90 select-none cursor-pointer"
             aria-label="Toggle menu"
           >
-            {/* Outer Ambient 3D Rim / Glow Aura */}
-            <div className="absolute -inset-0.5 rounded-full bg-gradient-to-b from-white/20 via-[#FF6A1A]/15 to-transparent blur-[3px] opacity-70 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
-
-            {/* 3D Convex Beveled Glass Disc Body */}
+            {/* 3D Convex Beveled Glass Disc Body (Pure 3D, No Glow) */}
             <div
-              className="absolute inset-0 rounded-full bg-gradient-to-b from-[#25252B]/90 via-[#141418]/95 to-[#09090C] backdrop-blur-xl border border-white/20 shadow-[0_6px_16px_rgba(0,0,0,0.85),0_2px_5px_rgba(0,0,0,0.6),inset_0_1.5px_1px_rgba(255,255,255,0.45),inset_0_-2px_3px_rgba(0,0,0,0.9),inset_0_0_8px_rgba(255,106,26,0.12)] group-hover:border-white/35 group-hover:shadow-[0_8px_20px_rgba(0,0,0,0.95),0_0_14px_rgba(235,70,4,0.35),inset_0_1.5px_1.5px_rgba(255,255,255,0.6),inset_0_-2px_3px_rgba(0,0,0,0.9)] transition-all duration-300 pointer-events-none overflow-hidden"
+              className="absolute inset-0 rounded-full bg-gradient-to-b from-[#25252B]/90 via-[#141418]/95 to-[#09090C] backdrop-blur-xl border border-white/20 shadow-[0_6px_16px_rgba(0,0,0,0.85),0_2px_5px_rgba(0,0,0,0.6),inset_0_1.5px_1px_rgba(255,255,255,0.45),inset_0_-2px_3px_rgba(0,0,0,0.9)] group-hover:border-white/35 group-hover:shadow-[0_8px_20px_rgba(0,0,0,0.95),inset_0_1.5px_1.5px_rgba(255,255,255,0.6),inset_0_-2px_3px_rgba(0,0,0,0.9)] transition-all duration-300 pointer-events-none overflow-hidden"
             >
               {/* Top Specular Curved Rim Reflection */}
               <div className="absolute top-0 inset-x-2 h-[1px] bg-gradient-to-r from-transparent via-white/70 to-transparent pointer-events-none" />

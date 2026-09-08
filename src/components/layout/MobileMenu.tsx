@@ -102,13 +102,25 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
               <Logo variant="dark" size="sm" />
             </Link>
 
-            {/* Tactile Close Button */}
+            {/* 3D Tactile Orange Close Button (Pure 3D, No Glow) */}
             <button
               onClick={handleClose}
               aria-label="Fermer le menu"
-              className="w-10 h-10 rounded-full bg-neutral-100 hover:bg-neutral-200 text-neutral-700 flex items-center justify-center transition-all duration-200 active:scale-90"
+              className="relative w-10 h-10 rounded-full flex items-center justify-center transition-all duration-200 active:scale-90 cursor-pointer focus:outline-none select-none bg-gradient-to-b from-[#FF7A29] via-[#EB4604] to-[#C03500] border border-white/30 shadow-[0_3px_8px_-1px_rgba(0,0,0,0.22),0_1px_3px_rgba(0,0,0,0.12),inset_0_1.5px_1px_rgba(255,255,255,0.55),inset_0_-2px_2px_rgba(110,22,0,0.65)] hover:shadow-[0_4px_10px_-1px_rgba(0,0,0,0.28),0_2px_4px_rgba(0,0,0,0.16),inset_0_1.5px_1px_rgba(255,255,255,0.7),inset_0_-2px_2px_rgba(110,22,0,0.75)]"
             >
-              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+              {/* Top Specular Curved Highlight */}
+              <div className="absolute top-0 inset-x-2.5 h-[1px] bg-gradient-to-r from-transparent via-white/75 to-transparent pointer-events-none" />
+
+              {/* 3D Embossed White Cross ✕ */}
+              <svg
+                className="relative z-10 w-4 h-4 text-white transition-transform duration-200 active:scale-95 drop-shadow-[0_1px_1.5px_rgba(0,0,0,0.5)]"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.6"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
                 <line x1="18" y1="6" x2="6" y2="18" />
                 <line x1="6" y1="6" x2="18" y2="18" />
               </svg>
