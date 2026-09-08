@@ -133,25 +133,50 @@ export function Navbar() {
             </span>
           </Link>
 
-          {/* Hamburger button (44x44px accessible touch target) */}
+          {/* 3D Tactile Hamburger Button (Mobile / Responsive) */}
           <button
             id="navbar-mobile-burger"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="xl:hidden w-11 h-11 rounded-full border border-white/15 bg-white/[0.06] hover:bg-white/10 text-white flex flex-col items-center justify-center gap-1.5 p-2.5 focus:outline-none active:scale-95 transition-transform"
+            className="group relative xl:hidden w-11 h-11 rounded-full flex items-center justify-center focus:outline-none transition-all duration-300 active:scale-90 select-none cursor-pointer"
             aria-label="Toggle menu"
           >
-            <span
-              className={`w-5 h-0.5 bg-white transition-transform duration-300 ${mobileMenuOpen ? 'rotate-45 translate-y-1' : ''
+            {/* Outer Ambient 3D Rim / Glow Aura */}
+            <div className="absolute -inset-0.5 rounded-full bg-gradient-to-b from-white/20 via-[#FF6A1A]/15 to-transparent blur-[3px] opacity-70 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+
+            {/* 3D Convex Beveled Glass Disc Body */}
+            <div
+              className="absolute inset-0 rounded-full bg-gradient-to-b from-[#25252B]/90 via-[#141418]/95 to-[#09090C] backdrop-blur-xl border border-white/20 shadow-[0_6px_16px_rgba(0,0,0,0.85),0_2px_5px_rgba(0,0,0,0.6),inset_0_1.5px_1px_rgba(255,255,255,0.45),inset_0_-2px_3px_rgba(0,0,0,0.9),inset_0_0_8px_rgba(255,106,26,0.12)] group-hover:border-white/35 group-hover:shadow-[0_8px_20px_rgba(0,0,0,0.95),0_0_14px_rgba(235,70,4,0.35),inset_0_1.5px_1.5px_rgba(255,255,255,0.6),inset_0_-2px_3px_rgba(0,0,0,0.9)] transition-all duration-300 pointer-events-none overflow-hidden"
+            >
+              {/* Top Specular Curved Rim Reflection */}
+              <div className="absolute top-0 inset-x-2 h-[1px] bg-gradient-to-r from-transparent via-white/70 to-transparent pointer-events-none" />
+              {/* Radial Spherical Sheen Highlight */}
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_18%,rgba(255,255,255,0.18)_0%,transparent_60%)] pointer-events-none" />
+            </div>
+
+            {/* 3D Extruded Metallic Burger Bars */}
+            <div className="relative z-10 flex flex-col items-center justify-center gap-1.5 w-5">
+              <span
+                className={`w-5 h-[2.5px] rounded-full transition-all duration-300 ease-out origin-center ${
+                  mobileMenuOpen
+                    ? 'rotate-45 translate-y-[8.5px] bg-gradient-to-r from-white via-[#FFA873] to-[#EB4604] shadow-[0_0_8px_rgba(235,70,4,0.8),0_1px_2px_rgba(0,0,0,0.9)]'
+                    : 'bg-gradient-to-b from-[#FFFFFF] via-[#EAEAEF] to-[#9E9EA8] shadow-[0_1.5px_2.5px_rgba(0,0,0,0.9),0_0_1px_rgba(0,0,0,0.8),inset_0_0.5px_0.5px_rgba(255,255,255,0.95)]'
                 }`}
-            />
-            <span
-              className={`w-5 h-0.5 bg-white transition-opacity duration-300 ${mobileMenuOpen ? 'opacity-0' : 'opacity-100'
+              />
+              <span
+                className={`w-5 h-[2.5px] rounded-full transition-all duration-300 ease-out ${
+                  mobileMenuOpen
+                    ? 'opacity-0 scale-x-0'
+                    : 'opacity-100 bg-gradient-to-b from-[#FFFFFF] via-[#EAEAEF] to-[#9E9EA8] shadow-[0_1.5px_2.5px_rgba(0,0,0,0.9),0_0_1px_rgba(0,0,0,0.8),inset_0_0.5px_0.5px_rgba(255,255,255,0.95)]'
                 }`}
-            />
-            <span
-              className={`w-5 h-0.5 bg-white transition-transform duration-300 ${mobileMenuOpen ? '-rotate-45 -translate-y-1' : ''
+              />
+              <span
+                className={`w-5 h-[2.5px] rounded-full transition-all duration-300 ease-out origin-center ${
+                  mobileMenuOpen
+                    ? '-rotate-45 -translate-y-[8.5px] bg-gradient-to-r from-white via-[#FFA873] to-[#EB4604] shadow-[0_0_8px_rgba(235,70,4,0.8),0_1px_2px_rgba(0,0,0,0.9)]'
+                    : 'bg-gradient-to-b from-[#FFFFFF] via-[#EAEAEF] to-[#9E9EA8] shadow-[0_1.5px_2.5px_rgba(0,0,0,0.9),0_0_1px_rgba(0,0,0,0.8),inset_0_0.5px_0.5px_rgba(255,255,255,0.95)]'
                 }`}
-            />
+              />
+            </div>
           </button>
         </div>
       </nav>
