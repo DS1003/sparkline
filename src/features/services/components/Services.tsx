@@ -231,7 +231,7 @@ export function Services({ isServicesPage = false, hideHeader = false }: Service
                     </div>
 
                     {/* CTA Button */}
-                    <div className="pt-1">
+                    <div className="pt-2 sm:pt-3">
                       <Link
                         href="/contact?inquiry=services"
                         scroll={true}
@@ -244,10 +244,23 @@ export function Services({ isServicesPage = false, hideHeader = false }: Service
                             }
                           }
                         }}
-                        className="inline-flex items-center gap-2 px-4 sm:px-5 xl:px-6 py-2 sm:py-2.5 rounded-full bg-[#EB4604] text-white text-xs sm:text-sm font-semibold hover:bg-[#D43D00] transition-all duration-300 shadow-lg shadow-[#EB4604]/25 group"
+                        className="group relative inline-flex items-center gap-3 pl-4.5 sm:pl-5 pr-2 sm:pr-2.5 py-1.5 sm:py-2 rounded-full bg-gradient-to-r from-[#FF6A1A] via-[#EB4604] to-[#D43D00] text-white text-xs sm:text-sm font-semibold shadow-[0_4px_20px_-2px_rgba(235,70,4,0.45),inset_0_1px_1.5px_0_rgba(255,255,255,0.4)] hover:shadow-[0_8px_28px_-2px_rgba(235,70,4,0.65),inset_0_1px_1.5px_0_rgba(255,255,255,0.55)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 ease-out select-none"
                       >
-                        <span>Contactez-nous</span>
-                        <span className="transition-transform group-hover:translate-x-1">→</span>
+                        <span className="tracking-[-0.01em]">Contactez-nous</span>
+                        <span className="w-6 h-6 sm:w-6.5 sm:h-6.5 rounded-full bg-black/25 border border-white/20 flex items-center justify-center text-white transition-all duration-300 group-hover:bg-white group-hover:text-[#EB4604] group-hover:border-white shadow-xs shrink-0">
+                          <svg
+                            className="w-3 h-3 sm:w-3.5 sm:h-3.5 transition-transform duration-300 group-hover:translate-x-0.5"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2.4"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          >
+                            <path d="M5 12h14" />
+                            <path d="m12 5 7 7-7 7" />
+                          </svg>
+                        </span>
                       </Link>
                     </div>
                   </div>
