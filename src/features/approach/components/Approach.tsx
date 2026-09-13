@@ -1,9 +1,9 @@
 'use client'
 
-import React, { useRef, useState } from 'react'
+import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { motion, useInView, type Variants } from 'framer-motion'
+import { motion, type Variants } from 'framer-motion'
 import { Container } from '@/components/layout/Container'
 import { Section } from '@/components/layout/Section'
 import { Tag } from '@/components/ui/Tag'
@@ -15,6 +15,34 @@ interface Step {
   title: string
   description: string
   image: string
+}
+
+// ── Safari/iOS Flawless Motion Variants (Pure Translation & Opacity, Zero Scale Invalidation) ──
+const containerVariants: Variants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.14,
+      delayChildren: 0.05,
+    },
+  },
+}
+
+const cardItemVariants: Variants = {
+  hidden: {
+    opacity: 0,
+    y: 30,
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      type: 'spring',
+      stiffness: 110,
+      damping: 18,
+      mass: 0.8,
+    },
+  },
 }
 
 const steps: Step[] = [
@@ -52,41 +80,7 @@ const steps: Step[] = [
   },
 ]
 
-// ── Motion Variants for Staggered Sequential Scroll Animation (Zero Overlapping) ──
-const containerVariants: Variants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.18,
-      delayChildren: 0.05,
-    },
-  },
-}
-
-const cardVariants: Variants = {
-  hidden: {
-    opacity: 0,
-    y: 28,
-    scale: 0.98,
-  },
-  visible: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: {
-      type: 'spring',
-      stiffness: 120,
-      damping: 20,
-      mass: 0.8,
-    },
-  },
-}
-
 export function Approach() {
-  const containerRef = useRef<HTMLDivElement>(null)
-  const isInView = useInView(containerRef, { once: true, amount: 0.15 })
-  const [, setHoveredIdx] = useState<number | null>(null)
 
   return (
     <Section id="approach" className="relative py-16 sm:py-20 lg:py-24 bg-[#FAFAFC] overflow-hidden">
@@ -119,95 +113,95 @@ export function Approach() {
           </div>
         </div>
 
-        {/* ── Sequential Animated 2x2 Grid of Step Cards ── */}
+        {/* ── Sequential Animated 2x2 Grid of Step Cards (Framer Motion Staggered, WebKit Hardware-Accelerated) ── */}
         <motion.div
-          ref={containerRef}
           variants={containerVariants}
           initial="hidden"
-          animate={isInView ? 'visible' : 'hidden'}
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.12 }}
           className="grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-6"
         >
-          {steps.map((step, idx) => (
+          {steps.map((step) => (
             <motion.div
               key={step.number}
-              variants={cardVariants}
-              onMouseEnter={() => setHoveredIdx(idx)}
-              onMouseLeave={() => setHoveredIdx(null)}
-              className="relative min-h-[190px] sm:h-[260px] lg:h-[280px] rounded-[24px] sm:rounded-[32px] overflow-hidden group shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:shadow-[0_24px_60px_rgba(0,0,0,0.2)] border border-neutral-200/80 hover:border-[#EB4604]/50 transition-all duration-700 cursor-pointer bg-[#0A0A0E]"
-              style={{
-                // Safari iOS GPU compositing flash fix:
-                // Forces layer promotion from first paint so there's no
-                // create/destroy event mid-animation that exposes a white background.
-                WebkitBackfaceVisibility: 'hidden',
-                backfaceVisibility: 'hidden',
-                WebkitTransform: 'translateZ(0)',
-                willChange: 'transform',
-                // Stable compositing context — prevents sublayer repaints from
-                // bleeding a white background through overflow-hidden + border-radius.
-                isolation: 'isolate',
-              }}
+              variants={cardItemVariants}
+              className="w-full"
             >
-              {/* Background High-Definition Photography */}
-              {/* brightness filter removed — CSS filter creates a separate WebKit
-                  compositing sublayer that repaints on animation end → white flash.
-                  Visual parity maintained via the slightly-darker gradient overlay below. */}
-              <Image
-                src={step.image}
-                alt={step.title}
-                fill
-                quality={90}
-                className="object-cover transition-transform duration-700 ease-out group-hover:scale-103"
-                sizes="(max-width: 768px) 100vw, 50vw"
-              />
+              <div
+                className="relative min-h-[190px] sm:h-[260px] lg:h-[280px] rounded-[24px] sm:rounded-[32px] overflow-hidden group shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:shadow-[0_24px_60px_rgba(0,0,0,0.2)] border border-neutral-200/80 hover:border-[#EB4604]/50 transition-[border-color,box-shadow] duration-500 cursor-pointer bg-[#0A0A0E]"
+                style={{
+                  // Safari iOS GPU compositing flash fix:
+                  // Forces layer promotion from first paint so there's no
+                  // create/destroy event mid-animation that exposes a white background.
+                  WebkitBackfaceVisibility: 'hidden',
+                  backfaceVisibility: 'hidden',
+                  WebkitMaskImage: '-webkit-radial-gradient(white, black)',
+                  maskImage: 'radial-gradient(white, black)',
+                  isolation: 'isolate',
+                }}
+              >
+                {/* Background High-Definition Photography */}
+                {/* brightness filter removed — CSS filter creates a separate WebKit
+                    compositing sublayer that repaints on animation end → white flash.
+                    Visual parity maintained via the slightly-darker gradient overlay below. */}
+                <Image
+                  src={step.image}
+                  alt={step.title}
+                  fill
+                  quality={90}
+                  className="object-cover transition-transform duration-700 ease-out group-hover:scale-103"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                />
 
-              {/* Dark Gradient Overlay — slightly deeper to compensate for removed brightness filter */}
-              <div className="absolute inset-0 bg-gradient-to-r from-black/72 via-black/48 to-black/62 transition-opacity duration-500 group-hover:opacity-85 pointer-events-none" />
+                {/* Dark Gradient Overlay — slightly deeper to compensate for removed brightness filter */}
+                <div className="absolute inset-0 bg-gradient-to-r from-black/72 via-black/48 to-black/62 transition-opacity duration-500 group-hover:opacity-85 pointer-events-none" />
 
-              {/* Signature Orange Atmospheric Light Accent on Hover */}
-              <div className="absolute top-0 right-0 w-72 h-72 bg-[#EB4604]/20 rounded-full blur-[100px] opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
+                {/* Signature Orange Atmospheric Light Accent on Hover */}
+                <div className="absolute top-0 right-0 w-72 h-72 bg-[#EB4604]/20 rounded-full blur-[100px] opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
 
-              {/* Card Content Layout */}
-              <div className="relative z-10 w-full h-full p-5 sm:p-8 lg:p-10 flex items-center justify-between gap-3 sm:gap-8">
-                {/* Left: Giant Outline Glass Number
-                    — converted from independent motion.div (own compositing layer)
-                      to CSS transition to avoid WebKit sublayer painting conflict */}
-                <div className="shrink-0">
-                  <span
-                    className="text-[55px] sm:text-[110px] lg:text-[130px] font-extralight tracking-tighter text-white/35 group-hover:text-white/70 transition-all duration-500 select-none leading-none block group-hover:scale-105"
-                    style={{
-                      fontFamily: 'var(--font-family--primary-font)',
-                      fontVariantNumeric: 'tabular-nums',
-                    }}
-                  >
-                    {step.number}
-                  </span>
-                </div>
-
-                {/* Right: Step Subtitle, Title & Description
-                    — same conversion: CSS transition instead of independent animation */}
-                <div className="space-y-1 sm:space-y-2 flex-1 min-w-0 max-w-[250px] sm:max-w-[310px] text-left">
-                  <div className="inline-flex items-center gap-1.5 sm:gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#EB4604]" />
-                    <span className="text-[10px] sm:text-[11px] font-mono font-semibold uppercase tracking-widest text-[#EB4604] block truncate">
-                      {step.subtitle}
+                {/* Card Content Layout */}
+                <div className="relative z-10 w-full h-full p-5 sm:p-8 lg:p-10 flex items-center justify-between gap-3 sm:gap-8">
+                  {/* Left: Giant Outline Glass Number
+                      — converted from independent motion.div (own compositing layer)
+                        to CSS transition to avoid WebKit sublayer painting conflict */}
+                  <div className="shrink-0">
+                    <span
+                      className="text-[55px] sm:text-[110px] lg:text-[130px] font-extralight tracking-tighter text-white/35 group-hover:text-white/70 transition-all duration-500 select-none leading-none block group-hover:scale-105"
+                      style={{
+                        fontFamily: 'var(--font-family--primary-font)',
+                        fontVariantNumeric: 'tabular-nums',
+                      }}
+                    >
+                      {step.number}
                     </span>
                   </div>
 
-                  <h3
-                    className="text-base sm:text-xl lg:text-2xl font-bold text-white tracking-tight leading-snug group-hover:text-white transition-colors"
-                    style={{ fontFamily: 'var(--font-family--primary-font)' }}
-                  >
-                    {step.title}
-                  </h3>
+                  {/* Right: Step Subtitle, Title & Description
+                      — same conversion: CSS transition instead of independent animation */}
+                  <div className="space-y-1 sm:space-y-2 flex-1 min-w-0 max-w-[250px] sm:max-w-[310px] text-left">
+                    <div className="inline-flex items-center gap-1.5 sm:gap-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#EB4604]" />
+                      <span className="text-[10px] sm:text-[11px] font-mono font-semibold uppercase tracking-widest text-[#EB4604] block truncate">
+                        {step.subtitle}
+                      </span>
+                    </div>
 
-                  <p className="text-[11px] sm:text-sm text-neutral-300 font-light leading-relaxed line-clamp-3 sm:line-clamp-none">
-                    {step.description}
-                  </p>
+                    <h3
+                      className="text-base sm:text-xl lg:text-2xl font-bold text-white tracking-tight leading-snug group-hover:text-white transition-colors"
+                      style={{ fontFamily: 'var(--font-family--primary-font)' }}
+                    >
+                      {step.title}
+                    </h3>
+
+                    <p className="text-[11px] sm:text-sm text-neutral-300 font-light leading-relaxed line-clamp-3 sm:line-clamp-none">
+                      {step.description}
+                    </p>
+                  </div>
                 </div>
-              </div>
 
-              {/* Bottom Subtle Glowing Border Highlight */}
-              <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#EB4604]/0 group-hover:via-[#EB4604]/80 to-transparent transition-all duration-700" />
+                {/* Bottom Subtle Glowing Border Highlight */}
+                <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#EB4604]/0 group-hover:via-[#EB4604]/80 to-transparent transition-all duration-700" />
+              </div>
             </motion.div>
           ))}
         </motion.div>

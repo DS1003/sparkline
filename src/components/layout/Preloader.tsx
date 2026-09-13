@@ -4,6 +4,7 @@ import React, { useRef, useState, useEffect } from 'react'
 import Image from 'next/image'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
+import { startAssetPreloading } from '@/lib/utils/assetPreloader'
 
 interface TrailSparkConfig {
   progress: number
@@ -65,6 +66,9 @@ export function Preloader() {
 
   // Calcul unique des coordonnées de départ et de tous les points de traînée
   useEffect(() => {
+    // Déclenchement non-bloquant du préchargement intelligent et mise en cache GPU de tous les assets du site
+    startAssetPreloading()
+
     if (typeof window !== 'undefined' && (window as unknown as { __SPARKLINE_LOADED__?: boolean }).__SPARKLINE_LOADED__) {
       setIsComplete(true)
       const navLogo = document.getElementById('navbar-logo')

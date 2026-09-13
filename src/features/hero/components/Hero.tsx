@@ -16,11 +16,11 @@ export function Hero() {
         {/* Background Team Image — Responsive Placement (Perfect 4-Person Framing on Mobile & Desktop) */}
         {/* Background Images — Responsive Art Direction */}
         <div className="hero-bg-container absolute inset-0 pointer-events-none select-none overflow-hidden">
-          {/* Mobile Image — Shifted Higher to Perfectly Frame the Glowing Emblem above the Title */}
+          {/* Mobile Image */}
           <div className="absolute inset-0 block md:hidden overflow-hidden">
-            <div className="relative w-full h-full -translate-y-12 sm:-translate-y-14 scale-[1.08] origin-center">
+            <div className="relative w-full h-full">
               <Image
-                src="/images/heroes/227114de-efe6-4f47-b2ac-8ea4abfd27dd_chatgpt_image_sep_8_2026_12_46_32_am.png"
+                src="/images/heroes/Gemini_Generated_Image_ge2ycmge2ycmge2y.jpeg"
                 alt="SPARKLINE Hero Background Mobile"
                 fill
                 priority
@@ -40,7 +40,7 @@ export function Hero() {
           {/* Desktop Image */}
           <div className="absolute inset-0 hidden md:block">
             <Image
-              src="/images/heroes/f1e92b4d-b294-4b2c-9a90-fe4d3612a789_enhanced_chatgpt_image_sep_8_2026_12_25_11_am.png"
+              src="/images/heroes/Gemini_Generated_Image_onl5ggonl5ggonl5.jpeg"
               alt="SPARKLINE Hero Background Desktop"
               fill
               priority

@@ -77,6 +77,21 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fr" className="dark">
+      <head>
+        {/* Critical Hero Backgrounds — Instant Browser HTTP Preload Scanner */}
+        <link
+          rel="preload"
+          as="image"
+          href="/images/heroes/Gemini_Generated_Image_onl5ggonl5ggonl5.jpeg"
+          media="(min-width: 768px)"
+        />
+        <link
+          rel="preload"
+          as="image"
+          href="/images/heroes/Gemini_Generated_Image_ge2ycmge2ycmge2y.jpeg"
+          media="(max-width: 767px)"
+        />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} bg-[#0a0a0a] text-white antialiased selection:bg-[#DE322D] selection:text-white`}
       >
