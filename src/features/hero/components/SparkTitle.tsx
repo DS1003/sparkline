@@ -8,7 +8,7 @@ interface SparkTitleProps {
 }
 
 export function SparkTitle({
-  lines = ['Concevoir la', 'nouvelle génération', 'de marques'],
+  lines = ['Concevoir la', 'nouvelle ère', 'du numérique'],
   className = '',
 }: SparkTitleProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -281,7 +281,7 @@ export function SparkTitle({
         const isLinePast = isStarted && lineIdx < currentLineIndex
 
         // Match highlighted word: "marques" or "marque"
-        const highlightMatch = lineText.match(/\bmarques?\b/i)
+        const highlightMatch = lineText.match(/\bnumérique?\b/i)
         const highlightStart = highlightMatch?.index ?? -1
         const highlightEnd = highlightStart !== -1 ? highlightStart + highlightMatch![0].length : -1
 
@@ -308,13 +308,13 @@ export function SparkTitle({
                     color: isCurrentTip
                       ? '#FFE57F'
                       : isCharRevealed
-                      ? (isMarqueChar ? '#FF6A1A' : '#FFFFFF')
-                      : 'transparent',
+                        ? (isMarqueChar ? '#FF6A1A' : '#FFFFFF')
+                        : 'transparent',
                     textShadow: isCurrentTip
                       ? '0 0 10px #FFFFFF, 0 0 20px #FF9100, 0 0 35px #EB4604'
                       : isMarqueChar
-                      ? '0 2px 14px rgba(255, 106, 26, 0.5), 0 0 20px rgba(235, 70, 4, 0.4), 0 1px 3px rgba(0,0,0,0.9)'
-                      : '0 2px 10px rgba(0,0,0,0.65), 0 1px 3px rgba(0,0,0,0.8)',
+                        ? '0 2px 14px rgba(255, 106, 26, 0.5), 0 0 20px rgba(235, 70, 4, 0.4), 0 1px 3px rgba(0,0,0,0.9)'
+                        : '0 2px 10px rgba(0,0,0,0.65), 0 1px 3px rgba(0,0,0,0.8)',
                   }}
                 >
                   {char === ' ' ? '\u00A0' : char}

@@ -111,7 +111,7 @@ export function Hero() {
           </RevealOnScroll>
 
           {/* Spark Writing Title on Strictly 3 Lines */}
-          <SparkTitle lines={['Concevoir la', 'nouvelle génération', 'de marques']} />
+          <SparkTitle lines={['Concevoir la', 'nouvelle ère', 'du numérique']} />
 
           <RevealOnScroll delay={0.3} className="hero-subtext">
             <p className="text-xs sm:text-sm lg:text-[13px] xl:text-base text-neutral-100 max-w-md xl:max-w-lg font-normal leading-relaxed drop-shadow-[0_2px_4px_rgba(0,0,0,0.85)]">
