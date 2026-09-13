@@ -16,9 +16,9 @@ export function Hero() {
         {/* Background Team Image — Responsive Placement (Perfect 4-Person Framing on Mobile & Desktop) */}
         {/* Background Images — Responsive Art Direction */}
         <div className="hero-bg-container absolute inset-0 pointer-events-none select-none overflow-hidden">
-          {/* Mobile Image */}
+          {/* Mobile Image — Shifted upward to keep the glowing emblem fully visible above the title */}
           <div className="absolute inset-0 block md:hidden overflow-hidden">
-            <div className="relative w-full h-full">
+            <div className="relative w-full h-full -translate-y-11 sm:-translate-y-12 scale-[1.09] origin-top">
               <Image
                 src="/images/heroes/Gemini_Generated_Image_ge2ycmge2ycmge2y.jpeg"
                 alt="SPARKLINE Hero Background Mobile"
@@ -33,7 +33,7 @@ export function Hero() {
               className="absolute inset-0 pointer-events-none"
               style={{
                 background:
-                  'linear-gradient(180deg, rgba(7,7,9,0) 0%, rgba(7,7,9,0) 40%, rgba(7,7,9,0.4) 54%, rgba(7,7,9,0.76) 72%, rgba(7,7,9,0.96) 100%)',
+                  'linear-gradient(180deg, rgba(7,7,9,0) 0%, rgba(7,7,9,0) 36%, rgba(7,7,9,0.45) 50%, rgba(7,7,9,0.82) 68%, rgba(7,7,9,0.98) 100%)',
               }}
             />
           </div>
@@ -54,7 +54,7 @@ export function Hero() {
         <Navbar />
 
         {/* Main Hero Headline Area with Real Spark Writing Effect */}
-        <div className="relative z-10 mt-auto mb-2 md:my-auto pt-4 sm:pt-6 md:pt-0 max-w-3xl lg:max-w-4xl xl:max-w-6xl py-1.5 sm:py-2.5 lg:py-2 xl:py-4 space-y-2 sm:space-y-3 lg:space-y-2.5 xl:space-y-4 flex flex-col items-center text-center lg:items-start lg:text-left">
+        <div className="relative z-10 mt-auto mb-2 md:my-auto pt-1 sm:pt-4 md:pt-0 max-w-3xl lg:max-w-4xl xl:max-w-6xl py-1 sm:py-2.5 lg:py-2 xl:py-4 space-y-1.5 sm:space-y-3 lg:space-y-2.5 xl:space-y-4 flex flex-col items-center text-center lg:items-start lg:text-left">
           <RevealOnScroll delay={0.1} className="hero-badge hidden md:block">
             <div className="relative inline-flex items-center group cursor-default">
               {/* Controlled Subtle Neon Rim Aura (tight & crisp, no excessive blur) */}
