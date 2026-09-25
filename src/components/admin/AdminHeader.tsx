@@ -16,11 +16,8 @@ import {
   LogOut,
   ExternalLink,
   ChevronDown,
-  PanelLeftClose,
-  PanelLeftOpen,
 } from 'lucide-react'
 import { LogoutModal } from './LogoutModal'
-import { useAdminSidebar } from './AdminSidebarContext'
 import { notify } from '@/lib/notify'
 
 interface AdminHeaderProps {
@@ -32,7 +29,6 @@ interface AdminHeaderProps {
 export function AdminHeader({ userName, userEmail, newLeadsCount = 0 }: AdminHeaderProps) {
   const router = useRouter()
   const pathname = usePathname()
-  const { isCollapsed, toggleSidebar } = useAdminSidebar()
   const [search, setSearch] = useState('')
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [userMenuOpen, setUserMenuOpen] = useState(false)
@@ -114,15 +110,6 @@ export function AdminHeader({ userName, userEmail, newLeadsCount = 0 }: AdminHea
             title="Menu de navigation"
           >
             <Menu className="w-4 h-4" />
-          </button>
-
-          {/* Desktop/Laptop Sidebar Toggle (>= md) */}
-          <button
-            onClick={toggleSidebar}
-            className="hidden md:flex w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white border border-neutral-200/80 items-center justify-center text-neutral-600 hover:text-neutral-900 hover:bg-neutral-50 shadow-2xs cursor-pointer shrink-0 transition-colors"
-            title={isCollapsed ? 'Développer la barre latérale (⌘B)' : 'Réduire la barre latérale (⌘B)'}
-          >
-            {isCollapsed ? <PanelLeftOpen className="w-4 h-4" /> : <PanelLeftClose className="w-4 h-4" />}
           </button>
 
           {/* Search Pill (matching reference with keyboard shortcut) */}
