@@ -347,7 +347,12 @@ export default function AdminDashboardPage() {
                 {currentBars.map((bar, idx) => {
                   const isFriday = bar.day === 'V' || bar.isToday
                   const isZero = bar.count === 0
-                  const heightPercent = Math.min(100, Math.max(24, Math.round((bar.count / maxBarCount) * 100)))
+                  const barHeightPx =
+                    bar.count === 1
+                      ? 48
+                      : bar.count === 2
+                      ? 85
+                      : Math.min(115, Math.max(48, Math.round((bar.count / maxBarCount) * 110)))
                   return (
                     <div key={idx} className="flex flex-col items-center flex-1 h-full justify-end group/bar relative">
                       {/* Tooltip on hover */}
@@ -373,7 +378,7 @@ export default function AdminDashboardPage() {
                         ) : (
                           <div
                             style={{
-                              height: `${heightPercent}%`,
+                              height: `${barHeightPx}px`,
                             }}
                             className={`w-full rounded-2xl transition-all duration-500 shadow-2xs ${isFriday ? 'bg-[#EB4604]' : 'bg-[#0B0F17]'
                               }`}
