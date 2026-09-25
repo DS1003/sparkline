@@ -1,0 +1,54 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// 1. Leads & Project Requests (Landing + Contact Page)
+model Lead {
+  id            String   @id @default(cuid())
+  name          String
+  email         String
+  phone         String?
+  company       String?
+  services      String   @default("[]") // JSON stringified array of services
+  inquiryType   String?  // "project", "audit", "product", "engineering", "consulting"
+  budget        String?  // "< 5M FCFA", "5M - 15M FCFA", etc.
+  preferredDate String?
+  message       String
+  source        String   @default("contact_page") // "landing" | "contact_page"
+  status        String   @default("NEW") // "NEW" | "CONTACTED" | "QUALIFIED" | "WON" | "ARCHIVED"
+  internalNotes String?
+  ipAddress     String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([status])
+  @@index([createdAt])
+}
+
+// 2. Newsletter Subscribers (Footer)
+model NewsletterSubscriber {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  source    String   @default("footer")
+  status    String   @default("ACTIVE") // "ACTIVE" | "UNSUBSCRIBED"
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status])
+}
+
+// 3. Admin Users (In-House Authentication)
+model AdminUser {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String
+  passwordHash String
+  role         String   @default("SUPER_ADMIN")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}

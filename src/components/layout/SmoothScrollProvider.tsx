@@ -13,6 +13,9 @@ export function SmoothScrollProvider({ children }: SmoothScrollProviderProps) {
   const pathname = usePathname()
 
   useEffect(() => {
+    // Do not run Lenis on admin routes
+    if (pathname?.startsWith('/admin')) return
+
     // Honor reduced motion accessibility
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (prefersReducedMotion) return

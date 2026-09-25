@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
+import { Check, Plus } from 'lucide-react'
 import { PageHero } from '@/components/layout/PageHero'
 import { Container } from '@/components/layout/Container'
 import { Section } from '@/components/layout/Section'
@@ -69,14 +70,42 @@ export default function ContactPage() {
     return formData.services.length === 1 && formData.services[0] === 'Sparklearn Formation'
   }, [formData.services])
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const [errorMsg, setErrorMsg] = useState('')
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (loading) return
     setLoading(true)
-    setTimeout(() => {
+    setErrorMsg('')
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          services: formData.services,
+          budget: formData.budget,
+          preferredDate: formData.preferredDate,
+          message: formData.message || 'Demande transmise via le formulaire de contact.',
+          source: 'contact_page',
+        }),
+      })
+
+      const data = await res.json()
+
+      if (res.ok && data.success) {
+        setSubmitted(true)
+      } else {
+        setErrorMsg(data.error || 'Une erreur est survenue lors de l’envoi. Veuillez vérifier vos informations.')
+      }
+    } catch {
+      setErrorMsg('Connexion au serveur impossible. Veuillez réessayer ou nous contacter via WhatsApp.')
+    } finally {
       setLoading(false)
-      setSubmitted(true)
-    }, 600)
+    }
   }
 
   const handleResetForm = React.useCallback(() => {
@@ -321,7 +350,11 @@ export default function ContactPage() {
                             >
                               <span className="truncate">{service}</span>
                               <span className={isSelected ? 'text-[#EB4604] font-bold shrink-0' : 'text-neutral-400 shrink-0'}>
-                                {isSelected ? '✓' : '+'}
+                                {isSelected ? (
+                                  <Check className="w-3.5 h-3.5" />
+                                ) : (
+                                  <Plus className="w-3.5 h-3.5" />
+                                )}
                               </span>
                             </button>
                           )
@@ -456,7 +489,12 @@ export default function ContactPage() {
                     </div>
 
                     {/* 6. Smooth 3D Master Action Pill Button */}
-                    <div className="pt-1 sm:pt-2">
+                    <div className="pt-1 sm:pt-2 space-y-2">
+                      {errorMsg && (
+                        <div className="p-3 rounded-2xl bg-red-50 border border-red-200 text-red-700 text-xs font-medium leading-relaxed">
+                          {errorMsg}
+                        </div>
+                      )}
                       <button
                         type="submit"
                         disabled={loading}

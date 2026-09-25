@@ -1,9 +1,11 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
+import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence, useScroll, useSpring } from 'framer-motion'
 
 export function ScrollToTop() {
+  const pathname = usePathname()
   const [isVisible, setIsVisible] = useState(false)
   const [isBarExpanded, setIsBarExpanded] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
@@ -58,6 +60,10 @@ export function ScrollToTop() {
   const strokeWidth = 2.5
   const radius = (size - strokeWidth * 2) / 2
   const circumference = 2 * Math.PI * radius
+
+  if (pathname?.startsWith('/admin')) {
+    return null
+  }
 
   return (
     <AnimatePresence>

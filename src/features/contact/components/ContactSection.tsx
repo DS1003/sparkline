@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
+import { Check, ShieldCheck, ArrowRight } from 'lucide-react'
 import { Tag } from '@/components/ui/Tag'
 import { Container } from '@/components/layout/Container'
 import { Section } from '@/components/layout/Section'
@@ -18,6 +19,7 @@ const inquiryTypes = [
 export function ContactSection() {
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [errorMsg, setErrorMsg] = useState('')
   const [activeStep, setActiveStep] = useState(1)
   const [formData, setFormData] = useState({
     name: '',
@@ -29,13 +31,43 @@ export function ContactSection() {
     message: '',
   })
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    if (loading) return
     setLoading(true)
-    setTimeout(() => {
+    setErrorMsg('')
+
+    const inquiryLabel = inquiryTypes.find((t) => t.value === formData.inquiryType)?.label || formData.inquiryType
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: formData.name,
+          company: formData.company,
+          email: formData.email,
+          phone: formData.phone,
+          inquiryType: formData.inquiryType,
+          services: [inquiryLabel],
+          budget: formData.budget,
+          message: formData.message,
+          source: 'landing',
+        }),
+      })
+
+      const data = await res.json()
+
+      if (res.ok && data.success) {
+        setSubmitted(true)
+      } else {
+        setErrorMsg(data.error || 'Une erreur est survenue lors de l’envoi. Veuillez réessayer.')
+      }
+    } catch {
+      setErrorMsg('Connexion au serveur impossible. Veuillez vérifier votre connexion ou nous contacter via WhatsApp.')
+    } finally {
       setLoading(false)
-      setSubmitted(true)
-    }, 1000)
+    }
   }
 
   return (
@@ -189,8 +221,8 @@ export function ContactSection() {
             <div className="lg:col-span-7 p-8 sm:p-12 lg:p-14 bg-[#08080a] flex flex-col justify-center">
               {submitted ? (
                 <div className="text-center py-16 space-y-4">
-                  <div className="w-16 h-16 rounded-full bg-white/10 text-white flex items-center justify-center text-3xl mx-auto mb-4 border border-white/20">
-                    ✓
+                  <div className="w-16 h-16 rounded-full bg-white/10 text-white flex items-center justify-center mx-auto mb-4 border border-white/20">
+                    <Check className="w-8 h-8 text-white" />
                   </div>
                   <h3
                     className="text-2xl sm:text-3xl font-bold text-white tracking-tight"
@@ -355,6 +387,12 @@ export function ContactSection() {
                       />
                     </div>
 
+                    {errorMsg && (
+                      <div className="p-3 rounded-xl bg-red-500/10 border border-red-500/30 text-red-300 text-xs leading-relaxed">
+                        {errorMsg}
+                      </div>
+                    )}
+
                     {/* Submit Button (Solid White High Contrast as in Reference Design) */}
                     <button
                       type="submit"
@@ -365,8 +403,9 @@ export function ContactSection() {
                     </button>
 
                     <div className="text-center pt-2">
-                      <span className="text-[11px] font-mono text-neutral-500">
-                        ✦ Réponse sous 24h ouvrées • Confidentialité garantie
+                      <span className="inline-flex items-center gap-1.5 text-[11px] font-mono text-neutral-500">
+                        <ShieldCheck className="w-3.5 h-3.5 text-[#EB4604]" />
+                        <span>Réponse sous 24h ouvrées • Confidentialité garantie</span>
                       </span>
                     </div>
                   </form>

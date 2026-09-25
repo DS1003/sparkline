@@ -9,12 +9,36 @@ import { siteConfig } from '@/config/site'
 export function Footer() {
   const [email, setEmail] = useState('')
   const [subscribed, setSubscribed] = useState(false)
+  const [feedbackMessage, setFeedbackMessage] = useState('Merci ! Vous êtes désormais abonné à nos actualités.')
+  const [loading, setLoading] = useState(false)
+  const [errorMsg, setErrorMsg] = useState('')
 
-  const handleSubscribe = (e: React.FormEvent) => {
+  const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (email) {
-      setSubscribed(true)
-      setEmail('')
+    if (!email || loading) return
+
+    setLoading(true)
+    setErrorMsg('')
+
+    try {
+      const res = await fetch('/api/newsletter', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, source: 'footer' }),
+      })
+      const data = await res.json()
+
+      if (res.ok && data.success) {
+        setFeedbackMessage(data.message || 'Merci ! Vous êtes désormais abonné à nos actualités.')
+        setSubscribed(true)
+        setEmail('')
+      } else {
+        setErrorMsg(data.error || 'Une erreur est survenue.')
+      }
+    } catch {
+      setErrorMsg('Connexion impossible. Veuillez réessayer.')
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -89,7 +113,7 @@ export function Footer() {
                         </svg>
                       </div>
                       <span className="text-xs sm:text-sm font-medium text-white truncate">
-                        Merci ! Vous êtes désormais abonné à nos actualités.
+                        {feedbackMessage}
                       </span>
                     </div>
 
@@ -108,25 +132,30 @@ export function Footer() {
                     exit={{ opacity: 0, y: -8 }}
                     transition={{ duration: 0.25 }}
                     onSubmit={handleSubscribe}
-                    className="w-full"
+                    className="w-full space-y-2"
                   >
-                    <div className="rounded-full border border-white/80 bg-transparent p-1.5 sm:p-2.5 pl-4 sm:pl-7 flex items-center justify-between transition-colors shadow-sm">
+                    <div className="rounded-full border border-white/80 bg-transparent p-1.5 sm:p-2.5 pl-4 sm:pl-7 flex items-center justify-between transition-colors shadow-sm focus-within:border-[#EB4604]">
                       <input
                         type="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder="Entrez votre adresse e-mail"
                         required
-                        className="bg-transparent text-white placeholder-neutral-400 focus:outline-none w-full text-base font-light tracking-wide py-1"
+                        disabled={loading}
+                        className="bg-transparent text-white placeholder-neutral-400 focus:outline-none w-full text-base font-light tracking-wide py-1 disabled:opacity-50"
                       />
                       <button
                         type="submit"
+                        disabled={loading}
                         aria-label="S'abonner"
-                        className="w-9 h-9 sm:w-12 sm:h-12 rounded-full bg-white text-[#070709] flex items-center justify-center font-bold text-sm sm:text-lg shrink-0 ml-2 hover:bg-[#EB4604] hover:text-white transition-all shadow-md"
+                        className="w-9 h-9 sm:w-12 sm:h-12 rounded-full bg-white text-[#070709] flex items-center justify-center font-bold text-sm sm:text-lg shrink-0 ml-2 hover:bg-[#EB4604] hover:text-white transition-all shadow-md disabled:opacity-50"
                       >
-                        ↗
+                        {loading ? '…' : '↗'}
                       </button>
                     </div>
+                    {errorMsg && (
+                      <p className="text-xs text-red-400 pl-4 font-medium">{errorMsg}</p>
+                    )}
                   </motion.form>
                 )}
               </AnimatePresence>

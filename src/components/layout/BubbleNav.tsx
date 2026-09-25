@@ -164,6 +164,11 @@ export function BubbleNav() {
   // Whether desktop shows expanded content
   const isExpanded = !collapsed || hovered
 
+  // If on any admin route, completely hide the public site bubble navigation!
+  if (pathname?.startsWith('/admin')) {
+    return null
+  }
+
   return (
     <>
       {/* ═══════════════════════════════════════════════════════════
