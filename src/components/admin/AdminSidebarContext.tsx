@@ -15,12 +15,17 @@ const STORAGE_KEY = 'sparkline_admin_sidebar_collapsed'
 export function AdminSidebarProvider({ children }: { children: React.ReactNode }) {
   const [isCollapsed, setIsCollapsed] = useState(false)
 
-  // Initialize from localStorage on client
+  // Initialize from localStorage on client with intelligent default for small PC screens
   useEffect(() => {
     try {
       const stored = localStorage.getItem(STORAGE_KEY)
       if (stored !== null) {
         setIsCollapsed(stored === 'true')
+      } else {
+        // On screens < 1280px (MacBook 13", smaller PC displays), default to compact sidebar to maximize space
+        if (typeof window !== 'undefined' && window.innerWidth < 1280) {
+          setIsCollapsed(true)
+        }
       }
     } catch {
       // localStorage may be disabled or restricted

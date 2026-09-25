@@ -207,8 +207,8 @@ export default function AdminDashboardPage() {
         </div>
       </div>
 
-      {/* ── Top Metric Cards Row (2x2 on mobile, 4 in row on desktop) ── */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4">
+      {/* ── Top Metric Cards Row (Responsive 1/2/4 columns) ── */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-2.5 sm:gap-4">
         {/* Card 1: Total Demandes */}
         <div className="rounded-2xl sm:rounded-[24px] bg-[#0B0F17] text-white p-3.5 sm:p-5 flex flex-col justify-between relative overflow-hidden shadow-xs group min-h-[130px] sm:min-h-[145px]">
           {/* Subtle Organic Wave Lines in background */}
@@ -327,10 +327,10 @@ export default function AdminDashboardPage() {
         </div>
       </div>
 
-      {/* ── Middle Bento Grid (3 Columns) ── */}
-      <div className="grid grid-cols-1 lg:grid-cols-[1.15fr_1fr_1fr] gap-4 sm:gap-5">
-        {/* Column 1: Volume des Demandes Bar Chart */}
-        <div className="rounded-2xl sm:rounded-[24px] bg-white border border-neutral-200/80 p-4 sm:p-6 flex flex-col justify-between shadow-xs">
+      {/* ── Middle Bento Grid (Responsive 1 / 2 / 3 Columns) ── */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-[1.25fr_1fr_1fr] gap-4 sm:gap-5">
+        {/* Column 1: Volume des Demandes Bar Chart (Spans 2 cols on lg, 1 on xl) */}
+        <div className="rounded-2xl sm:rounded-[24px] bg-white border border-neutral-200/80 p-4 sm:p-6 flex flex-col justify-between shadow-xs lg:col-span-2 xl:col-span-1 min-w-0 overflow-hidden">
           <div className="flex items-center justify-between gap-2 mb-4">
             <div className="flex items-center gap-2 sm:gap-2.5 min-w-0">
               <BarChart2 className="w-4 h-4 text-neutral-900 shrink-0" />
@@ -573,10 +573,10 @@ export default function AdminDashboardPage() {
         </div>
       </div>
 
-      {/* ── Bottom Bento Grid (3 Columns) ── */}
-      <div className="grid grid-cols-1 lg:grid-cols-[1.15fr_1fr_1fr] gap-4 sm:gap-5">
-        {/* Column 1: Dernières Demandes Table */}
-        <div className="rounded-2xl sm:rounded-[24px] bg-white border border-neutral-200/80 p-4 sm:p-6 flex flex-col justify-between shadow-xs">
+      {/* ── Bottom Bento Grid (Responsive 1 / 2 / 3 Columns) ── */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-[1.25fr_1fr_1fr] gap-4 sm:gap-5">
+        {/* Column 1: Dernières Demandes Table (Spans 2 cols on lg, 1 on xl) */}
+        <div className="rounded-2xl sm:rounded-[24px] bg-white border border-neutral-200/80 p-4 sm:p-6 flex flex-col justify-between shadow-xs lg:col-span-2 xl:col-span-1 min-w-0 overflow-hidden">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
               <Users className="w-4 h-4 text-neutral-900" />

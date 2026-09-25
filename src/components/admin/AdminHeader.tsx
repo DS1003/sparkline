@@ -16,8 +16,11 @@ import {
   LogOut,
   ExternalLink,
   ChevronDown,
+  PanelLeftClose,
+  PanelLeftOpen,
 } from 'lucide-react'
 import { LogoutModal } from './LogoutModal'
+import { useAdminSidebar } from './AdminSidebarContext'
 import { notify } from '@/lib/notify'
 
 interface AdminHeaderProps {
@@ -29,6 +32,7 @@ interface AdminHeaderProps {
 export function AdminHeader({ userName, userEmail, newLeadsCount = 0 }: AdminHeaderProps) {
   const router = useRouter()
   const pathname = usePathname()
+  const { isCollapsed, toggleSidebar } = useAdminSidebar()
   const [search, setSearch] = useState('')
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [userMenuOpen, setUserMenuOpen] = useState(false)
@@ -101,14 +105,24 @@ export function AdminHeader({ userName, userEmail, newLeadsCount = 0 }: AdminHea
   return (
     <>
       <header className="sticky top-0 z-20 bg-[#F4F5F7]/85 backdrop-blur-md px-3 sm:px-6 py-2.5 sm:py-3.5 flex items-center justify-between gap-2.5 sm:gap-3">
-        {/* Left: Mobile Menu Toggle Button + Search Pill */}
-        <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0 max-w-md">
+        {/* Left: Mobile Menu Toggle Button + Desktop Sidebar Toggle + Search Pill */}
+        <div className="flex items-center gap-2 sm:gap-2.5 flex-1 min-w-0 max-w-md">
+          {/* Mobile hamburger (< md) */}
           <button
             onClick={() => setMobileMenuOpen(true)}
             className="md:hidden w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white border border-neutral-200/80 flex items-center justify-center text-neutral-700 hover:text-black shadow-2xs cursor-pointer shrink-0"
             title="Menu de navigation"
           >
             <Menu className="w-4 h-4" />
+          </button>
+
+          {/* Desktop/Laptop Sidebar Toggle (>= md) */}
+          <button
+            onClick={toggleSidebar}
+            className="hidden md:flex w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white border border-neutral-200/80 items-center justify-center text-neutral-600 hover:text-neutral-900 hover:bg-neutral-50 shadow-2xs cursor-pointer shrink-0 transition-colors"
+            title={isCollapsed ? 'Développer la barre latérale (⌘B)' : 'Réduire la barre latérale (⌘B)'}
+          >
+            {isCollapsed ? <PanelLeftOpen className="w-4 h-4" /> : <PanelLeftClose className="w-4 h-4" />}
           </button>
 
           {/* Search Pill (matching reference with keyboard shortcut) */}

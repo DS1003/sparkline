@@ -334,7 +334,7 @@ export default function AdminNewsletterPage() {
       </div>
 
       {/* ── 2. Top Metric Cards Row (2x2 on mobile, 4 in row on desktop) ── */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-2.5 sm:gap-4">
         {/* Card 1: Audience totale (Soft Peach Card) */}
         <div className="rounded-2xl sm:rounded-[24px] bg-[#FFF8F5] border border-[#FFEDE5] p-3.5 sm:p-5 flex flex-col justify-between shadow-xs relative overflow-hidden min-h-[120px] sm:min-h-[140px]">
           <div className="flex items-center gap-2 sm:gap-3">
@@ -415,9 +415,9 @@ export default function AdminNewsletterPage() {
       </div>
 
       {/* ── 3. Filter Bar (Pill filters with custom interactive dropdowns) ── */}
-      <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-2.5 sm:gap-3 bg-white p-2.5 sm:p-3 rounded-2xl border border-neutral-200/80 shadow-2xs">
+      <div className="flex flex-col xl:flex-row items-stretch xl:items-center justify-between gap-2.5 sm:gap-3 bg-white p-2.5 sm:p-3 rounded-2xl border border-neutral-200/80 shadow-2xs">
         {/* Left: Search input */}
-        <div className="relative flex-1 min-w-0 md:max-w-sm">
+        <div className="relative flex-1 min-w-0 xl:max-w-sm">
           <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-neutral-400">
             <Search className="w-4 h-4" />
           </div>
@@ -806,9 +806,9 @@ export default function AdminNewsletterPage() {
               </div>
             </div>
 
-            {/* Desktop View: Full-width Table (No horizontal scroll, clean columns) */}
-            <div className="hidden md:block">
-              <table className="w-full text-left text-xs" style={{ borderCollapse: 'collapse' }}>
+            {/* Desktop View: Full-width Table with horizontal scroll safeguard */}
+            <div className="hidden md:block overflow-x-auto">
+              <table className="w-full min-w-[720px] text-left text-xs" style={{ borderCollapse: 'collapse' }}>
                 <thead className="bg-neutral-50/80 border-b border-neutral-200/70 text-[11px] font-mono uppercase text-neutral-400">
                   <tr>
                     <th className="py-3.5 px-4 font-semibold w-10">

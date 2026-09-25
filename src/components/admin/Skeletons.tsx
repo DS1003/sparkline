@@ -109,48 +109,50 @@ export function TableSkeleton({ rowsCount = 6 }: { rowsCount?: number }) {
 export function KanbanSkeleton() {
   const columns = ['Nouveau', 'Contacté', 'Qualifié', 'En cours', 'Gagné']
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4 animate-in fade-in duration-300">
-      {columns.map((_, cIdx) => (
-        <div
-          key={cIdx}
-          className="bg-[#F8F9FA] rounded-2xl p-3 border border-neutral-200/70 flex flex-col gap-3 min-h-[420px]"
-        >
-          {/* Column Header */}
-          <div className="flex items-center justify-between px-1.5 py-1">
-            <div className="flex items-center gap-2">
-              <SkeletonBlock className="w-2.5 h-2.5" rounded="rounded-full" />
-              <SkeletonBlock className="w-20 h-3.5" rounded="rounded-md" />
-            </div>
-            <SkeletonBlock className="w-5 h-5" rounded="rounded-full" />
-          </div>
-
-          {/* Lead Card Placeholders */}
-          <div className="space-y-3 flex-1">
-            {Array.from({ length: cIdx === 0 ? 3 : 2 }).map((_, rIdx) => (
-              <div
-                key={rIdx}
-                className="bg-white rounded-xl p-3.5 border border-neutral-200/70 shadow-xs space-y-3"
-              >
-                <div className="flex items-start justify-between">
-                  <div className="space-y-1.5 flex-1">
-                    <SkeletonBlock className="w-32 h-3.5" rounded="rounded-md" />
-                    <SkeletonBlock className="w-24 h-2.5" rounded="rounded-md" />
-                  </div>
-                  <SkeletonBlock className="w-5 h-5 shrink-0" rounded="rounded" />
-                </div>
-                <div className="flex flex-wrap gap-1.5">
-                  <SkeletonBlock className="w-16 h-4" rounded="rounded-md" />
-                  <SkeletonBlock className="w-20 h-4" rounded="rounded-md" />
-                </div>
-                <div className="pt-2 border-t border-neutral-100 flex items-center justify-between">
-                  <SkeletonBlock className="w-14 h-3" rounded="rounded-md" />
-                  <SkeletonBlock className="w-16 h-5" rounded="rounded-full" />
-                </div>
+    <div className="w-full overflow-x-auto pb-4">
+      <div className="flex gap-4 items-start w-full min-w-[760px] 2xl:min-w-0 animate-in fade-in duration-300">
+        {columns.map((_, cIdx) => (
+          <div
+            key={cIdx}
+            className="bg-[#F8F9FA] rounded-2xl p-3 border border-neutral-200/70 flex flex-col gap-3 min-h-[420px] flex-1 min-w-[240px] lg:min-w-[260px]"
+          >
+            {/* Column Header */}
+            <div className="flex items-center justify-between px-1.5 py-1">
+              <div className="flex items-center gap-2">
+                <SkeletonBlock className="w-2.5 h-2.5" rounded="rounded-full" />
+                <SkeletonBlock className="w-20 h-3.5" rounded="rounded-md" />
               </div>
-            ))}
+              <SkeletonBlock className="w-5 h-5" rounded="rounded-full" />
+            </div>
+
+            {/* Lead Card Placeholders */}
+            <div className="space-y-3 flex-1">
+              {Array.from({ length: cIdx === 0 ? 3 : 2 }).map((_, rIdx) => (
+                <div
+                  key={rIdx}
+                  className="bg-white rounded-xl p-3.5 border border-neutral-200/70 shadow-xs space-y-3"
+                >
+                  <div className="flex items-start justify-between">
+                    <div className="space-y-1.5 flex-1">
+                      <SkeletonBlock className="w-32 h-3.5" rounded="rounded-md" />
+                      <SkeletonBlock className="w-24 h-2.5" rounded="rounded-md" />
+                    </div>
+                    <SkeletonBlock className="w-5 h-5 shrink-0" rounded="rounded" />
+                  </div>
+                  <div className="flex flex-wrap gap-1.5">
+                    <SkeletonBlock className="w-16 h-4" rounded="rounded-md" />
+                    <SkeletonBlock className="w-20 h-4" rounded="rounded-md" />
+                  </div>
+                  <div className="pt-2 border-t border-neutral-100 flex items-center justify-between">
+                    <SkeletonBlock className="w-14 h-3" rounded="rounded-md" />
+                    <SkeletonBlock className="w-16 h-5" rounded="rounded-full" />
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   )
 }
@@ -158,7 +160,7 @@ export function KanbanSkeleton() {
 // ── 3. Metric Cards Skeleton (Used in Dashboard overview) ──
 export function MetricCardsSkeleton() {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
       {Array.from({ length: 4 }).map((_, idx) => (
         <div
           key={idx}
@@ -201,7 +203,7 @@ export function DashboardSkeleton() {
       <MetricCardsSkeleton />
 
       {/* Studio / Chart Row */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-[1.25fr_1fr_1fr] gap-6">
         {/* Left: Studio Timer Box Skeleton */}
         <div className="bg-white rounded-2xl sm:rounded-[24px] p-5 sm:p-6 border border-neutral-200/80 shadow-xs space-y-4">
           <div className="flex items-center justify-between">

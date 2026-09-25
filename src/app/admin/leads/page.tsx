@@ -590,7 +590,7 @@ export default function AdminLeadsPage() {
       </div>
 
       {/* ── 2. Top Metric Cards Row (2x2 on mobile, 4 in row on desktop) ── */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-2.5 sm:gap-4">
         {/* Card 1: Volume du pipe (Soft Peach Card) */}
         <div className="rounded-2xl sm:rounded-[24px] bg-[#FFF8F5] border border-[#FFEDE5] p-3.5 sm:p-5 flex flex-col justify-between shadow-xs relative overflow-hidden min-h-[120px] sm:min-h-[140px]">
           <div className="flex items-center gap-2 sm:gap-3">
@@ -680,9 +680,9 @@ export default function AdminLeadsPage() {
       </div>
 
       {/* ── 3. Filter Bar (Pill filters with custom interactive dropdowns) ── */}
-      <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-2.5 sm:gap-3 bg-white p-2.5 sm:p-3 rounded-2xl border border-neutral-200/80 shadow-2xs">
+      <div className="flex flex-col xl:flex-row items-stretch xl:items-center justify-between gap-2.5 sm:gap-3 bg-white p-2.5 sm:p-3 rounded-2xl border border-neutral-200/80 shadow-2xs">
         {/* Left: Search input */}
-        <div className="relative flex-1 min-w-0 md:max-w-sm">
+        <div className="relative flex-1 min-w-0 xl:max-w-sm">
           <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-neutral-400">
             <Search className="w-4 h-4" />
           </div>
@@ -961,12 +961,12 @@ export default function AdminLeadsPage() {
             </div>
           )}
 
-          <div className="w-full md:overflow-x-auto pb-4">
+          <div className="w-full overflow-x-auto pb-4">
             <div
-              className={`grid gap-4.5 items-start ${
+              className={`flex gap-4 items-start ${
                 kanbanColumns.length === 1
-                  ? 'grid-cols-1 max-w-md'
-                  : 'grid-cols-1 md:grid-cols-2 xl:grid-cols-4 w-full md:min-w-[720px] lg:min-w-[1050px]'
+                  ? 'w-full max-w-md'
+                  : 'w-full min-w-[760px] 2xl:min-w-0'
               }`}
             >
               {kanbanColumns.map((col) => {
@@ -974,7 +974,7 @@ export default function AdminLeadsPage() {
                 return (
                   <div
                     key={col.id}
-                    className={`bg-[#F8F9FA] rounded-2xl sm:rounded-[24px] p-3 sm:p-3.5 border border-neutral-200/70 flex-col min-h-[420px] sm:min-h-[550px] ${
+                    className={`bg-[#F8F9FA] rounded-2xl sm:rounded-[24px] p-3 sm:p-3.5 border border-neutral-200/70 flex-col min-h-[420px] sm:min-h-[550px] flex-1 min-w-[240px] lg:min-w-[260px] ${
                       activeMobileCol === col.id ? 'flex' : 'hidden md:flex'
                     }`}
                   >
@@ -1469,9 +1469,9 @@ export default function AdminLeadsPage() {
                 </div>
               </div>
 
-              {/* Desktop View: Clean Full-width Table (No horizontal scroll) */}
-              <div className="hidden md:block overflow-hidden">
-                <table className="w-full text-left text-xs">
+              {/* Desktop View: Clean Table with horizontal scroll safeguard on smaller screens */}
+              <div className="hidden md:block overflow-x-auto">
+                <table className="w-full min-w-[850px] text-left text-xs">
                   <thead className="bg-neutral-50/80 border-b border-neutral-200/70 text-[11px] font-mono uppercase text-neutral-400">
                     <tr>
                       <th className="py-3.5 px-4 font-semibold">Prospect</th>
