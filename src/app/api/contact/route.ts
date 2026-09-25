@@ -59,32 +59,32 @@ export async function POST(req: NextRequest) {
     // Parse services for email dispatch
     const servicesArray = Array.isArray(services) ? services : [services]
 
-    // 1. Send receipt confirmation email to the prospect
-    sendLeadReceiptEmail({
-      name: newLead.name,
-      email: newLead.email,
-      services: servicesArray,
-      budget: newLead.budget || undefined,
-      message: newLead.message,
-    }).catch((err) => {
-      console.error('[CLIENT RECEIPT EMAIL ERROR]', err)
-    })
-
-    // 2. Send instant alert notification to SPARKLINE team
-    sendAdminNewLeadNotification({
-      id: newLead.id,
-      name: newLead.name,
-      email: newLead.email,
-      phone: newLead.phone,
-      company: newLead.company,
-      services: servicesArray,
-      budget: newLead.budget,
-      inquiryType: newLead.inquiryType,
-      message: newLead.message,
-      source: newLead.source,
-    }).catch((err) => {
-      console.error('[ADMIN NOTIFICATION EMAIL ERROR]', err)
-    })
+    // Send receipt confirmation email and internal alert in parallel, awaiting completion
+    try {
+      await Promise.allSettled([
+        sendLeadReceiptEmail({
+          name: newLead.name,
+          email: newLead.email,
+          services: servicesArray,
+          budget: newLead.budget || undefined,
+          message: newLead.message,
+        }),
+        sendAdminNewLeadNotification({
+          id: newLead.id,
+          name: newLead.name,
+          email: newLead.email,
+          phone: newLead.phone,
+          company: newLead.company,
+          services: servicesArray,
+          budget: newLead.budget,
+          inquiryType: newLead.inquiryType,
+          message: newLead.message,
+          source: newLead.source,
+        }),
+      ])
+    } catch (emailErr) {
+      console.error('[EMAIL DISPATCH ERROR]', emailErr)
+    }
 
     return NextResponse.json({
       success: true,

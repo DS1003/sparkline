@@ -50,11 +50,13 @@ export async function POST(req: NextRequest) {
       },
     })
 
-    // Send confirmation welcome email (non-blocking)
+    // Send confirmation welcome email
     const subscriberSource = source || 'footer'
-    sendNewsletterWelcomeEmail(email.toLowerCase(), subscriberSource).catch((err) => {
+    try {
+      await sendNewsletterWelcomeEmail(email.toLowerCase(), subscriberSource)
+    } catch (err) {
       console.error('[NEWSLETTER EMAIL ERROR]', err)
-    })
+    }
 
     const isSparklearn = subscriberSource === 'sparklearn'
     return NextResponse.json({
