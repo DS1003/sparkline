@@ -394,23 +394,23 @@ export default function AdminNewsletterPage() {
           <div className="text-[10px] sm:text-xs text-neutral-400 truncate">Inscriptions récentes</div>
         </div>
 
-        {/* Card 4: Taux d'ouverture */}
+        {/* Card 4: Taux de rétention */}
         <div className="rounded-2xl sm:rounded-[24px] bg-white border border-neutral-200/80 p-3.5 sm:p-5 flex flex-col justify-between shadow-xs min-h-[120px] sm:min-h-[140px]">
           <div className="flex items-center gap-2 sm:gap-3">
             <div className="w-7 h-7 sm:w-9 sm:h-9 rounded-xl bg-orange-50 text-[#EB4604] flex items-center justify-center shrink-0">
               <BarChart2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             </div>
-            <span className="text-[11px] sm:text-xs font-semibold text-neutral-600 truncate">Taux d'ouverture</span>
+            <span className="text-[11px] sm:text-xs font-semibold text-neutral-600 truncate">Taux de rétention</span>
           </div>
 
           <div className="my-1.5 sm:my-2 flex items-baseline justify-between">
-            <div className="text-xl sm:text-2xl font-bold text-[#0E1217]">45%</div>
+            <div className="text-xl sm:text-2xl font-bold text-[#0E1217]">{metrics.retentionPercent}%</div>
             <span className="inline-flex items-center gap-0.5 px-1.5 sm:px-2 py-0.5 rounded-full bg-orange-50 text-[10px] sm:text-[11px] font-semibold text-[#EB4604] border border-orange-200/60 font-mono">
-              ↗ +5%
+              {metrics.allTotal - metrics.activeTotal} désinscr.
             </span>
           </div>
 
-          <div className="text-[10px] sm:text-xs text-neutral-400 truncate">Moyenne globale</div>
+          <div className="text-[10px] sm:text-xs text-neutral-400 truncate">Abonnés restés actifs</div>
         </div>
       </div>
 

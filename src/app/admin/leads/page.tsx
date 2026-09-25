@@ -435,8 +435,57 @@ export default function AdminLeadsPage() {
     }
   }
 
+  // Dynamic helper to compute budget estimate from a list of leads
+  const computeLeadsBudgetEstimate = (leadsList: LeadItem[]) => {
+    if (leadsList.length === 0) return '0 FCFA'
+    let minTotal = 0
+    let maxTotal = 0
+    let countWithBudget = 0
+
+    for (const l of leadsList) {
+      if (!l.budget) continue
+      const b = l.budget
+      if (b.includes('< 5M')) { minTotal += 1; maxTotal += 5; countWithBudget++ }
+      else if (b.includes('5M – 15M') || b.includes('5M - 15M')) { minTotal += 5; maxTotal += 15; countWithBudget++ }
+      else if (b.includes('10M – 20M') || b.includes('10M - 20M')) { minTotal += 10; maxTotal += 20; countWithBudget++ }
+      else if (b.includes('15M – 35M') || b.includes('15M - 35M')) { minTotal += 15; maxTotal += 35; countWithBudget++ }
+      else if (b.includes('25M – 45M') || b.includes('25M - 45M')) { minTotal += 25; maxTotal += 45; countWithBudget++ }
+      else if (b.includes('30M – 60M') || b.includes('30M - 60M')) { minTotal += 30; maxTotal += 60; countWithBudget++ }
+      else {
+        const matches = b.match(/\d+/g)
+        if (matches && matches.length >= 2) {
+          minTotal += parseInt(matches[0], 10)
+          maxTotal += parseInt(matches[1], 10)
+          countWithBudget++
+        } else if (matches && matches.length === 1) {
+          minTotal += parseInt(matches[0], 10)
+          maxTotal += parseInt(matches[0], 10)
+          countWithBudget++
+        }
+      }
+    }
+
+    if (countWithBudget === 0) return `${leadsList.length} opportunité${leadsList.length > 1 ? 's' : ''}`
+    if (minTotal === maxTotal) return `~${minTotal}M FCFA`
+    return `${minTotal}M – ${maxTotal}M FCFA`
+  }
+
+  // Dynamic pipeline value across all active leads
+  const totalPipelineValue = useMemo(() => {
+    const active = leads.filter((l) => l.status !== 'ARCHIVED')
+    return computeLeadsBudgetEstimate(active)
+  }, [leads])
+
+  // Count of leads older than 48h with status NEW
+  const leadsOverdue48h = useMemo(() => {
+    return leads.filter(
+      (l) => l.status === 'NEW' && Date.now() - new Date(l.createdAt).getTime() > 48 * 3600 * 1000
+    ).length
+  }, [leads])
+
   const kanbanColumns = useMemo(() => {
     if (stageFilter === 'ARCHIVED') {
+      const colLeads = leads.filter((l) => l.status === 'ARCHIVED')
       return [
         {
           id: 'ARCHIVED' as LeadItem['status'],
@@ -444,7 +493,7 @@ export default function AdminLeadsPage() {
           count: archivedCount,
           dotColor: 'bg-neutral-400',
           subtitle: 'Opportunités archivées ou terminées',
-          budgetEstimate: '0 FCFA',
+          budgetEstimate: computeLeadsBudgetEstimate(colLeads),
         },
       ]
     }
@@ -456,7 +505,7 @@ export default function AdminLeadsPage() {
         count: newCount,
         dotColor: 'bg-[#EB4604]',
         subtitle: 'À prendre en charge',
-        budgetEstimate: '15M – 45M FCFA',
+        budgetEstimate: computeLeadsBudgetEstimate(leads.filter((l) => l.status === 'NEW')),
       },
       {
         id: 'CONTACTED' as LeadItem['status'],
@@ -464,7 +513,7 @@ export default function AdminLeadsPage() {
         count: contactedCount,
         dotColor: 'bg-amber-500',
         subtitle: 'Premier échange effectué',
-        budgetEstimate: '30M – 60M FCFA',
+        budgetEstimate: computeLeadsBudgetEstimate(leads.filter((l) => l.status === 'CONTACTED')),
       },
       {
         id: 'QUALIFIED' as LeadItem['status'],
@@ -472,7 +521,7 @@ export default function AdminLeadsPage() {
         count: qualifiedCount,
         dotColor: 'bg-blue-500',
         subtitle: 'Besoin validé / opportunité sérieuse',
-        budgetEstimate: '25M – 45M FCFA',
+        budgetEstimate: computeLeadsBudgetEstimate(leads.filter((l) => l.status === 'QUALIFIED')),
       },
       {
         id: 'WON' as LeadItem['status'],
@@ -480,10 +529,10 @@ export default function AdminLeadsPage() {
         count: wonCount,
         dotColor: 'bg-emerald-500',
         subtitle: 'Converti avec succès',
-        budgetEstimate: '15M – 35M FCFA',
+        budgetEstimate: computeLeadsBudgetEstimate(leads.filter((l) => l.status === 'WON')),
       },
     ]
-  }, [newCount, contactedCount, qualifiedCount, wonCount, archivedCount, stageFilter])
+  }, [leads, newCount, contactedCount, qualifiedCount, wonCount, archivedCount, stageFilter])
 
   return (
     <div className="space-y-6 pb-16">
@@ -532,7 +581,17 @@ export default function AdminLeadsPage() {
               <Columns3 className="w-3.5 h-3.5" />
               <span className="hidden sm:inline">Pipeline</span>
               <span className="sm:hidden">Pipe</span>
-              <span>(4)</span>
+              {total - archivedCount > 0 && (
+                <span
+                  className={`text-[10px] font-mono px-1.5 py-0.2 rounded-full ${
+                    viewMode === 'kanban' && stageFilter !== 'ARCHIVED'
+                      ? 'bg-white/20 text-white'
+                      : 'bg-neutral-100 text-neutral-600'
+                  }`}
+                >
+                  {total - archivedCount}
+                </span>
+              )}
             </button>
             <button
               onClick={() => {
@@ -553,7 +612,7 @@ export default function AdminLeadsPage() {
                 setViewMode('kanban')
                 setStageFilter(stageFilter === 'ARCHIVED' ? 'ALL' : 'ARCHIVED')
               }}
-              className={`flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer ${
+              className={`flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer ${
                 stageFilter === 'ARCHIVED'
                   ? 'bg-neutral-800 text-white shadow-xs'
                   : 'text-neutral-500 hover:text-neutral-900 hover:bg-neutral-50'
@@ -601,7 +660,9 @@ export default function AdminLeadsPage() {
           </div>
 
           <div className="my-1.5 sm:my-2 flex items-baseline justify-between">
-            <div className="text-xl sm:text-2xl font-bold text-[#0E1217]">{total} leads</div>
+            <div className="text-xl sm:text-2xl font-bold text-[#0E1217]">
+              {total} lead{total > 1 ? 's' : ''}
+            </div>
             {/* Sparkline curve */}
             <svg className="w-16 sm:w-20 h-5 sm:h-6 overflow-visible shrink-0" viewBox="0 0 80 24">
               <path
@@ -614,8 +675,8 @@ export default function AdminLeadsPage() {
             </svg>
           </div>
 
-          <div className="text-[10px] sm:text-xs text-neutral-400 font-medium truncate">
-            Valeur: 75M – 160M FCFA
+          <div className="text-[10px] sm:text-xs text-neutral-500 font-medium truncate">
+            Valeur : {totalPipelineValue}
           </div>
         </div>
 
@@ -629,13 +690,27 @@ export default function AdminLeadsPage() {
           </div>
 
           <div className="my-1.5 sm:my-2 flex items-baseline justify-between">
-            <div className="text-xl sm:text-2xl font-bold text-[#0E1217]">{newCount} lead{newCount > 1 ? 's' : ''}</div>
-            <span className="inline-flex items-center gap-0.5 px-1.5 sm:px-2 py-0.5 rounded-full bg-orange-50 text-[10px] sm:text-[11px] font-semibold text-[#EB4604] border border-orange-200/60 font-mono">
-              ↗ 2
+            <div className="text-xl sm:text-2xl font-bold text-[#0E1217]">
+              {newCount} lead{newCount > 1 ? 's' : ''}
+            </div>
+            <span
+              className={`inline-flex items-center gap-0.5 px-1.5 sm:px-2 py-0.5 rounded-full text-[10px] sm:text-[11px] font-semibold font-mono ${
+                newCount > 0
+                  ? 'bg-orange-50 text-[#EB4604] border border-orange-200/60'
+                  : 'bg-neutral-100 text-neutral-500 border border-neutral-200/60'
+              }`}
+            >
+              {newCount > 0 ? (leadsOverdue48h > 0 ? 'Urgent' : `${newCount} nouveau${newCount > 1 ? 'x' : ''}`) : 'À jour'}
             </span>
           </div>
 
-          <div className="text-[10px] sm:text-xs text-neutral-400 truncate">2 non contactés depuis 48h</div>
+          <div className="text-[10px] sm:text-xs text-neutral-400 truncate">
+            {leadsOverdue48h > 0
+              ? `${leadsOverdue48h} en attente > 48h`
+              : newCount > 0
+              ? `${newCount} reçu${newCount > 1 ? 's' : ''} récemment`
+              : 'Toutes les demandes traitées'}
+          </div>
         </div>
 
         {/* Card 3: En discussion */}
@@ -649,14 +724,18 @@ export default function AdminLeadsPage() {
 
           <div className="my-1.5 sm:my-2 flex items-baseline justify-between">
             <div className="text-xl sm:text-2xl font-bold text-[#0E1217]">
-              {contactedCount + qualifiedCount} actifs
+              {contactedCount + qualifiedCount} actif{contactedCount + qualifiedCount > 1 ? 's' : ''}
             </div>
             <span className="inline-flex items-center gap-0.5 px-1.5 sm:px-2 py-0.5 rounded-full bg-blue-50 text-[10px] sm:text-[11px] font-semibold text-blue-600 border border-blue-200/60 font-mono">
-              ↗ +1
+              {total > 0 ? `${Math.round(((contactedCount + qualifiedCount) / total) * 100)}%` : '0%'}
             </span>
           </div>
 
-          <div className="text-[10px] sm:text-xs text-neutral-400 truncate">1 relance aujourd'hui</div>
+          <div className="text-[10px] sm:text-xs text-neutral-400 truncate">
+            {contactedCount + qualifiedCount > 0
+              ? `${contactedCount} contacté${contactedCount > 1 ? 's' : ''} · ${qualifiedCount} qualifié${qualifiedCount > 1 ? 's' : ''}`
+              : 'Aucun échange en cours'}
+          </div>
         </div>
 
         {/* Card 4: Projets gagnés */}
@@ -669,13 +748,17 @@ export default function AdminLeadsPage() {
           </div>
 
           <div className="my-1.5 sm:my-2 flex items-baseline justify-between">
-            <div className="text-xl sm:text-2xl font-bold text-[#0E1217]">{wonCount} clos</div>
+            <div className="text-xl sm:text-2xl font-bold text-[#0E1217]">
+              {wonCount} clo{wonCount > 1 ? 's' : 's'}
+            </div>
             <span className="inline-flex items-center gap-0.5 px-1.5 sm:px-2 py-0.5 rounded-full bg-emerald-50 text-[10px] sm:text-[11px] font-semibold text-emerald-700 border border-emerald-200/60 font-mono">
               ↗ {total > 0 ? Math.round((wonCount / total) * 100) : 0}%
             </span>
           </div>
 
-          <div className="text-[10px] sm:text-xs text-neutral-400 truncate">Taux de conversion global</div>
+          <div className="text-[10px] sm:text-xs text-neutral-400 truncate">
+            {wonCount > 0 ? `${wonCount} contrat${wonCount > 1 ? 's' : ''} signé${wonCount > 1 ? 's' : ''}` : 'Taux de conversion global'}
+          </div>
         </div>
       </div>
 
@@ -1125,18 +1208,18 @@ export default function AdminLeadsPage() {
 
                               {/* Services Tags (Limited to 2 + counter) */}
                               {lead.services && lead.services.length > 0 && (
-                                <div className="flex flex-wrap items-center gap-1 mb-2.5">
+                                <div className="flex flex-wrap items-center gap-1.5 mb-2.5">
                                   {lead.services.slice(0, 2).map((srv, idx) => (
                                     <span
                                       key={idx}
-                                      className="inline-flex items-center px-2 py-0.5 rounded-md bg-neutral-50 border border-neutral-200/70 text-[10px] text-neutral-700 font-medium truncate max-w-[210px]"
+                                      className="inline-flex items-center px-2 py-0.5 rounded-md bg-neutral-100 border border-neutral-200/90 text-[10px] text-neutral-800 font-semibold truncate max-w-[210px] shadow-2xs"
                                     >
                                       {srv}
                                     </span>
                                   ))}
                                   {lead.services.length > 2 && (
                                     <span
-                                      className="px-1.5 py-0.5 rounded-md bg-neutral-100 border border-neutral-200/50 text-[9.5px] font-mono text-neutral-500 font-semibold"
+                                      className="px-1.5 py-0.5 rounded-md bg-neutral-100 border border-neutral-200/80 text-[9.5px] font-mono text-neutral-600 font-bold"
                                       title={lead.services.slice(2).join(', ')}
                                     >
                                       +{lead.services.length - 2}

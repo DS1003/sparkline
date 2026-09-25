@@ -26,6 +26,8 @@ import {
   Activity,
   CheckCircle2,
   ShieldCheck,
+  Mail,
+  Check,
 } from 'lucide-react'
 import { DashboardSkeleton } from '@/components/admin/Skeletons'
 import { notify } from '@/lib/notify'
@@ -159,18 +161,9 @@ export default function AdminDashboardPage() {
   const conversionRate = data?.conversionRate || 0
   const currentBars = volumePeriod === 'week' ? (data?.weeklyVolume || []) : (data?.monthlyVolume || [])
 
-  // Priority Lead
-  const priorityLead = data?.priorityLead || {
-    id: 'cmu674h850005i2uf87x7wy1c',
-    name: 'Labore at temporibus',
-    company: null,
-    phone: '+221771234567',
-    email: 'labore@example.com',
-    services: ['Applications Web & Mobile'],
-    internalNotes: null,
-    preferredDate: 'Ipsum doloribus quo',
-    status: 'NEW',
-  }
+  // Dynamic Priority Lead and Recent Leads from DB
+  const priorityLead = data?.priorityLead || null
+  const recentLeads = data?.recentLeads || []
 
   return (
     <div className="space-y-6">
@@ -439,56 +432,78 @@ export default function AdminDashboardPage() {
 
         {/* Column 2: Rappels Prioritaires */}
         <div className="rounded-2xl sm:rounded-[24px] bg-white border border-neutral-200/80 p-4 sm:p-6 flex flex-col justify-between shadow-xs">
-          <div>
-            <div className="flex items-center justify-between mb-2">
-              <div className="flex items-center gap-2">
-                <div className="w-7 h-7 rounded-lg bg-orange-50 text-[#EB4604] flex items-center justify-center">
-                  <Bell className="w-3.5 h-3.5" />
+          {priorityLead ? (
+            <>
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center gap-2">
+                    <div className="w-7 h-7 rounded-lg bg-orange-50 text-[#EB4604] flex items-center justify-center">
+                      <Bell className="w-3.5 h-3.5" />
+                    </div>
+                    <span className="text-xs font-bold tracking-wider text-neutral-400 uppercase font-mono">
+                      Rappels Prioritaires
+                    </span>
+                  </div>
+                  <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-orange-50 text-[#EB4604] border border-orange-200/60">
+                    {priorityLead.status === 'NEW' ? 'À qualifier' : 'En cours'}
+                  </span>
                 </div>
-                <span className="text-xs font-bold tracking-wider text-neutral-400 uppercase font-mono">
-                  Rappels Prioritaires
-                </span>
+
+                <h3 className="text-base font-bold text-[#0E1217] leading-snug mt-3">
+                  Cadrage avec {priorityLead.name}
+                </h3>
+                <p className="text-xs text-neutral-400 mt-0.5 font-mono">
+                  Échéance : {priorityLead.preferredDate || 'Dès que possible'}
+                </p>
               </div>
-              <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-orange-50 text-[#EB4604] border border-orange-200/60">
-                À qualifier
-              </span>
+
+              <div className="my-3 p-3.5 rounded-2xl bg-neutral-50 border border-neutral-100 flex flex-col justify-between">
+                <span className="text-[10px] font-mono text-neutral-400 uppercase font-bold tracking-wider">
+                  Projet ciblé :
+                </span>
+                <div className="flex items-center justify-between mt-1">
+                  <p className="text-xs font-semibold text-neutral-800">
+                    {priorityLead.services?.[0] || 'Applications & Solutions'}
+                  </p>
+                  <Link href={`/admin/leads?id=${priorityLead.id}`} title="Voir le projet">
+                    <ExternalLink className="w-3.5 h-3.5 text-neutral-400 hover:text-neutral-700 transition-colors" />
+                  </Link>
+                </div>
+              </div>
+
+              {priorityLead.phone ? (
+                <a
+                  href={`https://wa.me/${priorityLead.phone.replace(/[^0-9]/g, '')}?text=Bonjour%20${encodeURIComponent(
+                    priorityLead.name
+                  )},%20je%20suis%20ravi%20d'%C3%A9changer%20avec%20vous%20suite%20%C3%A0%20votre%20demande%20sur%20SPARKLINE.`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full py-3 px-4 rounded-xl bg-[#05B361] hover:bg-[#049651] text-white text-xs font-bold flex items-center justify-center gap-2 shadow-xs transition-colors cursor-pointer"
+                >
+                  <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                    <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z" />
+                  </svg>
+                  <span>Contacter sur WhatsApp</span>
+                </a>
+              ) : (
+                <Link
+                  href={`/admin/leads?id=${priorityLead.id}`}
+                  className="w-full py-3 px-4 rounded-xl bg-[#0B0F17] hover:bg-neutral-800 text-white text-xs font-bold flex items-center justify-center gap-2 shadow-xs transition-colors cursor-pointer"
+                >
+                  <Mail className="w-4 h-4" />
+                  <span>Traiter le lead ({priorityLead.email})</span>
+                </Link>
+              )}
+            </>
+          ) : (
+            <div className="my-auto py-8 text-center space-y-2">
+              <div className="w-10 h-10 rounded-2xl bg-orange-50 text-[#EB4604] mx-auto flex items-center justify-center">
+                <Check className="w-5 h-5" />
+              </div>
+              <h3 className="text-sm font-bold text-neutral-800">Aucun rappel urgent</h3>
+              <p className="text-xs text-neutral-400">Tous vos prospects sont pris en charge.</p>
             </div>
-
-            <h3 className="text-base font-bold text-[#0E1217] leading-snug mt-3">
-              Cadrage avec {priorityLead.name}
-            </h3>
-            <p className="text-xs text-neutral-400 mt-0.5 font-mono">
-              Échéance : {priorityLead.preferredDate || 'Ipsum doloribus quo'}
-            </p>
-          </div>
-
-          <div className="my-3 p-3.5 rounded-2xl bg-neutral-50 border border-neutral-100 flex flex-col justify-between">
-            <span className="text-[10px] font-mono text-neutral-400 uppercase font-bold tracking-wider">
-              Projet ciblé :
-            </span>
-            <div className="flex items-center justify-between mt-1">
-              <p className="text-xs font-semibold text-neutral-800">
-                {priorityLead.services?.[0] || 'Applications Web & Mobile'}
-              </p>
-              <Link href={`/admin/leads?id=${priorityLead.id}`} title="Voir le projet">
-                <ExternalLink className="w-3.5 h-3.5 text-neutral-400 hover:text-neutral-700 transition-colors" />
-              </Link>
-            </div>
-          </div>
-
-          <a
-            href={`https://wa.me/${(priorityLead.phone || '+221771234567').replace(/[^0-9]/g, '')}?text=Bonjour%20${encodeURIComponent(
-              priorityLead.name
-            )},%20je%20suis%20ravi%20d'%C3%A9changer%20avec%20vous%20suite%20%C3%A0%20votre%20demande%20sur%20SPARKLINE.`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="w-full py-3 px-4 rounded-xl bg-[#05B361] hover:bg-[#049651] text-white text-xs font-bold flex items-center justify-center gap-2 shadow-xs transition-colors cursor-pointer"
-          >
-            <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
-              <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z" />
-            </svg>
-            <span>Contacter sur WhatsApp</span>
-          </a>
+          )}
         </div>
 
         {/* Column 3: Pipeline & Devis */}
@@ -507,68 +522,51 @@ export default function AdminDashboardPage() {
           </div>
 
           <div className="space-y-2">
-            {/* Item 1: Applications Web & Mobile */}
-            <Link
-              href="/admin/leads"
-              className="flex items-center justify-between p-2 rounded-2xl hover:bg-neutral-50 transition-all group/item cursor-pointer"
-            >
-              <div className="flex items-center gap-3 min-w-0">
-                <div className="w-9 h-9 rounded-xl bg-orange-50 border border-orange-100 flex items-center justify-center text-[#EB4604] shrink-0">
-                  <Smartphone className="w-4 h-4" />
-                </div>
-                <div className="min-w-0">
-                  <h4 className="text-xs font-bold text-neutral-900 truncate group-hover/item:text-[#EB4604] transition-colors">
-                    Applications Web & Mobile
-                  </h4>
-                  <p className="text-[11px] text-neutral-400 truncate">
-                    Labore at temporibus • Ipsum doloribus quo
-                  </p>
-                </div>
+            {recentLeads.length > 0 ? (
+              recentLeads.slice(0, 3).map((lead) => {
+                const srv = lead.services?.[0] || 'Opportunité'
+                const isMobile = srv.toLowerCase().includes('mobile') || srv.toLowerCase().includes('app')
+                const isDesign = srv.toLowerCase().includes('design') || srv.toLowerCase().includes('identité')
+                return (
+                  <Link
+                    key={lead.id}
+                    href={`/admin/leads?id=${lead.id}`}
+                    className="flex items-center justify-between p-2 rounded-2xl hover:bg-neutral-50 transition-all group/item cursor-pointer"
+                  >
+                    <div className="flex items-center gap-3 min-w-0">
+                      <div
+                        className={`w-9 h-9 rounded-xl border flex items-center justify-center shrink-0 ${
+                          isDesign
+                            ? 'bg-blue-50 border-blue-100 text-blue-600'
+                            : 'bg-orange-50 border-orange-100 text-[#EB4604]'
+                        }`}
+                      >
+                        {isMobile ? (
+                          <Smartphone className="w-4 h-4" />
+                        ) : isDesign ? (
+                          <Layers className="w-4 h-4" />
+                        ) : (
+                          <Workflow className="w-4 h-4" />
+                        )}
+                      </div>
+                      <div className="min-w-0">
+                        <h4 className="text-xs font-bold text-neutral-900 truncate group-hover/item:text-[#EB4604] transition-colors">
+                          {srv}
+                        </h4>
+                        <p className="text-[11px] text-neutral-400 truncate">
+                          {lead.name} • {lead.budget || 'Budget à qualifier'}
+                        </p>
+                      </div>
+                    </div>
+                    <ChevronRight className="w-3.5 h-3.5 text-neutral-300 group-hover/item:text-neutral-700 shrink-0 transition-colors" />
+                  </Link>
+                )
+              })
+            ) : (
+              <div className="py-8 text-center text-xs text-neutral-400">
+                Aucun lead dans le pipeline actuellement.
               </div>
-              <ChevronRight className="w-3.5 h-3.5 text-neutral-300 group-hover/item:text-neutral-700 shrink-0 transition-colors" />
-            </Link>
-
-            {/* Item 2: Identité & Design System */}
-            <Link
-              href="/admin/leads"
-              className="flex items-center justify-between p-2 rounded-2xl hover:bg-neutral-50 transition-all group/item cursor-pointer"
-            >
-              <div className="flex items-center gap-3 min-w-0">
-                <div className="w-9 h-9 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center text-blue-600 shrink-0">
-                  <Layers className="w-4 h-4" />
-                </div>
-                <div className="min-w-0">
-                  <h4 className="text-xs font-bold text-neutral-900 truncate group-hover/item:text-[#EB4604] transition-colors">
-                    Identité & Design System
-                  </h4>
-                  <p className="text-[11px] text-neutral-400 truncate">
-                    Abdou Mbaye • 1 semaine max
-                  </p>
-                </div>
-              </div>
-              <ChevronRight className="w-3.5 h-3.5 text-neutral-300 group-hover/item:text-neutral-700 shrink-0 transition-colors" />
-            </Link>
-
-            {/* Item 3: Développement Web & Mobile */}
-            <Link
-              href="/admin/leads"
-              className="flex items-center justify-between p-2 rounded-2xl hover:bg-neutral-50 transition-all group/item cursor-pointer"
-            >
-              <div className="flex items-center gap-3 min-w-0">
-                <div className="w-9 h-9 rounded-xl bg-orange-50 border border-orange-100 flex items-center justify-center text-[#EB4604] shrink-0">
-                  <Code2 className="w-4 h-4" />
-                </div>
-                <div className="min-w-0">
-                  <h4 className="text-xs font-bold text-neutral-900 truncate group-hover/item:text-[#EB4604] transition-colors">
-                    Développement Web & Mobile
-                  </h4>
-                  <p className="text-[11px] text-neutral-400 truncate">
-                    Teranga Fintech • 17 sept.
-                  </p>
-                </div>
-              </div>
-              <ChevronRight className="w-3.5 h-3.5 text-neutral-300 group-hover/item:text-neutral-700 shrink-0 transition-colors" />
-            </Link>
+            )}
           </div>
         </div>
       </div>
@@ -591,93 +589,51 @@ export default function AdminDashboardPage() {
           </div>
 
           <div className="space-y-2.5 sm:space-y-3">
-            {/* Row 1: Labore at temporibus */}
-            <Link
-              href="/admin/leads"
-              className="flex items-center justify-between gap-3 p-2 rounded-2xl hover:bg-neutral-50 transition-colors group cursor-pointer"
-            >
-              <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
-                <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-black text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-2xs">
-                  L
-                </div>
-                <div className="min-w-0">
-                  <h4 className="text-xs font-bold text-neutral-900 truncate group-hover:text-[#EB4604] transition-colors">
-                    Labore at temporibus
-                  </h4>
-                  <p className="text-[11px] text-neutral-400 truncate">Applications Web & Mobile</p>
-                </div>
-              </div>
-              <span className="px-2.5 sm:px-3 py-0.5 rounded-full text-[11px] sm:text-xs font-semibold bg-orange-50 text-[#EB4604] border border-orange-200/60 shrink-0">
-                Nouveau
-              </span>
-            </Link>
+            {recentLeads.length > 0 ? (
+              recentLeads.slice(0, 4).map((lead) => {
+                const initial = (lead.name || 'L').charAt(0).toUpperCase()
+                const srv = lead.services?.[0] || 'Projet numérique'
+                const statusMeta =
+                  lead.status === 'NEW'
+                    ? { label: 'Nouveau', bg: 'bg-orange-50 text-[#EB4604] border-orange-200/60' }
+                    : lead.status === 'CONTACTED'
+                    ? { label: 'Contacté', bg: 'bg-amber-50 text-amber-700 border-amber-200/60' }
+                    : lead.status === 'QUALIFIED'
+                    ? { label: 'Qualifié', bg: 'bg-blue-50 text-blue-700 border-blue-200/60' }
+                    : lead.status === 'WON'
+                    ? { label: 'Gagné', bg: 'bg-emerald-50 text-emerald-700 border-emerald-200/60' }
+                    : { label: 'Archivé', bg: 'bg-neutral-100 text-neutral-500 border-neutral-200/60' }
 
-            {/* Row 2: Abdou Mbaye */}
-            <Link
-              href="/admin/leads"
-              className="flex items-center justify-between gap-3 p-2 rounded-2xl hover:bg-neutral-50 transition-colors group cursor-pointer"
-            >
-              <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
-                <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-black text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-2xs">
-                  A
-                </div>
-                <div className="min-w-0">
-                  <h4 className="text-xs font-bold text-neutral-900 truncate group-hover:text-[#EB4604] transition-colors">
-                    Abdou Mbaye
-                  </h4>
-                  <p className="text-[11px] text-neutral-400 truncate">Identité & Design System</p>
-                </div>
+                return (
+                  <Link
+                    key={lead.id}
+                    href={`/admin/leads?id=${lead.id}`}
+                    className="flex items-center justify-between gap-3 p-2 rounded-2xl hover:bg-neutral-50 transition-colors group cursor-pointer"
+                  >
+                    <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
+                      <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-black text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-2xs">
+                        {initial}
+                      </div>
+                      <div className="min-w-0">
+                        <h4 className="text-xs font-bold text-neutral-900 truncate group-hover:text-[#EB4604] transition-colors">
+                          {lead.name}
+                        </h4>
+                        <p className="text-[11px] text-neutral-400 truncate">
+                          {srv}{lead.company ? ` • ${lead.company}` : ''}
+                        </p>
+                      </div>
+                    </div>
+                    <span className={`px-2.5 sm:px-3 py-0.5 rounded-full text-[11px] sm:text-xs font-semibold border shrink-0 ${statusMeta.bg}`}>
+                      {statusMeta.label}
+                    </span>
+                  </Link>
+                )
+              })
+            ) : (
+              <div className="py-8 text-center text-xs text-neutral-400">
+                Aucune demande récente reçue.
               </div>
-              <span className="px-2.5 sm:px-3 py-0.5 rounded-full text-[11px] sm:text-xs font-semibold bg-orange-50 text-[#EB4604] border border-orange-200/60 shrink-0">
-                Nouveau
-              </span>
-            </Link>
-
-            {/* Row 3: Moussa Ndiaye */}
-            <Link
-              href="/admin/leads"
-              className="flex items-center justify-between gap-3 p-2 rounded-2xl hover:bg-neutral-50 transition-colors group cursor-pointer"
-            >
-              <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
-                <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-black text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-2xs">
-                  M
-                </div>
-                <div className="min-w-0">
-                  <h4 className="text-xs font-bold text-neutral-900 truncate group-hover:text-[#EB4604] transition-colors">
-                    Moussa Ndiaye
-                  </h4>
-                  <p className="text-[11px] text-neutral-400 truncate">
-                    Teranga Fintech • Dév Web & Mobile
-                  </p>
-                </div>
-              </div>
-              <span className="px-2.5 sm:px-3 py-0.5 rounded-full text-[11px] sm:text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200/60 shrink-0">
-                Gagné
-              </span>
-            </Link>
-
-            {/* Row 4: Aïssatou Diop */}
-            <Link
-              href="/admin/leads"
-              className="flex items-center justify-between gap-3 p-2 rounded-2xl hover:bg-neutral-50 transition-colors group cursor-pointer"
-            >
-              <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
-                <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-black text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-2xs">
-                  A
-                </div>
-                <div className="min-w-0">
-                  <h4 className="text-xs font-bold text-neutral-900 truncate group-hover:text-[#EB4604] transition-colors">
-                    Aïssatou Diop
-                  </h4>
-                  <p className="text-[11px] text-neutral-400 truncate">
-                    Wari Logistics • Architecture Cloud
-                  </p>
-                </div>
-              </div>
-              <span className="px-2.5 sm:px-3 py-0.5 rounded-full text-[11px] sm:text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200/60 shrink-0">
-                En cours
-              </span>
-            </Link>
+            )}
           </div>
         </div>
 
