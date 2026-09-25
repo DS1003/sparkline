@@ -15,7 +15,11 @@ function getResendClient() {
 }
 
 function getFromEmail() {
-  return process.env.RESEND_FROM_EMAIL || 'SPARKLINE <contact@sparkline.sn>'
+  const from = process.env.RESEND_FROM_EMAIL
+  if (!from || from.includes('onboarding@resend.dev') || from.includes('resend.dev')) {
+    return 'SPARKLINE <contact@sparkline.sn>'
+  }
+  return from
 }
 
 function getNotificationEmail() {
