@@ -543,7 +543,7 @@ export default function AdminNewsletterPage() {
       </div>
 
       {/* ── 4. Main Content: List View (Table matching Leads layout) ── */}
-      <div className="bg-white rounded-2xl sm:rounded-[24px] border border-neutral-200/80 shadow-xs overflow-hidden">
+      <div className="bg-white rounded-2xl sm:rounded-[24px] border border-neutral-200/80 shadow-xs overflow-visible">
         {loading ? (
           <div className="p-12 sm:p-16 flex flex-col items-center justify-center gap-3 text-neutral-500">
             <div className="w-6 h-6 border-2 border-[#EB4604] border-t-transparent rounded-full animate-spin" />
@@ -767,8 +767,8 @@ export default function AdminNewsletterPage() {
             </div>
 
             {/* Desktop View: Full-width Table (No horizontal scroll, clean columns) */}
-            <div className="hidden md:block overflow-hidden">
-              <table className="w-full text-left text-xs">
+            <div className="hidden md:block">
+              <table className="w-full text-left text-xs" style={{ borderCollapse: 'collapse' }}>
                 <thead className="bg-neutral-50/80 border-b border-neutral-200/70 text-[11px] font-mono uppercase text-neutral-400">
                   <tr>
                     <th className="py-3.5 px-4 font-semibold w-10">
@@ -897,11 +897,27 @@ export default function AdminNewsletterPage() {
                                 <MoreHorizontal className="w-3.5 h-3.5" />
                               </button>
 
-                              {/* Dropdown */}
+                              {/* Dropdown — uses fixed positioning to escape any overflow:hidden ancestors */}
                               {isMenuOpen && (
                                 <div
                                   onClick={(e) => e.stopPropagation()}
-                                  className="absolute right-0 top-full mt-1.5 w-48 bg-white border border-neutral-200/90 rounded-2xl shadow-xl py-1.5 z-50 text-xs text-left animate-in fade-in zoom-in-95 duration-150"
+                                  className="fixed z-[9999] w-48 bg-white border border-neutral-200/90 rounded-2xl shadow-2xl py-1.5 text-xs text-left animate-in fade-in zoom-in-95 duration-150"
+                                  style={{
+                                    top: 'auto',
+                                    right: 'auto',
+                                    transform: 'none',
+                                  }}
+                                  ref={(el) => {
+                                    if (el) {
+                                      // Position relative to the trigger button using DOM
+                                      const trigger = el.previousElementSibling as HTMLElement | null
+                                      if (trigger) {
+                                        const rect = trigger.getBoundingClientRect()
+                                        el.style.top = `${rect.bottom + 6}px`
+                                        el.style.right = `${window.innerWidth - rect.right}px`
+                                      }
+                                    }
+                                  }}
                                 >
                                   <button
                                     onClick={() => handleCopyEmail(sub.email)}

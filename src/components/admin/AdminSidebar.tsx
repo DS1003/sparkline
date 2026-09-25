@@ -144,7 +144,7 @@ export function AdminSidebar({ totalLeadsCount = 0, newLeadsCount = 0 }: AdminSi
       onMouseEnter={handleMouseEnter}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      className={`relative shrink-0 bg-white border-r border-neutral-200/70 hidden md:flex flex-col justify-between min-h-screen sticky top-0 h-screen z-30 select-none px-3.5 py-5 transition-[width] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-[width] ${
+      className={`fixed top-0 left-0 shrink-0 bg-white border-r border-neutral-200/70 hidden md:flex flex-col justify-between h-screen z-40 select-none px-3.5 py-5 transition-[width] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-[width] ${
         isCollapsed ? 'w-[72px]' : 'w-64'
       }`}
     >
