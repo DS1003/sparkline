@@ -5,11 +5,23 @@ import { siteConfig } from '@/config/site'
  * Initialize Resend client.
  * If RESEND_API_KEY is not configured in .env, service gracefully falls back to mock logging.
  */
-const resendApiKey = process.env.RESEND_API_KEY
-const resend = resendApiKey ? new Resend(resendApiKey) : null
+function getResendClient() {
+  const apiKey = process.env.RESEND_API_KEY
+  if (!apiKey) {
+    console.warn('[RESEND WARNING] RESEND_API_KEY is not defined in process.env!')
+    return null
+  }
+  return new Resend(apiKey)
+}
 
-const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'SPARKLINE <onboarding@resend.dev>'
-const NOTIFICATION_EMAIL = process.env.NOTIFICATION_EMAIL || siteConfig.contact.email
+function getFromEmail() {
+  return process.env.RESEND_FROM_EMAIL || 'SPARKLINE <contact@sparkline.sn>'
+}
+
+function getNotificationEmail() {
+  return process.env.NOTIFICATION_EMAIL || siteConfig.contact.email
+}
+
 const LOGO_URL = `${siteConfig.url}/images/brand/sparkline-logo.png`
 
 /**
@@ -269,18 +281,24 @@ export async function sendLeadReceiptEmail(lead: {
     </html>
   `
 
+  const resend = getResendClient()
   if (!resend) {
-    console.log(`[RESEND MOCK] Lead receipt email prepared for ${lead.email}`)
+    console.warn(`[RESEND MOCK] Lead receipt email prepared for ${lead.email} (RESEND_API_KEY missing)`)
     return
   }
 
   try {
-    await resend.emails.send({
-      from: FROM_EMAIL,
+    const res = await resend.emails.send({
+      from: getFromEmail(),
       to: lead.email,
       subject: `Votre projet avec SPARKLINE — Accusé de réception`,
       html,
     })
+    if (res.error) {
+      console.error('[RESEND API ERROR - LEAD RECEIPT]', res.error)
+    } else {
+      console.log('[RESEND SUCCESS - LEAD RECEIPT]', res.data?.id)
+    }
   } catch (error) {
     console.error('[RESEND ERROR] Failed to send lead receipt email:', error)
   }
@@ -517,18 +535,24 @@ export async function sendNewsletterWelcomeEmail(toEmail: string, source: string
     </html>
   `
 
+  const resend = getResendClient()
   if (!resend) {
-    console.log(`[RESEND MOCK] Newsletter welcome email (${source}) prepared for ${toEmail}`)
+    console.warn(`[RESEND MOCK] Newsletter welcome email (${source}) prepared for ${toEmail} (RESEND_API_KEY missing)`)
     return
   }
 
   try {
-    await resend.emails.send({
-      from: FROM_EMAIL,
+    const res = await resend.emails.send({
+      from: getFromEmail(),
       to: toEmail,
       subject,
       html,
     })
+    if (res.error) {
+      console.error('[RESEND API ERROR - NEWSLETTER]', res.error)
+    } else {
+      console.log('[RESEND SUCCESS - NEWSLETTER]', res.data?.id)
+    }
   } catch (error) {
     console.error('[RESEND ERROR] Failed to send newsletter welcome email:', error)
   }
@@ -647,18 +671,24 @@ export async function sendAdminNewLeadNotification(lead: {
     </html>
   `
 
+  const resend = getResendClient()
   if (!resend) {
-    console.log(`[RESEND MOCK] Admin alert email prepared for ${NOTIFICATION_EMAIL} regarding ${lead.name}`)
+    console.warn(`[RESEND MOCK] Admin alert email prepared for ${getNotificationEmail()} regarding ${lead.name} (RESEND_API_KEY missing)`)
     return
   }
 
   try {
-    await resend.emails.send({
-      from: FROM_EMAIL,
-      to: NOTIFICATION_EMAIL,
+    const res = await resend.emails.send({
+      from: getFromEmail(),
+      to: getNotificationEmail(),
       subject: `[Nouveau Lead] ${lead.name} ${lead.company ? `(${lead.company})` : ''} — ${lead.budget || 'Projet'}`,
       html,
     })
+    if (res.error) {
+      console.error('[RESEND API ERROR - ADMIN ALERT]', res.error)
+    } else {
+      console.log('[RESEND SUCCESS - ADMIN ALERT]', res.data?.id)
+    }
   } catch (error) {
     console.error('[RESEND ERROR] Failed to send admin notification email:', error)
   }
