@@ -10,9 +10,6 @@ import {
   Code2,
   Trophy,
   Clock,
-  Play,
-  Pause,
-  RotateCcw,
   ExternalLink,
   ChevronRight,
   RefreshCw,
@@ -21,13 +18,9 @@ import {
   Users,
   TrendingUp,
   Workflow,
-  Maximize2,
-  X,
-  Activity,
-  CheckCircle2,
-  ShieldCheck,
   Mail,
   Check,
+  PieChart,
 } from 'lucide-react'
 import { DashboardSkeleton } from '@/components/admin/Skeletons'
 import { notify } from '@/lib/notify'
@@ -92,9 +85,6 @@ export default function AdminDashboardPage() {
   const [loading, setLoading] = useState(true)
   const [isRefreshing, setIsRefreshing] = useState(false)
   const [volumePeriod, setVolumePeriod] = useState<'week' | 'month'>('week')
-  const [timerSeconds, setTimerSeconds] = useState(0)
-  const [isTimerRunning, setIsTimerRunning] = useState(true)
-  const [isStudioExpanded, setIsStudioExpanded] = useState(false)
 
   const fetchStats = async () => {
     try {
@@ -113,35 +103,7 @@ export default function AdminDashboardPage() {
 
   useEffect(() => {
     fetchStats()
-
-    // Persistent admin session timer
-    const storedStart = sessionStorage.getItem('sparkline_admin_session_start')
-    const now = Date.now()
-    if (storedStart) {
-      const elapsed = Math.floor((now - parseInt(storedStart, 10)) / 1000)
-      setTimerSeconds(elapsed > 0 ? elapsed : 0)
-    } else {
-      const initialSeconds = 2 * 3600 + 22 * 60 + 56
-      sessionStorage.setItem('sparkline_admin_session_start', (now - initialSeconds * 1000).toString())
-      setTimerSeconds(initialSeconds)
-    }
   }, [])
-
-  // Timer ticker for activity widget
-  useEffect(() => {
-    if (!isTimerRunning) return
-    const interval = setInterval(() => {
-      setTimerSeconds((prev) => prev + 1)
-    }, 1000)
-    return () => clearInterval(interval)
-  }, [isTimerRunning])
-
-  const formatTimer = (totalSeconds: number) => {
-    const hours = Math.floor(totalSeconds / 3600)
-    const minutes = Math.floor((totalSeconds % 3600) / 60)
-    const seconds = totalSeconds % 60
-    return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`
-  }
 
   const handleRefresh = async () => {
     setIsRefreshing(true)
@@ -160,6 +122,11 @@ export default function AdminDashboardPage() {
   const inProgressLeads = data?.inProgressLeads || 0
   const conversionRate = data?.conversionRate || 0
   const currentBars = volumePeriod === 'week' ? (data?.weeklyVolume || []) : (data?.monthlyVolume || [])
+  const maxBarCount = Math.max(...currentBars.map((b) => b.count), 3)
+
+  // Service distribution entries
+  const serviceEntries = Object.entries(data?.serviceDistribution || {}).sort((a, b) => b[1] - a[1])
+  const totalServiceDemands = serviceEntries.reduce((acc, [, count]) => acc + count, 0)
 
   // Dynamic Priority Lead and Recent Leads from DB
   const priorityLead = data?.priorityLead || null
@@ -230,7 +197,7 @@ export default function AdminDashboardPage() {
           <div className="relative z-10 flex items-center gap-2">
             <span className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-full bg-black/40 border border-white/10 text-[10px] sm:text-xs font-mono text-neutral-300 truncate">
               <span className="w-1.5 h-1.5 rounded-full bg-[#EB4604] shrink-0" />
-              <span className="truncate">{totalLeads > 0 ? `${totalLeads} dossiers` : 'En attente'}</span>
+              <span className="truncate">{totalLeads > 0 ? `${totalLeads} dossier${totalLeads > 1 ? 's' : ''}` : 'En attente'}</span>
             </span>
           </div>
         </div>
@@ -314,7 +281,7 @@ export default function AdminDashboardPage() {
 
           <div className="flex items-center gap-2">
             <span className="inline-flex items-center gap-1 px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-full bg-orange-50 text-[10px] sm:text-xs font-semibold text-[#EB4604] border border-orange-200/60 font-mono truncate">
-              {newLeads} nouveau(x)
+              {newLeads} nouveau{newLeads > 1 ? 'x' : ''}
             </span>
           </div>
         </div>
@@ -361,9 +328,9 @@ export default function AdminDashboardPage() {
           <div className="relative flex items-stretch h-48 pt-2 w-full">
             {/* Y-Axis labels */}
             <div className="flex flex-col justify-between text-[11px] font-mono text-neutral-400 pr-2 sm:pr-3 pb-8 select-none shrink-0">
-              <span>3</span>
-              <span>2</span>
-              <span>1</span>
+              <span>{maxBarCount}</span>
+              <span>{Math.round((maxBarCount * 2) / 3)}</span>
+              <span>{Math.max(1, Math.round(maxBarCount / 3))}</span>
               <span>0</span>
             </div>
 
@@ -380,6 +347,7 @@ export default function AdminDashboardPage() {
                 {currentBars.map((bar, idx) => {
                   const isFriday = bar.day === 'V' || bar.isToday
                   const isZero = bar.count === 0
+                  const heightPercent = Math.min(100, Math.max(24, Math.round((bar.count / maxBarCount) * 100)))
                   return (
                     <div key={idx} className="flex flex-col items-center flex-1 h-full justify-end group/bar relative">
                       {/* Tooltip on hover */}
@@ -405,12 +373,7 @@ export default function AdminDashboardPage() {
                         ) : (
                           <div
                             style={{
-                              height:
-                                bar.count === 2
-                                  ? '85px'
-                                  : bar.count === 1
-                                    ? '48px'
-                                    : '110px',
+                              height: `${heightPercent}%`,
                             }}
                             className={`w-full rounded-2xl transition-all duration-500 shadow-2xs ${isFriday ? 'bg-[#EB4604]' : 'bg-[#0B0F17]'
                               }`}
@@ -692,13 +655,13 @@ export default function AdminDashboardPage() {
             </span>
             <span className="flex items-center gap-1.5">
               <span className="w-2 h-2 rounded-full bg-neutral-300 shrink-0" />
-              {newLeads} Nouveaux
+              {newLeads} Nouveau{newLeads > 1 ? 'x' : ''}
             </span>
           </div>
         </div>
 
-        {/* Column 3: Session Active / Console Studio */}
-        <div className="rounded-2xl sm:rounded-[24px] bg-[#0B0F17] text-white p-4 sm:p-6 flex flex-col justify-between relative overflow-hidden shadow-xs">
+        {/* Column 3: Services Demandés (Répartition CRM en temps réel) */}
+        <div className="rounded-2xl sm:rounded-[24px] bg-[#0B0F17] text-white p-4 sm:p-6 flex flex-col justify-between relative overflow-hidden shadow-xs min-h-[220px]">
           {/* Subtle Organic Wavy Lines in Background */}
           <div className="absolute inset-0 opacity-20 pointer-events-none">
             <svg viewBox="0 0 200 200" className="w-full h-full" preserveAspectRatio="none">
@@ -710,136 +673,76 @@ export default function AdminDashboardPage() {
 
           <div className="relative z-10 flex items-center justify-between">
             <div className="flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              <span className="w-2 h-2 rounded-full bg-[#EB4604] animate-pulse" />
               <span className="text-[10px] sm:text-[10.5px] font-bold text-neutral-300 tracking-wider uppercase font-mono">
-                SESSION ACTIVE
+                RÉPARTITION CRM
               </span>
             </div>
-            <button
-              onClick={() => setIsStudioExpanded(true)}
-              className="w-7 h-7 rounded-lg bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors cursor-pointer"
-              title="Agrandir la console"
+            <Link
+              href="/admin/leads"
+              className="w-7 h-7 rounded-lg bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors"
+              title="Voir tous les leads"
             >
-              <Maximize2 className="w-3.5 h-3.5" />
-            </button>
+              <ArrowUpRight className="w-3.5 h-3.5" />
+            </Link>
           </div>
 
-          <div className="relative z-10">
-            <h3 className="text-base font-bold text-white mt-1">Console Studio</h3>
+          <div className="relative z-10 mt-1">
+            <h3 className="text-base font-bold text-white">Services Demandés</h3>
+            <p className="text-[11px] text-neutral-400 font-mono mt-0.5">
+              {totalServiceDemands > 0
+                ? `${totalServiceDemands} demande${totalServiceDemands > 1 ? 's' : ''} analysée${totalServiceDemands > 1 ? 's' : ''}`
+                : 'En attente de demandes'}
+            </p>
           </div>
 
-          <div className="relative z-10 text-center my-3 sm:my-4">
-            <div className="text-2xl sm:text-3xl font-mono font-bold tracking-wider text-white">
-              {formatTimer(timerSeconds)}
-            </div>
-            <div className="text-[11px] sm:text-xs font-mono text-neutral-400 mt-1 flex items-center justify-center gap-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-              Supervision en direct
-            </div>
+          {/* Dynamic Service Items Progress Bars */}
+          <div className="relative z-10 my-3 space-y-2.5">
+            {serviceEntries.length > 0 ? (
+              serviceEntries.slice(0, 3).map(([serviceName, count]) => {
+                const percent = totalServiceDemands > 0 ? Math.round((count / totalServiceDemands) * 100) : 0
+                return (
+                  <div key={serviceName} className="space-y-1">
+                    <div className="flex items-center justify-between text-xs">
+                      <span className="text-neutral-200 font-medium truncate max-w-[170px]" title={serviceName}>
+                        {serviceName}
+                      </span>
+                      <span className="font-mono text-[11px] text-neutral-300 shrink-0">
+                        {count} ({percent}%)
+                      </span>
+                    </div>
+                    <div className="h-1.5 w-full bg-white/10 rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-gradient-to-r from-[#EB4604] to-[#FF6B35] rounded-full transition-all duration-700"
+                        style={{ width: `${percent}%` }}
+                      />
+                    </div>
+                  </div>
+                )
+              })
+            ) : (
+              <div className="py-5 text-center text-xs text-neutral-400 font-mono">
+                Aucun service enregistré pour l&apos;instant
+              </div>
+            )}
           </div>
 
-          {/* Action Control Buttons */}
-          <div className="relative z-10 flex items-center justify-center gap-3">
-            <button
-              onClick={() => setIsTimerRunning((prev) => !prev)}
-              className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white text-black hover:bg-neutral-100 flex items-center justify-center transition-all cursor-pointer shadow-md"
-              title={isTimerRunning ? 'Mettre en pause' : 'Reprendre'}
+          {/* Footer stats pill */}
+          <div className="relative z-10 pt-3 border-t border-white/10 flex items-center justify-between text-[11px] font-mono text-neutral-300">
+            <span className="flex items-center gap-1.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" />
+              <span>Base en direct</span>
+            </span>
+            <Link
+              href="/admin/leads"
+              className="text-[#EB4604] hover:text-[#FF6B35] font-semibold transition-colors flex items-center gap-1"
             >
-              {isTimerRunning ? (
-                <Pause className="w-4 h-4 fill-current" />
-              ) : (
-                <Play className="w-4 h-4 fill-current ml-0.5" />
-              )}
-            </button>
-            <button
-              onClick={() => {
-                sessionStorage.setItem('sparkline_admin_session_start', Date.now().toString())
-                setTimerSeconds(0)
-              }}
-              className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-[#EB4604] hover:bg-[#D43D00] text-white flex items-center justify-center transition-all cursor-pointer shadow-md"
-              title="Réinitialiser"
-            >
-              <RotateCcw className="w-4 h-4" />
-            </button>
+              <span>Détails CRM</span>
+              <ChevronRight className="w-3 h-3" />
+            </Link>
           </div>
         </div>
       </div>
-
-      {/* ── Expanded Console Studio Modal ── */}
-      {isStudioExpanded && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/70 backdrop-blur-md animate-in fade-in duration-200">
-          <div className="w-full max-w-2xl bg-[#0B0F17] border border-white/10 rounded-2xl sm:rounded-3xl p-4 sm:p-6 text-white shadow-2xl relative overflow-hidden max-h-[90vh] overflow-y-auto">
-            {/* Background Glow */}
-            <div className="absolute top-0 right-0 w-80 h-80 bg-[#EB4604]/20 rounded-full blur-3xl pointer-events-none" />
-
-            <div className="flex items-center justify-between pb-3 sm:pb-4 border-b border-white/10 relative z-10">
-              <div className="flex items-center gap-2.5 sm:gap-3">
-                <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-emerald-400 animate-pulse shrink-0" />
-                <div>
-                  <h3 className="text-base sm:text-lg font-bold">Console Studio • Supervision en direct</h3>
-                  <p className="text-[11px] sm:text-xs text-neutral-400 font-mono">
-                    Session active : {formatTimer(timerSeconds)}
-                  </p>
-                </div>
-              </div>
-              <button
-                onClick={() => setIsStudioExpanded(false)}
-                className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center cursor-pointer transition-colors shrink-0"
-              >
-                <X className="w-4 h-4" />
-              </button>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 my-4 sm:my-6 relative z-10">
-              <div className="p-3.5 sm:p-4 rounded-2xl bg-white/5 border border-white/10 text-center">
-                <Activity className="w-5 h-5 text-emerald-400 mx-auto mb-1.5 sm:mb-2" />
-                <div className="text-[11px] sm:text-xs text-neutral-400 uppercase font-mono">Disponibilité</div>
-                <div className="text-lg sm:text-xl font-bold mt-1 text-white">99.98%</div>
-                <div className="text-[10px] text-emerald-400 mt-0.5">Opérationnel</div>
-              </div>
-
-              <div className="p-3.5 sm:p-4 rounded-2xl bg-white/5 border border-white/10 text-center">
-                <ShieldCheck className="w-5 h-5 text-[#EB4604] mx-auto mb-1.5 sm:mb-2" />
-                <div className="text-[11px] sm:text-xs text-neutral-400 uppercase font-mono">Sécurité SSL/TLS</div>
-                <div className="text-lg sm:text-xl font-bold mt-1 text-white">Chiffré</div>
-                <div className="text-[10px] text-neutral-400 mt-0.5">Session admin vérifiée</div>
-              </div>
-
-              <div className="p-3.5 sm:p-4 rounded-2xl bg-white/5 border border-white/10 text-center">
-                <CheckCircle2 className="w-5 h-5 text-blue-400 mx-auto mb-1.5 sm:mb-2" />
-                <div className="text-[11px] sm:text-xs text-neutral-400 uppercase font-mono">Base de données</div>
-                <div className="text-lg sm:text-xl font-bold mt-1 text-white">6 ms</div>
-                <div className="text-[10px] text-blue-400 mt-0.5">Prisma SQLite sync</div>
-              </div>
-            </div>
-
-            <div className="p-3.5 sm:p-4 rounded-2xl bg-black/40 border border-white/10 font-mono text-xs text-neutral-300 space-y-2 relative z-10">
-              <div className="flex items-center justify-between text-neutral-400 pb-2 border-b border-white/10">
-                <span className="text-[10px] sm:text-xs">FLUX DE CONVERSION</span>
-                <span className="text-emerald-400 text-[10px]">SYNC AUTOMATIQUE</span>
-              </div>
-              <div className="text-[11px] text-neutral-300">
-                • 6 dossiers enregistrés dans le CRM SPARKLINE
-              </div>
-              <div className="text-[11px] text-neutral-300">
-                • 1 contrat gagné ({conversionRate}% de conversion globale)
-              </div>
-              <div className="text-[11px] text-neutral-300">
-                • 3 nouveaux dossiers prioritaires en attente de qualification
-              </div>
-            </div>
-
-            <div className="mt-4 sm:mt-6 flex items-center justify-end gap-3 relative z-10">
-              <button
-                onClick={() => setIsStudioExpanded(false)}
-                className="w-full sm:w-auto px-5 py-2.5 rounded-full bg-white text-black hover:bg-neutral-200 text-xs font-semibold cursor-pointer transition-colors"
-              >
-                Fermer
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   )
 }
