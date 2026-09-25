@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useRef, useCallback } from 'react'
+import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
@@ -12,6 +12,7 @@ import {
   ExternalLink,
   Compass,
   PanelLeftClose,
+  PanelLeftOpen,
 } from 'lucide-react'
 import { LogoutModal } from './LogoutModal'
 import { useAdminSidebar } from './AdminSidebarContext'
@@ -25,71 +26,9 @@ interface AdminSidebarProps {
 export function AdminSidebar({ totalLeadsCount = 0, newLeadsCount = 0 }: AdminSidebarProps) {
   const pathname = usePathname()
   const router = useRouter()
-  const { isCollapsed, setIsCollapsed } = useAdminSidebar()
+  const { isCollapsed, toggleSidebar } = useAdminSidebar()
   const [loggingOut, setLoggingOut] = React.useState(false)
   const [showLogoutModal, setShowLogoutModal] = React.useState(false)
-
-  // Auto-collapse after 5 seconds of inactivity & hover-to-redeploy
-  const timerRef = useRef<NodeJS.Timeout | null>(null)
-  const userManuallyCollapsedRef = useRef(false)
-
-  const clearAutoCollapseTimer = useCallback(() => {
-    if (timerRef.current) {
-      clearTimeout(timerRef.current)
-      timerRef.current = null
-    }
-  }, [])
-
-  const startAutoCollapseTimer = useCallback(() => {
-    clearAutoCollapseTimer()
-    if (!isCollapsed && !showLogoutModal) {
-      timerRef.current = setTimeout(() => {
-        setIsCollapsed(true)
-      }, 5000)
-    }
-  }, [clearAutoCollapseTimer, isCollapsed, showLogoutModal, setIsCollapsed])
-
-  // Automatically arm the 5s timer whenever sidebar is expanded
-  useEffect(() => {
-    if (!isCollapsed) {
-      startAutoCollapseTimer()
-    } else {
-      clearAutoCollapseTimer()
-    }
-    return () => clearAutoCollapseTimer()
-  }, [isCollapsed, startAutoCollapseTimer, clearAutoCollapseTimer])
-
-  // Hover over collapsed sidebar redeploys it immediately
-  const handleMouseEnter = () => {
-    clearAutoCollapseTimer()
-    if (isCollapsed && !userManuallyCollapsedRef.current) {
-      setIsCollapsed(false)
-    }
-  }
-
-  const handleMouseMove = () => {
-    clearAutoCollapseTimer()
-    if (isCollapsed && !userManuallyCollapsedRef.current) {
-      setIsCollapsed(false)
-    }
-  }
-
-  const handleMouseLeave = () => {
-    userManuallyCollapsedRef.current = false
-    startAutoCollapseTimer()
-  }
-
-  const handleManualToggle = (e?: React.MouseEvent) => {
-    e?.stopPropagation()
-    if (!isCollapsed) {
-      userManuallyCollapsedRef.current = true
-      clearAutoCollapseTimer()
-      setIsCollapsed(true)
-    } else {
-      userManuallyCollapsedRef.current = false
-      setIsCollapsed(false)
-    }
-  }
 
   // Do not render on login page
   if (pathname === '/admin/login') return null
@@ -143,9 +82,6 @@ export function AdminSidebar({ totalLeadsCount = 0, newLeadsCount = 0 }: AdminSi
 
   return (
     <aside
-      onMouseEnter={handleMouseEnter}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
       className={`fixed top-0 left-0 shrink-0 bg-white border-r border-neutral-200/70 hidden md:flex flex-col justify-between h-screen z-40 select-none px-3.5 py-5 transition-[width] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-[width] ${
         isCollapsed ? 'w-[72px]' : 'w-64'
       }`}
@@ -197,18 +133,16 @@ export function AdminSidebar({ totalLeadsCount = 0, newLeadsCount = 0 }: AdminSi
             </div>
           </Link>
 
-          {/* Single Collapse Button: Absolute right, never interferes with centering */}
-          <button
-            onClick={handleManualToggle}
-            className={`absolute right-0 top-1/2 -translate-y-1/2 w-8 h-8 rounded-xl bg-neutral-50 hover:bg-neutral-100 border border-neutral-200/70 text-neutral-400 hover:text-neutral-800 flex items-center justify-center transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] cursor-pointer shadow-2xs hover:scale-105 active:scale-95 shrink-0 z-10 ${
-              isCollapsed
-                ? 'opacity-0 scale-75 pointer-events-none'
-                : 'opacity-100 scale-100'
-            }`}
-            title="Réduire le menu (⌘B)"
-          >
-            <PanelLeftClose className="w-4 h-4" />
-          </button>
+          {/* Manual Collapse Button when deployed */}
+          {!isCollapsed && (
+            <button
+              onClick={toggleSidebar}
+              className="absolute right-0 top-1/2 -translate-y-1/2 w-8 h-8 rounded-xl bg-neutral-50 hover:bg-neutral-100 border border-neutral-200/70 text-neutral-400 hover:text-neutral-800 flex items-center justify-center transition-all cursor-pointer shadow-2xs hover:scale-105 active:scale-95 shrink-0 z-10"
+              title="Réduire le menu (⌘B)"
+            >
+              <PanelLeftClose className="w-4 h-4" />
+            </button>
+          )}
         </div>
 
         {/* ── Menu Section ── */}
@@ -338,6 +272,43 @@ export function AdminSidebar({ totalLeadsCount = 0, newLeadsCount = 0 }: AdminSi
         </div>
 
         <nav className="space-y-1">
+          {/* Manual Collapse / Expand Toggle Button */}
+          <div className="relative group/toggle">
+            <button
+              onClick={toggleSidebar}
+              className="w-full flex items-center h-11 px-3 rounded-2xl text-sm font-medium text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100/70 transition-colors duration-200 cursor-pointer"
+              title={isCollapsed ? 'Développer la barre latérale (⌘B)' : 'Réduire la barre latérale (⌘B)'}
+            >
+              <div className="w-5 h-5 shrink-0 flex items-center justify-center">
+                {isCollapsed ? (
+                  <PanelLeftOpen className="w-4 h-4 text-neutral-400 group-hover/toggle:text-neutral-800 shrink-0" />
+                ) : (
+                  <PanelLeftClose className="w-4 h-4 text-neutral-400 group-hover/toggle:text-neutral-800 shrink-0" />
+                )}
+              </div>
+              <div
+                className={`flex items-center justify-between flex-1 overflow-hidden whitespace-nowrap transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                  isCollapsed
+                    ? 'max-w-0 opacity-0 -translate-x-3 pointer-events-none'
+                    : 'max-w-[170px] opacity-100 translate-x-0 ml-3'
+                }`}
+              >
+                <span className="truncate">Réduire le menu</span>
+                <kbd className="px-1.5 py-0.5 text-[9px] font-mono text-neutral-400 bg-neutral-100 border border-neutral-200/80 rounded">
+                  ⌘B
+                </kbd>
+              </div>
+            </button>
+
+            {/* Tooltip in Collapsed Mode */}
+            {isCollapsed && (
+              <div className="absolute left-full ml-3 top-1/2 -translate-y-1/2 px-3 py-1.5 rounded-xl bg-[#0A0D14] text-white text-xs font-semibold shadow-xl whitespace-nowrap opacity-0 pointer-events-none translate-x-1 group-hover/toggle:opacity-100 group-hover/toggle:translate-x-0 transition-all duration-150 z-50 flex items-center gap-1.5">
+                <span>Développer (⌘B)</span>
+                <div className="absolute -left-1 top-1/2 -translate-y-1/2 w-2 h-2 bg-[#0A0D14] rotate-45" />
+              </div>
+            )}
+          </div>
+
           {generalItems.map((item) => {
             const Icon = item.icon
             return (
