@@ -23,6 +23,10 @@ import {
   GraduationCap,
   SlidersHorizontal,
 } from 'lucide-react'
+import { ConfirmModal } from '@/components/admin/ConfirmModal'
+import { AlertModal } from '@/components/admin/AlertModal'
+import { TableSkeleton } from '@/components/admin/Skeletons'
+import { notify } from '@/lib/notify'
 
 interface Subscriber {
   id: string
@@ -69,6 +73,20 @@ export default function AdminNewsletterPage() {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
   const [openLimitDropdown, setOpenLimitDropdown] = useState(false)
   const [expandedId, setExpandedId] = useState<string | null>(null)
+
+  // Custom Branded Modals state
+  const [deleteModal, setDeleteModal] = useState<{
+    isOpen: boolean
+    id: string
+    email: string
+    loading: boolean
+  }>({
+    isOpen: false,
+    id: '',
+    email: '',
+    loading: false,
+  })
+  const [showFiltersModal, setShowFiltersModal] = useState(false)
 
   // Metrics
   const [metrics, setMetrics] = useState<Metrics>({
@@ -135,12 +153,14 @@ export default function AdminNewsletterPage() {
     const allEmails = subscribers.map((s) => s.email).join(', ')
     navigator.clipboard.writeText(allEmails)
     setCopiedAll(true)
+    notify.success(`${subscribers.length} adresses e-mail copiées`)
     setTimeout(() => setCopiedAll(false), 2500)
   }
 
   // Copy single email
   const handleCopyEmail = (email: string) => {
     navigator.clipboard.writeText(email)
+    notify.success(`Email copié : ${email}`)
     setActiveMenuId(null)
   }
 
@@ -157,28 +177,51 @@ export default function AdminNewsletterPage() {
         setSubscribers((prev) =>
           prev.map((s) => (s.id === id ? { ...s, status: newStatus } : s))
         )
+        notify.success(
+          newStatus === 'ACTIVE' ? 'Abonnement réactivé avec succès' : 'Abonné marqué comme désinscrit'
+        )
+      } else {
+        notify.error('Échec de la modification du statut')
       }
     } catch (err) {
       console.error('Erreur changement statut', err)
+      notify.error('Erreur de connexion au serveur')
     } finally {
       setActiveMenuId(null)
     }
   }
 
-  // Delete subscriber
-  const handleDelete = async (id: string, email: string) => {
-    if (!confirm(`Supprimer définitivement l'abonné ${email} ?`)) return
+  // Trigger branded delete confirmation modal
+  const handleDelete = (id: string, email: string) => {
+    setActiveMenuId(null)
+    setDeleteModal({
+      isOpen: true,
+      id,
+      email,
+      loading: false,
+    })
+  }
+
+  // Confirmed delete execution
+  const handleConfirmDelete = async () => {
+    if (!deleteModal.id) return
+    setDeleteModal((prev) => ({ ...prev, loading: true }))
     try {
-      const res = await fetch(`/api/admin/newsletter?id=${id}`, { method: 'DELETE' })
+      const res = await fetch(`/api/admin/newsletter?id=${deleteModal.id}`, { method: 'DELETE' })
       if (res.ok) {
-        setSubscribers((prev) => prev.filter((s) => s.id !== id))
+        setSubscribers((prev) => prev.filter((s) => s.id !== deleteModal.id))
         setTotal((prev) => Math.max(0, prev - 1))
-        setSelectedIds((prev) => prev.filter((item) => item !== id))
+        setSelectedIds((prev) => prev.filter((item) => item !== deleteModal.id))
+        notify.success(`Abonné « ${deleteModal.email} » supprimé avec succès`)
+        setDeleteModal({ isOpen: false, id: '', email: '', loading: false })
+      } else {
+        notify.error('Impossible de supprimer cet abonné')
+        setDeleteModal((prev) => ({ ...prev, loading: false }))
       }
     } catch (err) {
       console.error('Erreur suppression abonné', err)
-    } finally {
-      setActiveMenuId(null)
+      notify.error('Erreur de communication avec le serveur')
+      setDeleteModal((prev) => ({ ...prev, loading: false }))
     }
   }
 
@@ -526,7 +569,7 @@ export default function AdminNewsletterPage() {
         {/* Right: Actions */}
         <div className="flex items-center gap-2">
           <button
-            onClick={() => alert('Filtres avancés : tous les critères sont actifs')}
+            onClick={() => setShowFiltersModal(true)}
             className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full hover:bg-neutral-100 text-xs font-semibold text-neutral-700 cursor-pointer transition-colors"
           >
             <SlidersHorizontal className="w-3.5 h-3.5 text-neutral-500" />
@@ -545,10 +588,7 @@ export default function AdminNewsletterPage() {
       {/* ── 4. Main Content: List View (Table matching Leads layout) ── */}
       <div className="bg-white rounded-2xl sm:rounded-[24px] border border-neutral-200/80 shadow-xs overflow-visible">
         {loading ? (
-          <div className="p-12 sm:p-16 flex flex-col items-center justify-center gap-3 text-neutral-500">
-            <div className="w-6 h-6 border-2 border-[#EB4604] border-t-transparent rounded-full animate-spin" />
-            <span className="text-xs">Chargement des abonnés...</span>
-          </div>
+          <TableSkeleton rowsCount={limit > 10 ? 10 : limit} />
         ) : subscribers.length === 0 ? (
           <div className="p-12 sm:p-16 text-center space-y-3">
             <div className="w-12 h-12 rounded-2xl bg-neutral-100 flex items-center justify-center mx-auto text-neutral-400">
@@ -1062,6 +1102,44 @@ export default function AdminNewsletterPage() {
           </div>
         </div>
       )}
+
+      {/* ── Branded Confirmation Modal for Deletion ── */}
+      <ConfirmModal
+        isOpen={deleteModal.isOpen}
+        onClose={() => setDeleteModal({ isOpen: false, id: '', email: '', loading: false })}
+        onConfirm={handleConfirmDelete}
+        loading={deleteModal.loading}
+        title="Supprimer l'abonné"
+        message={
+          <>
+            Êtes-vous sûr de vouloir supprimer définitivement{' '}
+            <strong className="text-neutral-900 font-semibold">{deleteModal.email}</strong> de votre liste
+            de diffusion ? Cette action est irréversible.
+          </>
+        }
+        confirmLabel="Supprimer"
+        cancelLabel="Conserver"
+        variant="danger"
+      />
+
+      {/* ── Branded Alert Modal for Advanced Filters ── */}
+      <AlertModal
+        isOpen={showFiltersModal}
+        onClose={() => setShowFiltersModal(false)}
+        title="Filtres avancés"
+        icon="filters"
+        message={
+          <>
+            Tous les filtres sont directement actifs et combinables depuis la barre d’outils supérieure :
+            <div className="mt-3 text-left space-y-1.5 text-xs bg-neutral-50 p-3 rounded-xl border border-neutral-200/70">
+              <p>• <strong>Source</strong> : filtrer par Site Principal ou SparkLearn.</p>
+              <p>• <strong>Statut</strong> : afficher les abonnés Actifs ou Désinscrits.</p>
+              <p>• <strong>Période</strong> : isoler les inscriptions récentes (7j, 30j, mois).</p>
+              <p>• <strong>Recherche</strong> : trouver instantanément par adresse e-mail.</p>
+            </div>
+          </>
+        }
+      />
     </div>
   )
 }

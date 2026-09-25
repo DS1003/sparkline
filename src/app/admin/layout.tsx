@@ -5,6 +5,7 @@ import { AdminSidebar } from '@/components/admin/AdminSidebar'
 import { AdminSidebarProvider } from '@/components/admin/AdminSidebarContext'
 import { AdminMainContent } from '@/components/admin/AdminMainContent'
 import { AdminHeader } from '@/components/admin/AdminHeader'
+import { AdminToastProvider } from '@/components/admin/AdminToastProvider'
 import { prisma } from '@/lib/db'
 
 export const metadata: Metadata = {
@@ -39,6 +40,7 @@ export default async function AdminLayout({
   if (!session) {
     return (
       <div className="min-h-screen bg-[#F4F5F7] text-[#0A0A0A] font-sans selection:bg-[#EB4604] selection:text-white">
+        <AdminToastProvider />
         {children}
       </div>
     )
@@ -46,6 +48,7 @@ export default async function AdminLayout({
 
   return (
     <AdminSidebarProvider>
+      <AdminToastProvider />
       <div className="min-h-screen bg-[#F4F5F7] text-[#0A0D14] font-sans selection:bg-[#EB4604] selection:text-white">
         {/* Fixed sidebar — never scrolls with page content */}
         <AdminSidebar totalLeadsCount={totalLeads} newLeadsCount={newLeads} />
@@ -65,3 +68,4 @@ export default async function AdminLayout({
     </AdminSidebarProvider>
   )
 }
+

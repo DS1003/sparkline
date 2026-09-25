@@ -27,6 +27,8 @@ import {
   CheckCircle2,
   ShieldCheck,
 } from 'lucide-react'
+import { DashboardSkeleton } from '@/components/admin/Skeletons'
+import { notify } from '@/lib/notify'
 
 interface VolumeBar {
   day?: string
@@ -139,22 +141,15 @@ export default function AdminDashboardPage() {
     return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`
   }
 
-  const handleRefresh = () => {
+  const handleRefresh = async () => {
     setIsRefreshing(true)
-    fetchStats()
+    await fetchStats()
+    setIsRefreshing(false)
+    notify.success('Tableau de bord actualisé')
   }
 
   if (loading) {
-    return (
-      <div className="space-y-6 animate-pulse p-4">
-        <div className="h-14 bg-white rounded-2xl w-1/3" />
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {[1, 2, 3, 4].map((i) => (
-            <div key={i} className="h-36 bg-white rounded-[24px]" />
-          ))}
-        </div>
-      </div>
-    )
+    return <DashboardSkeleton />
   }
 
   const totalLeads = data?.totalLeads || 0

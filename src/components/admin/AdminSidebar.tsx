@@ -15,6 +15,7 @@ import {
 } from 'lucide-react'
 import { LogoutModal } from './LogoutModal'
 import { useAdminSidebar } from './AdminSidebarContext'
+import { notify } from '@/lib/notify'
 
 interface AdminSidebarProps {
   totalLeadsCount?: number
@@ -98,6 +99,7 @@ export function AdminSidebar({ totalLeadsCount = 0, newLeadsCount = 0 }: AdminSi
     setLoggingOut(true)
     try {
       await fetch('/api/admin/logout', { method: 'POST' })
+      notify.info('Session fermée avec succès')
       router.push('/admin/login')
       router.refresh()
     } catch {

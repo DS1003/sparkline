@@ -606,6 +606,13 @@ div:hover > .animate-vertical-track-reverse {
   animation: neonSparkFloat 2.8s ease-in-out infinite;
 }
 
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+
 /* ─── Prevent Mobile Auto-Zoom on Form Inputs (iOS Safari / Mobile Chrome) ─── */
 @media screen and (max-width: 767px) {
   input[type="text"],

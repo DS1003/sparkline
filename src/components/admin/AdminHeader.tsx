@@ -18,6 +18,7 @@ import {
   ChevronDown,
 } from 'lucide-react'
 import { LogoutModal } from './LogoutModal'
+import { notify } from '@/lib/notify'
 
 interface AdminHeaderProps {
   userName: string
@@ -86,6 +87,7 @@ export function AdminHeader({ userName, userEmail, newLeadsCount = 0 }: AdminHea
     setLoggingOut(true)
     try {
       await fetch('/api/admin/logout', { method: 'POST' })
+      notify.info('Session fermée avec succès')
       router.push('/admin/login')
       router.refresh()
     } catch {

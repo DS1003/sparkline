@@ -36,6 +36,10 @@ import {
   Tag,
   Archive,
 } from 'lucide-react'
+import { ConfirmModal } from '@/components/admin/ConfirmModal'
+import { AlertModal } from '@/components/admin/AlertModal'
+import { KanbanSkeleton, TableSkeleton } from '@/components/admin/Skeletons'
+import { notify } from '@/lib/notify'
 
 interface LeadItem {
   id: string
@@ -98,6 +102,20 @@ export default function AdminLeadsPage() {
   const [noteSaved, setNoteSaved] = useState(false)
   const [copiedField, setCopiedField] = useState<string | null>(null)
   const [isUpdating, startTransition] = useTransition()
+
+  // Custom Branded Modals
+  const [deleteModal, setDeleteModal] = useState<{
+    isOpen: boolean
+    id: string
+    name: string
+    loading: boolean
+  }>({
+    isOpen: false,
+    id: '',
+    name: '',
+    loading: false,
+  })
+  const [showFiltersModal, setShowFiltersModal] = useState(false)
 
   // Form for new lead
   const [newForm, setNewForm] = useState({
@@ -228,9 +246,13 @@ export default function AdminLeadsPage() {
           if (selectedLead?.id === leadId) {
             setSelectedLead((prev) => (prev ? { ...prev, status: newStatus } : null))
           }
+          notify.success(`Statut mis à jour : ${statusConfig[newStatus]?.label || newStatus}`)
+        } else {
+          notify.error('Échec de la modification du statut')
         }
       } catch (err) {
         console.error('Failed to update status', err)
+        notify.error('Erreur réseau lors de la mise à jour')
       }
     })
   }
@@ -249,25 +271,48 @@ export default function AdminLeadsPage() {
           setSelectedLead(updated)
           setLeads((prev) => prev.map((l) => (l.id === updated.id ? updated : l)))
           setNoteSaved(true)
+          notify.success('Notes internes enregistrées avec succès')
           setTimeout(() => setNoteSaved(false), 2500)
+        } else {
+          notify.error('Erreur lors de l’enregistrement de la note')
         }
       } catch (err) {
         console.error('Failed to save notes', err)
+        notify.error('Erreur de communication avec le serveur')
       }
     })
   }
 
-  const handleDeleteLead = async (id: string, name: string) => {
-    if (!confirm(`Supprimer définitivement la demande de « ${name} » ?`)) return
+  // Trigger branded delete confirmation modal
+  const handleDeleteLead = (id: string, name: string) => {
+    setDeleteModal({
+      isOpen: true,
+      id,
+      name,
+      loading: false,
+    })
+  }
+
+  // Confirmed delete execution
+  const handleConfirmDeleteLead = async () => {
+    if (!deleteModal.id) return
+    setDeleteModal((prev) => ({ ...prev, loading: true }))
     try {
-      const res = await fetch(`/api/admin/leads?id=${id}`, { method: 'DELETE' })
+      const res = await fetch(`/api/admin/leads?id=${deleteModal.id}`, { method: 'DELETE' })
       if (res.ok) {
-        setLeads((prev) => prev.filter((l) => l.id !== id))
+        setLeads((prev) => prev.filter((l) => l.id !== deleteModal.id))
         setTotal((prev) => Math.max(0, prev - 1))
-        if (selectedLead?.id === id) setSelectedLead(null)
+        if (selectedLead?.id === deleteModal.id) setSelectedLead(null)
+        notify.success(`Demande de « ${deleteModal.name} » supprimée`)
+        setDeleteModal({ isOpen: false, id: '', name: '', loading: false })
+      } else {
+        notify.error('Erreur lors de la suppression de la demande')
+        setDeleteModal((prev) => ({ ...prev, loading: false }))
       }
     } catch (err) {
       console.error('Failed to delete lead', err)
+      notify.error('Erreur réseau lors de la suppression')
+      setDeleteModal((prev) => ({ ...prev, loading: false }))
     }
   }
 
@@ -287,6 +332,7 @@ export default function AdminLeadsPage() {
         setLeads((prev) => [created, ...prev])
         setTotal((prev) => prev + 1)
         setIsNewLeadModalOpen(false)
+        notify.success(`Lead « ${created.name} » créé avec succès`)
         setNewForm({
           name: '',
           email: '',
@@ -298,9 +344,12 @@ export default function AdminLeadsPage() {
           source: 'contact_page',
           status: 'NEW',
         })
+      } else {
+        notify.error('Impossible de créer le lead')
       }
     } catch (err) {
       console.error('Failed to create lead', err)
+      notify.error('Erreur de connexion au serveur')
     }
   }
 
@@ -331,6 +380,7 @@ export default function AdminLeadsPage() {
     link.download = `sparkline_leads_${new Date().toISOString().split('T')[0]}.csv`
     link.click()
     URL.revokeObjectURL(url)
+    notify.success('Export CSV généré avec succès')
   }
 
   const handleResetFilters = () => {
@@ -350,6 +400,7 @@ export default function AdminLeadsPage() {
   const handleCopy = (field: string, text: string) => {
     navigator.clipboard.writeText(text)
     setCopiedField(field)
+    notify.success(field === 'email' ? 'Adresse email copiée' : field === 'phone' ? 'Numéro de téléphone copié' : 'Copié dans le presse-papier')
     setTimeout(() => setCopiedField(null), 2000)
   }
 
@@ -859,7 +910,7 @@ export default function AdminLeadsPage() {
         {/* Right: Actions */}
         <div className="flex items-center gap-2">
           <button
-            onClick={() => alert('Filtres avancés : tous les critères sont actifs')}
+            onClick={() => setShowFiltersModal(true)}
             className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full hover:bg-neutral-100 text-xs font-semibold text-neutral-700 cursor-pointer transition-colors"
           >
             <SlidersHorizontal className="w-3.5 h-3.5 text-neutral-500" />
@@ -876,7 +927,9 @@ export default function AdminLeadsPage() {
       </div>
 
       {/* ── 4. Main Content: Kanban Columns (5 Columns) or List View ── */}
-      {viewMode === 'kanban' ? (
+      {loading ? (
+        viewMode === 'kanban' ? <KanbanSkeleton /> : <TableSkeleton rowsCount={8} />
+      ) : viewMode === 'kanban' ? (
         <div className="space-y-3">
           {/* Mobile Column Switcher Tabs (< md only) */}
           {kanbanColumns.length > 1 && (
@@ -1844,6 +1897,43 @@ export default function AdminLeadsPage() {
           </div>
         </div>
       )}
+
+      {/* ── Branded Confirmation Modal for Deletion ── */}
+      <ConfirmModal
+        isOpen={deleteModal.isOpen}
+        onClose={() => setDeleteModal({ isOpen: false, id: '', name: '', loading: false })}
+        onConfirm={handleConfirmDeleteLead}
+        loading={deleteModal.loading}
+        title="Supprimer la demande"
+        message={
+          <>
+            Êtes-vous sûr de vouloir supprimer définitivement la demande de{' '}
+            <strong className="text-neutral-900 font-semibold">{deleteModal.name}</strong> ? Cette action est irréversible.
+          </>
+        }
+        confirmLabel="Supprimer"
+        cancelLabel="Conserver"
+        variant="danger"
+      />
+
+      {/* ── Branded Alert Modal for Advanced Filters ── */}
+      <AlertModal
+        isOpen={showFiltersModal}
+        onClose={() => setShowFiltersModal(false)}
+        title="Filtres avancés"
+        icon="filters"
+        message={
+          <>
+            Tous les critères de segmentation sont directement accessibles depuis la barre de filtres :
+            <div className="mt-3 text-left space-y-1.5 text-xs bg-neutral-50 p-3 rounded-xl border border-neutral-200/70">
+              <p>• <strong>Étape</strong> : Nouveau, Contacté, Qualifié, Gagné, Archivé.</p>
+              <p>• <strong>Origine</strong> : Site principal, devis spécifique, newsletter.</p>
+              <p>• <strong>Budget</strong> : Filtrer par seuil de budget estimé.</p>
+              <p>• <strong>Période</strong> : 7 derniers jours, 30 jours, ou tout l'historique.</p>
+            </div>
+          </>
+        }
+      />
     </div>
   )
 }
