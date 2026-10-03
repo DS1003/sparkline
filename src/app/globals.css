@@ -612,6 +612,45 @@ div:hover > .animate-vertical-track-reverse {
   }
 }
 
+/* ─── Hero Spark Title Character Ignition & Ambient Sheen ─── */
+@keyframes sparkCharIgnite {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 10px, 0) scale(0.92);
+    filter: brightness(2.2);
+    text-shadow: 0 0 16px #FFFFFF, 0 0 28px #FFB901, 0 0 45px #EB4604;
+  }
+  30% {
+    opacity: 1;
+    transform: translate3d(0, -2px, 0) scale(1.03);
+    filter: brightness(1.6);
+    text-shadow: 0 0 12px #FFFFFF, 0 0 22px #FF9100, 0 0 35px #EB4604;
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+    filter: brightness(1);
+  }
+}
+
+@keyframes sparkTitleAmbientSweep {
+  0%, 100% {
+    filter: drop-shadow(0 2px 10px rgba(0,0,0,0.65));
+  }
+  45% {
+    filter: drop-shadow(0 2px 14px rgba(255, 185, 1, 0.35)) drop-shadow(0 0 24px rgba(235, 70, 4, 0.25));
+  }
+}
+
+.animate-char-ignite {
+  animation: sparkCharIgnite 0.42s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: transform, opacity;
+}
+
+.animate-spark-title-sheen {
+  animation: sparkTitleAmbientSweep 8s ease-in-out infinite;
+}
+
 
 /* ─── Prevent Mobile Auto-Zoom on Form Inputs (iOS Safari / Mobile Chrome) ─── */
 @media screen and (max-width: 767px) {
