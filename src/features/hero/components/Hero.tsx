@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { Tag } from '@/components/ui/Tag'
 import { Navbar } from '@/components/layout/Navbar'
@@ -9,13 +9,47 @@ import { Button } from '@/components/ui/Button'
 import { SparkTitle } from './SparkTitle'
 
 export function Hero() {
+  const [scrollY, setScrollY] = useState(0)
+
+  useEffect(() => {
+    // Honor reduced motion
+    if (typeof window === 'undefined') return
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+
+    let rafId: number
+    let lastY = 0
+
+    const onScroll = () => {
+      const y = window.scrollY
+      // Only track while hero is in or near view (< 900px)
+      if (y < 1000 && Math.abs(y - lastY) > 0.5) {
+        lastY = y
+        cancelAnimationFrame(rafId)
+        rafId = requestAnimationFrame(() => {
+          setScrollY(y)
+        })
+      }
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      cancelAnimationFrame(rafId)
+    }
+  }, [])
+
   return (
     <section id="main-hero" className="relative w-full bg-white p-2 sm:p-3 md:p-3.5 lg:p-4 xl:p-5">
       {/* Hero Inset Card (Sleek, Framed Proportions on Laptops and Desktops) */}
       <div className="relative rounded-2xl md:rounded-[20px] bg-[#070709] text-white overflow-hidden p-5 sm:p-6 lg:p-8 xl:p-10 min-h-[88svh] sm:min-h-[82svh] lg:min-h-[calc(100vh-32px)] xl:min-h-[calc(100vh-40px)] xl:max-h-[860px] flex flex-col justify-between shadow-2xl">
-        {/* Background Team Image — Responsive Placement (Perfect 4-Person Framing on Mobile & Desktop) */}
-        {/* Background Images — Responsive Art Direction */}
-        <div className="hero-bg-container absolute inset-0 pointer-events-none select-none overflow-hidden">
+        {/* Background Team Image — Responsive Placement with 3D Depth Parallax */}
+        <div
+          className="hero-bg-container absolute inset-0 pointer-events-none select-none overflow-hidden transition-transform duration-75 ease-out"
+          style={{
+            transform: scrollY > 0 ? `translate3d(0, ${scrollY * 0.18}px, 0) scale(${1 + scrollY * 0.00012})` : 'none',
+            willChange: scrollY > 0 ? 'transform' : 'auto',
+          }}
+        >
           {/* Mobile Image — Shifted upward to keep the glowing emblem fully visible above the title */}
           <div className="absolute inset-0 block md:hidden overflow-hidden">
             <div className="relative w-full h-full -translate-y-11 sm:-translate-y-12 scale-[1.09] origin-top">
@@ -54,7 +88,13 @@ export function Hero() {
         <Navbar />
 
         {/* Main Hero Headline Area with Real Spark Writing Effect */}
-        <div className="relative z-10 mt-auto mb-2 md:my-auto pt-1 sm:pt-4 md:pt-0 max-w-3xl lg:max-w-4xl xl:max-w-6xl py-1 sm:py-2.5 lg:py-2 xl:py-4 space-y-1.5 sm:space-y-3 lg:space-y-2.5 xl:space-y-4 flex flex-col items-center text-center lg:items-start lg:text-left">
+        <div
+          className="relative z-10 mt-auto mb-2 md:my-auto pt-1 sm:pt-4 md:pt-0 max-w-3xl lg:max-w-4xl xl:max-w-6xl py-1 sm:py-2.5 lg:py-2 xl:py-4 space-y-1.5 sm:space-y-3 lg:space-y-2.5 xl:space-y-4 flex flex-col items-center text-center lg:items-start lg:text-left transition-transform duration-75 ease-out"
+          style={{
+            transform: scrollY > 0 ? `translate3d(0, -${scrollY * 0.08}px, 0)` : 'none',
+            opacity: scrollY > 50 ? Math.max(0.15, 1 - scrollY / 700) : 1,
+          }}
+        >
           <RevealOnScroll delay={0.1} className="hero-badge hidden md:block">
             <div className="relative inline-flex items-center group cursor-default">
               {/* Controlled Subtle Neon Rim Aura (tight & crisp, no excessive blur) */}

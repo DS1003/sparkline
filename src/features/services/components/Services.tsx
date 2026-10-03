@@ -127,12 +127,12 @@ export function Services({ isServicesPage = false, hideHeader = false }: Service
         {/* ── Top Editorial Header (Omitted if hideHeader is true, e.g. on /services where PageHero exists) ── */}
         {!hideHeader && (
           <div className="space-y-4 sm:space-y-6 mb-8 sm:mb-12 lg:mb-16">
-            <RevealOnScroll>
+            <RevealOnScroll direction="up" delay={0.05}>
               <Tag variant="v2">Nos Expertises</Tag>
             </RevealOnScroll>
 
             <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4 sm:gap-6 lg:gap-16">
-              <RevealOnScroll delay={0.1}>
+              <RevealOnScroll direction="blur" delay={0.12} duration={0.85}>
                 <h2
                   className="text-[clamp(2rem,4vw,54px)] font-normal text-[#0A0A0A] leading-[1.12] tracking-[-0.03em] max-w-2xl"
                   style={{ fontFamily: 'var(--font-family--primary-font)' }}
@@ -152,7 +152,7 @@ export function Services({ isServicesPage = false, hideHeader = false }: Service
                 </h2>
               </RevealOnScroll>
 
-              <RevealOnScroll delay={0.2}>
+              <RevealOnScroll direction="up" delay={0.22}>
                 <div className="space-y-2.5 max-w-sm">
                   <p className="text-xs sm:text-sm lg:text-base text-neutral-500 font-normal leading-relaxed">
                     Nous combinons stratégie, design de haut niveau et ingénierie de précision pour propulser votre entreprise.

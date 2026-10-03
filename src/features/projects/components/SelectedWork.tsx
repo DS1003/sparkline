@@ -74,13 +74,13 @@ export function SelectedWork({
         {/* ── Top Header (Omitted if hideHeader is true, e.g. on /projects where PageHero exists) ── */}
         {!hideHeader && (
           <div className="space-y-5 text-center max-w-3xl mx-auto mb-8 sm:mb-10">
-            <RevealOnScroll>
+            <RevealOnScroll direction="up" delay={0.05}>
               <div className="inline-flex items-center justify-center">
                 <Tag variant={theme === 'light' ? 'v2' : 'base'}>Nos Projets Récents</Tag>
               </div>
             </RevealOnScroll>
 
-            <RevealOnScroll delay={0.1}>
+            <RevealOnScroll direction="blur" delay={0.12} duration={0.85}>
               <h2
                 className={`text-[clamp(2.25rem,4.5vw,56px)] font-normal ${
                   theme === 'light' ? 'text-neutral-900' : 'text-white'
@@ -91,7 +91,7 @@ export function SelectedWork({
               </h2>
             </RevealOnScroll>
 
-            <RevealOnScroll delay={0.15}>
+            <RevealOnScroll direction="up" delay={0.18}>
               <p
                 className={`text-sm sm:text-base ${
                   theme === 'light' ? 'text-neutral-500' : 'text-neutral-400'

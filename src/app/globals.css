@@ -634,11 +634,11 @@ body {
   -webkit-overflow-scrolling: touch;
 }
 
-/* ─── Ultra-Smooth RevealOnScroll Animation System (SSR & Mobile Safe) ─── */
+/* ─── Ultra-Smooth Agency-Grade RevealOnScroll Animation System ─── */
 .reveal-item {
   opacity: 0;
-  transition-property: opacity, transform;
-  transition-duration: var(--reveal-duration, 0.45s);
+  transition-property: opacity, transform, filter, clip-path;
+  transition-duration: var(--reveal-duration, 0.75s);
   transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
   transition-delay: var(--reveal-delay, 0s);
   will-change: opacity, transform;
@@ -646,23 +646,33 @@ body {
 }
 
 .reveal-item.reveal-up {
-  transform: translate3d(0, 14px, 0) scale(0.99);
+  transform: translate3d(0, 36px, 0) scale(0.98);
 }
 
 .reveal-item.reveal-down {
-  transform: translate3d(0, -14px, 0) scale(0.99);
+  transform: translate3d(0, -36px, 0) scale(0.98);
 }
 
 .reveal-item.reveal-left {
-  transform: translate3d(14px, 0, 0) scale(0.99);
+  transform: translate3d(-36px, 0, 0);
 }
 
 .reveal-item.reveal-right {
-  transform: translate3d(-14px, 0, 0) scale(0.99);
+  transform: translate3d(36px, 0, 0);
 }
 
 .reveal-item.reveal-zoom {
-  transform: scale(0.97) translate3d(0, 8px, 0);
+  transform: scale(0.92) translate3d(0, 24px, 0);
+}
+
+.reveal-item.reveal-blur {
+  filter: blur(14px);
+  transform: translate3d(0, 28px, 0);
+}
+
+.reveal-item.reveal-mask {
+  clip-path: inset(0 0 100% 0);
+  transform: translate3d(0, 16px, 0);
 }
 
 .reveal-item.reveal-none {
@@ -672,6 +682,8 @@ body {
 .reveal-item.is-revealed {
   opacity: 1 !important;
   transform: translate3d(0, 0, 0) scale(1) !important;
+  filter: blur(0px) !important;
+  clip-path: inset(0 0 0% 0) !important;
   will-change: auto;
 }
 
@@ -679,14 +691,27 @@ body {
   transform: none !important;
 }
 
-/* On mobile touch screens, ensure all content is 100% visible immediately:
-   Eliminates all white flashing, blank space, and waiting during fast inertial scroll */
+/* Fluid, snappy animations for mobile screens (lightweight, zero jank) */
 @media screen and (max-width: 767px) {
   .reveal-item {
-    opacity: 1 !important;
-    transform: none !important;
-    transition: none !important;
-    will-change: auto !important;
+    transition-duration: 0.45s;
+    transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .reveal-item.reveal-up,
+  .reveal-item.reveal-down {
+    transform: translate3d(0, 18px, 0);
+  }
+  .reveal-item.reveal-left,
+  .reveal-item.reveal-right {
+    transform: translate3d(0, 14px, 0);
+  }
+  .reveal-item.reveal-blur {
+    filter: none;
+    transform: translate3d(0, 18px, 0);
+  }
+  .reveal-item.reveal-mask {
+    clip-path: none;
+    transform: translate3d(0, 18px, 0);
   }
 }
 
@@ -694,7 +719,10 @@ body {
   .reveal-item {
     opacity: 1 !important;
     transform: none !important;
+    filter: none !important;
+    clip-path: none !important;
     transition: none !important;
   }
 }
+
 

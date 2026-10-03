@@ -66,13 +66,13 @@ export function FAQSection() {
 
           {/* ── Left Column: Editorial Sticky Header ── */}
           <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-32 text-center lg:text-left">
-            <RevealOnScroll>
+            <RevealOnScroll direction="up" delay={0.05}>
               <div className="flex justify-center lg:justify-start">
                 <Tag variant="v2">FAQ</Tag>
               </div>
             </RevealOnScroll>
 
-            <RevealOnScroll delay={0.1}>
+            <RevealOnScroll direction="blur" delay={0.12} duration={0.85}>
               <h2
                 className="text-[clamp(2.25rem,4.5vw,56px)] font-normal text-[#0A0A0A] leading-[1.05] tracking-[-0.035em]"
                 style={{ fontFamily: 'var(--font-family--primary-font)' }}
@@ -82,14 +82,14 @@ export function FAQSection() {
               </h2>
             </RevealOnScroll>
 
-            <RevealOnScroll delay={0.15}>
+            <RevealOnScroll direction="up" delay={0.2}>
               <p className="text-sm sm:text-base text-neutral-500 font-light leading-relaxed max-w-md mx-auto lg:mx-0">
                 Tout ce que vous devez savoir sur notre processus, nos tarifs et notre façon de collaborer au quotidien.
               </p>
             </RevealOnScroll>
 
             {/* Refined Minimalist Action Pill */}
-            <RevealOnScroll delay={0.2}>
+            <RevealOnScroll direction="up" delay={0.25}>
               <div className="pt-2 flex justify-center lg:justify-start">
                 <a
                   href={`mailto:${siteConfig.contact.email}`}
@@ -109,7 +109,7 @@ export function FAQSection() {
               const isOpen = openId === faq.id
 
               return (
-                <RevealOnScroll key={faq.id} delay={0.06 * idx}>
+                <RevealOnScroll key={faq.id} direction="up" delay={0.08 * idx} duration={0.65}>
                   <div
                     onClick={() => toggle(faq.id)}
                     className={`group cursor-pointer transition-all duration-300 rounded-[24px] sm:rounded-[28px] overflow-hidden border ${isOpen

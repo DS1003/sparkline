@@ -34,14 +34,14 @@ export function SectionCTA({
 
         <div className="relative z-10 max-w-6xl space-y-5 sm:space-y-6">
           {/* Tag Pill (Centered on mobile, left on desktop) */}
-          <RevealOnScroll>
+          <RevealOnScroll direction="up" delay={0.05}>
             <div className="flex justify-center lg:justify-start">
               <Tag variant="base">{tag}</Tag>
             </div>
           </RevealOnScroll>
 
           {/* Headline (Centered on mobile, left on desktop) */}
-          <RevealOnScroll delay={0.1}>
+          <RevealOnScroll direction="blur" delay={0.12} duration={0.85}>
             <h2
               className="text-[clamp(1.85rem,5.5vw,72px)] font-bold text-white tracking-tight leading-[1.05] text-center lg:text-left"
               style={{ fontFamily: 'var(--font-family--primary-font)' }}
@@ -51,14 +51,14 @@ export function SectionCTA({
           </RevealOnScroll>
 
           {/* Subtitle (Centered on mobile, left on desktop) */}
-          <RevealOnScroll delay={0.2}>
+          <RevealOnScroll direction="up" delay={0.2}>
             <p className="text-sm sm:text-xl text-neutral-300 max-w-2xl font-light leading-relaxed text-center lg:text-left mx-auto lg:mx-0">
               {subtitle}
             </p>
           </RevealOnScroll>
 
           {/* CTA Buttons (Centered on mobile, left on desktop) */}
-          <RevealOnScroll delay={0.3}>
+          <RevealOnScroll direction="zoom" delay={0.28}>
             <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 sm:gap-4 pt-2 sm:pt-4">
               <Link
                 href={primaryHref}

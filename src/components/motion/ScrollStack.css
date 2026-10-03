@@ -7,6 +7,7 @@
   position: relative;
   width: 100%;
   padding-bottom: min(15vh, 140px);
+  perspective: 1400px;
 }
 
 .scroll-stack-card-wrapper {
@@ -36,6 +37,11 @@
   width: 100%;
   box-sizing: border-box;
   position: relative;
+  transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1), filter 0.15s ease-out;
+  will-change: transform, filter;
+  backface-visibility: hidden;
+  border-radius: inherit;
+  box-shadow: 0 -2px 14px rgba(0, 0, 0, 0.03), 0 16px 40px -10px rgba(0, 0, 0, 0.12);
 }
 
 .scroll-stack-end {
@@ -43,3 +49,4 @@
   height: 1px;
   pointer-events: none;
 }
+

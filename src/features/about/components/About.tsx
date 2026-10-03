@@ -23,19 +23,19 @@ export function About() {
       {/* ── Top Editorial Block ── */}
       <Container className="pt-0 pb-6 sm:pb-8">
         {/* WHO WE ARE tag */}
-        <RevealOnScroll>
+        <RevealOnScroll direction="up" delay={0.05}>
           <Tag variant="v2">Qui sommes-nous</Tag>
         </RevealOnScroll>
 
         {/* Headline + CTA row */}
         <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 lg:gap-16 mt-[24px]">
-          <RevealOnScroll delay={0.1}>
+          <RevealOnScroll direction="blur" delay={0.12} duration={0.85}>
             <h2 className="text-[clamp(2rem,4.5vw,64px)] font-normal text-[#0A0A0A] leading-[1.0] tracking-[-0.02em] max-w-[680px]">
               Nous bâtissons des systèmes digitaux pour propulser les leaders.
             </h2>
           </RevealOnScroll>
 
-          <RevealOnScroll delay={0.2}>
+          <RevealOnScroll direction="up" delay={0.22}>
             <Link
               href="/about"
               className="group inline-flex items-center gap-2.5 px-4.5 py-2.5 rounded-full bg-neutral-100/90 hover:bg-[#0A0A0A] text-neutral-900 hover:text-white border border-neutral-200/90 hover:border-[#0A0A0A] text-xs sm:text-sm font-medium transition-all duration-300 shadow-2xs hover:shadow-md shrink-0 mb-1"
@@ -50,7 +50,7 @@ export function About() {
       </Container>
 
       {/* ── Auto-Scrolling Portrait Photo Strip (4K HD) ── */}
-      <RevealOnScroll delay={0.3}>
+      <RevealOnScroll direction="zoom" delay={0.25} duration={0.85}>
         <div className="w-full overflow-hidden">
           {/* CSS Keyframes for continuous uninterrupted infinite scroll */}
           <style jsx>{`
@@ -63,6 +63,9 @@ export function About() {
               will-change: transform;
               backface-visibility: hidden;
             }
+            .portrait-marquee:hover {
+              animation-play-state: paused;
+            }
           `}</style>
 
           <div className="portrait-marquee flex gap-3 sm:gap-4 lg:gap-5 w-max">
@@ -70,32 +73,34 @@ export function About() {
             {teamPortraits.map((portrait, idx) => (
               <div
                 key={`a-${idx}`}
-                className="relative shrink-0 w-[280px] sm:w-[320px] md:w-[350px] lg:w-[380px] xl:w-[410px] aspect-[3/4.2] rounded-2xl sm:rounded-3xl overflow-hidden group shadow-md"
+                className="relative shrink-0 w-[280px] sm:w-[320px] md:w-[350px] lg:w-[380px] xl:w-[410px] aspect-[3/4.2] rounded-2xl sm:rounded-3xl overflow-hidden group shadow-md transition-transform duration-500 hover:scale-[1.02]"
               >
                 <Image
                   src={portrait.src}
                   alt={portrait.alt}
                   fill
                   quality={80}
-                  className="object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                  className="object-cover object-top transition-transform duration-700 ease-out group-hover:scale-105"
                   sizes="(max-width: 640px) 280px, (max-width: 768px) 320px, (max-width: 1024px) 350px, (max-width: 1280px) 380px, 410px"
                 />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </div>
             ))}
             {/* Duplicate set for seamless loop */}
             {teamPortraits.map((portrait, idx) => (
               <div
                 key={`b-${idx}`}
-                className="relative shrink-0 w-[280px] sm:w-[320px] md:w-[350px] lg:w-[380px] xl:w-[410px] aspect-[3/4.2] rounded-2xl sm:rounded-3xl overflow-hidden group shadow-md"
+                className="relative shrink-0 w-[280px] sm:w-[320px] md:w-[350px] lg:w-[380px] xl:w-[410px] aspect-[3/4.2] rounded-2xl sm:rounded-3xl overflow-hidden group shadow-md transition-transform duration-500 hover:scale-[1.02]"
               >
                 <Image
                   src={portrait.src}
                   alt={portrait.alt}
                   fill
                   quality={80}
-                  className="object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                  className="object-cover object-top transition-transform duration-700 ease-out group-hover:scale-105"
                   sizes="(max-width: 640px) 280px, (max-width: 768px) 320px, (max-width: 1024px) 350px, (max-width: 1280px) 380px, 410px"
                 />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </div>
             ))}
           </div>
@@ -105,16 +110,22 @@ export function About() {
       {/* ── Stats counter row (En chiffres) ── */}
       <Container className="pt-14 sm:pt-20 lg:pt-28 pb-10 sm:pb-16 lg:pb-24">
         {/* Header Row — Tag only */}
-        <RevealOnScroll>
+        <RevealOnScroll direction="up" delay={0.05}>
           <div className="pb-6 sm:pb-8 border-b border-neutral-200/80 mb-8 sm:mb-12">
             <Tag variant="v2">En chiffres</Tag>
           </div>
         </RevealOnScroll>
 
-        {/* Minimalist Stats Grid (Clean Architectural Dividers, No Boxy Cards) */}
+        {/* Minimalist Stats Grid with Staggered Scroll Entrance */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 lg:gap-0 lg:divide-x lg:divide-neutral-200/70">
           {stats.map((stat, idx) => (
-            <div key={stat.id} className="lg:px-8 xl:px-10">
+            <RevealOnScroll
+              key={stat.id}
+              direction="up"
+              delay={0.08 * idx}
+              duration={0.7}
+              className="lg:px-8 xl:px-10"
+            >
               <Counter
                 index={idx}
                 delay={idx * 0.08}
@@ -123,7 +134,7 @@ export function About() {
                 label={stat.label}
                 description={stat.description}
               />
-            </div>
+            </RevealOnScroll>
           ))}
         </div>
       </Container>

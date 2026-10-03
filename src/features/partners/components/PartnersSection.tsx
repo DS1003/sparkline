@@ -121,10 +121,10 @@ export function PartnersSection() {
       <Container className="mb-14 sm:mb-18">
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 lg:gap-16">
           <div className="space-y-4 max-w-xl">
-            <RevealOnScroll>
+            <RevealOnScroll direction="up" delay={0.05}>
               <Tag variant="v2">Nos Partenaires & Écosystème</Tag>
             </RevealOnScroll>
-            <RevealOnScroll delay={0.1}>
+            <RevealOnScroll direction="blur" delay={0.12} duration={0.85}>
               <h2
                 className="text-[clamp(2.25rem,4.5vw,56px)] font-normal text-[#0A0A0A] leading-[1.05] tracking-[-0.035em]"
                 style={{ fontFamily: 'var(--font-family--primary-font)' }}
@@ -134,7 +134,7 @@ export function PartnersSection() {
             </RevealOnScroll>
           </div>
 
-          <RevealOnScroll delay={0.15}>
+          <RevealOnScroll direction="up" delay={0.2}>
             <p className="text-sm sm:text-base text-neutral-500 font-light leading-relaxed max-w-md lg:text-right">
               Startups audacieuses, grands groupes et institutions publiques font confiance à SPARKLINE pour concevoir et déployer leurs plateformes critiques.
             </p>
@@ -143,13 +143,14 @@ export function PartnersSection() {
       </Container>
 
       {/* ── Floating Pill Capsule Marquee Ribbons (2 rows only) ── */}
-      <div className="ribbon-container relative w-full select-none py-2 overflow-hidden">
-        {/* Subtle edge fades */}
-        <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-12 sm:w-28 bg-gradient-to-r from-white to-transparent z-10" />
-        <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-12 sm:w-28 bg-gradient-to-l from-white to-transparent z-10" />
+      <RevealOnScroll direction="zoom" delay={0.25} duration={0.85}>
+        <div className="ribbon-container relative w-full select-none py-2 overflow-hidden">
+          {/* Subtle edge fades */}
+          <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-12 sm:w-28 bg-gradient-to-r from-white to-transparent z-10" />
+          <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-12 sm:w-28 bg-gradient-to-l from-white to-transparent z-10" />
 
-        {/* Ribbon Stream: 2 Rows */}
-        <div className="space-y-4 sm:space-y-5">
+          {/* Ribbon Stream: 2 Rows */}
+          <div className="space-y-4 sm:space-y-5">
           {/* ── ROW 1 (Moving Left) ── */}
           <div className="flex w-full overflow-visible">
             <div className="animate-ribbon-left flex gap-3 sm:gap-4 items-center shrink-0 w-max pr-3 sm:pr-4 py-1">
@@ -169,6 +170,7 @@ export function PartnersSection() {
           </div>
         </div>
       </div>
-    </Section>
+    </RevealOnScroll>
+  </Section>
   )
 }

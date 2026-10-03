@@ -6,10 +6,12 @@ interface RevealOnScrollProps {
   children: React.ReactNode
   className?: string
   delay?: number
-  direction?: 'up' | 'down' | 'left' | 'right' | 'none' | 'zoom'
+  direction?: 'up' | 'down' | 'left' | 'right' | 'none' | 'zoom' | 'blur' | 'mask'
   blur?: boolean
   duration?: number
   threshold?: number
+  rootMargin?: string
+  once?: boolean
 }
 
 const directionClasses: Record<string, string> = {
@@ -18,6 +20,8 @@ const directionClasses: Record<string, string> = {
   left: 'reveal-left',
   right: 'reveal-right',
   zoom: 'reveal-zoom',
+  blur: 'reveal-blur',
+  mask: 'reveal-mask',
   none: 'reveal-none',
 }
 
@@ -26,77 +30,105 @@ export function RevealOnScroll({
   className = '',
   delay = 0,
   direction = 'up',
-  duration = 0.45,
+  blur = false,
+  duration = 0.7,
+  threshold = 0.1,
+  rootMargin,
+  once = true,
 }: RevealOnScrollProps) {
   const [isVisible, setIsVisible] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
   const hasTriggered = useRef(false)
 
   const reveal = useCallback(() => {
-    if (hasTriggered.current) return
+    if (hasTriggered.current && once) return
     hasTriggered.current = true
     setIsVisible(true)
-  }, [])
+  }, [once])
 
   useEffect(() => {
     const el = ref.current
-    if (!el || hasTriggered.current) return
+    if (!el || (hasTriggered.current && once)) return
+
+    // Accessibility check: Reduced motion
+    if (typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      reveal()
+      return
+    }
 
     if (typeof IntersectionObserver === 'undefined') {
       reveal()
       return
     }
 
-    const rootMargin = '800px 0px 800px 0px'
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768
+    // High-end trigger point: elements reveal right as they enter lower 8-10% of viewport
+    const effectiveRootMargin = rootMargin ?? (isMobile ? '0px 0px -30px 0px' : '0px 0px -75px 0px')
 
     const observer = new IntersectionObserver(
       (entries) => {
         const [entry] = entries
         if (entry?.isIntersecting) {
           reveal()
-          observer.disconnect()
+          if (once) {
+            observer.disconnect()
+          }
+        } else if (!once) {
+          setIsVisible(false)
         }
       },
       {
-        rootMargin,
-        threshold: 0,
+        rootMargin: effectiveRootMargin,
+        threshold: threshold,
       }
     )
 
-    observer.observe(el)
-
-    const handleLoaderComplete = () => {
+    // Check if element is already in the viewport on mount
+    const checkInitialVisibility = () => {
       if (hasTriggered.current) return
       const rect = el.getBoundingClientRect()
-      if (rect.top < window.innerHeight + 800 && rect.bottom > -200) {
+      // Only trigger if truly visible within the screen bounds right now
+      if (rect.top < window.innerHeight - 60 && rect.bottom > 40) {
         reveal()
-        observer.disconnect()
+        if (once) observer.disconnect()
+      } else {
+        observer.observe(el)
       }
     }
 
-    window.addEventListener('sparkline:loader-complete', handleLoaderComplete)
+    const isLoaded =
+      typeof window !== 'undefined' &&
+      (window as unknown as { __SPARKLINE_LOADED__?: boolean }).__SPARKLINE_LOADED__
+
+    if (isLoaded) {
+      checkInitialVisibility()
+    } else {
+      observer.observe(el)
+
+      const handleLoaderComplete = () => {
+        checkInitialVisibility()
+      }
+
+      window.addEventListener('sparkline:loader-complete', handleLoaderComplete, { once: true })
+      return () => {
+        observer.disconnect()
+        window.removeEventListener('sparkline:loader-complete', handleLoaderComplete)
+      }
+    }
 
     return () => {
       observer.disconnect()
-      window.removeEventListener('sparkline:loader-complete', handleLoaderComplete)
     }
-  }, [reveal])
+  }, [reveal, once, rootMargin, threshold])
 
-  const dirClass = directionClasses[direction] || 'reveal-up'
-  const safeDelay = Math.min(delay, 0.12)
-  const safeDuration = Math.min(duration, 0.5)
+  // Determine direction class (support blur prop as shortcut)
+  const activeDirection = blur && direction === 'up' ? 'blur' : direction
+  const dirClass = directionClasses[activeDirection] || 'reveal-up'
 
-  // Style uses CSS variables for desktop delay/duration.
-  // On mobile (<768px), CSS media query @media (max-width: 767px) in globals.css
-  // overrides with 0s delay and 0.24s duration (!important).
-  // Both server and client render the exact same DOM -> ZERO hydration mismatch!
-  const styleObj: React.CSSProperties | undefined =
-    safeDelay > 0 || safeDuration !== 0.45
-      ? ({
-          '--reveal-delay': `${safeDelay}s`,
-          '--reveal-duration': `${safeDuration}s`,
-        } as React.CSSProperties)
-      : undefined
+  const styleObj: React.CSSProperties = {
+    '--reveal-delay': `${delay}s`,
+    '--reveal-duration': `${duration}s`,
+  } as React.CSSProperties
 
   const revealedClass = isVisible ? ' is-revealed' : ''
   const combinedClassName = `reveal-item ${dirClass}${revealedClass}${className ? ` ${className}` : ''}`
@@ -111,4 +143,5 @@ export function RevealOnScroll({
     </div>
   )
 }
+
 

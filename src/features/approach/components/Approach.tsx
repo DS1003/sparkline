@@ -91,12 +91,12 @@ export function Approach() {
       <Container className="relative z-10">
         {/* ── Top Editorial Header ── */}
         <div className="space-y-5 mb-10 sm:mb-14">
-          <RevealOnScroll>
+          <RevealOnScroll direction="up" delay={0.05}>
             <Tag variant="v2">Notre Méthodologie</Tag>
           </RevealOnScroll>
 
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 lg:gap-16">
-            <RevealOnScroll delay={0.1}>
+            <RevealOnScroll direction="blur" delay={0.12} duration={0.85}>
               <h2
                 className="text-[clamp(2.25rem,4.5vw,56px)] font-normal text-[#0A0A0A] leading-[1.06] tracking-[-0.03em] max-w-2xl"
                 style={{ fontFamily: 'var(--font-family--primary-font)' }}
@@ -105,7 +105,7 @@ export function Approach() {
               </h2>
             </RevealOnScroll>
 
-            <RevealOnScroll delay={0.15}>
+            <RevealOnScroll direction="up" delay={0.2}>
               <p className="text-sm sm:text-base text-neutral-500 font-normal leading-relaxed max-w-sm lg:text-right">
                 Une méthode éprouvée pour structurer chaque projet, garantissant une vélocité maximale et des résultats mesurables.
               </p>
