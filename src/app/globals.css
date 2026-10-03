@@ -651,6 +651,106 @@ div:hover > .animate-vertical-track-reverse {
   animation: sparkTitleAmbientSweep 8s ease-in-out infinite;
 }
 
+/* ─── Spark Metadata Stamping Bounce & Ignition ─── */
+@keyframes metaBounceSpark {
+  0% {
+    transform: scale(1);
+  }
+  30% {
+    transform: scale(1.18);
+  }
+  55% {
+    transform: scale(0.96);
+  }
+  75% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.animate-meta-bounce {
+  animation: metaBounceSpark 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  transform-origin: left center;
+}
+
+@keyframes sparkStampPop {
+  0% {
+    opacity: 0;
+    transform: scale(0) rotate(-45deg);
+  }
+  65% {
+    opacity: 1;
+    transform: scale(1.35) rotate(12deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+.animate-spark-stamp-pop {
+  animation: sparkStampPop 0.42s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  transform-origin: center center;
+}
+
+/* ─── Grand Finale Welcome Card Reveal & Exit Animations ─── */
+@keyframes welcomeCardReveal {
+  0% {
+    opacity: 0;
+    transform: scale(0.35) translateY(24px);
+    filter: blur(14px) brightness(2.2);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.04) translateY(-2px);
+    filter: blur(0px) brightness(1.2);
+  }
+  75% {
+    transform: scale(0.98) translateY(1px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    filter: blur(0px) brightness(1);
+  }
+}
+
+.animate-welcome-reveal {
+  animation: welcomeCardReveal 0.75s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: transform, opacity, filter;
+}
+
+@keyframes welcomeCardExit {
+  0% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.92) translateY(12px);
+    filter: blur(6px);
+  }
+}
+
+.animate-welcome-exit {
+  animation: welcomeCardExit 0.35s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes stampedGlowPulse {
+  0%, 100% {
+    text-shadow: 0 0 8px rgba(255, 185, 1, 0.5), 0 0 16px rgba(235, 70, 4, 0.3);
+  }
+  50% {
+    text-shadow: 0 0 14px rgba(255, 185, 1, 0.8), 0 0 24px rgba(235, 70, 4, 0.5);
+  }
+}
+
+.animate-stamped-glow {
+  animation: stampedGlowPulse 2.8s ease-in-out infinite;
+}
+
 
 /* ─── Prevent Mobile Auto-Zoom on Form Inputs (iOS Safari / Mobile Chrome) ─── */
 @media screen and (max-width: 767px) {

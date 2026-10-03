@@ -5,6 +5,9 @@ import React, { useEffect, useRef, useState, useCallback } from 'react'
 interface SparkTitleProps {
   lines?: string[]
   className?: string
+  heroCardRef?: React.RefObject<HTMLDivElement | null>
+  canvasRef?: React.RefObject<HTMLCanvasElement | null>
+  onMetaStamp?: (index: number) => void
 }
 
 interface Particle {
@@ -22,22 +25,58 @@ interface Particle {
   buoyancy: number
 }
 
+interface FlightPath {
+  startX: number
+  startY: number
+  targetX: number
+  targetY: number
+  startTime: number
+  duration: number
+  arcHeight: number
+}
+
+type SequencePhase =
+  | 'idle'
+  | 'writing_title'
+  | 'fly_to_meta_0'
+  | 'stamp_meta_0'
+  | 'fly_to_meta_1'
+  | 'stamp_meta_1'
+  | 'fly_to_meta_2'
+  | 'stamp_meta_2'
+  | 'fading_out'
+  | 'completed'
+
 const PALETTE = ['#FFFFFF', '#FFF3B0', '#FFB901', '#FF6A1A', '#EB4604', '#D43D00']
+
+function easeInOutCubic(t: number): number {
+  return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2
+}
 
 export function SparkTitle({
   lines = ['Concevoir la', 'nouvelle ère', 'du numérique'],
   className = '',
+  heroCardRef,
+  canvasRef: externalCanvasRef,
+  onMetaStamp,
 }: SparkTitleProps) {
   const containerRef = useRef<HTMLHeadingElement>(null)
-  const canvasRef = useRef<HTMLCanvasElement>(null)
+  const localCanvasRef = useRef<HTMLCanvasElement>(null)
+
+  // Use external canvas if provided (covers entire Hero card), else fallback to local
+  const canvasRef = externalCanvasRef || localCanvasRef
 
   const hasStartedRef = useRef(false)
   const [isStarted, setIsStarted] = useState(false)
   const [currentLineIndex, setCurrentLineIndex] = useState(0)
   const [currentCharIndex, setCurrentCharIndex] = useState(-1)
   const [isCompleted, setIsCompleted] = useState(false)
+  const [phase, setPhase] = useState<SequencePhase>('idle')
 
-  // Physical Spark Coordinates (Continuous Smooth Lerp Engine)
+  const phaseRef = useRef<SequencePhase>('idle')
+  phaseRef.current = phase
+
+  // Physical Spark Coordinates (Continuous Smooth Spring + Inertia Engine)
   const sparkRef = useRef({
     x: 0,
     y: 0,
@@ -50,12 +89,21 @@ export function SparkTitle({
     active: false,
   })
 
+  // Smooth parametric flight path controller
+  const flightRef = useRef<FlightPath | null>(null)
+
   const isTransitioningRef = useRef(false)
   const particlesRef = useRef<Particle[]>([])
   const animationFrameIdRef = useRef<number | null>(null)
-  const isWritingDoneRef = useRef(false)
 
-  // ── 0. Preloader Synchronization (Zero Flash, Single Invocation) ──
+  // Stable callback refs to prevent unnecessary re-render loops
+  const onMetaStampRef = useRef(onMetaStamp)
+  onMetaStampRef.current = onMetaStamp
+
+  // Prevent duplicate execution of one-shot phase actions
+  const executedPhasesRef = useRef<Set<string>>(new Set())
+
+  // ── 0. Preloader Synchronization ──
   useEffect(() => {
     let startTimer: NodeJS.Timeout | null = null
 
@@ -65,11 +113,12 @@ export function SparkTitle({
 
       startTimer = setTimeout(() => {
         setIsStarted(true)
+        setPhase('writing_title')
         setCurrentLineIndex(0)
         setCurrentCharIndex(0)
         sparkRef.current.active = true
         sparkRef.current.targetOpacity = 1
-      }, 80)
+      }, 90)
     }
 
     if (
@@ -86,7 +135,6 @@ export function SparkTitle({
 
     window.addEventListener('sparkline:loader-complete', handleLoaderComplete, { once: true })
 
-    // Safety fallback
     const fallbackTimer = setTimeout(() => {
       startWriting()
     }, 6000)
@@ -98,154 +146,266 @@ export function SparkTitle({
     }
   }, [])
 
-  // ── 1. Text Writing Sequencer with Fluid Human Rhythm ──
-  useEffect(() => {
-    if (!isStarted || isCompleted || currentCharIndex < 0) return
-
-    let timeout: NodeJS.Timeout
-    const totalLines = lines.length
-
-    if (currentLineIndex < totalLines) {
-      const currentLineText = lines[currentLineIndex]
-
-      if (currentCharIndex < currentLineText.length - 1) {
-        // Next character on same line
-        const char = currentLineText[currentCharIndex]
-        const isSpace = char === ' '
-        const delay = isSpace ? 22 : 36 + Math.random() * 16
-
-        timeout = setTimeout(() => {
-          setCurrentCharIndex((prev) => prev + 1)
-        }, delay)
-      } else {
-        // Current line finished
-        if (currentLineIndex < totalLines - 1) {
-          // Pause and trigger smooth swooping flight to the start of the next line
-          isTransitioningRef.current = true
-
-          timeout = setTimeout(() => {
-            isTransitioningRef.current = false
-            setCurrentLineIndex((prev) => prev + 1)
-            setCurrentCharIndex(0)
-          }, 210)
-        } else {
-          // Entire title completed!
-          isWritingDoneRef.current = true
-
-          // Trigger grand finale flare
-          spawnFinaleBurst()
-
-          timeout = setTimeout(() => {
-            sparkRef.current.targetOpacity = 0
-            setIsCompleted(true)
-          }, 380)
-        }
-      }
-    }
-
-    return () => clearTimeout(timeout)
-  }, [isStarted, currentLineIndex, currentCharIndex, isCompleted, lines])
-
-  // ── 2. Helper to spawn bursts of sparks ──
-  const spawnEmber = (x: number, y: number, count = 2, isBurst = false) => {
+  // ── 1. Helpers to Spawn Particles & Embers ──
+  const spawnEmber = (x: number, y: number, count = 1, isBurst = false) => {
     for (let i = 0; i < count; i++) {
       const angle = isBurst
         ? Math.random() * Math.PI * 2
-        : Math.PI + (Math.random() - 0.5) * 1.8 // fan backwards from pen tip
-      const speed = isBurst ? 2.5 + Math.random() * 5.5 : 1.2 + Math.random() * 3.8
-      const isStreak = Math.random() > 0.35
+        : Math.PI + (Math.random() - 0.5) * 1.6
+      const speed = isBurst ? 1.8 + Math.random() * 3.8 : 0.8 + Math.random() * 2.4
+      const isStreak = Math.random() > 0.45
 
       particlesRef.current.push({
         x,
         y,
-        vx: Math.cos(angle) * speed + (Math.random() - 0.5) * 1.0,
-        vy: Math.sin(angle) * speed + (Math.random() - 0.7) * 1.5,
-        size: isStreak ? 1.0 + Math.random() * 1.8 : 1.2 + Math.random() * 2.4,
+        vx: Math.cos(angle) * speed + (Math.random() - 0.5) * 0.8,
+        vy: Math.sin(angle) * speed + (Math.random() - 0.6) * 1.2,
+        size: isStreak ? 1.0 + Math.random() * 1.6 : 1.2 + Math.random() * 2.0,
         color: PALETTE[Math.floor(Math.random() * PALETTE.length)],
         alpha: 1,
         life: 0,
-        maxLife: isBurst ? 28 + Math.random() * 30 : 16 + Math.random() * 24,
+        maxLife: isBurst ? 24 + Math.random() * 22 : 16 + Math.random() * 20,
         isStreak,
-        drag: isBurst ? 0.94 : 0.92,
-        buoyancy: -0.06, // rising heat
-      })
-    }
-  }
-
-  const spawnFinaleBurst = () => {
-    const spark = sparkRef.current
-    for (let i = 0; i < 48; i++) {
-      const angle = Math.random() * Math.PI * 2
-      const speed = 2.0 + Math.random() * 6.5
-      particlesRef.current.push({
-        x: spark.x,
-        y: spark.y,
-        vx: Math.cos(angle) * speed,
-        vy: Math.sin(angle) * speed - 0.5,
-        size: 1.0 + Math.random() * 2.8,
-        color: PALETTE[Math.floor(Math.random() * PALETTE.length)],
-        alpha: 1,
-        life: 0,
-        maxLife: 32 + Math.random() * 36,
-        isStreak: Math.random() > 0.4,
-        drag: 0.95,
+        drag: 0.93,
         buoyancy: -0.05,
       })
     }
   }
 
-  // ── 3. Update Target Position from DOM Coordinates ──
-  const updateTargetFromDOM = useCallback(() => {
-    if (!isStarted || isWritingDoneRef.current) return
+  const spawnStampBurst = (x: number, y: number) => {
+    for (let i = 0; i < 14; i++) {
+      const angle = (i / 14) * Math.PI * 2 + (Math.random() - 0.5) * 0.3
+      const speed = 1.6 + Math.random() * 3.4
+      const isStreak = Math.random() > 0.4
 
+      particlesRef.current.push({
+        x,
+        y,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed - 0.3,
+        size: 1.0 + Math.random() * 2.0,
+        color: PALETTE[Math.floor(Math.random() * PALETTE.length)],
+        alpha: 1,
+        life: 0,
+        maxLife: 22 + Math.random() * 18,
+        isStreak,
+        drag: 0.92,
+        buoyancy: -0.04,
+      })
+    }
+  }
+
+  // ── 2. Target Coordinate Resolvers ──
+  const getMetaTarget = useCallback((index: number) => {
+    const heroCard = heroCardRef?.current
+    if (!heroCard) return null
+    const baseRect = heroCard.getBoundingClientRect()
+    const metaEl = heroCard.querySelector(`[data-spark-meta="${index}"]`) as HTMLElement | null
+    if (!metaEl) return null
+    const r = metaEl.getBoundingClientRect()
+    return {
+      x: r.left - baseRect.left - 4,
+      y: r.top - baseRect.top + r.height * 0.5,
+    }
+  }, [heroCardRef])
+
+  const updateTargetFromDOM = useCallback(() => {
+    const curPhase = phaseRef.current
+    if (curPhase !== 'writing_title') return
+
+    const heroCard = heroCardRef?.current
     const container = containerRef.current
-    if (!container) return
+    const baseRect = heroCard ? heroCard.getBoundingClientRect() : container?.getBoundingClientRect()
+    if (!baseRect || !container) return
 
     const activeCharEl = container.querySelector('[data-char-active="true"]') as HTMLElement | null
     if (activeCharEl) {
       const charRect = activeCharEl.getBoundingClientRect()
-      const containerRect = container.getBoundingClientRect()
-
-      // Padding of 64px offset for canvas bounds
-      const PAD = 64
-      const targetX = charRect.right - containerRect.left + PAD
-      const targetY = charRect.top - containerRect.top + charRect.height * 0.5 + PAD
+      const targetX = charRect.right - baseRect.left + (heroCard ? 0 : 64)
+      const targetY = charRect.top - baseRect.top + charRect.height * 0.5 + (heroCard ? 0 : 64)
 
       sparkRef.current.targetX = targetX
       sparkRef.current.targetY = targetY
 
-      // Initial teleport to first character on very first ignite
       if (sparkRef.current.x === 0 && sparkRef.current.y === 0) {
         sparkRef.current.x = targetX
         sparkRef.current.y = targetY
       }
     }
-  }, [isStarted])
+  }, [heroCardRef])
 
   useEffect(() => {
     updateTargetFromDOM()
   }, [currentLineIndex, currentCharIndex, updateTargetFromDOM])
 
-  // ── 4. Unified HiDPI Canvas & Particle Motion Engine (0% CPU Idle on Sleep) ──
+  // ── 3. Step Sequencer: Title Writing -> Fluid Arced Flights to Metadata -> Gentle Dissolve ──
+  useEffect(() => {
+    if (!isStarted) return
+
+    let timer: NodeJS.Timeout
+
+    // A. Title Writing Sequencer
+    if (phase === 'writing_title') {
+      if (currentCharIndex < 0) return
+
+      const totalLines = lines.length
+      if (currentLineIndex < totalLines) {
+        const currentLineText = lines[currentLineIndex]
+
+        if (currentCharIndex < currentLineText.length - 1) {
+          const char = currentLineText[currentCharIndex]
+          const isSpace = char === ' '
+          const delay = isSpace ? 24 : 36 + Math.random() * 16
+
+          timer = setTimeout(() => {
+            setCurrentCharIndex((prev) => prev + 1)
+          }, delay)
+        } else {
+          // Current line finished
+          if (currentLineIndex < totalLines - 1) {
+            isTransitioningRef.current = true
+            timer = setTimeout(() => {
+              isTransitioningRef.current = false
+              setCurrentLineIndex((prev) => prev + 1)
+              setCurrentCharIndex(0)
+            }, 210)
+          } else {
+            // All 3 lines finished writing!
+            setIsCompleted(true)
+            // Hold briefly with gentle flare, then start smooth swooping flight to STARTUP
+            timer = setTimeout(() => {
+              spawnEmber(sparkRef.current.x, sparkRef.current.y, 6, true)
+              setPhase('fly_to_meta_0')
+            }, 280)
+          }
+        }
+      }
+    }
+
+    // B. Flight to Meta 0 ("STARTUP") with majestic swoop
+    else if (phase === 'fly_to_meta_0') {
+      const target = getMetaTarget(0)
+      if (target) {
+        sparkRef.current.targetX = target.x
+        sparkRef.current.targetY = target.y
+        flightRef.current = {
+          startX: sparkRef.current.x,
+          startY: sparkRef.current.y,
+          targetX: target.x,
+          targetY: target.y,
+          startTime: performance.now(),
+          duration: 560, // fluid swoop down to metadata
+          arcHeight: -24,
+        }
+      }
+    }
+
+    // C. Stamp Meta 0 ("STARTUP")
+    else if (phase === 'stamp_meta_0') {
+      if (!executedPhasesRef.current.has('stamp_meta_0')) {
+        executedPhasesRef.current.add('stamp_meta_0')
+        onMetaStampRef.current?.(0)
+        spawnStampBurst(sparkRef.current.x, sparkRef.current.y)
+      }
+      // Quick fluid pause, then immediately leap to Meta 1 d'affilé
+      timer = setTimeout(() => {
+        setPhase('fly_to_meta_1')
+      }, 160)
+    }
+
+    // D. Flight to Meta 1 ("FONDÉ EN 2024") with arced leap
+    else if (phase === 'fly_to_meta_1') {
+      const target = getMetaTarget(1)
+      if (target) {
+        sparkRef.current.targetX = target.x
+        sparkRef.current.targetY = target.y
+        flightRef.current = {
+          startX: sparkRef.current.x,
+          startY: sparkRef.current.y,
+          targetX: target.x,
+          targetY: target.y,
+          startTime: performance.now(),
+          duration: 380, // quick buoyant leap across
+          arcHeight: -16,
+        }
+      }
+    }
+
+    // E. Stamp Meta 1 ("FONDÉ EN 2024")
+    else if (phase === 'stamp_meta_1') {
+      if (!executedPhasesRef.current.has('stamp_meta_1')) {
+        executedPhasesRef.current.add('stamp_meta_1')
+        onMetaStampRef.current?.(1)
+        spawnStampBurst(sparkRef.current.x, sparkRef.current.y)
+      }
+      // Quick fluid pause, then immediately leap to Meta 2 d'affilé
+      timer = setTimeout(() => {
+        setPhase('fly_to_meta_2')
+      }, 160)
+    }
+
+    // F. Flight to Meta 2 ("AGENCE SPARKLINE") with arced leap
+    else if (phase === 'fly_to_meta_2') {
+      const target = getMetaTarget(2)
+      if (target) {
+        sparkRef.current.targetX = target.x
+        sparkRef.current.targetY = target.y
+        flightRef.current = {
+          startX: sparkRef.current.x,
+          startY: sparkRef.current.y,
+          targetX: target.x,
+          targetY: target.y,
+          startTime: performance.now(),
+          duration: 380, // quick buoyant leap across
+          arcHeight: -16,
+        }
+      }
+    }
+
+    // G. Stamp Meta 2 ("AGENCE SPARKLINE") & Soft Dissolution
+    else if (phase === 'stamp_meta_2') {
+      if (!executedPhasesRef.current.has('stamp_meta_2')) {
+        executedPhasesRef.current.add('stamp_meta_2')
+        onMetaStampRef.current?.(2)
+        spawnStampBurst(sparkRef.current.x, sparkRef.current.y)
+      }
+      timer = setTimeout(() => {
+        setPhase('fading_out')
+      }, 260)
+    }
+
+    // H. Soft Fade Out
+    else if (phase === 'fading_out') {
+      sparkRef.current.targetOpacity = 0
+      timer = setTimeout(() => {
+        setPhase('completed')
+      }, 450)
+    }
+
+    return () => clearTimeout(timer)
+  }, [isStarted, phase, currentLineIndex, currentCharIndex, lines, getMetaTarget])
+
+  // ── 4. Unified HiDPI Canvas & High-Vibe Physics Motion Engine ──
   useEffect(() => {
     const canvas = canvasRef.current
-    const container = containerRef.current
-    if (!canvas || !container) return
+    if (!canvas) return
 
     const ctx = canvas.getContext('2d', { alpha: true })
     if (!ctx) return
 
     let isRunning = true
-    const PAD = 64
+    const heroCard = heroCardRef?.current
+    const container = containerRef.current
+    const measureEl = heroCard || container
+    if (!measureEl) return
 
-    // Handle high-density Retina screen buffers (zero pixelation, razor-sharp vector sparks)
     const resizeCanvas = () => {
-      if (!container || !canvas) return
-      const rect = container.getBoundingClientRect()
+      if (!canvas || !measureEl) return
+      const rect = measureEl.getBoundingClientRect()
       const dpr = Math.min(typeof window !== 'undefined' ? window.devicePixelRatio || 1 : 1, 2.5)
 
-      const cssWidth = rect.width + PAD * 2
-      const cssHeight = rect.height + PAD * 2
+      const cssWidth = rect.width + (heroCard ? 0 : 128)
+      const cssHeight = rect.height + (heroCard ? 0 : 128)
 
       canvas.width = Math.round(cssWidth * dpr)
       canvas.height = Math.round(cssHeight * dpr)
@@ -268,54 +428,104 @@ export function SparkTitle({
       const time = now - startTime
       const spark = sparkRef.current
       const particles = particlesRef.current
+      const currentPhase = phaseRef.current
 
-      const cssWidth = canvas.width / (window.devicePixelRatio || 1)
-      const cssHeight = canvas.height / (window.devicePixelRatio || 1)
+      const dpr = window.devicePixelRatio || 1
+      const cssWidth = canvas.width / dpr
+      const cssHeight = canvas.height / dpr
       ctx.clearRect(0, 0, cssWidth, cssHeight)
 
-      // ── A. Update Physical Spark Position via Fluid Spring Lerp ──
+      // ── A. Update Position via Flight Trajectory OR Critical Spring Lerp ──
       if (spark.active) {
-        const dx = spark.targetX - spark.x
-        const dy = spark.targetY - spark.y
+        const flight = flightRef.current
 
-        // Dynamic fluid factor: swoops gracefully between lines, snaps crisply between characters
-        const lerpFactor = isTransitioningRef.current ? 0.20 : 0.36
-        spark.vx = dx * lerpFactor
-        spark.vy = dy * lerpFactor
-        spark.x += spark.vx
-        spark.y += spark.vy
+        if (flight) {
+          // Parametric flight path with easeInOutCubic and natural vertical arc
+          const elapsed = now - flight.startTime
+          const rawProgress = Math.min(1, elapsed / flight.duration)
+          const t = easeInOutCubic(rawProgress)
 
-        // Fade in / fade out target opacity
-        spark.opacity += (spark.targetOpacity - spark.opacity) * 0.18
+          // Interpolate with natural curved wave
+          const arc = Math.sin(t * Math.PI) * flight.arcHeight
+          spark.x = flight.startX + (flight.targetX - flight.startX) * t
+          spark.y = flight.startY + (flight.targetY - flight.startY) * t + arc
 
-        // Spawn particles while moving
-        if (spark.opacity > 0.2) {
-          const moveSpeed = Math.hypot(spark.vx, spark.vy)
-          if (moveSpeed > 0.4) {
-            spawnEmber(spark.x, spark.y, isTransitioningRef.current ? 1 : 2)
+          // Velocity for ember emission
+          spark.vx = (flight.targetX - flight.startX) * 0.015
+          spark.vy = (flight.targetY - flight.startY) * 0.015
+
+          // Emit soft trailing embers along the curved flight
+          if (rawProgress < 0.95 && Math.random() > 0.42) {
+            spawnEmber(spark.x, spark.y, 1)
           }
+
+          // Keep target locked to flight destination
+          spark.targetX = flight.targetX
+          spark.targetY = flight.targetY
+
+          // Flight completion check
+          if (rawProgress >= 1) {
+            spark.x = flight.targetX
+            spark.y = flight.targetY
+            spark.vx = 0
+            spark.vy = 0
+            flightRef.current = null
+            if (currentPhase === 'fly_to_meta_0') setPhase('stamp_meta_0')
+            else if (currentPhase === 'fly_to_meta_1') setPhase('stamp_meta_1')
+            else if (currentPhase === 'fly_to_meta_2') setPhase('stamp_meta_2')
+          }
+        } else if (currentPhase === 'writing_title') {
+          // Writing mode: Critically damped spring follower for buttery-smooth glide
+          const springK = isTransitioningRef.current ? 0.09 : 0.16
+          const damping = isTransitioningRef.current ? 0.78 : 0.72
+
+          const dx = spark.targetX - spark.x
+          const dy = spark.targetY - spark.y
+
+          spark.vx += dx * springK
+          spark.vy += dy * springK
+          spark.vx *= damping
+          spark.vy *= damping
+
+          spark.x += spark.vx
+          spark.y += spark.vy
+
+          // Add a very subtle organic floating wave (vibe) while moving or hovering
+          const moveSpeed = Math.hypot(spark.vx, spark.vy)
+          if (moveSpeed > 0.5 && Math.random() > 0.55) {
+            spawnEmber(spark.x, spark.y, 1)
+          }
+        } else {
+          // Stamping & fading phases: stay strictly locked at metadata item, zero drift
+          spark.vx = 0
+          spark.vy = 0
         }
+
+        // Fade in / out opacity smoothly
+        spark.opacity += (spark.targetOpacity - spark.opacity) * 0.14
 
         // ── B. Render the Luminous Sparkline Star Head ──
         if (spark.opacity > 0.02) {
           ctx.save()
-          ctx.translate(spark.x, spark.y)
+          // Subtle breathing float for high-vibe life
+          const floatY = Math.sin(time * 0.007) * 1.2
+          ctx.translate(spark.x, spark.y + floatY)
           ctx.globalAlpha = Math.max(0, Math.min(1, spark.opacity))
 
-          // 1. Ambient Golden Plasma Halo (Additive Blend)
+          // 1. Ambient Golden Plasma Halo (Additive Screen Blend)
           ctx.globalCompositeOperation = 'screen'
-          const auraGrad = ctx.createRadialGradient(0, 0, 0, 0, 0, 46)
+          const auraGrad = ctx.createRadialGradient(0, 0, 0, 0, 0, 44)
           auraGrad.addColorStop(0, 'rgba(255, 185, 1, 0.55)')
           auraGrad.addColorStop(0.35, 'rgba(235, 70, 4, 0.28)')
           auraGrad.addColorStop(1, 'rgba(235, 70, 4, 0)')
           ctx.fillStyle = auraGrad
           ctx.beginPath()
-          ctx.arc(0, 0, 46, 0, Math.PI * 2)
+          ctx.arc(0, 0, 44, 0, Math.PI * 2)
           ctx.fill()
 
           // 2. High-heat Corona Core
           const coronaGrad = ctx.createRadialGradient(0, 0, 0, 0, 0, 18)
-          coronaGrad.addColorStop(0, 'rgba(255, 255, 255, 0.95)')
+          coronaGrad.addColorStop(0, 'rgba(255, 255, 255, 0.98)')
           coronaGrad.addColorStop(0.4, 'rgba(255, 200, 80, 0.85)')
           coronaGrad.addColorStop(0.85, 'rgba(235, 70, 4, 0.5)')
           coronaGrad.addColorStop(1, 'rgba(235, 70, 4, 0)')
@@ -324,10 +534,10 @@ export function SparkTitle({
           ctx.arc(0, 0, 18, 0, Math.PI * 2)
           ctx.fill()
 
-          // 3. Official Sparkline 4-Point Star Emblem (Vector Geometry)
+          // 3. Official Sparkline 4-Point Star Emblem (Vector Geometry with smooth breath pulse)
           const pulse = 1 + Math.sin(time * 0.012) * 0.12
-          const R = 15 * pulse
-          const r = 3.6 * pulse
+          const R = 14 * pulse
+          const r = 3.5 * pulse
 
           ctx.beginPath()
           ctx.moveTo(0, -R)
@@ -346,7 +556,7 @@ export function SparkTitle({
           ctx.fill()
 
           ctx.strokeStyle = '#FFB901'
-          ctx.lineWidth = 1.2
+          ctx.lineWidth = 1.1
           ctx.stroke()
 
           // 4. White-Hot Nuclear Fusion Core Dot
@@ -354,7 +564,7 @@ export function SparkTitle({
           ctx.shadowBlur = 6
           ctx.fillStyle = '#FFFFFF'
           ctx.beginPath()
-          ctx.arc(0, 0, 2.5, 0, Math.PI * 2)
+          ctx.arc(0, 0, 2.4, 0, Math.PI * 2)
           ctx.fill()
 
           ctx.restore()
@@ -366,7 +576,7 @@ export function SparkTitle({
         const p = particles[i]
         p.vx *= p.drag
         p.vy *= p.drag
-        p.vy += p.buoyancy // rising heat draft
+        p.vy += p.buoyancy
         p.x += p.vx
         p.y += p.vy
         p.life++
@@ -381,7 +591,6 @@ export function SparkTitle({
         ctx.globalAlpha = Math.max(0, Math.min(1, p.alpha))
 
         if (p.isStreak) {
-          // Authentic high-speed welding streak
           ctx.beginPath()
           ctx.moveTo(p.x, p.y)
           ctx.lineTo(p.x - p.vx * 2.2, p.y - p.vy * 2.2)
@@ -390,7 +599,6 @@ export function SparkTitle({
           ctx.lineCap = 'round'
           ctx.stroke()
         } else {
-          // Floating golden molten ember
           ctx.beginPath()
           ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2)
           ctx.fillStyle = p.color
@@ -402,8 +610,12 @@ export function SparkTitle({
         ctx.restore()
       }
 
-      // ── D. Auto-Sleep when Writing is Completed and All Particles Expired ──
-      if (isWritingDoneRef.current && particles.length === 0 && spark.opacity <= 0.01) {
+      // ── D. Auto-Sleep when Sequence is Done and All Particles Expired (0% CPU) ──
+      if (
+        currentPhase === 'completed' &&
+        particles.length === 0 &&
+        spark.opacity <= 0.01
+      ) {
         ctx.clearRect(0, 0, cssWidth, cssHeight)
         animationFrameIdRef.current = null
         return
@@ -421,7 +633,7 @@ export function SparkTitle({
       }
       window.removeEventListener('resize', resizeCanvas)
     }
-  }, [])
+  }, [canvasRef, heroCardRef])
 
   return (
     <h1
@@ -429,16 +641,18 @@ export function SparkTitle({
       className={`relative heading-style-01 text-[clamp(1.75rem,6.5vw,36px)] sm:text-[clamp(2.1rem,4.2vw,46px)] md:text-[clamp(42px,4.5vw,54px)] lg:text-[clamp(52px,4.8vw,68px)] xl:text-[clamp(66px,5vw,84px)] 2xl:text-[clamp(78px,5.2vw,96px)] font-normal text-[#FFFFFF] tracking-[-0.035em] leading-[1.04] max-w-none lg:max-w-[960px] xl:max-w-[1200px] select-none ${isCompleted ? 'animate-spark-title-sheen' : ''} ${className}`}
       style={{ fontFamily: 'var(--font-family--primary-font)' }}
     >
-      {/* HiDPI Razor-Sharp Canvas for Star Spark Head & Flying Embers */}
-      <canvas
-        ref={canvasRef}
-        className="pointer-events-none absolute -top-16 -left-16 z-30 overflow-visible"
-      />
+      {/* Fallback local canvas if external full-hero canvas is not provided */}
+      {!externalCanvasRef && (
+        <canvas
+          ref={localCanvasRef}
+          className="pointer-events-none absolute -top-16 -left-16 z-30 overflow-visible"
+        />
+      )}
 
       {/* 3 Strict Lines of Text Rendered with Dynamic Molten Heat Reveal */}
       {lines.map((lineText, lineIdx) => {
         const isLineActive = isStarted && lineIdx === currentLineIndex
-        const isLinePast = isStarted && lineIdx < currentLineIndex
+        const isLinePast = isStarted && (lineIdx < currentLineIndex || isCompleted)
 
         // Highlight "numérique" on the 3rd line with vibrant brand radiant gradient
         const highlightMatch = lineText.match(/\bnumérique?\b/i)
@@ -451,8 +665,12 @@ export function SparkTitle({
               const isCharRevealed =
                 isStarted &&
                 (isLinePast || (isLineActive && charIdx <= currentCharIndex))
-              const isCurrentTip = !isCompleted && isLineActive && charIdx === currentCharIndex
-              const isHighlightChar = highlightStart !== -1 && charIdx >= highlightStart && charIdx < highlightEnd
+              const isCurrentTip =
+                phase === 'writing_title' &&
+                isLineActive &&
+                charIdx === currentCharIndex
+              const isHighlightChar =
+                highlightStart !== -1 && charIdx >= highlightStart && charIdx < highlightEnd
 
               return (
                 <span

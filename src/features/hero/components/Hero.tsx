@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState, useCallback } from 'react'
 import Image from 'next/image'
 import { Tag } from '@/components/ui/Tag'
 import { Navbar } from '@/components/layout/Navbar'
@@ -8,8 +8,26 @@ import { RevealOnScroll } from '@/components/motion/RevealOnScroll'
 import { Button } from '@/components/ui/Button'
 import { SparkTitle } from './SparkTitle'
 
+const HERO_TITLE_LINES = ['Concevoir la', 'nouvelle ère', 'du numérique']
+
 export function Hero() {
+  const heroCardRef = useRef<HTMLDivElement>(null)
+  const canvasRef = useRef<HTMLCanvasElement>(null)
   const heroBgRef = useRef<HTMLDivElement>(null)
+
+  // Stamped state for the 3 metadata items: [STARTUP, FONDÉ EN 2024, AGENCE SPARKLINE]
+  const [stampedMeta, setStampedMeta] = useState<[boolean, boolean, boolean]>([false, false, false])
+
+  const handleMetaStamp = useCallback((index: number) => {
+    setStampedMeta((prev) => {
+      if (prev[index]) return prev
+      const next: [boolean, boolean, boolean] = [...prev]
+      if (index >= 0 && index < 3) {
+        next[index] = true
+      }
+      return next
+    })
+  }, [])
 
   useEffect(() => {
     // Honor reduced motion
@@ -46,7 +64,16 @@ export function Hero() {
   return (
     <section id="main-hero" className="relative w-full bg-white p-2 sm:p-3 md:p-3.5 lg:p-4 xl:p-5">
       {/* Hero Inset Card (Sleek, Framed Proportions on Laptops and Desktops) */}
-      <div className="relative rounded-2xl md:rounded-[20px] bg-[#070709] text-white overflow-hidden p-5 sm:p-6 lg:p-8 xl:p-10 min-h-[88svh] sm:min-h-[82svh] lg:min-h-[calc(100vh-32px)] xl:min-h-[calc(100vh-40px)] xl:max-h-[860px] flex flex-col justify-between shadow-2xl">
+      <div
+        ref={heroCardRef}
+        className="relative rounded-2xl md:rounded-[20px] bg-[#070709] text-white overflow-hidden p-5 sm:p-6 lg:p-8 xl:p-10 min-h-[88svh] sm:min-h-[82svh] lg:min-h-[calc(100vh-32px)] xl:min-h-[calc(100vh-40px)] xl:max-h-[860px] flex flex-col justify-between shadow-2xl"
+      >
+        {/* HiDPI Razor-Sharp Canvas for Full-Hero Spark Flight, Stamping & Explosion */}
+        <canvas
+          ref={canvasRef}
+          className="pointer-events-none absolute inset-0 w-full h-full z-30 overflow-visible"
+        />
+
         {/* Background Team Image — Responsive Placement with 3D Depth Parallax */}
         <div
           ref={heroBgRef}
@@ -93,12 +120,12 @@ export function Hero() {
         <div className="relative z-10 mt-auto mb-2 md:my-auto pt-1 sm:pt-4 md:pt-0 max-w-3xl lg:max-w-4xl xl:max-w-6xl py-1 sm:py-2.5 lg:py-2 xl:py-4 space-y-1.5 sm:space-y-3 lg:space-y-2.5 xl:space-y-4 flex flex-col items-center text-center lg:items-start lg:text-left">
           <RevealOnScroll delay={0.1} className="hero-badge hidden md:block">
             <div className="relative inline-flex items-center group cursor-default">
-              {/* Controlled Subtle Neon Rim Aura (tight & crisp, no excessive blur) */}
+              {/* Controlled Subtle Neon Rim Aura */}
               <div
                 className="absolute -inset-0.5 rounded-full bg-gradient-to-r from-[#EB4604]/40 via-[#FF6A1A]/50 to-[#EB4604]/40 blur-[6px] opacity-60 pointer-events-none"
               />
 
-              {/* 3D Extruded Outer Rim: Directional Light Gradient (Light on top, deep shadow on bottom) */}
+              {/* 3D Extruded Outer Rim: Directional Light Gradient */}
               <div
                 className="relative p-[1.5px] rounded-full bg-gradient-to-b from-[#FFA873] via-[#EB4604] to-[#380D00]"
                 style={{
@@ -112,18 +139,14 @@ export function Hero() {
                     boxShadow: 'inset 0 1.5px 1px rgba(255,255,255,0.45), inset 0 -2px 3px rgba(0,0,0,0.85), inset 0 0 10px rgba(235,70,4,0.3)'
                   }}
                 >
-                  {/* Top curved specular highlight (glass cylinder curvature) */}
                   <div className="absolute top-0 inset-x-5 h-[1px] bg-gradient-to-r from-transparent via-white/60 to-transparent pointer-events-none" />
 
-                  {/* Moving Light Shimmer Beam */}
                   <div className="absolute inset-0 rounded-full overflow-hidden pointer-events-none">
                     <div className="animate-neon-shimmer absolute inset-y-0 w-1/3 bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-[-20deg]" />
                   </div>
 
-                  {/* Subtle inner radial warmth */}
                   <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(255,106,26,0.18)_0%,transparent_70%)] pointer-events-none" />
 
-                  {/* Sparkling Icon with hot white core & dimensional shadow */}
                   <svg
                     viewBox="0 0 24 24"
                     className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white animate-neon-spark relative z-10 shrink-0 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
@@ -132,7 +155,6 @@ export function Hero() {
                     <path d="M12 0C12 0 12 10.5 24 12C24 12 12 13.5 12 24C12 24 12 13.5 0 12C0 12 12 10.5 12 0Z" />
                   </svg>
 
-                  {/* 3D Embossed Neon Text: Crisp White-Hot Core with Controlled Orange Glow and Under-Shadow */}
                   <span
                     className="relative z-10 text-[9.5px] sm:text-[10.5px] xl:text-[12px] font-bold tracking-[0.2em] sm:tracking-[0.24em] uppercase text-[#FFFBF7]"
                     style={{
@@ -146,8 +168,13 @@ export function Hero() {
             </div>
           </RevealOnScroll>
 
-          {/* Spark Writing Title on Strictly 3 Lines */}
-          <SparkTitle lines={['Concevoir la', 'nouvelle ère', 'du numérique']} />
+          {/* Spark Writing Title on Strictly 3 Lines with Full-Hero Choreography */}
+          <SparkTitle
+            lines={HERO_TITLE_LINES}
+            heroCardRef={heroCardRef}
+            canvasRef={canvasRef}
+            onMetaStamp={handleMetaStamp}
+          />
 
           <RevealOnScroll delay={0.3} className="hero-subtext">
             <p className="text-xs sm:text-sm lg:text-[13px] xl:text-base text-neutral-100 max-w-md xl:max-w-lg font-normal leading-relaxed drop-shadow-[0_2px_4px_rgba(0,0,0,0.85)]">
@@ -166,35 +193,83 @@ export function Hero() {
               </h2>
             </RevealOnScroll>
 
-            <RevealOnScroll delay={0.45}>
-              <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3 sm:gap-4 xl:gap-6 text-[8.5px] sm:text-[10px] xl:text-xs font-mono text-neutral-200 uppercase tracking-wider xl:tracking-widest pt-0.5 drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)]">
-                <div className="flex items-center gap-1.5">
-                  <svg viewBox="0 0 24 24" className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-[#EB4604]" fill="currentColor">
-                    <path d="M12 0C12 0 12 10.5 24 12C24 12 12 13.5 12 24C12 24 12 13.5 0 12C0 12 12 10.5 12 0Z" />
-                  </svg>
-                  STARTUP
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <svg viewBox="0 0 24 24" className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-[#EB4604]" fill="currentColor">
-                    <path d="M12 0C12 0 12 10.5 24 12C24 12 12 13.5 12 24C12 24 12 13.5 0 12C0 12 12 10.5 12 0Z" />
-                  </svg>
-                  FONDÉ EN 2024
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <svg viewBox="0 0 24 24" className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-[#EB4604]" fill="currentColor">
-                    <path d="M12 0C12 0 12 10.5 24 12C24 12 12 13.5 12 24C12 24 12 13.5 0 12C0 12 12 10.5 12 0Z" />
-                  </svg>
-                  AGENCE SPARKLINE
-                </div>
+            {/* Metadata Row: Clean text, NO pill buttons, NO borders, NO clipping containers */}
+            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 sm:gap-5 xl:gap-7 text-[8.5px] sm:text-[10px] xl:text-xs font-mono uppercase tracking-wider xl:tracking-widest pt-1 overflow-visible">
+              {/* 1. STARTUP */}
+              <div
+                data-spark-meta="0"
+                className={`relative inline-flex items-center gap-1.5 transition-colors duration-300 ${
+                  stampedMeta[0]
+                    ? 'animate-meta-bounce text-white font-medium drop-shadow-[0_1px_4px_rgba(255,255,255,0.4)]'
+                    : 'text-neutral-300 drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)]'
+                }`}
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  className={`w-2.5 h-2.5 sm:w-3 sm:h-3 text-[#FFB901] shrink-0 transition-transform duration-300 ${
+                    stampedMeta[0]
+                      ? 'opacity-100 scale-100 animate-spark-stamp-pop drop-shadow-[0_0_8px_#EB4604]'
+                      : 'opacity-0 scale-0 pointer-events-none'
+                  }`}
+                  fill="currentColor"
+                >
+                  <path d="M12 0C12 0 12 10.5 24 12C24 12 12 13.5 12 24C12 24 12 13.5 0 12C0 12 12 10.5 12 0Z" />
+                </svg>
+                <span>STARTUP</span>
               </div>
-            </RevealOnScroll>
+
+              {/* 2. FONDÉ EN 2024 */}
+              <div
+                data-spark-meta="1"
+                className={`relative inline-flex items-center gap-1.5 transition-colors duration-300 ${
+                  stampedMeta[1]
+                    ? 'animate-meta-bounce text-white font-medium drop-shadow-[0_1px_4px_rgba(255,255,255,0.4)]'
+                    : 'text-neutral-300 drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)]'
+                }`}
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  className={`w-2.5 h-2.5 sm:w-3 sm:h-3 text-[#FFB901] shrink-0 transition-transform duration-300 ${
+                    stampedMeta[1]
+                      ? 'opacity-100 scale-100 animate-spark-stamp-pop drop-shadow-[0_0_8px_#EB4604]'
+                      : 'opacity-0 scale-0 pointer-events-none'
+                  }`}
+                  fill="currentColor"
+                >
+                  <path d="M12 0C12 0 12 10.5 24 12C24 12 12 13.5 12 24C12 24 12 13.5 0 12C0 12 12 10.5 12 0Z" />
+                </svg>
+                <span>FONDÉ EN 2024</span>
+              </div>
+
+              {/* 3. AGENCE SPARKLINE */}
+              <div
+                data-spark-meta="2"
+                className={`relative inline-flex items-center gap-1.5 transition-colors duration-300 ${
+                  stampedMeta[2]
+                    ? 'animate-meta-bounce text-white font-medium drop-shadow-[0_1px_4px_rgba(255,255,255,0.4)]'
+                    : 'text-neutral-300 drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)]'
+                }`}
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  className={`w-2.5 h-2.5 sm:w-3 sm:h-3 text-[#FFB901] shrink-0 transition-transform duration-300 ${
+                    stampedMeta[2]
+                      ? 'opacity-100 scale-100 animate-spark-stamp-pop drop-shadow-[0_0_8px_#EB4604]'
+                      : 'opacity-0 scale-0 pointer-events-none'
+                  }`}
+                  fill="currentColor"
+                >
+                  <path d="M12 0C12 0 12 10.5 24 12C24 12 12 13.5 12 24C12 24 12 13.5 0 12C0 12 12 10.5 12 0Z" />
+                </svg>
+                <span>AGENCE SPARKLINE</span>
+              </div>
+            </div>
           </div>
 
           {/* Right Column: Dual Action Buttons */}
           <div className="lg:col-span-5 flex items-center justify-center lg:justify-end">
             <RevealOnScroll delay={0.5}>
               <div className="flex flex-wrap sm:flex-nowrap items-center justify-center lg:justify-end gap-2.5 sm:gap-3 w-full sm:w-auto">
-                {/* Red/Orange Pill Button with Official Brand Color */}
                 <Button
                   href="/projects"
                   variant="primary"
@@ -203,7 +278,6 @@ export function Hero() {
                   Voir les projets
                 </Button>
 
-                {/* White Pill Button */}
                 <Button
                   href="/contact"
                   variant="secondary"
