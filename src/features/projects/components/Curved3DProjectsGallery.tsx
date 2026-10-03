@@ -103,7 +103,7 @@ export function Curved3DProjectsGallery({
     if (!hasAppeared) return
     const timer = setTimeout(() => {
       setIsEntranceComplete(true)
-    }, 1150)
+    }, 650)
     return () => clearTimeout(timer)
   }, [hasAppeared])
 
@@ -397,23 +397,22 @@ export function Curved3DProjectsGallery({
 
             const imageSrc = project.coverImage || getImageSrc(project.slug)
 
-            // Dynamic Appearance / Entrance Animation calculations
-            const cardTranslateX = !hasAppeared ? translateX * 0.45 : translateX
-            const cardTranslateY = !hasAppeared ? (isMobile ? 50 : 70) : 0
-            const cardTranslateZ = !hasAppeared ? translateZ - 100 : translateZ
-            const cardRotateY = !hasAppeared ? rotateY * 0.5 : rotateY
-            const cardScale = !hasAppeared ? scale * 0.86 : scale
+            // Dynamic Appearance / Entrance Animation calculations (100% GPU Hardware Accelerated)
+            const cardTranslateX = !hasAppeared ? translateX * 0.7 : translateX
+            const cardTranslateY = !hasAppeared ? (isMobile ? 28 : 40) : 0
+            const cardTranslateZ = !hasAppeared ? translateZ - 60 : translateZ
+            const cardRotateY = !hasAppeared ? rotateY * 0.7 : rotateY
+            const cardScale = !hasAppeared ? scale * 0.92 : scale
             const cardOpacity = !hasAppeared ? 0 : opacity
-            const cardFilter = !hasAppeared ? 'blur(10px)' : isEntranceComplete ? undefined : 'blur(0px)'
 
-            // Stagger entrance: center card first (0.06s), 1st neighbors (0.20s), 2nd neighbors (0.34s)
-            const entranceDelay = !isEntranceComplete ? `${absDiff * 0.14 + 0.06}s` : '0s'
-            const transitionDuration = !isEntranceComplete ? (isMobile ? '0.75s' : '0.95s') : '0.65s'
+            // Stagger entrance: center card first (0.02s), 1st neighbors (0.10s), 2nd neighbors (0.18s)
+            const entranceDelay = !isEntranceComplete ? `${absDiff * 0.08 + 0.02}s` : '0s'
+            const transitionDuration = !isEntranceComplete ? '0.55s' : '0.5s'
             const transitionTiming = 'cubic-bezier(0.16, 1, 0.3, 1)'
 
             const cardTransition = isEntranceComplete
-              ? 'transform 0.65s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease'
-              : `transform ${transitionDuration} ${transitionTiming} ${entranceDelay}, opacity ${transitionDuration} ease ${entranceDelay}, filter ${transitionDuration} ease ${entranceDelay}`
+              ? 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease'
+              : `transform ${transitionDuration} ${transitionTiming} ${entranceDelay}, opacity ${transitionDuration} ease ${entranceDelay}`
 
             return (
               <div
@@ -431,7 +430,6 @@ export function Curved3DProjectsGallery({
                   transform: `translateX(${cardTranslateX}px) translateY(${cardTranslateY}px) translateZ(${cardTranslateZ}px) rotateY(${cardRotateY}deg) scale(${cardScale})`,
                   zIndex: isExpanded ? 100 : zIndex,
                   opacity: cardOpacity,
-                  filter: cardFilter,
                   transformStyle: 'preserve-3d',
                   transition: cardTransition,
                   pointerEvents: absDiff > 2 || !hasAppeared ? 'none' : 'auto',

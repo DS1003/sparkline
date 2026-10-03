@@ -96,7 +96,7 @@ export function Approach() {
           </RevealOnScroll>
 
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 lg:gap-16">
-            <RevealOnScroll direction="blur" delay={0.12} duration={0.85}>
+            <RevealOnScroll direction="blur" delay={0.1}>
               <h2
                 className="text-[clamp(2.25rem,4.5vw,56px)] font-normal text-[#0A0A0A] leading-[1.06] tracking-[-0.03em] max-w-2xl"
                 style={{ fontFamily: 'var(--font-family--primary-font)' }}

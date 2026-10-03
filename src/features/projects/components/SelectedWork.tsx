@@ -80,7 +80,7 @@ export function SelectedWork({
               </div>
             </RevealOnScroll>
 
-            <RevealOnScroll direction="blur" delay={0.12} duration={0.85}>
+            <RevealOnScroll direction="blur" delay={0.1}>
               <h2
                 className={`text-[clamp(2.25rem,4.5vw,56px)] font-normal ${
                   theme === 'light' ? 'text-neutral-900' : 'text-white'
@@ -172,7 +172,7 @@ export function SelectedWork({
         </div>
 
         {/* ── Ultra-Modern Minimalist Navigation Controller Dock ── */}
-        <RevealOnScroll direction="up" delay={0.25} duration={0.8}>
+        <RevealOnScroll direction="up" delay={0.15}>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 pt-6">
             {/* Navigation Island Pill */}
             <div

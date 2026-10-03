@@ -132,7 +132,7 @@ export function Services({ isServicesPage = false, hideHeader = false }: Service
             </RevealOnScroll>
 
             <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4 sm:gap-6 lg:gap-16">
-              <RevealOnScroll direction="blur" delay={0.12} duration={0.85}>
+              <RevealOnScroll direction="blur" delay={0.1}>
                 <h2
                   className="text-[clamp(2rem,4vw,54px)] font-normal text-[#0A0A0A] leading-[1.12] tracking-[-0.03em] max-w-2xl"
                   style={{ fontFamily: 'var(--font-family--primary-font)' }}

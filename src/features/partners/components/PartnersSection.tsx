@@ -124,7 +124,7 @@ export function PartnersSection() {
             <RevealOnScroll direction="up" delay={0.05}>
               <Tag variant="v2">Nos Partenaires & Écosystème</Tag>
             </RevealOnScroll>
-            <RevealOnScroll direction="blur" delay={0.12} duration={0.85}>
+            <RevealOnScroll direction="blur" delay={0.1}>
               <h2
                 className="text-[clamp(2.25rem,4.5vw,56px)] font-normal text-[#0A0A0A] leading-[1.05] tracking-[-0.035em]"
                 style={{ fontFamily: 'var(--font-family--primary-font)' }}
@@ -134,7 +134,7 @@ export function PartnersSection() {
             </RevealOnScroll>
           </div>
 
-          <RevealOnScroll direction="up" delay={0.2}>
+          <RevealOnScroll direction="up" delay={0.18}>
             <p className="text-sm sm:text-base text-neutral-500 font-light leading-relaxed max-w-md lg:text-right">
               Startups audacieuses, grands groupes et institutions publiques font confiance à SPARKLINE pour concevoir et déployer leurs plateformes critiques.
             </p>
@@ -143,7 +143,7 @@ export function PartnersSection() {
       </Container>
 
       {/* ── Floating Pill Capsule Marquee Ribbons (2 rows only) ── */}
-      <RevealOnScroll direction="zoom" delay={0.25} duration={0.85}>
+      <RevealOnScroll direction="zoom" delay={0.15}>
         <div className="ribbon-container relative w-full select-none py-2 overflow-hidden">
           {/* Subtle edge fades */}
           <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-12 sm:w-28 bg-gradient-to-r from-white to-transparent z-10" />

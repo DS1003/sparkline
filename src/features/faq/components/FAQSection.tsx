@@ -72,7 +72,7 @@ export function FAQSection() {
               </div>
             </RevealOnScroll>
 
-            <RevealOnScroll direction="blur" delay={0.12} duration={0.85}>
+            <RevealOnScroll direction="blur" delay={0.1}>
               <h2
                 className="text-[clamp(2.25rem,4.5vw,56px)] font-normal text-[#0A0A0A] leading-[1.05] tracking-[-0.035em]"
                 style={{ fontFamily: 'var(--font-family--primary-font)' }}

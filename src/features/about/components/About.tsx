@@ -29,13 +29,13 @@ export function About() {
 
         {/* Headline + CTA row */}
         <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 lg:gap-16 mt-[24px]">
-          <RevealOnScroll direction="blur" delay={0.12} duration={0.85}>
+          <RevealOnScroll direction="blur" delay={0.1}>
             <h2 className="text-[clamp(2rem,4.5vw,64px)] font-normal text-[#0A0A0A] leading-[1.0] tracking-[-0.02em] max-w-[680px]">
               Nous bâtissons des systèmes digitaux pour propulser les leaders.
             </h2>
           </RevealOnScroll>
 
-          <RevealOnScroll direction="up" delay={0.22}>
+          <RevealOnScroll direction="up" delay={0.18}>
             <Link
               href="/about"
               className="group inline-flex items-center gap-2.5 px-4.5 py-2.5 rounded-full bg-neutral-100/90 hover:bg-[#0A0A0A] text-neutral-900 hover:text-white border border-neutral-200/90 hover:border-[#0A0A0A] text-xs sm:text-sm font-medium transition-all duration-300 shadow-2xs hover:shadow-md shrink-0 mb-1"
@@ -50,7 +50,7 @@ export function About() {
       </Container>
 
       {/* ── Auto-Scrolling Portrait Photo Strip (4K HD) ── */}
-      <RevealOnScroll direction="zoom" delay={0.25} duration={0.85}>
+      <RevealOnScroll direction="zoom" delay={0.15}>
         <div className="w-full overflow-hidden">
           {/* CSS Keyframes for continuous uninterrupted infinite scroll */}
           <style jsx>{`

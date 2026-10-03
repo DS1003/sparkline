@@ -25,14 +25,45 @@ const directionClasses: Record<string, string> = {
   none: 'reveal-none',
 }
 
+// ── Shared High-Performance IntersectionObserver Pool ──
+// Avoids creating dozens of separate observer instances, dramatically reducing CPU/memory footprint
+type ObserverCallback = (isIntersecting: boolean) => void
+const observerCallbacks = new Map<Element, ObserverCallback>()
+let sharedObserver: IntersectionObserver | null = null
+
+function getSharedObserver(): IntersectionObserver | null {
+  if (typeof window === 'undefined' || typeof IntersectionObserver === 'undefined') {
+    return null
+  }
+  if (!sharedObserver) {
+    const isMobile = window.innerWidth < 768
+    sharedObserver = new IntersectionObserver(
+      (entries) => {
+        for (let i = 0; i < entries.length; i++) {
+          const entry = entries[i]
+          const cb = observerCallbacks.get(entry.target)
+          if (cb) {
+            cb(entry.isIntersecting)
+          }
+        }
+      },
+      {
+        rootMargin: isMobile ? '0px 0px -20px 0px' : '0px 0px -50px 0px',
+        threshold: 0.08,
+      }
+    )
+  }
+  return sharedObserver
+}
+
 export function RevealOnScroll({
   children,
   className = '',
   delay = 0,
   direction = 'up',
   blur = false,
-  duration = 0.7,
-  threshold = 0.1,
+  duration = 0.55,
+  threshold,
   rootMargin,
   once = true,
 }: RevealOnScrollProps) {
@@ -56,68 +87,70 @@ export function RevealOnScroll({
       return
     }
 
-    if (typeof IntersectionObserver === 'undefined') {
+    // Fast check: If custom rootMargin or threshold is provided, use dedicated observer, otherwise shared observer
+    const isCustom = rootMargin !== undefined || threshold !== undefined
+
+    if (isCustom) {
+      if (typeof IntersectionObserver === 'undefined') {
+        reveal()
+        return
+      }
+      const isMobile = window.innerWidth < 768
+      const customObserver = new IntersectionObserver(
+        (entries) => {
+          const [entry] = entries
+          if (entry?.isIntersecting) {
+            reveal()
+            if (once) customObserver.disconnect()
+          } else if (!once) {
+            setIsVisible(false)
+          }
+        },
+        {
+          rootMargin: rootMargin ?? (isMobile ? '0px 0px -20px 0px' : '0px 0px -50px 0px'),
+          threshold: threshold ?? 0.08,
+        }
+      )
+
+      customObserver.observe(el)
+      return () => customObserver.disconnect()
+    }
+
+    const observer = getSharedObserver()
+    if (!observer) {
       reveal()
       return
     }
 
-    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768
-    // High-end trigger point: elements reveal right as they enter lower 8-10% of viewport
-    const effectiveRootMargin = rootMargin ?? (isMobile ? '0px 0px -30px 0px' : '0px 0px -75px 0px')
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const [entry] = entries
-        if (entry?.isIntersecting) {
-          reveal()
-          if (once) {
-            observer.disconnect()
-          }
-        } else if (!once) {
-          setIsVisible(false)
-        }
-      },
-      {
-        rootMargin: effectiveRootMargin,
-        threshold: threshold,
-      }
-    )
-
-    // Check if element is already in the viewport on mount
-    const checkInitialVisibility = () => {
-      if (hasTriggered.current) return
-      const rect = el.getBoundingClientRect()
-      // Only trigger if truly visible within the screen bounds right now
-      if (rect.top < window.innerHeight - 60 && rect.bottom > 40) {
+    const handleIntersect: ObserverCallback = (isIntersecting) => {
+      if (isIntersecting) {
         reveal()
-        if (once) observer.disconnect()
-      } else {
-        observer.observe(el)
+        if (once) {
+          observer.unobserve(el)
+          observerCallbacks.delete(el)
+        }
+      } else if (!once) {
+        setIsVisible(false)
       }
     }
 
-    const isLoaded =
-      typeof window !== 'undefined' &&
-      (window as unknown as { __SPARKLINE_LOADED__?: boolean }).__SPARKLINE_LOADED__
+    // Register callback and observe
+    observerCallbacks.set(el, handleIntersect)
+    observer.observe(el)
 
-    if (isLoaded) {
-      checkInitialVisibility()
-    } else {
-      observer.observe(el)
-
-      const handleLoaderComplete = () => {
-        checkInitialVisibility()
-      }
-
-      window.addEventListener('sparkline:loader-complete', handleLoaderComplete, { once: true })
-      return () => {
-        observer.disconnect()
-        window.removeEventListener('sparkline:loader-complete', handleLoaderComplete)
+    // Check if element is already inside viewport on mount
+    const rect = el.getBoundingClientRect()
+    if (rect.top < window.innerHeight - 40 && rect.bottom > 20) {
+      reveal()
+      if (once) {
+        observer.unobserve(el)
+        observerCallbacks.delete(el)
       }
     }
 
     return () => {
-      observer.disconnect()
+      observer.unobserve(el)
+      observerCallbacks.delete(el)
     }
   }, [reveal, once, rootMargin, threshold])
 
@@ -126,8 +159,8 @@ export function RevealOnScroll({
   const dirClass = directionClasses[activeDirection] || 'reveal-up'
 
   const styleObj: React.CSSProperties = {
-    '--reveal-delay': `${delay}s`,
-    '--reveal-duration': `${duration}s`,
+    '--reveal-delay': delay > 0 ? `${delay}s` : undefined,
+    '--reveal-duration': duration !== 0.55 ? `${duration}s` : undefined,
   } as React.CSSProperties
 
   const revealedClass = isVisible ? ' is-revealed' : ''
@@ -143,5 +176,3 @@ export function RevealOnScroll({
     </div>
   )
 }
-
-

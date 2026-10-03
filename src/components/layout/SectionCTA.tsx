@@ -41,7 +41,7 @@ export function SectionCTA({
           </RevealOnScroll>
 
           {/* Headline (Centered on mobile, left on desktop) */}
-          <RevealOnScroll direction="blur" delay={0.12} duration={0.85}>
+          <RevealOnScroll direction="blur" delay={0.1}>
             <h2
               className="text-[clamp(1.85rem,5.5vw,72px)] font-bold text-white tracking-tight leading-[1.05] text-center lg:text-left"
               style={{ fontFamily: 'var(--font-family--primary-font)' }}
