@@ -39,6 +39,74 @@ export function Curved3DProjectsGallery({
   const [isCompactDesktop, setIsCompactDesktop] = useState(false)
   const [portalMounted, setPortalMounted] = useState(false)
 
+  // Scroll entrance animation states
+  const galleryRef = useRef<HTMLDivElement>(null)
+  const [hasAppeared, setHasAppeared] = useState(false)
+  const [isEntranceComplete, setIsEntranceComplete] = useState(false)
+
+  // Cancel any entrance delay immediately upon user interaction
+  const markInteracted = useCallback(() => {
+    if (!hasAppeared) setHasAppeared(true)
+    if (!isEntranceComplete) setIsEntranceComplete(true)
+  }, [hasAppeared, isEntranceComplete])
+
+  // Scroll Reveal Intersection Observer for Project Cards Entrance Animation
+  useEffect(() => {
+    const el = galleryRef.current
+    if (!el) return
+
+    // Accessibility check: Reduced motion
+    if (typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setHasAppeared(true)
+      setIsEntranceComplete(true)
+      return
+    }
+
+    if (typeof IntersectionObserver === 'undefined') {
+      setHasAppeared(true)
+      setIsEntranceComplete(true)
+      return
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const [entry] = entries
+        if (entry?.isIntersecting) {
+          setHasAppeared(true)
+          observer.disconnect()
+        }
+      },
+      {
+        rootMargin: '0px 0px -50px 0px',
+        threshold: 0.1,
+      }
+    )
+
+    // Immediate check if element is already in viewport on mount (or fast scroll)
+    const rect = el.getBoundingClientRect()
+    if (rect.top < window.innerHeight - 30 && rect.bottom > 30) {
+      const timer = setTimeout(() => {
+        setHasAppeared(true)
+      }, 50)
+      return () => {
+        clearTimeout(timer)
+        observer.disconnect()
+      }
+    }
+
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
+
+  // Transition completion: clear stagger delays so normal swiping/arrow clicks are snappy & instant
+  useEffect(() => {
+    if (!hasAppeared) return
+    const timer = setTimeout(() => {
+      setIsEntranceComplete(true)
+    }, 1150)
+    return () => clearTimeout(timer)
+  }, [hasAppeared])
+
   // Ensure portal only renders client-side
   useEffect(() => { setPortalMounted(true) }, [])
 
@@ -67,6 +135,7 @@ export function Curved3DProjectsGallery({
   // Keyboard navigation & Escape to close
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
+      markInteracted()
       if (e.key === 'Escape') {
         if (isLightboxOpen) {
           setIsLightboxOpen(false)
@@ -94,7 +163,7 @@ export function Curved3DProjectsGallery({
         }
       }
     },
-    [activeIndex, projects.length, onActiveChange, expandedProject, isLightboxOpen]
+    [activeIndex, projects.length, onActiveChange, expandedProject, isLightboxOpen, markInteracted]
   )
 
   useEffect(() => {
@@ -140,6 +209,7 @@ export function Curved3DProjectsGallery({
   const isHorizontalSwipe = useRef<boolean | null>(null)
 
   const handleTouchStart = (e: React.TouchEvent) => {
+    markInteracted()
     touchStartX.current = e.touches[0].clientX
     touchStartY.current = e.touches[0].clientY
     touchDeltaX.current = 0
@@ -187,6 +257,7 @@ export function Curved3DProjectsGallery({
   const isMouseDown = useRef(false)
 
   const handleMouseDown = (e: React.MouseEvent) => {
+    markInteracted()
     mouseStartX.current = e.clientX
     dragDistance.current = 0
     isMouseDown.current = true
@@ -219,6 +290,7 @@ export function Curved3DProjectsGallery({
 
   // Card click / expand handler
   const handleCardClick = (project: Project, idx: number, isCenter: boolean) => {
+    markInteracted()
     // If the user actually dragged (>15px movement), ignore click
     if (dragDistance.current > 15) return
 
@@ -238,6 +310,7 @@ export function Curved3DProjectsGallery({
     <>
       {/* ── Symmetrical 3D Stage Container (Stable, Zero-Tremble) ── */}
       <div
+        ref={galleryRef}
         className="relative w-full overflow-hidden select-none py-4 sm:py-8 lg:py-10 cursor-grab active:cursor-grabbing touch-pan-y"
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
@@ -324,6 +397,24 @@ export function Curved3DProjectsGallery({
 
             const imageSrc = project.coverImage || getImageSrc(project.slug)
 
+            // Dynamic Appearance / Entrance Animation calculations
+            const cardTranslateX = !hasAppeared ? translateX * 0.45 : translateX
+            const cardTranslateY = !hasAppeared ? (isMobile ? 50 : 70) : 0
+            const cardTranslateZ = !hasAppeared ? translateZ - 100 : translateZ
+            const cardRotateY = !hasAppeared ? rotateY * 0.5 : rotateY
+            const cardScale = !hasAppeared ? scale * 0.86 : scale
+            const cardOpacity = !hasAppeared ? 0 : opacity
+            const cardFilter = !hasAppeared ? 'blur(10px)' : isEntranceComplete ? undefined : 'blur(0px)'
+
+            // Stagger entrance: center card first (0.06s), 1st neighbors (0.20s), 2nd neighbors (0.34s)
+            const entranceDelay = !isEntranceComplete ? `${absDiff * 0.14 + 0.06}s` : '0s'
+            const transitionDuration = !isEntranceComplete ? (isMobile ? '0.75s' : '0.95s') : '0.65s'
+            const transitionTiming = 'cubic-bezier(0.16, 1, 0.3, 1)'
+
+            const cardTransition = isEntranceComplete
+              ? 'transform 0.65s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease'
+              : `transform ${transitionDuration} ${transitionTiming} ${entranceDelay}, opacity ${transitionDuration} ease ${entranceDelay}, filter ${transitionDuration} ease ${entranceDelay}`
+
             return (
               <div
                 key={project.slug}
@@ -337,12 +428,13 @@ export function Curved3DProjectsGallery({
                   width: `${cardWidth}px`,
                   height: `${cardHeight}px`,
                   transformOrigin: '50% 50%',
-                  transform: `translateX(${translateX}px) translateZ(${translateZ}px) rotateY(${rotateY}deg) scale(${scale})`,
+                  transform: `translateX(${cardTranslateX}px) translateY(${cardTranslateY}px) translateZ(${cardTranslateZ}px) rotateY(${cardRotateY}deg) scale(${cardScale})`,
                   zIndex: isExpanded ? 100 : zIndex,
-                  opacity,
+                  opacity: cardOpacity,
+                  filter: cardFilter,
                   transformStyle: 'preserve-3d',
-                  transition: 'transform 0.65s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease',
-                  pointerEvents: absDiff > 2 ? 'none' : 'auto',
+                  transition: cardTransition,
+                  pointerEvents: absDiff > 2 || !hasAppeared ? 'none' : 'auto',
                 }}
               >
                 {/* ── 3D Card Flipper & Frame ── */}

@@ -163,6 +163,7 @@ export function SelectedWork({
         {/* ── 3D Panoramic Curved Gallery with Card Flip & Modal ── */}
         <div className="relative">
           <Curved3DProjectsGallery
+            key={activeCategory}
             projects={filteredProjects}
             activeIndex={activeIndex}
             onActiveChange={setActiveIndex}
@@ -171,99 +172,101 @@ export function SelectedWork({
         </div>
 
         {/* ── Ultra-Modern Minimalist Navigation Controller Dock ── */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 pt-6">
-          {/* Navigation Island Pill */}
-          <div
-            className={`h-11 sm:h-12 inline-flex items-center gap-2 sm:gap-3 px-3 sm:px-4 rounded-full transition-all duration-300 ${
-              theme === 'light'
-                ? 'bg-white/90 border border-neutral-200/80 shadow-[0_12px_32px_-8px_rgba(0,0,0,0.08)] backdrop-blur-md'
-                : 'bg-white/[0.04] border border-white/10 backdrop-blur-xl shadow-[0_16px_40px_-10px_rgba(0,0,0,0.6)]'
-            }`}
-          >
-            {/* Prev Button */}
-            <button
-              onClick={handlePrev}
-              type="button"
-              aria-label="Projet précédent"
-              className={`group relative w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 active:scale-90 ${
+        <RevealOnScroll direction="up" delay={0.25} duration={0.8}>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 pt-6">
+            {/* Navigation Island Pill */}
+            <div
+              className={`h-11 sm:h-12 inline-flex items-center gap-2 sm:gap-3 px-3 sm:px-4 rounded-full transition-all duration-300 ${
                 theme === 'light'
-                  ? 'bg-neutral-100 hover:bg-[#EB4604] text-neutral-600 hover:text-white'
-                  : 'bg-white/5 hover:bg-[#EB4604] text-neutral-300 hover:text-white'
+                  ? 'bg-white/90 border border-neutral-200/80 shadow-[0_12px_32px_-8px_rgba(0,0,0,0.08)] backdrop-blur-md'
+                  : 'bg-white/[0.04] border border-white/10 backdrop-blur-xl shadow-[0_16px_40px_-10px_rgba(0,0,0,0.6)]'
               }`}
             >
-              <svg
-                className="w-4 h-4 transition-transform duration-300 group-hover:-translate-x-0.5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
-                strokeLinecap="round"
-                strokeLinejoin="round"
+              {/* Prev Button */}
+              <button
+                onClick={handlePrev}
+                type="button"
+                aria-label="Projet précédent"
+                className={`group relative w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 active:scale-90 ${
+                  theme === 'light'
+                    ? 'bg-neutral-100 hover:bg-[#EB4604] text-neutral-600 hover:text-white'
+                    : 'bg-white/5 hover:bg-[#EB4604] text-neutral-300 hover:text-white'
+                }`}
               >
-                <path d="M15 18l-6-6 6-6" />
-              </svg>
-            </button>
+                <svg
+                  className="w-4 h-4 transition-transform duration-300 group-hover:-translate-x-0.5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M15 18l-6-6 6-6" />
+                </svg>
+              </button>
 
-            {/* Dynamic Sleek Pagination Dots */}
-            <div className="flex items-center gap-1.5 sm:gap-2 px-1">
-              {filteredProjects.map((project, dotIdx) => {
-                const isActive = activeIndex === dotIdx
-                return (
-                  <button
-                    key={project.slug || dotIdx}
-                    onClick={() => setActiveIndex(dotIdx)}
-                    type="button"
-                    aria-label={`Aller au projet ${dotIdx + 1}`}
-                    className={`relative h-2 rounded-full transition-all duration-500 ease-out cursor-pointer ${
-                      isActive
-                        ? 'w-7 sm:w-8 bg-[#EB4604] shadow-sm shadow-[#EB4604]/40'
-                        : theme === 'light'
-                        ? 'w-2 bg-neutral-300 hover:bg-neutral-400 hover:w-3'
-                        : 'w-2 bg-white/20 hover:bg-white/50 hover:w-3'
-                    }`}
-                  />
-                )
-              })}
+              {/* Dynamic Sleek Pagination Dots */}
+              <div className="flex items-center gap-1.5 sm:gap-2 px-1">
+                {filteredProjects.map((project, dotIdx) => {
+                  const isActive = activeIndex === dotIdx
+                  return (
+                    <button
+                      key={project.slug || dotIdx}
+                      onClick={() => setActiveIndex(dotIdx)}
+                      type="button"
+                      aria-label={`Aller au projet ${dotIdx + 1}`}
+                      className={`relative h-2 rounded-full transition-all duration-500 ease-out cursor-pointer ${
+                        isActive
+                          ? 'w-7 sm:w-8 bg-[#EB4604] shadow-sm shadow-[#EB4604]/40'
+                          : theme === 'light'
+                          ? 'w-2 bg-neutral-300 hover:bg-neutral-400 hover:w-3'
+                          : 'w-2 bg-white/20 hover:bg-white/50 hover:w-3'
+                      }`}
+                    />
+                  )
+                })}
+              </div>
+
+              {/* Next Button */}
+              <button
+                onClick={handleNext}
+                type="button"
+                aria-label="Projet suivant"
+                className={`group relative w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 active:scale-90 ${
+                  theme === 'light'
+                    ? 'bg-neutral-100 hover:bg-[#EB4604] text-neutral-600 hover:text-white'
+                    : 'bg-white/5 hover:bg-[#EB4604] text-neutral-300 hover:text-white'
+                }`}
+              >
+                <svg
+                  className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M9 18l6-6-6-6" />
+                </svg>
+              </button>
             </div>
 
-            {/* Next Button */}
-            <button
-              onClick={handleNext}
-              type="button"
-              aria-label="Projet suivant"
-              className={`group relative w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 active:scale-90 ${
-                theme === 'light'
-                  ? 'bg-neutral-100 hover:bg-[#EB4604] text-neutral-600 hover:text-white'
-                  : 'bg-white/5 hover:bg-[#EB4604] text-neutral-300 hover:text-white'
-              }`}
-            >
-              <svg
-                className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
-                strokeLinecap="round"
-                strokeLinejoin="round"
+            {/* Explorer Action Pill (Only shown on homepage, hidden on projects page) */}
+            {!isProjectsPage && (
+              <Link
+                href="/projects"
+                className="h-11 sm:h-12 inline-flex items-center justify-center gap-2.5 px-6 rounded-full bg-white/[0.05] hover:bg-white/[0.09] border border-white/10 hover:border-[#EB4604]/50 text-white text-xs sm:text-sm font-medium transition-all duration-300 backdrop-blur-xl shadow-[0_10px_30px_rgba(0,0,0,0.5)] group"
               >
-                <path d="M9 18l6-6-6-6" />
-              </svg>
-            </button>
+                <span>Explorer toutes les réalisations</span>
+                <span className="text-[#EB4604] font-semibold transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
+                  ↗
+                </span>
+              </Link>
+            )}
           </div>
-
-          {/* Explorer Action Pill (Only shown on homepage, hidden on projects page) */}
-          {!isProjectsPage && (
-            <Link
-              href="/projects"
-              className="h-11 sm:h-12 inline-flex items-center justify-center gap-2.5 px-6 rounded-full bg-white/[0.05] hover:bg-white/[0.09] border border-white/10 hover:border-[#EB4604]/50 text-white text-xs sm:text-sm font-medium transition-all duration-300 backdrop-blur-xl shadow-[0_10px_30px_rgba(0,0,0,0.5)] group"
-            >
-              <span>Explorer toutes les réalisations</span>
-              <span className="text-[#EB4604] font-semibold transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
-                ↗
-              </span>
-            </Link>
-          )}
-        </div>
+        </RevealOnScroll>
       </Container>
     </Section>
   )
