@@ -616,19 +616,16 @@ div:hover > .animate-vertical-track-reverse {
 @keyframes sparkCharIgnite {
   0% {
     opacity: 0;
-    transform: translate3d(0, 10px, 0) scale(0.92);
-    filter: brightness(2.2);
+    filter: brightness(2.4);
     text-shadow: 0 0 16px #FFFFFF, 0 0 28px #FFB901, 0 0 45px #EB4604;
   }
-  30% {
+  35% {
     opacity: 1;
-    transform: translate3d(0, -2px, 0) scale(1.03);
     filter: brightness(1.6);
     text-shadow: 0 0 12px #FFFFFF, 0 0 22px #FF9100, 0 0 35px #EB4604;
   }
   100% {
     opacity: 1;
-    transform: translate3d(0, 0, 0) scale(1);
     filter: brightness(1);
   }
 }
@@ -644,7 +641,7 @@ div:hover > .animate-vertical-track-reverse {
 
 .animate-char-ignite {
   animation: sparkCharIgnite 0.42s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  will-change: transform, opacity;
+  will-change: opacity, filter;
 }
 
 .animate-spark-title-sheen {
@@ -657,13 +654,10 @@ div:hover > .animate-vertical-track-reverse {
     transform: scale(1);
   }
   30% {
-    transform: scale(1.18);
+    transform: scale(1.12);
   }
-  55% {
-    transform: scale(0.96);
-  }
-  75% {
-    transform: scale(1.05);
+  60% {
+    transform: scale(0.97);
   }
   100% {
     transform: scale(1);
@@ -671,8 +665,8 @@ div:hover > .animate-vertical-track-reverse {
 }
 
 .animate-meta-bounce {
-  animation: metaBounceSpark 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-  transform-origin: left center;
+  animation: metaBounceSpark 0.42s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  transform-origin: center center;
 }
 
 @keyframes sparkStampPop {
@@ -828,26 +822,26 @@ body {
   transform: none !important;
 }
 
-/* Fluid, snappy animations for mobile screens (lightweight, zero jank) */
+/* Fluid, snappy animations for mobile screens (lightweight, zero jank, zero blank screen) */
 @media screen and (max-width: 767px) {
   .reveal-item {
-    transition-duration: 0.38s;
-    transition-timing-function: cubic-bezier(0.2, 1, 0.35, 1);
+    transition-duration: 0.25s;
+    transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
   }
   .reveal-item.reveal-up,
   .reveal-item.reveal-down {
-    transform: translate3d(0, 14px, 0);
+    transform: translate3d(0, 8px, 0);
   }
   .reveal-item.reveal-left,
   .reveal-item.reveal-right {
-    transform: translate3d(0, 10px, 0);
+    transform: translate3d(0, 6px, 0);
   }
   .reveal-item.reveal-blur {
-    transform: translate3d(0, 12px, 0);
+    transform: translate3d(0, 6px, 0);
   }
   .reveal-item.reveal-mask {
     clip-path: none;
-    transform: translate3d(0, 12px, 0);
+    transform: translate3d(0, 6px, 0);
   }
 }
 

@@ -68,6 +68,7 @@ export function Curved3DProjectsGallery({
       return
     }
 
+    const isMobileViewport = typeof window !== 'undefined' && window.innerWidth < 768
     const observer = new IntersectionObserver(
       (entries) => {
         const [entry] = entries
@@ -77,21 +78,17 @@ export function Curved3DProjectsGallery({
         }
       },
       {
-        rootMargin: '0px 0px -50px 0px',
-        threshold: 0.1,
+        rootMargin: isMobileViewport ? '250px 0px 100px 0px' : '150px 0px 50px 0px',
+        threshold: 0,
       }
     )
 
-    // Immediate check if element is already in viewport on mount (or fast scroll)
+    // Immediate check if element is already in or near viewport on mount (or fast scroll)
     const rect = el.getBoundingClientRect()
-    if (rect.top < window.innerHeight - 30 && rect.bottom > 30) {
-      const timer = setTimeout(() => {
-        setHasAppeared(true)
-      }, 50)
-      return () => {
-        clearTimeout(timer)
-        observer.disconnect()
-      }
+    if (rect.top < window.innerHeight + 250 && rect.bottom > -100) {
+      setHasAppeared(true)
+      setIsEntranceComplete(true)
+      return
     }
 
     observer.observe(el)

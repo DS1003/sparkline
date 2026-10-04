@@ -118,7 +118,7 @@ export function Approach() {
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.12 }}
+          viewport={{ once: true, amount: 0, margin: '150px 0px 50px 0px' }}
           className="grid grid-cols-2 gap-3 sm:gap-4 md:gap-5 lg:gap-6"
         >
           {steps.map((step) => (

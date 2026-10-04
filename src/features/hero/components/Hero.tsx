@@ -194,73 +194,79 @@ export function Hero() {
             </RevealOnScroll>
 
             {/* Metadata Row: Clean text, NO pill buttons, NO borders, NO clipping containers */}
-            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 sm:gap-5 xl:gap-7 text-[8.5px] sm:text-[10px] xl:text-xs font-mono uppercase tracking-wider xl:tracking-widest pt-1 overflow-visible">
+            <div className="flex flex-nowrap items-center justify-center lg:justify-start gap-2.5 sm:gap-4 xl:gap-6 text-[8.5px] sm:text-[10px] xl:text-xs font-mono uppercase tracking-wider xl:tracking-widest pt-1 overflow-visible select-none">
               {/* 1. STARTUP */}
               <div
                 data-spark-meta="0"
-                className={`relative inline-flex items-center gap-1.5 transition-colors duration-300 ${
+                className={`relative inline-flex items-center gap-1 sm:gap-1.5 transition-colors duration-300 font-medium ${
                   stampedMeta[0]
-                    ? 'animate-meta-bounce text-white font-medium drop-shadow-[0_1px_4px_rgba(255,255,255,0.4)]'
-                    : 'text-neutral-300 drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)]'
+                    ? 'animate-meta-bounce text-white drop-shadow-[0_1px_4px_rgba(255,255,255,0.4)]'
+                    : 'text-neutral-400 drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)]'
                 }`}
               >
-                <svg
-                  viewBox="0 0 24 24"
-                  className={`w-2.5 h-2.5 sm:w-3 sm:h-3 text-[#FFB901] shrink-0 transition-transform duration-300 ${
-                    stampedMeta[0]
-                      ? 'opacity-100 scale-100 animate-spark-stamp-pop drop-shadow-[0_0_8px_#EB4604]'
-                      : 'opacity-0 scale-0 pointer-events-none'
-                  }`}
-                  fill="currentColor"
-                >
-                  <path d="M12 0C12 0 12 10.5 24 12C24 12 12 13.5 12 24C12 24 12 13.5 0 12C0 12 12 10.5 12 0Z" />
-                </svg>
+                <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 inline-flex items-center justify-center shrink-0">
+                  <svg
+                    viewBox="0 0 24 24"
+                    className={`w-2.5 h-2.5 sm:w-3 sm:h-3 text-[#FFB901] shrink-0 transition-transform duration-300 ${
+                      stampedMeta[0]
+                        ? 'opacity-100 scale-100 animate-spark-stamp-pop drop-shadow-[0_0_8px_#EB4604]'
+                        : 'opacity-0 scale-0 pointer-events-none'
+                    }`}
+                    fill="currentColor"
+                  >
+                    <path d="M12 0C12 0 12 10.5 24 12C24 12 12 13.5 12 24C12 24 12 13.5 0 12C0 12 12 10.5 12 0Z" />
+                  </svg>
+                </span>
                 <span>STARTUP</span>
               </div>
 
               {/* 2. FONDÉ EN 2024 */}
               <div
                 data-spark-meta="1"
-                className={`relative inline-flex items-center gap-1.5 transition-colors duration-300 ${
+                className={`relative inline-flex items-center gap-1 sm:gap-1.5 transition-colors duration-300 font-medium ${
                   stampedMeta[1]
-                    ? 'animate-meta-bounce text-white font-medium drop-shadow-[0_1px_4px_rgba(255,255,255,0.4)]'
-                    : 'text-neutral-300 drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)]'
+                    ? 'animate-meta-bounce text-white drop-shadow-[0_1px_4px_rgba(255,255,255,0.4)]'
+                    : 'text-neutral-400 drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)]'
                 }`}
               >
-                <svg
-                  viewBox="0 0 24 24"
-                  className={`w-2.5 h-2.5 sm:w-3 sm:h-3 text-[#FFB901] shrink-0 transition-transform duration-300 ${
-                    stampedMeta[1]
-                      ? 'opacity-100 scale-100 animate-spark-stamp-pop drop-shadow-[0_0_8px_#EB4604]'
-                      : 'opacity-0 scale-0 pointer-events-none'
-                  }`}
-                  fill="currentColor"
-                >
-                  <path d="M12 0C12 0 12 10.5 24 12C24 12 12 13.5 12 24C12 24 12 13.5 0 12C0 12 12 10.5 12 0Z" />
-                </svg>
+                <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 inline-flex items-center justify-center shrink-0">
+                  <svg
+                    viewBox="0 0 24 24"
+                    className={`w-2.5 h-2.5 sm:w-3 sm:h-3 text-[#FFB901] shrink-0 transition-transform duration-300 ${
+                      stampedMeta[1]
+                        ? 'opacity-100 scale-100 animate-spark-stamp-pop drop-shadow-[0_0_8px_#EB4604]'
+                        : 'opacity-0 scale-0 pointer-events-none'
+                    }`}
+                    fill="currentColor"
+                  >
+                    <path d="M12 0C12 0 12 10.5 24 12C24 12 12 13.5 12 24C12 24 12 13.5 0 12C0 12 12 10.5 12 0Z" />
+                  </svg>
+                </span>
                 <span>FONDÉ EN 2024</span>
               </div>
 
               {/* 3. AGENCE SPARKLINE */}
               <div
                 data-spark-meta="2"
-                className={`relative inline-flex items-center gap-1.5 transition-colors duration-300 ${
+                className={`relative inline-flex items-center gap-1 sm:gap-1.5 transition-colors duration-300 font-medium ${
                   stampedMeta[2]
-                    ? 'animate-meta-bounce text-white font-medium drop-shadow-[0_1px_4px_rgba(255,255,255,0.4)]'
-                    : 'text-neutral-300 drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)]'
+                    ? 'animate-meta-bounce text-white drop-shadow-[0_1px_4px_rgba(255,255,255,0.4)]'
+                    : 'text-neutral-400 drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)]'
                 }`}
               >
-                <svg
-                  viewBox="0 0 24 24"
-                  className={`w-2.5 h-2.5 sm:w-3 sm:h-3 text-[#FFB901] shrink-0 transition-transform duration-300 ${
-                    stampedMeta[2]
-                      ? 'opacity-100 scale-100 animate-spark-stamp-pop drop-shadow-[0_0_8px_#EB4604]'
-                      : 'opacity-0 scale-0 pointer-events-none'
-                  }`}
-                  fill="currentColor"
-                >
-                  <path d="M12 0C12 0 12 10.5 24 12C24 12 12 13.5 12 24C12 24 12 13.5 0 12C0 12 12 10.5 12 0Z" />
-                </svg>
+                <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 inline-flex items-center justify-center shrink-0">
+                  <svg
+                    viewBox="0 0 24 24"
+                    className={`w-2.5 h-2.5 sm:w-3 sm:h-3 text-[#FFB901] shrink-0 transition-transform duration-300 ${
+                      stampedMeta[2]
+                        ? 'opacity-100 scale-100 animate-spark-stamp-pop drop-shadow-[0_0_8px_#EB4604]'
+                        : 'opacity-0 scale-0 pointer-events-none'
+                    }`}
+                    fill="currentColor"
+                  >
+                    <path d="M12 0C12 0 12 10.5 24 12C24 12 12 13.5 12 24C12 24 12 13.5 0 12C0 12 12 10.5 12 0Z" />
+                  </svg>
+                </span>
                 <span>AGENCE SPARKLINE</span>
               </div>
             </div>

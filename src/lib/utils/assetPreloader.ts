@@ -214,30 +214,40 @@ export function startAssetPreloading(onProgress?: ProgressCallback): void {
     // Ignore storage restrictions
   }
 
-  // Determine ideal Next.js image widths for the current viewport
-  const isMobile = window.innerWidth < 768
-  const nextWidth = isMobile ? 750 : 1080
+  // Determine ideal Next.js image widths and queues for the current device
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768
+  const nextWidth = isMobile ? 640 : 1080
+  const concurrency = isMobile ? 2 : 4
 
   // Combine critical URLs for Next.js pre-warming
-  const nextOptimizedUrls = [
-    // Top Services cards in Next image format
-    getNextOptimizedUrl('/images/services/card1.webp', nextWidth, 90),
-    getNextOptimizedUrl('/images/services/card2.webp', nextWidth, 90),
-    getNextOptimizedUrl('/images/services/card3.webp', nextWidth, 90),
-    getNextOptimizedUrl('/images/services/card4.webp', nextWidth, 90),
-    getNextOptimizedUrl('/images/services/card5.webp', nextWidth, 90),
-    // Top Project cards
-    getNextOptimizedUrl('/images/projects/amfpr-card.webp', nextWidth, 85),
-    getNextOptimizedUrl('/images/projects/mbor-store.webp', nextWidth, 85),
-    getNextOptimizedUrl('/images/projects/baraka-shop.webp', nextWidth, 85),
-    getNextOptimizedUrl('/images/projects/diakhou-beauty.webp', nextWidth, 85),
-  ]
+  const nextOptimizedUrls = isMobile
+    ? [
+        getNextOptimizedUrl('/images/services/card1.webp', nextWidth, 80),
+        getNextOptimizedUrl('/images/services/card2.webp', nextWidth, 80),
+        getNextOptimizedUrl('/images/projects/amfpr-card.webp', nextWidth, 80),
+      ]
+    : [
+        getNextOptimizedUrl('/images/services/card1.webp', nextWidth, 85),
+        getNextOptimizedUrl('/images/services/card2.webp', nextWidth, 85),
+        getNextOptimizedUrl('/images/services/card3.webp', nextWidth, 85),
+        getNextOptimizedUrl('/images/services/card4.webp', nextWidth, 85),
+        getNextOptimizedUrl('/images/services/card5.webp', nextWidth, 85),
+        getNextOptimizedUrl('/images/projects/amfpr-card.webp', nextWidth, 85),
+        getNextOptimizedUrl('/images/projects/mbor-store.webp', nextWidth, 85),
+        getNextOptimizedUrl('/images/projects/baraka-shop.webp', nextWidth, 85),
+        getNextOptimizedUrl('/images/projects/diakhou-beauty.webp', nextWidth, 85),
+      ]
+
+  // On mobile devices, filter out subpage hero banners to protect mobile GPU texture memory
+  const tier3Assets = isMobile
+    ? TIER_3_EXTENDED_ASSETS.filter((src) => !src.startsWith('/images/heroes/'))
+    : TIER_3_EXTENDED_ASSETS
 
   // All direct static assets
   const allStaticAssets = [
     ...TIER_1_CRITICAL_ASSETS,
     ...TIER_2_PRIORITY_ASSETS,
-    ...TIER_3_EXTENDED_ASSETS,
+    ...tier3Assets,
   ]
 
   const totalAssets = allStaticAssets.length + nextOptimizedUrls.length
@@ -259,18 +269,22 @@ export function startAssetPreloading(onProgress?: ProgressCallback): void {
 
   // 1. TIER 1 IMMEDIATE (Hero & Core): run immediately with high priority
   const loadTier1 = async () => {
+    const tier1List = isMobile
+      ? TIER_1_CRITICAL_ASSETS.filter((src) => !src.includes('onl5ggonl5ggonl5')) // Skip desktop hero on mobile
+      : TIER_1_CRITICAL_ASSETS
+
     await Promise.all(
-      TIER_1_CRITICAL_ASSETS.map(async (src) => {
+      tier1List.map(async (src) => {
         await decodeImage(src, true)
         reportProgress(src)
       })
     )
   }
 
-  // 2. TIER 2 & Next.js Optimized: run with controlled concurrency of 4
+  // 2. TIER 2 & Next.js Optimized: run with controlled concurrency
   const loadTier2AndOptimized = async () => {
     const tier2Queue = [...TIER_2_PRIORITY_ASSETS, ...nextOptimizedUrls]
-    await runWithConcurrency(tier2Queue, 4, async (src) => {
+    await runWithConcurrency(tier2Queue, concurrency, async (src) => {
       await decodeImage(src, false)
       reportProgress(src)
     })
@@ -278,7 +292,7 @@ export function startAssetPreloading(onProgress?: ProgressCallback): void {
 
   // 3. TIER 3: scheduled during idle time so GSAP animation finishes with 0 jank
   const loadTier3 = async () => {
-    await runWithConcurrency(TIER_3_EXTENDED_ASSETS, 4, async (src) => {
+    await runWithConcurrency(tier3Assets, concurrency, async (src) => {
       await decodeImage(src, false)
       reportProgress(src)
     })

@@ -202,10 +202,13 @@ export function SparkTitle({
     const baseRect = heroCard.getBoundingClientRect()
     const metaEl = heroCard.querySelector(`[data-spark-meta="${index}"]`) as HTMLElement | null
     if (!metaEl) return null
-    const r = metaEl.getBoundingClientRect()
+
+    // Find the icon element or badge inside metaEl to center the spark precisely
+    const iconEl = metaEl.querySelector('svg') || metaEl.querySelector('span') || metaEl
+    const ir = iconEl.getBoundingClientRect()
     return {
-      x: r.left - baseRect.left - 4,
-      y: r.top - baseRect.top + r.height * 0.5,
+      x: ir.left - baseRect.left + ir.width * 0.5,
+      y: ir.top - baseRect.top + ir.height * 0.5,
     }
   }, [heroCardRef])
 
@@ -265,10 +268,13 @@ export function SparkTitle({
           if (currentLineIndex < totalLines - 1) {
             isTransitioningRef.current = true
             timer = setTimeout(() => {
-              isTransitioningRef.current = false
               setCurrentLineIndex((prev) => prev + 1)
               setCurrentCharIndex(0)
-            }, 210)
+              // Keep smooth spring active across the line glide
+              setTimeout(() => {
+                isTransitioningRef.current = false
+              }, 240)
+            }, 190)
           } else {
             // All 3 lines finished writing!
             setIsCompleted(true)
@@ -276,7 +282,7 @@ export function SparkTitle({
             timer = setTimeout(() => {
               spawnEmber(sparkRef.current.x, sparkRef.current.y, 6, true)
               setPhase('fly_to_meta_0')
-            }, 280)
+            }, 260)
           }
         }
       }
@@ -288,14 +294,15 @@ export function SparkTitle({
       if (target) {
         sparkRef.current.targetX = target.x
         sparkRef.current.targetY = target.y
+        const isMobile = typeof window !== 'undefined' && window.innerWidth < 768
         flightRef.current = {
           startX: sparkRef.current.x,
           startY: sparkRef.current.y,
           targetX: target.x,
           targetY: target.y,
           startTime: performance.now(),
-          duration: 560, // fluid swoop down to metadata
-          arcHeight: -24,
+          duration: isMobile ? 500 : 540, // fluid swoop down to metadata
+          arcHeight: isMobile ? -16 : -24,
         }
       }
     }
@@ -310,7 +317,7 @@ export function SparkTitle({
       // Quick fluid pause, then immediately leap to Meta 1 d'affilé
       timer = setTimeout(() => {
         setPhase('fly_to_meta_1')
-      }, 160)
+      }, 140)
     }
 
     // D. Flight to Meta 1 ("FONDÉ EN 2024") with arced leap
@@ -319,14 +326,15 @@ export function SparkTitle({
       if (target) {
         sparkRef.current.targetX = target.x
         sparkRef.current.targetY = target.y
+        const isMobile = typeof window !== 'undefined' && window.innerWidth < 768
         flightRef.current = {
           startX: sparkRef.current.x,
           startY: sparkRef.current.y,
           targetX: target.x,
           targetY: target.y,
           startTime: performance.now(),
-          duration: 380, // quick buoyant leap across
-          arcHeight: -16,
+          duration: isMobile ? 320 : 360, // buoyant leap across
+          arcHeight: isMobile ? -10 : -14,
         }
       }
     }
@@ -341,7 +349,7 @@ export function SparkTitle({
       // Quick fluid pause, then immediately leap to Meta 2 d'affilé
       timer = setTimeout(() => {
         setPhase('fly_to_meta_2')
-      }, 160)
+      }, 140)
     }
 
     // F. Flight to Meta 2 ("AGENCE SPARKLINE") with arced leap
@@ -350,14 +358,15 @@ export function SparkTitle({
       if (target) {
         sparkRef.current.targetX = target.x
         sparkRef.current.targetY = target.y
+        const isMobile = typeof window !== 'undefined' && window.innerWidth < 768
         flightRef.current = {
           startX: sparkRef.current.x,
           startY: sparkRef.current.y,
           targetX: target.x,
           targetY: target.y,
           startTime: performance.now(),
-          duration: 380, // quick buoyant leap across
-          arcHeight: -16,
+          duration: isMobile ? 320 : 360, // buoyant leap across
+          arcHeight: isMobile ? -10 : -14,
         }
       }
     }
@@ -371,7 +380,7 @@ export function SparkTitle({
       }
       timer = setTimeout(() => {
         setPhase('fading_out')
-      }, 260)
+      }, 220)
     }
 
     // H. Soft Fade Out
@@ -379,7 +388,7 @@ export function SparkTitle({
       sparkRef.current.targetOpacity = 0
       timer = setTimeout(() => {
         setPhase('completed')
-      }, 450)
+      }, 400)
     }
 
     return () => clearTimeout(timer)
@@ -401,23 +410,29 @@ export function SparkTitle({
 
     const resizeCanvas = () => {
       if (!canvas || !measureEl) return
-      const rect = measureEl.getBoundingClientRect()
       const dpr = Math.min(typeof window !== 'undefined' ? window.devicePixelRatio || 1 : 1, 2.5)
 
-      const cssWidth = rect.width + (heroCard ? 0 : 128)
-      const cssHeight = rect.height + (heroCard ? 0 : 128)
+      const cssWidth = heroCard ? heroCard.offsetWidth : (container?.offsetWidth || 360)
+      const cssHeight = heroCard ? heroCard.offsetHeight : (container?.offsetHeight || 600)
 
       canvas.width = Math.round(cssWidth * dpr)
       canvas.height = Math.round(cssHeight * dpr)
       canvas.style.width = `${cssWidth}px`
       canvas.style.height = `${cssHeight}px`
 
-      ctx.setTransform(1, 0, 0, 1, 0, 0)
-      ctx.scale(dpr, dpr)
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
     }
 
     resizeCanvas()
     window.addEventListener('resize', resizeCanvas, { passive: true })
+
+    const resizeObserver = typeof ResizeObserver !== 'undefined' ? new ResizeObserver(() => {
+      resizeCanvas()
+    }) : null
+
+    if (resizeObserver && measureEl) {
+      resizeObserver.observe(measureEl)
+    }
 
     let startTime = performance.now()
 
@@ -430,10 +445,11 @@ export function SparkTitle({
       const particles = particlesRef.current
       const currentPhase = phaseRef.current
 
-      const dpr = window.devicePixelRatio || 1
-      const cssWidth = canvas.width / dpr
-      const cssHeight = canvas.height / dpr
-      ctx.clearRect(0, 0, cssWidth, cssHeight)
+      // Full canvas clear using identity transform to prevent any retina / DPR clipping or ghosting
+      ctx.save()
+      ctx.setTransform(1, 0, 0, 1, 0, 0)
+      ctx.clearRect(0, 0, canvas.width, canvas.height)
+      ctx.restore()
 
       // ── A. Update Position via Flight Trajectory OR Critical Spring Lerp ──
       if (spark.active) {
@@ -476,8 +492,8 @@ export function SparkTitle({
           }
         } else if (currentPhase === 'writing_title') {
           // Writing mode: Critically damped spring follower for buttery-smooth glide
-          const springK = isTransitioningRef.current ? 0.09 : 0.16
-          const damping = isTransitioningRef.current ? 0.78 : 0.72
+          const springK = isTransitioningRef.current ? 0.08 : 0.16
+          const damping = isTransitioningRef.current ? 0.82 : 0.72
 
           const dx = spark.targetX - spark.x
           const dy = spark.targetY - spark.y
@@ -616,7 +632,10 @@ export function SparkTitle({
         particles.length === 0 &&
         spark.opacity <= 0.01
       ) {
-        ctx.clearRect(0, 0, cssWidth, cssHeight)
+        ctx.save()
+        ctx.setTransform(1, 0, 0, 1, 0, 0)
+        ctx.clearRect(0, 0, canvas.width, canvas.height)
+        ctx.restore()
         animationFrameIdRef.current = null
         return
       }
@@ -632,6 +651,9 @@ export function SparkTitle({
         cancelAnimationFrame(animationFrameIdRef.current)
       }
       window.removeEventListener('resize', resizeCanvas)
+      if (resizeObserver) {
+        resizeObserver.disconnect()
+      }
     }
   }, [canvasRef, heroCardRef])
 

@@ -48,8 +48,8 @@ function getSharedObserver(): IntersectionObserver | null {
         }
       },
       {
-        rootMargin: isMobile ? '0px 0px -20px 0px' : '0px 0px -50px 0px',
-        threshold: 0.08,
+        rootMargin: isMobile ? '220px 0px 100px 0px' : '120px 0px 50px 0px',
+        threshold: 0,
       }
     )
   }
@@ -107,8 +107,8 @@ export function RevealOnScroll({
           }
         },
         {
-          rootMargin: rootMargin ?? (isMobile ? '0px 0px -20px 0px' : '0px 0px -50px 0px'),
-          threshold: threshold ?? 0.08,
+          rootMargin: rootMargin ?? (isMobile ? '220px 0px 100px 0px' : '120px 0px 50px 0px'),
+          threshold: threshold ?? 0,
         }
       )
 
@@ -138,9 +138,9 @@ export function RevealOnScroll({
     observerCallbacks.set(el, handleIntersect)
     observer.observe(el)
 
-    // Check if element is already inside viewport on mount
+    // Check if element is already inside or near viewport on mount
     const rect = el.getBoundingClientRect()
-    if (rect.top < window.innerHeight - 40 && rect.bottom > 20) {
+    if (rect.top < window.innerHeight + 180 && rect.bottom > -60) {
       reveal()
       if (once) {
         observer.unobserve(el)
