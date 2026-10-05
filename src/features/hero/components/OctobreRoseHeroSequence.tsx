@@ -71,9 +71,10 @@ export function OctobreRoseHeroSequence({
         const deltaX = targetDockX - centerRibbonX
         const deltaY = targetDockY - centerRibbonY
 
-        // Target dock ribbon size is ~28px
+        // Target dock ribbon size is ~36px (matching logo height)
         const currentSize = ribbonRect.height || 104
-        const targetScale = Math.max(0.24, Math.min(0.32, 28 / currentSize))
+        const targetDockHeight = dockRect.height || 36
+        const targetScale = Math.max(0.3, Math.min(0.42, targetDockHeight / currentSize))
 
         setFlightVector({ deltaX, deltaY, targetScale })
       } else {
@@ -82,7 +83,7 @@ export function OctobreRoseHeroSequence({
         setFlightVector({
           deltaX: isMobile ? -window.innerWidth * 0.32 : -window.innerWidth * 0.38,
           deltaY: isMobile ? -window.innerHeight * 0.32 : -window.innerHeight * 0.36,
-          targetScale: 0.28,
+          targetScale: 0.36,
         })
       }
 

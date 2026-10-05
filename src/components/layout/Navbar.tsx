@@ -52,7 +52,7 @@ export function Navbar({
           {/* Octobre Rose Dock Container: anchor for landing the flying ribbon */}
           <div
             id="octobre-rose-dock"
-            className="relative flex items-center justify-center min-w-[28px] min-h-[28px]"
+            className="relative flex items-center justify-center min-w-[34px] min-h-[34px] sm:min-w-[38px] sm:min-h-[38px]"
           >
             {octobreRibbonDocked && (
               <button
@@ -63,18 +63,18 @@ export function Navbar({
                 className="group relative cursor-pointer focus:outline-none flex items-center justify-center p-0.5 rounded-full hover:bg-white/10 transition-colors animate-in fade-in zoom-in-75 duration-300"
               >
                 {/* Soft Pink Ambient Glow on Hover */}
-                <div className="absolute -inset-1.5 bg-pink-500/35 rounded-full blur-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
+                <div className="absolute -inset-2 bg-pink-500/35 rounded-full blur-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
 
                 {/* Ribbon Image with levitation animation */}
-                <div className="relative w-6 h-6 sm:w-7 sm:h-7 animate-pink-ribbon">
+                <div className="relative w-8 h-8 sm:w-9 sm:h-9 animate-pink-ribbon">
                   <Image
                     src="/images/heroes/Glossy%20Pink%20Awareness%20Ribbon.png"
                     alt="Ruban rose Octobre Rose SPARKLINE"
-                    width={56}
-                    height={56}
+                    width={72}
+                    height={72}
                     unoptimized
                     priority
-                    className="w-full h-full object-contain drop-shadow-[0_2px_8px_rgba(244,63,94,0.6)] group-hover:scale-110 transition-transform duration-200"
+                    className="w-full h-full object-contain drop-shadow-[0_2px_10px_rgba(244,63,94,0.6)] group-hover:scale-110 transition-transform duration-200"
                   />
                 </div>
               </button>
