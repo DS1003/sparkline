@@ -229,11 +229,7 @@ export function OctobreRoseHeroSequence({
                 onClick={() => setIsModalOpen(true)}
               >
                 {/* Badge Tag: OCTOBRE ROSE */}
-                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-pink-500/20 border border-pink-500/40 text-pink-300 text-[10.5px] sm:text-[11.5px] font-bold tracking-[0.2em] uppercase backdrop-blur-md shadow-[0_0_16px_rgba(244,63,94,0.35)] mb-2.5">
-                  <span className="relative flex h-2 w-2">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-pink-400 opacity-75" />
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-pink-500 shadow-[0_0_8px_#F43F5E]" />
-                  </span>
+                <div className="inline-flex items-center px-3.5 py-1 rounded-full bg-pink-500/20 border border-pink-500/40 text-pink-300 text-[10.5px] sm:text-[11.5px] font-bold tracking-[0.2em] uppercase backdrop-blur-md shadow-[0_0_16px_rgba(244,63,94,0.35)] mb-2.5">
                   <span>OCTOBRE ROSE</span>
                 </div>
 

@@ -66,11 +66,7 @@ export function PinkOctoberBadge({ className = '', variant = 'floating' }: PinkO
             {/* Typography & Luminous Wave Composition */}
             <div className="flex flex-col justify-center text-left">
               {/* Tag / Header: OCTOBRE ROSE */}
-              <div className="flex items-center gap-1.5 mb-0.5">
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-pink-400 opacity-75" />
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-pink-500 shadow-[0_0_8px_#F43F5E]" />
-                </span>
+              <div className="flex items-center mb-0.5">
                 <span className="text-[10.5px] sm:text-[11px] font-bold tracking-[0.18em] uppercase bg-gradient-to-r from-pink-200 via-rose-100 to-pink-300 bg-clip-text text-transparent drop-shadow-[0_0_8px_rgba(244,63,94,0.5)]">
                   OCTOBRE ROSE
                 </span>
