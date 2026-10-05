@@ -200,12 +200,11 @@ export function OctobreRoseHeroSequence({
                   className="w-full h-full cursor-pointer pointer-events-auto filter drop-shadow-[0_12px_32px_rgba(244,63,94,0.65)]"
                 >
                   <Image
-                    src="/images/heroes/Glossy%20Pink%20Awareness%20Ribbon.png"
+                    src="/images/heroes/pink-october-ribbon-dock.webp"
                     alt="Ruban rose Octobre Rose SPARKLINE"
                     width={208}
                     height={208}
                     priority
-                    unoptimized
                     className="w-full h-full object-contain"
                   />
                 </motion.div>

@@ -100,11 +100,10 @@ export function Hero() {
           <div className="absolute inset-0 block md:hidden overflow-hidden">
             <div className="relative w-full h-full">
               <Image
-                src="/images/heroes/Sunset%20Lake%20with%20Glowing%20Cliff%20Path.png"
+                src="/images/heroes/hero-sunset-lake-mobile.webp"
                 alt="SPARKLINE Hero Background Mobile"
                 fill
                 priority
-                unoptimized
                 className="object-cover object-[62%_center]"
               />
             </div>
@@ -129,11 +128,10 @@ export function Hero() {
           {/* Desktop Image */}
           <div className="absolute inset-0 hidden md:block">
             <Image
-              src="/images/heroes/Golden%20Emblem%20Over%20Sunset%20Lake.png"
+              src="/images/heroes/hero-sunset-lake-desktop.webp"
               alt="SPARKLINE Hero Background Desktop"
               fill
               priority
-              unoptimized
               className="object-cover object-center"
             />
             {/* Desktop Left-to-Right Scrim: softened to let more warmth and landscape shine through */}

@@ -39,11 +39,10 @@ export function PinkOctoberModal({ isOpen, onClose }: PinkOctoberModalProps) {
             {/* ── Top-Right Flowing Corner Ribbon Decoration ── */}
             <div className="absolute top-0 right-0 w-44 sm:w-56 md:w-64 h-36 sm:h-44 md:h-52 pointer-events-none z-0 select-none opacity-90 sm:opacity-100 overflow-hidden">
               <Image
-                src="/images/heroes/ChatGPT%20Image%20Oct%205,%202026,%2010_22_38%20PM-1.png"
+                src="/images/heroes/pink-october-corner-ribbon.webp"
                 alt=""
                 fill
                 priority
-                unoptimized
                 className="object-contain object-top-right"
               />
             </div>
@@ -67,11 +66,10 @@ export function PinkOctoberModal({ isOpen, onClose }: PinkOctoberModalProps) {
                 {/* 3D Ribbon Badge */}
                 <div className="relative w-14 h-14 sm:w-16 sm:h-16 shrink-0 rounded-2xl bg-gradient-to-b from-[#FFF5F8] to-white border border-[#FFDCE5] shadow-[0_6px_18px_rgba(244,63,94,0.14)] ring-4 ring-[#FFF0F4] flex items-center justify-center">
                   <Image
-                    src="/images/heroes/ChatGPT%20Image%20Oct%205,%202026,%2010_22_40%20PM-2.png"
+                    src="/images/heroes/pink-october-ribbon-badge.webp"
                     alt="Ruban rose"
                     width={80}
                     height={80}
-                    unoptimized
                     priority
                     className="w-10 h-10 sm:w-11 sm:h-11 object-contain drop-shadow-[0_2px_8px_rgba(244,63,94,0.3)]"
                   />
@@ -101,11 +99,10 @@ export function PinkOctoberModal({ isOpen, onClose }: PinkOctoberModalProps) {
                 <div className="p-2.5 sm:p-4 rounded-2xl bg-white border border-[#FFE4EC] shadow-[0_2px_12px_rgba(244,63,94,0.04)] flex flex-col items-center text-center transition-all hover:border-pink-200">
                   <div className="w-8 h-8 sm:w-10 sm:h-10 relative mb-1.5 sm:mb-2 shrink-0">
                     <Image
-                      src="/images/heroes/ChatGPT%20Image%20Oct%205,%202026,%2010_22_42%20PM-3.png"
+                      src="/images/heroes/pink-october-icon-users.webp"
                       alt="Femmes concernées"
                       width={48}
                       height={48}
-                      unoptimized
                       className="w-full h-full object-contain drop-shadow-[0_2px_6px_rgba(244,63,94,0.2)]"
                     />
                   </div>
@@ -123,11 +120,10 @@ export function PinkOctoberModal({ isOpen, onClose }: PinkOctoberModalProps) {
                 <div className="p-2.5 sm:p-4 rounded-2xl bg-white border border-[#FFE4EC] shadow-[0_2px_12px_rgba(244,63,94,0.04)] flex flex-col items-center text-center transition-all hover:border-pink-200">
                   <div className="w-8 h-8 sm:w-10 sm:h-10 relative mb-1.5 sm:mb-2 shrink-0">
                     <Image
-                      src="/images/heroes/ChatGPT%20Image%20Oct%205,%202026,%2010_22_44%20PM-4.png"
+                      src="/images/heroes/pink-october-icon-heart.webp"
                       alt="Guérison précoce"
                       width={48}
                       height={48}
-                      unoptimized
                       className="w-full h-full object-contain drop-shadow-[0_2px_6px_rgba(244,63,94,0.2)]"
                     />
                   </div>
@@ -145,11 +141,10 @@ export function PinkOctoberModal({ isOpen, onClose }: PinkOctoberModalProps) {
                 <div className="p-2.5 sm:p-4 rounded-2xl bg-white border border-[#FFE4EC] shadow-[0_2px_12px_rgba(244,63,94,0.04)] flex flex-col items-center text-center transition-all hover:border-pink-200">
                   <div className="w-8 h-8 sm:w-10 sm:h-10 relative mb-1.5 sm:mb-2 shrink-0">
                     <Image
-                      src="/images/heroes/ChatGPT%20Image%20Oct%205,%202026,%2010_22_45%20PM-5.png"
+                      src="/images/heroes/pink-october-icon-calendar.webp"
                       alt="Examen clinique"
                       width={48}
                       height={48}
-                      unoptimized
                       className="w-full h-full object-contain drop-shadow-[0_2px_6px_rgba(244,63,94,0.2)]"
                     />
                   </div>
@@ -170,11 +165,10 @@ export function PinkOctoberModal({ isOpen, onClose }: PinkOctoberModalProps) {
                 <div className="flex items-start gap-2.5 sm:gap-3.5">
                   <div className="w-7 h-7 sm:w-8.5 sm:h-8.5 relative shrink-0 mt-0.5">
                     <Image
-                      src="/images/heroes/ChatGPT%20Image%20Oct%205,%202026,%2010_22_46%20PM-6.png"
+                      src="/images/heroes/pink-october-icon-shield.webp"
                       alt="Bouclier dépistage"
                       width={40}
                       height={40}
-                      unoptimized
                       className="w-full h-full object-contain drop-shadow-[0_2px_6px_rgba(244,63,94,0.18)]"
                     />
                   </div>
@@ -192,11 +186,10 @@ export function PinkOctoberModal({ isOpen, onClose }: PinkOctoberModalProps) {
                 <div className="flex items-start gap-2.5 sm:gap-3.5">
                   <div className="w-7 h-7 sm:w-8.5 sm:h-8.5 relative shrink-0 mt-0.5">
                     <Image
-                      src="/images/heroes/ChatGPT%20Image%20Oct%205,%202026,%2010_22_48%20PM-7.png"
+                      src="/images/heroes/pink-october-icon-dialogue.webp"
                       alt="Dialogue et écoute"
                       width={40}
                       height={40}
-                      unoptimized
                       className="w-full h-full object-contain drop-shadow-[0_2px_6px_rgba(244,63,94,0.18)]"
                     />
                   </div>
@@ -214,11 +207,10 @@ export function PinkOctoberModal({ isOpen, onClose }: PinkOctoberModalProps) {
                 <div className="flex items-start gap-2.5 sm:gap-3.5">
                   <div className="w-7 h-7 sm:w-8.5 sm:h-8.5 relative shrink-0 mt-0.5">
                     <Image
-                      src="/images/heroes/ChatGPT%20Image%20Oct%205,%202026,%2010_22_49%20PM-8.png"
+                      src="/images/heroes/pink-october-icon-leaf.webp"
                       alt="Agissons ensemble"
                       width={40}
                       height={40}
-                      unoptimized
                       className="w-full h-full object-contain drop-shadow-[0_2px_6px_rgba(244,63,94,0.18)]"
                     />
                   </div>

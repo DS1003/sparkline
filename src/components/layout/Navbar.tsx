@@ -65,11 +65,10 @@ export function Navbar({
                 {/* Ribbon Image with levitation animation */}
                 <div className="relative w-8 h-8 sm:w-9 sm:h-9 animate-pink-ribbon">
                   <Image
-                    src="/images/heroes/Glossy%20Pink%20Awareness%20Ribbon.png"
+                    src="/images/heroes/pink-october-ribbon-dock.webp"
                     alt="Ruban rose Octobre Rose SPARKLINE"
                     width={72}
                     height={72}
-                    unoptimized
                     priority
                     className="w-full h-full object-contain drop-shadow-[0_2px_10px_rgba(244,63,94,0.6)] group-hover:scale-110 group-hover:drop-shadow-[0_4px_16px_rgba(244,63,94,0.85)] transition-all duration-200"
                   />

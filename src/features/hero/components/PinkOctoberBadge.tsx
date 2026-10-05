@@ -42,12 +42,11 @@ export function PinkOctoberBadge({ className = '', variant = 'floating' }: PinkO
 
               <div className="relative w-[72px] h-[72px] sm:w-[78px] sm:h-[78px] xl:w-[84px] xl:h-[84px] animate-pink-ribbon">
                 <Image
-                  src="/images/heroes/Glossy%20Pink%20Awareness%20Ribbon.png"
+                  src="/images/heroes/pink-october-ribbon-dock.webp"
                   alt="Ruban rose Octobre Rose SPARKLINE"
                   width={168}
                   height={168}
                   priority
-                  unoptimized
                   className="w-full h-full object-contain drop-shadow-[0_8px_24px_rgba(244,63,94,0.55)] group-hover:scale-105 transition-transform duration-300"
                 />
               </div>
@@ -134,11 +133,10 @@ export function PinkOctoberBadge({ className = '', variant = 'floating' }: PinkO
           {/* Mini Ribbon */}
           <div className="relative w-6 h-6 shrink-0 animate-pink-ribbon">
             <Image
-              src="/images/heroes/Glossy%20Pink%20Awareness%20Ribbon.png"
+              src="/images/heroes/pink-october-ribbon-dock.webp"
               alt="Ruban rose Octobre Rose"
               width={48}
               height={48}
-              unoptimized
               className="w-full h-full object-contain drop-shadow-[0_2px_6px_rgba(244,63,94,0.5)]"
             />
           </div>
