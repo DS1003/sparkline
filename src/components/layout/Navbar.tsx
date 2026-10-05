@@ -60,11 +60,8 @@ export function Navbar({
                 onClick={onOctobreRibbonClick}
                 title="Octobre Rose • Ensemble pour la prévention (Cliquez pour en savoir plus)"
                 aria-label="Octobre Rose : Ensemble, faisons rayonner la prévention"
-                className="group relative cursor-pointer focus:outline-none flex items-center justify-center p-0.5 rounded-full hover:bg-white/10 transition-colors animate-in fade-in zoom-in-75 duration-300"
+                className="group relative cursor-pointer focus:outline-none flex items-center justify-center bg-transparent border-none p-0 transition-transform animate-in fade-in zoom-in-75 duration-300"
               >
-                {/* Soft Pink Ambient Glow on Hover */}
-                <div className="absolute -inset-2 bg-pink-500/35 rounded-full blur-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
-
                 {/* Ribbon Image with levitation animation */}
                 <div className="relative w-8 h-8 sm:w-9 sm:h-9 animate-pink-ribbon">
                   <Image
@@ -74,7 +71,7 @@ export function Navbar({
                     height={72}
                     unoptimized
                     priority
-                    className="w-full h-full object-contain drop-shadow-[0_2px_10px_rgba(244,63,94,0.6)] group-hover:scale-110 transition-transform duration-200"
+                    className="w-full h-full object-contain drop-shadow-[0_2px_10px_rgba(244,63,94,0.6)] group-hover:scale-110 group-hover:drop-shadow-[0_4px_16px_rgba(244,63,94,0.85)] transition-all duration-200"
                   />
                 </div>
               </button>
