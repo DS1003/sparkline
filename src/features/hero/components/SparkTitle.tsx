@@ -1,6 +1,9 @@
 'use client'
 
-import React, { useEffect, useRef, useState, useCallback } from 'react'
+import React, { useEffect, useLayoutEffect, useRef, useState, useCallback, useMemo } from 'react'
+
+const useIsomorphicLayoutEffect =
+  typeof window !== 'undefined' ? useLayoutEffect : useEffect
 
 interface SparkTitleProps {
   lines?: string[]
@@ -8,6 +11,8 @@ interface SparkTitleProps {
   heroCardRef?: React.RefObject<HTMLDivElement | null>
   canvasRef?: React.RefObject<HTMLCanvasElement | null>
   onMetaStamp?: (index: number) => void
+  onBadgeStamp?: () => void
+  onAnimationComplete?: () => void
 }
 
 interface Particle {
@@ -38,12 +43,16 @@ interface FlightPath {
 type SequencePhase =
   | 'idle'
   | 'writing_title'
+  | 'swoop_to_line_1'
+  | 'swoop_to_line_2'
   | 'fly_to_meta_0'
   | 'stamp_meta_0'
   | 'fly_to_meta_1'
   | 'stamp_meta_1'
   | 'fly_to_meta_2'
   | 'stamp_meta_2'
+  | 'fly_to_badge'
+  | 'stamp_badge'
   | 'fading_out'
   | 'completed'
 
@@ -59,12 +68,52 @@ export function SparkTitle({
   heroCardRef,
   canvasRef: externalCanvasRef,
   onMetaStamp,
+  onBadgeStamp,
+  onAnimationComplete,
 }: SparkTitleProps) {
   const containerRef = useRef<HTMLHeadingElement>(null)
   const localCanvasRef = useRef<HTMLCanvasElement>(null)
 
   // Use external canvas if provided (covers entire Hero card), else fallback to local
   const canvasRef = externalCanvasRef || localCanvasRef
+
+  // Pre-parse text lines to eliminate regex recalculations and string slicing on every character frame
+  const parsedLines = useMemo(() => {
+    return lines.map((lineText) => {
+      const highlightMatch = lineText.match(/\bnumérique?\b/i)
+      const highlightStart = highlightMatch?.index ?? -1
+      const highlightEnd =
+        highlightStart !== -1 && highlightMatch ? highlightStart + highlightMatch[0].length : -1
+      const chars = lineText.split('')
+      return { lineText, chars, highlightStart, highlightEnd }
+    })
+  }, [lines])
+
+  // Cached baseRect to eliminate repetitive DOM layout reflows (getBoundingClientRect)
+  const baseRectRef = useRef<DOMRect | null>(null)
+  const getBaseRect = useCallback(() => {
+    if (!baseRectRef.current) {
+      const heroCard = heroCardRef?.current
+      const container = containerRef.current
+      const el = heroCard || container
+      if (el) {
+        baseRectRef.current = el.getBoundingClientRect()
+      }
+    }
+    return baseRectRef.current
+  }, [heroCardRef])
+
+  useEffect(() => {
+    const handleInvalidate = () => {
+      baseRectRef.current = null
+    }
+    window.addEventListener('resize', handleInvalidate, { passive: true })
+    window.addEventListener('scroll', handleInvalidate, { passive: true })
+    return () => {
+      window.removeEventListener('resize', handleInvalidate)
+      window.removeEventListener('scroll', handleInvalidate)
+    }
+  }, [])
 
   const hasStartedRef = useRef(false)
   const [isStarted, setIsStarted] = useState(false)
@@ -92,13 +141,18 @@ export function SparkTitle({
   // Smooth parametric flight path controller
   const flightRef = useRef<FlightPath | null>(null)
 
-  const isTransitioningRef = useRef(false)
   const particlesRef = useRef<Particle[]>([])
   const animationFrameIdRef = useRef<number | null>(null)
 
   // Stable callback refs to prevent unnecessary re-render loops
   const onMetaStampRef = useRef(onMetaStamp)
   onMetaStampRef.current = onMetaStamp
+
+  const onBadgeStampRef = useRef(onBadgeStamp)
+  onBadgeStampRef.current = onBadgeStamp
+
+  const onAnimationCompleteRef = useRef(onAnimationComplete)
+  onAnimationCompleteRef.current = onAnimationComplete
 
   // Prevent duplicate execution of one-shot phase actions
   const executedPhasesRef = useRef<Set<string>>(new Set())
@@ -113,6 +167,7 @@ export function SparkTitle({
 
       startTimer = setTimeout(() => {
         setIsStarted(true)
+        phaseRef.current = 'writing_title'
         setPhase('writing_title')
         setCurrentLineIndex(0)
         setCurrentCharIndex(0)
@@ -195,11 +250,35 @@ export function SparkTitle({
     }
   }
 
+  const spawnBadgeSupernovaBurst = (x: number, y: number) => {
+    // Spectacular multi-ring celestial supernova: 32 radiant sparks in 360 degrees
+    for (let i = 0; i < 32; i++) {
+      const angle = (i / 32) * Math.PI * 2 + (Math.random() - 0.5) * 0.25
+      const speed = 2.4 + Math.random() * 5.4
+      const isStreak = Math.random() > 0.35
+
+      particlesRef.current.push({
+        x,
+        y,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed - 0.35,
+        size: isStreak ? 1.2 + Math.random() * 2.2 : 1.4 + Math.random() * 2.6,
+        color: PALETTE[Math.floor(Math.random() * PALETTE.length)],
+        alpha: 1,
+        life: 0,
+        maxLife: 32 + Math.random() * 26,
+        isStreak,
+        drag: 0.94,
+        buoyancy: -0.06,
+      })
+    }
+  }
+
   // ── 2. Target Coordinate Resolvers ──
   const getMetaTarget = useCallback((index: number) => {
     const heroCard = heroCardRef?.current
-    if (!heroCard) return null
-    const baseRect = heroCard.getBoundingClientRect()
+    const baseRect = getBaseRect()
+    if (!heroCard || !baseRect) return null
     const metaEl = heroCard.querySelector(`[data-spark-meta="${index}"]`) as HTMLElement | null
     if (!metaEl) return null
 
@@ -210,36 +289,50 @@ export function SparkTitle({
       x: ir.left - baseRect.left + ir.width * 0.5,
       y: ir.top - baseRect.top + ir.height * 0.5,
     }
-  }, [heroCardRef])
+  }, [heroCardRef, getBaseRect])
 
-  const updateTargetFromDOM = useCallback(() => {
-    const curPhase = phaseRef.current
-    if (curPhase !== 'writing_title') return
-
+  const getBadgeTarget = useCallback(() => {
     const heroCard = heroCardRef?.current
+    const baseRect = getBaseRect()
+    if (!heroCard || !baseRect) return null
+    const badgeTargetEl = heroCard.querySelector('[data-spark-badge-target="true"]') as HTMLElement | null
+    if (!badgeTargetEl) return null
+
+    const ir = badgeTargetEl.getBoundingClientRect()
+    return {
+      x: ir.left - baseRect.left + ir.width * 0.5,
+      y: ir.top - baseRect.top + ir.height * 0.5,
+    }
+  }, [heroCardRef, getBaseRect])
+
+  // Synchronously lock spark position to the leading edge of the active character before paint
+  useIsomorphicLayoutEffect(() => {
+    const curPhase = phaseRef.current
+    if (curPhase !== 'writing_title' || currentCharIndex < 0) return
+
     const container = containerRef.current
-    const baseRect = heroCard ? heroCard.getBoundingClientRect() : container?.getBoundingClientRect()
+    const baseRect = getBaseRect()
     if (!baseRect || !container) return
 
     const activeCharEl = container.querySelector('[data-char-active="true"]') as HTMLElement | null
     if (activeCharEl) {
       const charRect = activeCharEl.getBoundingClientRect()
-      const targetX = charRect.right - baseRect.left + (heroCard ? 0 : 64)
-      const targetY = charRect.top - baseRect.top + charRect.height * 0.5 + (heroCard ? 0 : 64)
+      const targetX = charRect.right - baseRect.left
+      const targetY = charRect.top - baseRect.top + charRect.height * 0.5
 
       sparkRef.current.targetX = targetX
       sparkRef.current.targetY = targetY
 
-      if (sparkRef.current.x === 0 && sparkRef.current.y === 0) {
-        sparkRef.current.x = targetX
-        sparkRef.current.y = targetY
-      }
-    }
-  }, [heroCardRef])
+      // The spark is the leading torch — position it synchronously at the cutting tip!
+      sparkRef.current.x = targetX
+      sparkRef.current.y = targetY
+      sparkRef.current.vx = 0
+      sparkRef.current.vy = 0
 
-  useEffect(() => {
-    updateTargetFromDOM()
-  }, [currentLineIndex, currentCharIndex, updateTargetFromDOM])
+      // Emit incandescent sparks directly from the character being born
+      spawnEmber(targetX, targetY, 4, false)
+    }
+  }, [phase, currentLineIndex, currentCharIndex, getBaseRect])
 
   // ── 3. Step Sequencer: Title Writing -> Fluid Arced Flights to Metadata -> Gentle Dissolve ──
   useEffect(() => {
@@ -258,29 +351,57 @@ export function SparkTitle({
         if (currentCharIndex < currentLineText.length - 1) {
           const char = currentLineText[currentCharIndex]
           const isSpace = char === ' '
-          const delay = isSpace ? 24 : 36 + Math.random() * 16
+          const delay = isSpace ? 26 : 40 + Math.random() * 18
 
           timer = setTimeout(() => {
             setCurrentCharIndex((prev) => prev + 1)
           }, delay)
         } else {
-          // Current line finished
+          // Current line finished!
           if (currentLineIndex < totalLines - 1) {
-            isTransitioningRef.current = true
+            const nextLineIdx = currentLineIndex + 1
+            // Pause briefly on the completed line, then swoop gracefully to the start of the next line
             timer = setTimeout(() => {
-              setCurrentLineIndex((prev) => prev + 1)
-              setCurrentCharIndex(0)
-              // Keep smooth spring active across the line glide
-              setTimeout(() => {
-                isTransitioningRef.current = false
-              }, 240)
-            }, 190)
+              const container = containerRef.current
+              const baseRect = getBaseRect()
+              const nextFirstChar = container?.querySelector(
+                `[data-line="${nextLineIdx}"][data-char="0"]`
+              ) as HTMLElement | null
+
+              if (baseRect && nextFirstChar) {
+                const nr = nextFirstChar.getBoundingClientRect()
+                const targetX = nr.left - baseRect.left
+                const targetY = nr.top - baseRect.top + nr.height * 0.5
+
+                sparkRef.current.targetX = targetX
+                sparkRef.current.targetY = targetY
+
+                flightRef.current = {
+                  startX: sparkRef.current.x,
+                  startY: sparkRef.current.y,
+                  targetX,
+                  targetY,
+                  startTime: performance.now(),
+                  duration: 260, // fluid swoop down to the start of the next line
+                  arcHeight: -8,
+                }
+
+                const nextPhase = nextLineIdx === 1 ? 'swoop_to_line_1' : 'swoop_to_line_2'
+                phaseRef.current = nextPhase
+                setPhase(nextPhase)
+              } else {
+                // Immediate fallback if DOM measuring is unavailable
+                setCurrentLineIndex(nextLineIdx)
+                setCurrentCharIndex(0)
+              }
+            }, 110)
           } else {
             // All 3 lines finished writing!
             setIsCompleted(true)
             // Hold briefly with gentle flare, then start smooth swooping flight to STARTUP
             timer = setTimeout(() => {
               spawnEmber(sparkRef.current.x, sparkRef.current.y, 6, true)
+              phaseRef.current = 'fly_to_meta_0'
               setPhase('fly_to_meta_0')
             }, 260)
           }
@@ -304,6 +425,27 @@ export function SparkTitle({
           duration: isMobile ? 500 : 540, // fluid swoop down to metadata
           arcHeight: isMobile ? -16 : -24,
         }
+      } else {
+        // Fallback for mobile / dynamic layout: retry or proceed smoothly
+        timer = setTimeout(() => {
+          const retryTarget = getMetaTarget(0)
+          if (retryTarget) {
+            sparkRef.current.targetX = retryTarget.x
+            sparkRef.current.targetY = retryTarget.y
+            const isMobile = typeof window !== 'undefined' && window.innerWidth < 768
+            flightRef.current = {
+              startX: sparkRef.current.x,
+              startY: sparkRef.current.y,
+              targetX: retryTarget.x,
+              targetY: retryTarget.y,
+              startTime: performance.now(),
+              duration: isMobile ? 500 : 540,
+              arcHeight: isMobile ? -16 : -24,
+            }
+          } else {
+            setPhase('stamp_meta_0')
+          }
+        }, 150)
       }
     }
 
@@ -336,6 +478,26 @@ export function SparkTitle({
           duration: isMobile ? 320 : 360, // buoyant leap across
           arcHeight: isMobile ? -10 : -14,
         }
+      } else {
+        timer = setTimeout(() => {
+          const retryTarget = getMetaTarget(1)
+          if (retryTarget) {
+            sparkRef.current.targetX = retryTarget.x
+            sparkRef.current.targetY = retryTarget.y
+            const isMobile = typeof window !== 'undefined' && window.innerWidth < 768
+            flightRef.current = {
+              startX: sparkRef.current.x,
+              startY: sparkRef.current.y,
+              targetX: retryTarget.x,
+              targetY: retryTarget.y,
+              startTime: performance.now(),
+              duration: isMobile ? 320 : 360,
+              arcHeight: isMobile ? -10 : -14,
+            }
+          } else {
+            setPhase('stamp_meta_1')
+          }
+        }, 150)
       }
     }
 
@@ -368,10 +530,30 @@ export function SparkTitle({
           duration: isMobile ? 320 : 360, // buoyant leap across
           arcHeight: isMobile ? -10 : -14,
         }
+      } else {
+        timer = setTimeout(() => {
+          const retryTarget = getMetaTarget(2)
+          if (retryTarget) {
+            sparkRef.current.targetX = retryTarget.x
+            sparkRef.current.targetY = retryTarget.y
+            const isMobile = typeof window !== 'undefined' && window.innerWidth < 768
+            flightRef.current = {
+              startX: sparkRef.current.x,
+              startY: sparkRef.current.y,
+              targetX: retryTarget.x,
+              targetY: retryTarget.y,
+              startTime: performance.now(),
+              duration: isMobile ? 320 : 360,
+              arcHeight: isMobile ? -10 : -14,
+            }
+          } else {
+            setPhase('stamp_meta_2')
+          }
+        }, 150)
       }
     }
 
-    // G. Stamp Meta 2 ("AGENCE SPARKLINE") & Soft Dissolution
+    // G. Stamp Meta 2 ("AGENCE SPARKLINE") -> SOAR UPWARD TO BADGE!
     else if (phase === 'stamp_meta_2') {
       if (!executedPhasesRef.current.has('stamp_meta_2')) {
         executedPhasesRef.current.add('stamp_meta_2')
@@ -379,20 +561,72 @@ export function SparkTitle({
         spawnStampBurst(sparkRef.current.x, sparkRef.current.y)
       }
       timer = setTimeout(() => {
-        setPhase('fading_out')
-      }, 220)
+        setPhase('fly_to_badge')
+      }, 160)
     }
 
-    // H. Soft Fade Out
+    // H. Flight to Badge ("SPARK THE CHANGE, ILLUMINATE SUCCESS") with majestic soaring upward arc
+    else if (phase === 'fly_to_badge') {
+      const target = getBadgeTarget()
+      if (target) {
+        sparkRef.current.targetX = target.x
+        sparkRef.current.targetY = target.y
+        const isMobile = typeof window !== 'undefined' && window.innerWidth < 768
+        flightRef.current = {
+          startX: sparkRef.current.x,
+          startY: sparkRef.current.y,
+          targetX: target.x,
+          targetY: target.y,
+          startTime: performance.now(),
+          duration: isMobile ? 650 : 720,
+          arcHeight: isMobile ? -50 : -85,
+        }
+      } else {
+        timer = setTimeout(() => {
+          const retryTarget = getBadgeTarget()
+          if (retryTarget) {
+            sparkRef.current.targetX = retryTarget.x
+            sparkRef.current.targetY = retryTarget.y
+            const isMobile = typeof window !== 'undefined' && window.innerWidth < 768
+            flightRef.current = {
+              startX: sparkRef.current.x,
+              startY: sparkRef.current.y,
+              targetX: retryTarget.x,
+              targetY: retryTarget.y,
+              startTime: performance.now(),
+              duration: isMobile ? 650 : 720,
+              arcHeight: isMobile ? -50 : -85,
+            }
+          } else {
+            setPhase('stamp_badge')
+          }
+        }, 150)
+      }
+    }
+
+    // I. Grand Finale: Stamp & Ignite Badge!
+    else if (phase === 'stamp_badge') {
+      if (!executedPhasesRef.current.has('stamp_badge')) {
+        executedPhasesRef.current.add('stamp_badge')
+        onBadgeStampRef.current?.()
+        spawnBadgeSupernovaBurst(sparkRef.current.x, sparkRef.current.y)
+      }
+      timer = setTimeout(() => {
+        setPhase('fading_out')
+      }, 280)
+    }
+
+    // J. Soft Fade Out
     else if (phase === 'fading_out') {
       sparkRef.current.targetOpacity = 0
       timer = setTimeout(() => {
         setPhase('completed')
+        onAnimationCompleteRef.current?.()
       }, 400)
     }
 
     return () => clearTimeout(timer)
-  }, [isStarted, phase, currentLineIndex, currentCharIndex, lines, getMetaTarget])
+  }, [isStarted, phase, currentLineIndex, currentCharIndex, lines, getMetaTarget, getBadgeTarget])
 
   // ── 4. Unified HiDPI Canvas & High-Vibe Physics Motion Engine ──
   useEffect(() => {
@@ -410,7 +644,8 @@ export function SparkTitle({
 
     const resizeCanvas = () => {
       if (!canvas || !measureEl) return
-      const dpr = Math.min(typeof window !== 'undefined' ? window.devicePixelRatio || 1 : 1, 2.5)
+      // Cap DPR at 1.5 to eliminate GPU fillrate bottlenecks on 4K/Retina displays with zero visual loss
+      const dpr = Math.min(typeof window !== 'undefined' ? window.devicePixelRatio || 1 : 1, 1.5)
 
       const cssWidth = heroCard ? heroCard.offsetWidth : (container?.offsetWidth || 360)
       const cssHeight = heroCard ? heroCard.offsetHeight : (container?.offsetHeight || 600)
@@ -486,31 +721,34 @@ export function SparkTitle({
             spark.vx = 0
             spark.vy = 0
             flightRef.current = null
-            if (currentPhase === 'fly_to_meta_0') setPhase('stamp_meta_0')
-            else if (currentPhase === 'fly_to_meta_1') setPhase('stamp_meta_1')
-            else if (currentPhase === 'fly_to_meta_2') setPhase('stamp_meta_2')
+            if (currentPhase === 'swoop_to_line_1') {
+              phaseRef.current = 'writing_title'
+              setPhase('writing_title')
+              setCurrentLineIndex(1)
+              setCurrentCharIndex(0)
+            } else if (currentPhase === 'swoop_to_line_2') {
+              phaseRef.current = 'writing_title'
+              setPhase('writing_title')
+              setCurrentLineIndex(2)
+              setCurrentCharIndex(0)
+            } else if (currentPhase === 'fly_to_meta_0') {
+              phaseRef.current = 'stamp_meta_0'
+              setPhase('stamp_meta_0')
+            } else if (currentPhase === 'fly_to_meta_1') {
+              phaseRef.current = 'stamp_meta_1'
+              setPhase('stamp_meta_1')
+            } else if (currentPhase === 'fly_to_meta_2') {
+              phaseRef.current = 'stamp_meta_2'
+              setPhase('stamp_meta_2')
+            } else if (currentPhase === 'fly_to_badge') {
+              phaseRef.current = 'stamp_badge'
+              setPhase('stamp_badge')
+            }
           }
         } else if (currentPhase === 'writing_title') {
-          // Writing mode: Critically damped spring follower for buttery-smooth glide
-          const springK = isTransitioningRef.current ? 0.08 : 0.16
-          const damping = isTransitioningRef.current ? 0.82 : 0.72
-
-          const dx = spark.targetX - spark.x
-          const dy = spark.targetY - spark.y
-
-          spark.vx += dx * springK
-          spark.vy += dy * springK
-          spark.vx *= damping
-          spark.vy *= damping
-
-          spark.x += spark.vx
-          spark.y += spark.vy
-
-          // Add a very subtle organic floating wave (vibe) while moving or hovering
-          const moveSpeed = Math.hypot(spark.vx, spark.vy)
-          if (moveSpeed > 0.5 && Math.random() > 0.55) {
-            spawnEmber(spark.x, spark.y, 1)
-          }
+          // Synchronous smooth tracking — zero lag behind the written characters!
+          spark.x += (spark.targetX - spark.x) * 0.85
+          spark.y += (spark.targetY - spark.y) * 0.85
         } else {
           // Stamping & fading phases: stay strictly locked at metadata item, zero drift
           spark.vx = 0
@@ -587,40 +825,43 @@ export function SparkTitle({
         }
       }
 
-      // ── C. Render Physical Particles (Directional Streaks + Floating Embers) ──
-      for (let i = particles.length - 1; i >= 0; i--) {
-        const p = particles[i]
-        p.vx *= p.drag
-        p.vy *= p.drag
-        p.vy += p.buoyancy
-        p.x += p.vx
-        p.y += p.vy
-        p.life++
-        p.alpha = 1 - p.life / p.maxLife
-
-        if (p.life >= p.maxLife || p.alpha <= 0) {
-          particles.splice(i, 1)
-          continue
-        }
-
+      // ── C. Render Physical Particles (High-Performance GPU Additive Batch) ──
+      const pLen = particles.length
+      if (pLen > 0) {
         ctx.save()
-        ctx.globalAlpha = Math.max(0, Math.min(1, p.alpha))
+        ctx.globalCompositeOperation = 'lighter'
 
-        if (p.isStreak) {
-          ctx.beginPath()
-          ctx.moveTo(p.x, p.y)
-          ctx.lineTo(p.x - p.vx * 2.2, p.y - p.vy * 2.2)
-          ctx.strokeStyle = p.color
-          ctx.lineWidth = p.size
-          ctx.lineCap = 'round'
-          ctx.stroke()
-        } else {
-          ctx.beginPath()
-          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2)
-          ctx.fillStyle = p.color
-          ctx.shadowColor = p.color
-          ctx.shadowBlur = 6
-          ctx.fill()
+        for (let i = pLen - 1; i >= 0; i--) {
+          const p = particles[i]
+          p.vx *= p.drag
+          p.vy *= p.drag
+          p.vy += p.buoyancy
+          p.x += p.vx
+          p.y += p.vy
+          p.life++
+          p.alpha = 1 - p.life / p.maxLife
+
+          if (p.life >= p.maxLife || p.alpha <= 0) {
+            particles.splice(i, 1)
+            continue
+          }
+
+          ctx.globalAlpha = Math.max(0, Math.min(1, p.alpha))
+
+          if (p.isStreak) {
+            ctx.beginPath()
+            ctx.moveTo(p.x, p.y)
+            ctx.lineTo(p.x - p.vx * 2.2, p.y - p.vy * 2.2)
+            ctx.strokeStyle = p.color
+            ctx.lineWidth = p.size
+            ctx.lineCap = 'round'
+            ctx.stroke()
+          } else {
+            ctx.beginPath()
+            ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2)
+            ctx.fillStyle = p.color
+            ctx.fill()
+          }
         }
 
         ctx.restore()
@@ -660,7 +901,7 @@ export function SparkTitle({
   return (
     <h1
       ref={containerRef}
-      className={`relative heading-style-01 text-[clamp(1.75rem,6.5vw,36px)] sm:text-[clamp(2.1rem,4.2vw,46px)] md:text-[clamp(42px,4.5vw,54px)] lg:text-[clamp(52px,4.8vw,68px)] xl:text-[clamp(66px,5vw,84px)] 2xl:text-[clamp(78px,5.2vw,96px)] font-normal text-[#FFFFFF] tracking-[-0.035em] leading-[1.04] max-w-none lg:max-w-[960px] xl:max-w-[1200px] select-none ${isCompleted ? 'animate-spark-title-sheen' : ''} ${className}`}
+      className={`relative heading-style-01 text-[clamp(2.15rem,8.4vw,40px)] sm:text-[clamp(2.4rem,4.8vw,48px)] md:text-[clamp(42px,4.5vw,54px)] lg:text-[clamp(52px,4.8vw,68px)] xl:text-[clamp(66px,5vw,84px)] 2xl:text-[clamp(78px,5.2vw,96px)] font-normal text-[#FFFFFF] tracking-[-0.035em] leading-[1.04] max-w-none lg:max-w-[960px] xl:max-w-[1200px] select-none ${className}`}
       style={{ fontFamily: 'var(--font-family--primary-font)' }}
     >
       {/* Fallback local canvas if external full-hero canvas is not provided */}
@@ -672,21 +913,16 @@ export function SparkTitle({
       )}
 
       {/* 3 Strict Lines of Text Rendered with Dynamic Molten Heat Reveal */}
-      {lines.map((lineText, lineIdx) => {
+      {parsedLines.map(({ chars, highlightStart, highlightEnd }, lineIdx) => {
         const isLineActive = isStarted && lineIdx === currentLineIndex
         const isLinePast = isStarted && (lineIdx < currentLineIndex || isCompleted)
 
-        // Highlight "numérique" on the 3rd line with vibrant brand radiant gradient
-        const highlightMatch = lineText.match(/\bnumérique?\b/i)
-        const highlightStart = highlightMatch?.index ?? -1
-        const highlightEnd = highlightStart !== -1 ? highlightStart + highlightMatch![0].length : -1
-
         return (
           <span key={lineIdx} className="block whitespace-nowrap relative">
-            {lineText.split('').map((char, charIdx) => {
+            {chars.map((char, charIdx) => {
               const isCharRevealed =
                 isStarted &&
-                (isLinePast || (isLineActive && charIdx <= currentCharIndex))
+                (isLinePast || (isLineActive && currentCharIndex >= 0 && charIdx <= currentCharIndex))
               const isCurrentTip =
                 phase === 'writing_title' &&
                 isLineActive &&
@@ -697,18 +933,31 @@ export function SparkTitle({
               return (
                 <span
                   key={charIdx}
+                  data-line={lineIdx}
+                  data-char={charIdx}
                   data-char-active={isCurrentTip ? 'true' : undefined}
                   className={`inline-block select-none ${
-                    isCharRevealed ? 'animate-char-ignite' : ''
-                  } ${isHighlightChar ? 'italic font-medium' : ''}`}
+                    isHighlightChar ? 'font-medium' : ''
+                  }`}
                   style={{
                     opacity: isCharRevealed ? 1 : 0,
                     visibility: isCharRevealed ? 'visible' : 'hidden',
-                    fontStyle: isHighlightChar ? 'italic' : 'normal',
-                    color: isHighlightChar ? '#FF6A1A' : '#FFFFFF',
-                    textShadow: isHighlightChar
-                      ? '0 2px 14px rgba(255, 106, 26, 0.65), 0 0 24px rgba(235, 70, 4, 0.45), 0 1px 3px rgba(0,0,0,0.9)'
-                      : '0 2px 10px rgba(0,0,0,0.65), 0 1px 3px rgba(0,0,0,0.8)',
+                    transform: isCharRevealed
+                      ? 'translate3d(0, 0, 0)'
+                      : 'translate3d(0, 4px, 0)',
+                    transition: isCompleted
+                      ? 'none'
+                      : 'transform 0.16s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.1s ease-out, color 0.14s ease-out',
+                    willChange: isCompleted ? 'auto' : 'transform, opacity',
+                    fontStyle: 'normal',
+                    color: isCurrentTip
+                      ? '#FFE57F'
+                      : isHighlightChar
+                        ? '#FF5C1C'
+                        : '#FFFFFF',
+                    textShadow: isCurrentTip
+                      ? '0 0 10px #FFFFFF, 0 0 20px #FF9100, 0 0 35px #EB4604'
+                      : '0 2px 10px rgba(0,0,0,0.7), 0 1px 3px rgba(0,0,0,0.85)',
                   }}
                 >
                   {char === ' ' ? '\u00A0' : char}

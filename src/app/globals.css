@@ -606,6 +606,67 @@ div:hover > .animate-vertical-track-reverse {
   animation: neonSparkFloat 2.8s ease-in-out infinite;
 }
 
+/* ─── Hero 3D Badge Entrance & Supernova Ignition ─── */
+@keyframes badgeEntranceBloom {
+  0% {
+    opacity: 0;
+    transform: scale(0.88) translateY(-12px);
+    filter: blur(6px) brightness(1.5);
+  }
+  65% {
+    opacity: 1;
+    transform: scale(1.02) translateY(1px);
+    filter: blur(0px) brightness(1.15);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    filter: none;
+  }
+}
+
+@keyframes badgeSupernovaIgnite {
+  0% {
+    transform: scale(1) rotate(0deg);
+    filter: drop-shadow(0 0 4px #FFFFFF) drop-shadow(0 0 10px #FF5C1C);
+  }
+  32% {
+    transform: scale(1.6) rotate(45deg);
+    filter: drop-shadow(0 0 14px #FFFFFF) drop-shadow(0 0 24px #FFA84A) drop-shadow(0 0 38px #FF5C1C);
+  }
+  70% {
+    transform: scale(0.96) rotate(-4deg);
+    filter: drop-shadow(0 0 8px #FFFFFF) drop-shadow(0 0 16px #FF6A1A);
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    filter: drop-shadow(0 0 3px #FFFFFF) drop-shadow(0 0 8px #FF6A1A) drop-shadow(0 0 14px #FF3B00);
+  }
+}
+
+@keyframes badgeShockwaveExpand {
+  0% {
+    opacity: 0.95;
+    transform: scale(0.6);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(2.4);
+  }
+}
+
+.animate-badge-entrance {
+  animation: badgeEntranceBloom 0.95s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-spark-supernova {
+  animation: badgeSupernovaIgnite 0.85s cubic-bezier(0.2, 0.9, 0.3, 1.2) forwards;
+}
+
+.animate-badge-shockwave {
+  animation: badgeShockwaveExpand 0.75s cubic-bezier(0, 0.6, 0.2, 1) forwards;
+}
+
 @keyframes shimmer {
   100% {
     transform: translateX(100%);
@@ -616,17 +677,15 @@ div:hover > .animate-vertical-track-reverse {
 @keyframes sparkCharIgnite {
   0% {
     opacity: 0;
-    filter: brightness(2.4);
-    text-shadow: 0 0 16px #FFFFFF, 0 0 28px #FFB901, 0 0 45px #EB4604;
+    filter: brightness(2);
   }
-  35% {
+  40% {
     opacity: 1;
-    filter: brightness(1.6);
-    text-shadow: 0 0 12px #FFFFFF, 0 0 22px #FF9100, 0 0 35px #EB4604;
+    filter: brightness(1.3);
   }
   100% {
     opacity: 1;
-    filter: brightness(1);
+    filter: none;
   }
 }
 
@@ -640,8 +699,7 @@ div:hover > .animate-vertical-track-reverse {
 }
 
 .animate-char-ignite {
-  animation: sparkCharIgnite 0.42s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  will-change: opacity, filter;
+  animation: sparkCharIgnite 0.38s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .animate-spark-title-sheen {
@@ -745,6 +803,36 @@ div:hover > .animate-vertical-track-reverse {
   animation: stampedGlowPulse 2.8s ease-in-out infinite;
 }
 
+@keyframes pinkRibbonFloat {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-4px) rotate(1.2deg);
+  }
+}
+
+@keyframes pinkAuraPulse {
+  0%, 100% {
+    opacity: 0.55;
+    transform: scale(0.95);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.08);
+  }
+}
+
+.animate-pink-ribbon {
+  animation: pinkRibbonFloat 4.2s ease-in-out infinite;
+  will-change: transform;
+}
+
+.animate-pink-aura {
+  animation: pinkAuraPulse 3.5s ease-in-out infinite;
+  will-change: opacity, transform;
+}
+
 
 /* ─── Prevent Mobile Auto-Zoom on Form Inputs (iOS Safari / Mobile Chrome) ─── */
 @media screen and (max-width: 767px) {
@@ -814,7 +902,7 @@ body {
 .reveal-item.is-revealed {
   opacity: 1 !important;
   transform: none !important;
-  clip-path: inset(0 0 0% 0) !important;
+  clip-path: none !important;
   will-change: auto;
 }
 

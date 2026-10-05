@@ -29,8 +29,8 @@ export const TIER_1_CRITICAL_ASSETS = [
   '/images/brand/sparkline-logo-dark.svg',
   '/images/brand/sparkline-symbol.svg',
   '/images/brand/favicon-sparkline.png',
-  '/images/heroes/Gemini_Generated_Image_onl5ggonl5ggonl5.jpeg',
-  '/images/heroes/Gemini_Generated_Image_ge2ycmge2ycmge2y.jpeg',
+  '/images/heroes/Golden%20Emblem%20Over%20Sunset%20Lake.png',
+  '/images/heroes/Sunset%20Lake%20with%20Glowing%20Cliff%20Path.png',
 ]
 
 // ── TIER 2: High Priority (Services & Featured Work) ──

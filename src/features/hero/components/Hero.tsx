@@ -7,6 +7,8 @@ import { Navbar } from '@/components/layout/Navbar'
 import { RevealOnScroll } from '@/components/motion/RevealOnScroll'
 import { Button } from '@/components/ui/Button'
 import { SparkTitle } from './SparkTitle'
+import { HeroBadge3D } from './HeroBadge3D'
+import { OctobreRoseHeroSequence } from './OctobreRoseHeroSequence'
 
 const HERO_TITLE_LINES = ['Concevoir la', 'nouvelle ère', 'du numérique']
 
@@ -17,6 +19,16 @@ export function Hero() {
 
   // Stamped state for the 3 metadata items: [STARTUP, FONDÉ EN 2024, AGENCE SPARKLINE]
   const [stampedMeta, setStampedMeta] = useState<[boolean, boolean, boolean]>([false, false, false])
+  const [isBadgeIgnited, setIsBadgeIgnited] = useState<boolean>(false)
+
+  // Octobre Rose sequence states
+  const [isHeroCompleted, setIsHeroCompleted] = useState<boolean>(false)
+  const [isOctobreDocked, setIsOctobreDocked] = useState<boolean>(false)
+  const [isOctobreModalOpen, setIsOctobreModalOpen] = useState<boolean>(false)
+
+  const handleHeroComplete = useCallback(() => {
+    setIsHeroCompleted(true)
+  }, [])
 
   const handleMetaStamp = useCallback((index: number) => {
     setStampedMeta((prev) => {
@@ -27,6 +39,10 @@ export function Hero() {
       }
       return next
     })
+  }, [])
+
+  const handleBadgeStamp = useCallback(() => {
+    setIsBadgeIgnited(true)
   }, [])
 
   useEffect(() => {
@@ -78,94 +94,94 @@ export function Hero() {
         <div
           ref={heroBgRef}
           className="hero-bg-container absolute inset-0 pointer-events-none select-none overflow-hidden"
+          style={{ willChange: 'transform', transform: 'translateZ(0)' }}
         >
-          {/* Mobile Image — Shifted upward to keep the glowing emblem fully visible above the title */}
+          {/* Mobile Image — Vertical Portrait Composition with Glowing Cliff Path */}
           <div className="absolute inset-0 block md:hidden overflow-hidden">
-            <div className="relative w-full h-full -translate-y-11 sm:-translate-y-12 scale-[1.09] origin-top">
+            <div className="relative w-full h-full">
               <Image
-                src="/images/heroes/Gemini_Generated_Image_ge2ycmge2ycmge2y.jpeg"
+                src="/images/heroes/Sunset%20Lake%20with%20Glowing%20Cliff%20Path.png"
                 alt="SPARKLINE Hero Background Mobile"
                 fill
                 priority
                 unoptimized
-                className="object-cover object-center"
+                className="object-cover object-[62%_center]"
               />
             </div>
-            {/* Mobile Bottom Scrim Gradient for Enhanced Text Legibility */}
+            {/* Mobile Multi-Stop Scrim Gradient: harmonious atmospheric balance */}
             <div
               className="absolute inset-0 pointer-events-none"
               style={{
                 background:
-                  'linear-gradient(180deg, rgba(7,7,9,0) 0%, rgba(7,7,9,0) 36%, rgba(7,7,9,0.45) 50%, rgba(7,7,9,0.82) 68%, rgba(7,7,9,0.98) 100%)',
+                  'linear-gradient(180deg, rgba(7,7,9,0.68) 0%, rgba(7,7,9,0.38) 22%, rgba(7,7,9,0.55) 48%, rgba(7,7,9,0.84) 78%, rgba(7,7,9,0.96) 100%)',
+              }}
+            />
+            {/* Soft Radial Backing for Mobile Title */}
+            <div
+              className="absolute inset-0 pointer-events-none"
+              style={{
+                background:
+                  'radial-gradient(ellipse 95% 65% at 50% 46%, rgba(7,7,9,0.45) 0%, transparent 75%)',
               }}
             />
           </div>
+
           {/* Desktop Image */}
           <div className="absolute inset-0 hidden md:block">
             <Image
-              src="/images/heroes/Gemini_Generated_Image_onl5ggonl5ggonl5.jpeg"
+              src="/images/heroes/Golden%20Emblem%20Over%20Sunset%20Lake.png"
               alt="SPARKLINE Hero Background Desktop"
               fill
               priority
               unoptimized
               className="object-cover object-center"
             />
+            {/* Desktop Left-to-Right Scrim: softened to let more warmth and landscape shine through */}
+            <div
+              className="absolute inset-0 pointer-events-none"
+              style={{
+                background:
+                  'linear-gradient(90deg, rgba(7,7,9,0.72) 0%, rgba(7,7,9,0.56) 28%, rgba(7,7,9,0.3) 48%, rgba(7,7,9,0.06) 64%, rgba(7,7,9,0) 78%)',
+              }}
+            />
+            {/* Desktop Top Vignette: lightened to preserve sunset sky luminosity */}
+            <div
+              className="absolute inset-0 pointer-events-none"
+              style={{
+                background:
+                  'linear-gradient(180deg, rgba(7,7,9,0.58) 0%, rgba(7,7,9,0.2) 14%, transparent 28%)',
+              }}
+            />
+            {/* Desktop Bottom Vignette: anchors bottom bar while remaining airy */}
+            <div
+              className="absolute inset-0 pointer-events-none"
+              style={{
+                background:
+                  'linear-gradient(0deg, rgba(7,7,9,0.78) 0%, rgba(7,7,9,0.45) 15%, rgba(7,7,9,0.12) 30%, transparent 45%)',
+              }}
+            />
           </div>
         </div>
 
-        {/* Top Navbar with Official Logo */}
-        <Navbar />
+        {/* Top Navbar with Official Logo & Docked Octobre Rose Ribbon */}
+        <Navbar
+          octobreRibbonDocked={isOctobreDocked}
+          onOctobreRibbonClick={() => setIsOctobreModalOpen(true)}
+        />
+
+        {/* Octobre Rose Cinematic Center Showcase & Flight to Logo */}
+        <OctobreRoseHeroSequence
+          isHeroCompleted={isHeroCompleted}
+          onDockComplete={() => setIsOctobreDocked(true)}
+          isDocked={isOctobreDocked}
+          isModalOpen={isOctobreModalOpen}
+          setIsModalOpen={setIsOctobreModalOpen}
+        />
 
         {/* Main Hero Headline Area with Real Spark Writing Effect */}
-        <div className="relative z-10 mt-auto mb-2 md:my-auto pt-1 sm:pt-4 md:pt-0 max-w-3xl lg:max-w-4xl xl:max-w-6xl py-1 sm:py-2.5 lg:py-2 xl:py-4 space-y-1.5 sm:space-y-3 lg:space-y-2.5 xl:space-y-4 flex flex-col items-center text-center lg:items-start lg:text-left">
-          <RevealOnScroll delay={0.1} className="hero-badge hidden md:block">
-            <div className="relative inline-flex items-center group cursor-default">
-              {/* Controlled Subtle Neon Rim Aura */}
-              <div
-                className="absolute -inset-0.5 rounded-full bg-gradient-to-r from-[#EB4604]/40 via-[#FF6A1A]/50 to-[#EB4604]/40 blur-[6px] opacity-60 pointer-events-none"
-              />
-
-              {/* 3D Extruded Outer Rim: Directional Light Gradient */}
-              <div
-                className="relative p-[1.5px] rounded-full bg-gradient-to-b from-[#FFA873] via-[#EB4604] to-[#380D00]"
-                style={{
-                  boxShadow: '0 10px 25px -4px rgba(0,0,0,0.85), 0 4px 10px rgba(0,0,0,0.6), 0 0 14px rgba(235,70,4,0.35)'
-                }}
-              >
-                {/* 3D Convex Pill Body */}
-                <div
-                  className="relative inline-flex items-center gap-2 sm:gap-2.5 px-4.5 py-1.5 sm:px-5 sm:py-2 rounded-full bg-gradient-to-b from-[#1F120A] via-[#0E0805] to-[#060403] backdrop-blur-xl overflow-hidden"
-                  style={{
-                    boxShadow: 'inset 0 1.5px 1px rgba(255,255,255,0.45), inset 0 -2px 3px rgba(0,0,0,0.85), inset 0 0 10px rgba(235,70,4,0.3)'
-                  }}
-                >
-                  <div className="absolute top-0 inset-x-5 h-[1px] bg-gradient-to-r from-transparent via-white/60 to-transparent pointer-events-none" />
-
-                  <div className="absolute inset-0 rounded-full overflow-hidden pointer-events-none">
-                    <div className="animate-neon-shimmer absolute inset-y-0 w-1/3 bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-[-20deg]" />
-                  </div>
-
-                  <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(255,106,26,0.18)_0%,transparent_70%)] pointer-events-none" />
-
-                  <svg
-                    viewBox="0 0 24 24"
-                    className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white animate-neon-spark relative z-10 shrink-0 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
-                    fill="currentColor"
-                  >
-                    <path d="M12 0C12 0 12 10.5 24 12C24 12 12 13.5 12 24C12 24 12 13.5 0 12C0 12 12 10.5 12 0Z" />
-                  </svg>
-
-                  <span
-                    className="relative z-10 text-[9.5px] sm:text-[10.5px] xl:text-[12px] font-bold tracking-[0.2em] sm:tracking-[0.24em] uppercase text-[#FFFBF7]"
-                    style={{
-                      textShadow: '0 1px 3px rgba(0,0,0,0.9), 0 0 2px #FFFFFF, 0 0 8px #FF7A29, 0 0 16px rgba(235,70,4,0.7)'
-                    }}
-                  >
-                    Spark The Change, Illuminate Success
-                  </span>
-                </div>
-              </div>
-            </div>
+        <div className="relative z-10 my-auto pt-2 pb-2 md:pt-0 max-w-3xl lg:max-w-4xl xl:max-w-6xl py-1 sm:py-2.5 lg:py-2 xl:py-4 space-y-2.5 sm:space-y-3 lg:space-y-2.5 xl:space-y-4 flex flex-col items-center text-center lg:items-start lg:text-left">
+          <RevealOnScroll delay={0.1} className="hero-badge block">
+            <HeroBadge3D isIgnited={isBadgeIgnited} />
           </RevealOnScroll>
 
           {/* Spark Writing Title on Strictly 3 Lines with Full-Hero Choreography */}
@@ -174,10 +190,12 @@ export function Hero() {
             heroCardRef={heroCardRef}
             canvasRef={canvasRef}
             onMetaStamp={handleMetaStamp}
+            onBadgeStamp={handleBadgeStamp}
+            onAnimationComplete={handleHeroComplete}
           />
 
           <RevealOnScroll delay={0.3} className="hero-subtext">
-            <p className="text-xs sm:text-sm lg:text-[13px] xl:text-base text-neutral-100 max-w-md xl:max-w-lg font-normal leading-relaxed drop-shadow-[0_2px_4px_rgba(0,0,0,0.85)]">
+            <p className="text-[13px] sm:text-sm lg:text-[13px] xl:text-base text-neutral-100 max-w-sm sm:max-w-md xl:max-w-lg font-normal leading-relaxed drop-shadow-[0_2px_4px_rgba(0,0,0,0.85)]">
               Accompagner les marques dans leur lancement, leur croissance et leur leadership grâce à un design d'exception.
             </p>
           </RevealOnScroll>
@@ -273,13 +291,13 @@ export function Hero() {
           </div>
 
           {/* Right Column: Dual Action Buttons */}
-          <div className="lg:col-span-5 flex items-center justify-center lg:justify-end">
-            <RevealOnScroll delay={0.5}>
-              <div className="flex flex-wrap sm:flex-nowrap items-center justify-center lg:justify-end gap-2.5 sm:gap-3 w-full sm:w-auto">
+          <div className="lg:col-span-5 flex items-center justify-center lg:justify-end overflow-visible">
+            <RevealOnScroll delay={0.5} className="overflow-visible">
+              <div className="flex flex-nowrap items-center justify-center lg:justify-end gap-2 sm:gap-3 w-full sm:w-auto p-1.5 -m-1.5 overflow-visible">
                 <Button
                   href="/projects"
                   variant="primary"
-                  className="px-4.5 sm:px-5.5 xl:px-6 py-2 sm:py-2.5 xl:py-3 text-xs sm:text-[13px] shrink-0"
+                  className="px-3.5 sm:px-5.5 xl:px-6 py-2 sm:py-2.5 xl:py-3 text-[11.5px] sm:text-[13px] shrink-0 whitespace-nowrap"
                 >
                   Voir les projets
                 </Button>
@@ -287,7 +305,7 @@ export function Hero() {
                 <Button
                   href="/contact"
                   variant="secondary"
-                  className="px-4.5 sm:px-5.5 xl:px-6 py-2 sm:py-2.5 xl:py-3 text-xs sm:text-[13px] shrink-0"
+                  className="px-3.5 sm:px-5.5 xl:px-6 py-2 sm:py-2.5 xl:py-3 text-[11.5px] sm:text-[13px] shrink-0 whitespace-nowrap"
                 >
                   Nous contacter
                 </Button>

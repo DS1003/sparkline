@@ -25,7 +25,7 @@ export function Button({
   ...props
 }: ButtonProps) {
   const baseClasses =
-    'group relative inline-flex items-center justify-center overflow-hidden rounded-full font-medium transition-all duration-300 select-none tracking-tight'
+    'group relative inline-flex items-center justify-center overflow-hidden rounded-full font-medium transition-all duration-300 select-none tracking-tight transform-gpu isolate'
 
   const variants = {
     primary:

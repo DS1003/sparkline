@@ -82,13 +82,13 @@ export default function RootLayout({
         <link
           rel="preload"
           as="image"
-          href="/images/heroes/Gemini_Generated_Image_onl5ggonl5ggonl5.jpeg"
+          href="/images/heroes/Golden%20Emblem%20Over%20Sunset%20Lake.png"
           media="(min-width: 768px)"
         />
         <link
           rel="preload"
           as="image"
-          href="/images/heroes/Gemini_Generated_Image_ge2ycmge2ycmge2y.jpeg"
+          href="/images/heroes/Sunset%20Lake%20with%20Glowing%20Cliff%20Path.png"
           media="(max-width: 767px)"
         />
       </head>
