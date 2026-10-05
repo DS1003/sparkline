@@ -161,34 +161,34 @@ export function OctobreRoseHeroSequence({
                   animate={
                     phase === 'center'
                       ? {
-                          scale: 1,
-                          opacity: 1,
-                          x: 0,
-                          y: 0,
-                          rotate: 0,
-                        }
+                        scale: 1,
+                        opacity: 1,
+                        x: 0,
+                        y: 0,
+                        rotate: 0,
+                      }
                       : {
-                          // Ultra-smooth, non-saccadé continuous glide to logo
-                          x: flightVector.deltaX,
-                          y: flightVector.deltaY,
-                          scale: flightVector.targetScale,
-                          rotate: -2,
-                          opacity: 1,
-                        }
+                        // Ultra-smooth, non-saccadé continuous glide to logo
+                        x: flightVector.deltaX,
+                        y: flightVector.deltaY,
+                        scale: flightVector.targetScale,
+                        rotate: -2,
+                        opacity: 1,
+                      }
                   }
                   transition={
                     phase === 'center'
                       ? {
-                          type: 'spring',
-                          damping: 18,
-                          stiffness: 200,
-                          mass: 0.8,
-                        }
+                        type: 'spring',
+                        damping: 18,
+                        stiffness: 200,
+                        mass: 0.8,
+                      }
                       : {
-                          // Deceleration curve for luxury cinematic glide
-                          duration: 0.95,
-                          ease: [0.16, 1, 0.3, 1],
-                        }
+                        // Deceleration curve for luxury cinematic glide
+                        duration: 0.95,
+                        ease: [0.16, 1, 0.3, 1],
+                      }
                   }
                   onAnimationComplete={() => {
                     if (phase === 'flying') {
@@ -224,9 +224,8 @@ export function OctobreRoseHeroSequence({
                   delay: phase === 'center' ? 0.16 : 0,
                   ease: 'easeOut',
                 }}
-                className={`flex flex-col items-center text-center ${
-                  phase === 'center' ? 'pointer-events-auto cursor-pointer' : 'pointer-events-none'
-                }`}
+                className={`flex flex-col items-center text-center ${phase === 'center' ? 'pointer-events-auto cursor-pointer' : 'pointer-events-none'
+                  }`}
                 onClick={() => setIsModalOpen(true)}
               >
                 {/* Badge Tag: OCTOBRE ROSE */}
@@ -300,7 +299,6 @@ export function OctobreRoseHeroSequence({
 
                 <div>
                   <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-pink-50 border border-pink-200 text-pink-700 text-[10.5px] font-bold tracking-wider uppercase mb-1.5 shadow-sm">
-                    <Sparkles className="w-3 h-3 text-pink-500" />
                     Campagne Nationale
                   </div>
                   <h3 className="text-xl sm:text-2xl font-extrabold tracking-tight text-neutral-950">
