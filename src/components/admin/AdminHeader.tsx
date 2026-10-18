@@ -16,6 +16,7 @@ import {
   LogOut,
   ExternalLink,
   ChevronDown,
+  Sparkles,
 } from 'lucide-react'
 import { LogoutModal } from './LogoutModal'
 import { notify } from '@/lib/notify'
@@ -327,6 +328,7 @@ export function AdminHeader({ userName, userEmail, newLeadsCount = 0 }: AdminHea
                       badge: newLeadsCount > 0 ? `${newLeadsCount}` : null,
                     },
                     { label: 'Newsletter', href: '/admin/newsletter', icon: Mail, badge: null },
+                    { label: 'Événements & Thèmes', href: '/admin/themes', icon: Sparkles, badge: null },
                   ].map((item) => {
                     const Icon = item.icon
                     const isActive = pathname === item.href

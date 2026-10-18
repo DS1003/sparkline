@@ -52,3 +52,28 @@ model AdminUser {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 }
+
+// 4. Event Themes & Site Customizations (Octobre Rose, Holidays, etc.)
+model EventTheme {
+  id             String    @id @default(cuid())
+  slug           String    @unique
+  name           String
+  description    String?
+  category       String    @default("AWARENESS") // "AWARENESS" | "HOLIDAY" | "PROMO" | "CUSTOM"
+  isEnabled      Boolean   @default(false)
+  badgeText      String?
+  headline       String?
+  highlightText  String?
+  subtext        String?
+  ribbonIconUrl  String?
+  accentColor    String    @default("#E11D5A")
+  showCenterAnim Boolean   @default(true)
+  showNavbarDock Boolean   @default(true)
+  showModal      Boolean   @default(true)
+  startDate      DateTime?
+  endDate        DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  @@index([isEnabled])
+}

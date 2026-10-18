@@ -9,10 +9,13 @@ import { Button } from '@/components/ui/Button'
 import { SparkTitle } from './SparkTitle'
 import { HeroBadge3D } from './HeroBadge3D'
 import { OctobreRoseHeroSequence } from './OctobreRoseHeroSequence'
+import { HolidayHeroSequence } from './HolidayHeroSequence'
+import { useEventTheme } from '@/hooks/useEventTheme'
 
 const HERO_TITLE_LINES = ['Concevoir la', 'nouvelle ère', 'du numérique']
 
 export function Hero() {
+  const { isOctobreRoseActive, isHolidayActive } = useEventTheme()
   const heroCardRef = useRef<HTMLDivElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const heroBgRef = useRef<HTMLDivElement>(null)
@@ -21,10 +24,16 @@ export function Hero() {
   const [stampedMeta, setStampedMeta] = useState<[boolean, boolean, boolean]>([false, false, false])
   const [isBadgeIgnited, setIsBadgeIgnited] = useState<boolean>(false)
 
-  // Octobre Rose sequence states
+  // Shared event sequence state
   const [isHeroCompleted, setIsHeroCompleted] = useState<boolean>(false)
+
+  // Octobre Rose sequence states
   const [isOctobreDocked, setIsOctobreDocked] = useState<boolean>(false)
   const [isOctobreModalOpen, setIsOctobreModalOpen] = useState<boolean>(false)
+
+  // Holiday Season sequence states
+  const [isHolidayDocked, setIsHolidayDocked] = useState<boolean>(false)
+  const [isHolidayModalOpen, setIsHolidayModalOpen] = useState<boolean>(false)
 
   const handleHeroComplete = useCallback(() => {
     setIsHeroCompleted(true)
@@ -161,20 +170,35 @@ export function Hero() {
           </div>
         </div>
 
-        {/* Top Navbar with Official Logo & Docked Octobre Rose Ribbon */}
+        {/* Top Navbar with Official Logo & Docked Active Event Theme Badge */}
         <Navbar
-          octobreRibbonDocked={isOctobreDocked}
+          octobreRibbonDocked={isOctobreRoseActive && isOctobreDocked}
           onOctobreRibbonClick={() => setIsOctobreModalOpen(true)}
+          holidayOrnamentDocked={isHolidayActive && isHolidayDocked}
+          onHolidayOrnamentClick={() => setIsHolidayModalOpen(true)}
         />
 
         {/* Octobre Rose Cinematic Center Showcase & Flight to Logo */}
-        <OctobreRoseHeroSequence
-          isHeroCompleted={isHeroCompleted}
-          onDockComplete={() => setIsOctobreDocked(true)}
-          isDocked={isOctobreDocked}
-          isModalOpen={isOctobreModalOpen}
-          setIsModalOpen={setIsOctobreModalOpen}
-        />
+        {isOctobreRoseActive && (
+          <OctobreRoseHeroSequence
+            isHeroCompleted={isHeroCompleted}
+            onDockComplete={() => setIsOctobreDocked(true)}
+            isDocked={isOctobreDocked}
+            isModalOpen={isOctobreModalOpen}
+            setIsModalOpen={setIsOctobreModalOpen}
+          />
+        )}
+
+        {/* Holiday Season Cinematic Center Showcase & Flight to Logo */}
+        {isHolidayActive && (
+          <HolidayHeroSequence
+            isHeroCompleted={isHeroCompleted}
+            onDockComplete={() => setIsHolidayDocked(true)}
+            isDocked={isHolidayDocked}
+            isModalOpen={isHolidayModalOpen}
+            setIsModalOpen={setIsHolidayModalOpen}
+          />
+        )}
 
         {/* Main Hero Headline Area with Real Spark Writing Effect */}
         <div className="relative z-10 my-auto pt-2 pb-2 md:pt-0 max-w-3xl lg:max-w-4xl xl:max-w-6xl py-1 sm:py-2.5 lg:py-2 xl:py-4 space-y-2.5 sm:space-y-3 lg:space-y-2.5 xl:space-y-4 flex flex-col items-center text-center lg:items-start lg:text-left">

@@ -8,6 +8,7 @@ import {
   LayoutDashboard,
   Inbox,
   Mail,
+  Sparkles,
   LogOut,
   ExternalLink,
   Compass,
@@ -67,6 +68,12 @@ export function AdminSidebar({ totalLeadsCount = 0, newLeadsCount = 0 }: AdminSi
       label: 'Newsletter',
       href: '/admin/newsletter',
       icon: Mail,
+      badge: null,
+    },
+    {
+      label: 'Événements & Thèmes',
+      href: '/admin/themes',
+      icon: Sparkles,
       badge: null,
     },
   ]

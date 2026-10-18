@@ -21,11 +21,15 @@ const navLinks = [
 interface NavbarProps {
   octobreRibbonDocked?: boolean
   onOctobreRibbonClick?: () => void
+  holidayOrnamentDocked?: boolean
+  onHolidayOrnamentClick?: () => void
 }
 
 export function Navbar({
   octobreRibbonDocked = false,
   onOctobreRibbonClick,
+  holidayOrnamentDocked = false,
+  onHolidayOrnamentClick,
 }: NavbarProps = {}) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const pathname = usePathname()
@@ -43,18 +47,48 @@ export function Navbar({
   return (
     <>
       <nav className="w-full flex items-center justify-between py-1 sm:py-2 mb-3 sm:mb-6 lg:mb-8 relative z-30">
-        {/* Official SPARKLINE Logo with Octobre Rose Docked Ribbon */}
+        {/* Official SPARKLINE Logo with Active Event Theme Docked Badge */}
         <div className="flex items-center gap-2 sm:gap-2.5">
           <Link href="/" id="navbar-logo" className="flex items-center group transition-transform group-hover:opacity-95">
             <Logo variant="white" size="md" />
           </Link>
 
-          {/* Octobre Rose Dock Container: anchor for landing the flying ribbon */}
-          <div
-            id="octobre-rose-dock"
-            className="relative flex items-center justify-center min-w-[34px] min-h-[34px] sm:min-w-[38px] sm:min-h-[38px]"
-          >
-            {octobreRibbonDocked && (
+          {/* Holiday Season Dock Container */}
+          {holidayOrnamentDocked ? (
+            <div
+              id="holiday-dock"
+              className="relative flex items-center justify-center min-w-[34px] min-h-[34px] sm:min-w-[38px] sm:min-h-[38px]"
+            >
+              <button
+                type="button"
+                onClick={onHolidayOrnamentClick}
+                title="Fêtes de fin d'année • SPARKLINE (Cliquez pour découvrir nos vœux)"
+                aria-label="Fêtes de fin d'année SPARKLINE : Meilleurs Vœux"
+                className="group relative cursor-pointer focus:outline-none flex items-center justify-center bg-transparent border-none p-0 transition-transform animate-in fade-in zoom-in-75 duration-300"
+              >
+                {/* 3D Starburst Ornament Image with levitation animation */}
+                <div className="relative w-8 h-8 sm:w-9 sm:h-9 animate-pink-ribbon">
+                  <Image
+                    src="/images/heroes/holiday-starburst-ornament.webp"
+                    alt="Emblème de Noël SPARKLINE"
+                    width={76}
+                    height={76}
+                    priority
+                    className="w-full h-full object-contain drop-shadow-[0_2px_10px_rgba(217,119,6,0.65)] group-hover:scale-110 group-hover:drop-shadow-[0_4px_16px_rgba(245,158,11,0.9)] transition-all duration-200"
+                  />
+                </div>
+              </button>
+            </div>
+          ) : (
+            <div id="holiday-dock" className="relative w-0 h-0 pointer-events-none" />
+          )}
+
+          {/* Octobre Rose Dock Container */}
+          {octobreRibbonDocked ? (
+            <div
+              id="octobre-rose-dock"
+              className="relative flex items-center justify-center min-w-[34px] min-h-[34px] sm:min-w-[38px] sm:min-h-[38px]"
+            >
               <button
                 type="button"
                 onClick={onOctobreRibbonClick}
@@ -74,8 +108,10 @@ export function Navbar({
                   />
                 </div>
               </button>
-            )}
-          </div>
+            </div>
+          ) : (
+            <div id="octobre-rose-dock" className="relative w-0 h-0 pointer-events-none" />
+          )}
         </div>
 
         {/* Desktop Nav Links — Sleek Floating Glassmorphic Capsule Tube */}
